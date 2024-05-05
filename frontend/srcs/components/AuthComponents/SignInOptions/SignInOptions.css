@@ -1,0 +1,394 @@
+:root {
+    --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
+    --1-themes-label-primary: rgba(0, 0, 0, 1);
+    --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
+    --1-themes-system-green: rgba(49, 200, 89, 1);
+    --1-themes-system-grey: rgba(142, 142, 147, 1);
+    --1-themes-system-grey3: rgba(199, 199, 204, 1);
+    --1-themes-system-grey4: rgba(210, 210, 215, 1);
+    --1-themes-system-orange: rgba(255, 150, 0, 1);
+    --1-themes-system-red: rgba(255, 56, 43, 1);
+    --1-themes-system-white: rgba(255, 255, 255, 1);
+    --1-themes-system-yellow: rgba(255, 205, 0, 1);
+    --dark-colortext-content: rgba(236, 236, 236, 1);
+    --neutral-colors500: rgba(224, 224, 233, 1);
+    --neutral-colorswhite: rgba(255, 255, 255, 1);
+    --primitives-color-purple-5f21cc: rgba(95, 33, 204, 1);
+  }
+  
+  [data-1-themes-mode="light"] {
+    --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
+    --1-themes-label-primary: rgba(0, 0, 0, 1);
+    --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
+    --1-themes-system-green: rgba(49, 200, 89, 1);
+    --1-themes-system-grey3: rgba(199, 199, 204, 1);
+    --1-themes-system-grey4: rgba(210, 210, 215, 1);
+    --1-themes-system-orange: rgba(255, 150, 0, 1);
+    --1-themes-system-red: rgba(255, 56, 43, 1);
+    --1-themes-system-yellow: rgba(255, 205, 0, 1);
+  }
+  
+  [data-1-themes-mode="dark"] {
+    --1-themes-fill-tertiary: rgba(118, 118, 128, 0.24);
+    --1-themes-label-primary: rgba(255, 255, 255, 1);
+    --1-themes-label-secondary: rgba(235, 235, 245, 0.6);
+    --1-themes-system-green: rgba(45, 210, 87, 1);
+    --1-themes-system-grey3: rgba(70, 70, 73, 1);
+    --1-themes-system-grey4: rgba(55, 55, 57, 1);
+    --1-themes-system-orange: rgba(255, 159, 3, 1);
+    --1-themes-system-red: rgba(254, 67, 54, 1);
+    --1-themes-system-yellow: rgba(254, 215, 2, 1);
+  }
+  
+
+  .login-page {
+    height: 531px;
+    position: relative;
+    width: 461px;
+  }
+  
+  .login-page .overlap-group {
+    background-color: #000000;
+    border: 0.46px solid;
+    border-color: #ffffff;
+    border-radius: 18.32px;
+    height: 531px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 460px;
+  }
+  
+  .login-page .sign-in-button {
+    height: 94px;
+    left: 50px;
+    position: absolute;
+    top: 436px;
+    width: 363px;
+  }
+  
+  .login-page .title {
+    height: 63px;
+    left: 77px;
+    position: absolute;
+    top: 371px;
+    width: 216px;
+  }
+  
+  .login-page .group {
+    height: 26px;
+    left: 0;
+    position: absolute;
+    top: 36px;
+    width: 162px;
+  }
+  
+  .login-page .div-wrapper {
+    height: 26px;
+    position: relative;
+    width: 164px;
+  }
+  
+  .login-page .text-wrapper {
+    color: var(--dark-colortext-content);
+    font-family: "Montserrat-Bold", Helvetica;
+    font-size: 11.9px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 25.8px;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+  }
+  
+  .login-page .by-signing-up-you {
+    color: transparent;
+    font-family: "Archivo-Medium", Helvetica;
+    font-size: 7.7px;
+    font-weight: 500;
+    left: 0;
+    letter-spacing: -0.23px;
+    line-height: 11.3px;
+    position: absolute;
+    top: -1px;
+    width: 216px;
+  }
+  
+  .login-page .span {
+    color: #72767a;
+    letter-spacing: -0.02px;
+  }
+  
+  .login-page .text-wrapper-2 {
+    color: #1d9bf0;
+    letter-spacing: -0.02px;
+  }
+  
+  .login-page .OR-line {
+    height: 1px;
+    left: 77px;
+    position: absolute;
+    top: 303px;
+    width: 308px;
+  }
+  
+  .login-page .line {
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 134px;
+  }
+  
+  .login-page .img {
+    height: 1px;
+    left: 174px;
+    position: absolute;
+    top: 0;
+    width: 134px;
+  }
+  
+  .login-page .left-title {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    color: #ffffff;
+    display: -webkit-box;
+    font-family: "Archivo-Medium", Helvetica;
+    font-size: 14.1px;
+    font-weight: 500;
+    height: 12px;
+    left: 147px;
+    letter-spacing: -0.23px;
+    line-height: 12.4px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: -7px;
+    white-space: nowrap;
+    width: 14px;
+  }
+  
+  .login-page .create-account {
+    background-color: #1d9bf0;
+    border-radius: 45.73px;
+    box-shadow: 0px 16.46px 27.44px #8277c51c;
+    height: 41px;
+    left: 77px;
+    position: absolute;
+    top: 323px;
+    width: 308px;
+  }
+  
+  .login-page .group-wrapper {
+    height: 22px;
+    left: 103px;
+    position: relative;
+    top: 10px;
+    width: 100px;
+  }
+  
+  .login-page .div {
+    height: 22px;
+    position: relative;
+    width: 102px;
+  }
+  
+  .login-page .text-wrapper-3 {
+    color: #ffffff;
+    font-family: "Poppins-Medium", Helvetica;
+    font-size: 12.7px;
+    font-weight: 500;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 21.2px;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+  }
+  
+  .login-page .sign-in-platforme {
+    height: 139px;
+    left: 76px;
+    position: absolute;
+    top: 140px;
+    width: 310px;
+  }
+  
+  .login-page .apple {
+    background-color: var(--neutral-colorswhite);
+    border: 0.91px solid;
+    border-color: var(--neutral-colors500);
+    border-radius: 45.73px;
+    box-shadow: 0px 16.46px 27.44px #8277c51c;
+    height: 41px;
+    left: 1px;
+    position: absolute;
+    top: 0;
+    width: 308px;
+  }
+  
+  .login-page .button-content {
+    height: 21px;
+    left: 77px;
+    position: absolute;
+    top: 9px;
+    width: 18px;
+  }
+  
+  .login-page .text-wrapper-4 {
+    color: #000000;
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-size: 12.7px;
+    font-weight: 600;
+    left: 113px;
+    letter-spacing: 0;
+    line-height: 21.2px;
+    position: absolute;
+    top: 10px;
+    white-space: nowrap;
+    width: 120px;
+  }
+  
+  .login-page .google {
+    background-color: var(--neutral-colorswhite);
+    border: 0.91px solid;
+    border-color: var(--neutral-colors500);
+    border-radius: 45.73px;
+    box-shadow: 0px 16.46px 27.44px #8277c51c;
+    height: 41px;
+    left: 2px;
+    position: absolute;
+    top: 49px;
+    width: 308px;
+  }
+  
+  .login-page .button-content-2 {
+    height: 16px;
+    left: 72px;
+    position: absolute;
+    top: 12px;
+    width: 16px;
+  }
+  
+  .login-page .text-wrapper-5 {
+    color: #000000;
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-size: 12.7px;
+    font-weight: 600;
+    left: 108px;
+    letter-spacing: 0;
+    line-height: 21.2px;
+    position: absolute;
+    top: 10px;
+    white-space: nowrap;
+    width: 130px;
+  }
+  
+  .login-page .element-intra {
+    background-color: var(--neutral-colorswhite);
+    border: 0.91px solid;
+    border-color: var(--neutral-colors500);
+    border-radius: 45.73px;
+    box-shadow: 0px 16.46px 27.44px #8277c51c;
+    height: 41px;
+    left: 0;
+    position: absolute;
+    top: 99px;
+    width: 308px;
+  }
+  
+  .login-page .element {
+    height: 20px;
+    left: 73px;
+    object-fit: cover;
+    position: absolute;
+    top: 10px;
+    width: 20px;
+  }
+  
+  .login-page .text-wrapper-6 {
+    color: #000000;
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-size: 12.7px;
+    font-weight: 600;
+    left: 108px;
+    letter-spacing: 0;
+    line-height: 21.2px;
+    position: absolute;
+    top: 9px;
+    white-space: nowrap;
+    width: 133px;
+  }
+  
+  .login-page .title-2 {
+    height: 76px;
+    left: 77px;
+    position: absolute;
+    top: 36px;
+    width: 243px;
+  }
+  
+  .login-page .group-2 {
+    height: 38px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 243px;
+  }
+  
+  .login-page .group-3 {
+    height: 38px;
+    position: relative;
+    width: 245px;
+  }
+  
+  .login-page .text-wrapper-7 {
+    color: var(--dark-colortext-content);
+    font-family: "Montserrat-Bold", Helvetica;
+    font-size: 28.9px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 37.4px;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+  }
+
+  .login-page .group-4 {
+    height: 26px;
+    left: 0;
+    position: absolute;
+    top: 50px;
+    width: 110px;
+  }
+  
+  .login-page .group-5 {
+    height: 26px;
+    position: relative;
+    width: 112px;
+  }
+  
+  .login-page .text-wrapper-8 {
+    color: var(--dark-colortext-content);
+    font-family: "Montserrat-Bold", Helvetica;
+    font-size: 19.9px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 25.7px;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+  }
+  
+  .login-page .rectangle {
+    height: 530px;
+    left: 1015px;
+    position: absolute;
+    top: 955px;
+    width: 459px;
+  }
+  
+
