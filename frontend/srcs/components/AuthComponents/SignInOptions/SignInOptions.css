@@ -1,155 +1,199 @@
 :root {
-    --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
-    --1-themes-label-primary: rgba(0, 0, 0, 1);
-    --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
-    --1-themes-system-green: rgba(49, 200, 89, 1);
-    --1-themes-system-grey: rgba(142, 142, 147, 1);
-    --1-themes-system-grey3: rgba(199, 199, 204, 1);
-    --1-themes-system-grey4: rgba(210, 210, 215, 1);
-    --1-themes-system-orange: rgba(255, 150, 0, 1);
-    --1-themes-system-red: rgba(255, 56, 43, 1);
-    --1-themes-system-white: rgba(255, 255, 255, 1);
-    --1-themes-system-yellow: rgba(255, 205, 0, 1);
-    --dark-colortext-content: rgba(236, 236, 236, 1);
-    --neutral-colors500: rgba(224, 224, 233, 1);
-    --neutral-colorswhite: rgba(255, 255, 255, 1);
-    --primitives-color-purple-5f21cc: rgba(95, 33, 204, 1);
-  }
-  
-  [data-1-themes-mode="light"] {
-    --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
-    --1-themes-label-primary: rgba(0, 0, 0, 1);
-    --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
-    --1-themes-system-green: rgba(49, 200, 89, 1);
-    --1-themes-system-grey3: rgba(199, 199, 204, 1);
-    --1-themes-system-grey4: rgba(210, 210, 215, 1);
-    --1-themes-system-orange: rgba(255, 150, 0, 1);
-    --1-themes-system-red: rgba(255, 56, 43, 1);
-    --1-themes-system-yellow: rgba(255, 205, 0, 1);
-  }
-  
-  [data-1-themes-mode="dark"] {
-    --1-themes-fill-tertiary: rgba(118, 118, 128, 0.24);
-    --1-themes-label-primary: rgba(255, 255, 255, 1);
-    --1-themes-label-secondary: rgba(235, 235, 245, 0.6);
-    --1-themes-system-green: rgba(45, 210, 87, 1);
-    --1-themes-system-grey3: rgba(70, 70, 73, 1);
-    --1-themes-system-grey4: rgba(55, 55, 57, 1);
-    --1-themes-system-orange: rgba(255, 159, 3, 1);
-    --1-themes-system-red: rgba(254, 67, 54, 1);
-    --1-themes-system-yellow: rgba(254, 215, 2, 1);
-  }
-  
+  --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
+  --1-themes-label-primary: rgba(0, 0, 0, 1);
+  --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
+  --1-themes-system-green: rgba(49, 200, 89, 1);
+  --1-themes-system-grey: rgba(142, 142, 147, 1);
+  --1-themes-system-grey3: rgba(199, 199, 204, 1);
+  --1-themes-system-grey4: rgba(210, 210, 215, 1);
+  --1-themes-system-orange: rgba(255, 150, 0, 1);
+  --1-themes-system-red: rgba(255, 56, 43, 1);
+  --1-themes-system-white: rgba(255, 255, 255, 1);
+  --1-themes-system-yellow: rgba(255, 205, 0, 1);
+  --dark-colortext-content: rgba(236, 236, 236, 1);
+  --neutral-colors500: rgba(224, 224, 233, 1);
+  --neutral-colorswhite: rgba(255, 255, 255, 1);
+  --primitives-color-purple-5f21cc: rgba(95, 33, 204, 1);
+}
 
-  .login-page {
-    height: 531px;
-    position: relative;
-    width: 461px;
+[data-1-themes-mode="light"] {
+  --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
+  --1-themes-label-primary: rgba(0, 0, 0, 1);
+  --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
+  --1-themes-system-green: rgba(49, 200, 89, 1);
+  --1-themes-system-grey3: rgba(199, 199, 204, 1);
+  --1-themes-system-grey4: rgba(210, 210, 215, 1);
+  --1-themes-system-orange: rgba(255, 150, 0, 1);
+  --1-themes-system-red: rgba(255, 56, 43, 1);
+  --1-themes-system-yellow: rgba(255, 205, 0, 1);
+}
+
+[data-1-themes-mode="dark"] {
+  --1-themes-fill-tertiary: rgba(118, 118, 128, 0.24);
+  --1-themes-label-primary: rgba(255, 255, 255, 1);
+  --1-themes-label-secondary: rgba(235, 235, 245, 0.6);
+  --1-themes-system-green: rgba(45, 210, 87, 1);
+  --1-themes-system-grey3: rgba(70, 70, 73, 1);
+  --1-themes-system-grey4: rgba(55, 55, 57, 1);
+  --1-themes-system-orange: rgba(255, 159, 3, 1);
+  --1-themes-system-red: rgba(254, 67, 54, 1);
+  --1-themes-system-yellow: rgba(254, 215, 2, 1);
+}
+
+.SignInOptions {
+  margin-top: 500px;
+  padding: 40px 0px 30px 50px;
+  background-color: rgb(0, 0, 0);
+  border: 0.5px solid #ffffff; 
+}
+
+
+@layer Title {
+
+    .title {
+      height: 76px;
+      position: relative;
+      width: 243px;
+    }
+
+    .title .group {
+      height: 38px;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 243px;
+    }
+
+    .title .div-wrapper {
+      height: 38px;
+      position: relative;
+      width: 245px;
+    }
+
+    .title .text-wrapper {
+      color: var(--dark-colortext-content);
+      font-family: "Montserrat-Bold", Helvetica;
+      font-size: 28.9px;
+      font-weight: 700;
+      left: 0;
+      letter-spacing: 0;
+      line-height: 37.4px;
+      position: absolute;
+      top: 0;
+      white-space: nowrap;
+    }
+
+    .title .group-wrapper {
+      height: 26px;
+      left: 0;
+      position: absolute;
+      top: 50px;
+      width: 110px;
+    }
+
+    .title .div {
+      height: 26px;
+      position: relative;
+      width: 112px;
+    }
+
+    .title .text-wrapper-2 {
+      color: var(--dark-colortext-content);
+      font-family: "Montserrat-Bold", Helvetica;
+      font-size: 19.9px;
+      font-weight: 700;
+      left: 0;
+      letter-spacing: 0;
+      line-height: 25.7px;
+      position: absolute;
+      top: 0;
+      white-space: nowrap;
+    }
+}
+
+@layer Platforme {
+        
+  .sign-in-platforme {
+      margin-top: 20px;
+      height: 139px;
+      position: relative;
+      width: 310px;
   }
-  
-  .login-page .overlap-group {
-    background-color: #000000;
-    border: 0.46px solid;
-    border-color: #ffffff;
-    border-radius: 18.32px;
-    height: 531px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 460px;
+
+  .sign-in-platforme > div {
+      margin-bottom: 10px; 
   }
-  
-  .login-page .sign-in-button {
-    height: 94px;
-    left: 50px;
-    position: absolute;
-    top: 436px;
-    width: 363px;
+
+  .sign-in-platforme .apple,
+  .sign-in-platforme .google,
+  .sign-in-platforme .element-intra {
+      background-color: var(--neutral-colorswhite);
+      border: 0.91px solid;
+      border-color: var(--neutral-colors500);
+      border-radius: 45.73px;
+      box-shadow: 0px 16.46px 27.44px #8277c51c;
+      height: 41px;
+      position: relative;
+      width: 22rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
   }
-  
-  .login-page .title {
-    height: 63px;
-    left: 77px;
-    position: absolute;
-    top: 371px;
-    width: 216px;
+
+
+  .sign-in-platforme .img,
+  .sign-in-platforme .element {
+      height: 16px;
+      width: 19px;
+      margin-left: 16px;
   }
-  
-  .login-page .group {
-    height: 26px;
-    left: 0;
-    position: absolute;
-    top: 36px;
-    width: 162px;
+
+  .sign-in-platforme .button-content {
+    height: 15px;
+    width: 18px;
+    margin-left: 8px;
   }
-  
-  .login-page .div-wrapper {
-    height: 26px;
-    position: relative;
-    width: 164px;
+
+  .sign-in-platforme .text-wrapper,
+  .sign-in-platforme .div,
+  .sign-in-platforme .text-wrapper-2 {
+      color: #000000;
+      font-family: "Poppins-SemiBold", Helvetica;
+      font-size: 12.7px;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 21.2px;
+      white-space: nowrap;
+      margin-left: 8px; /* Adjust margin-left */
   }
-  
-  .login-page .text-wrapper {
-    color: var(--dark-colortext-content);
-    font-family: "Montserrat-Bold", Helvetica;
-    font-size: 11.9px;
-    font-weight: 700;
-    left: 0;
-    letter-spacing: 0;
-    line-height: 25.8px;
-    position: absolute;
-    top: 0;
-    white-space: nowrap;
-  }
-  
-  .login-page .by-signing-up-you {
-    color: transparent;
-    font-family: "Archivo-Medium", Helvetica;
-    font-size: 7.7px;
-    font-weight: 500;
-    left: 0;
-    letter-spacing: -0.23px;
-    line-height: 11.3px;
-    position: absolute;
-    top: -1px;
-    width: 216px;
-  }
-  
-  .login-page .span {
-    color: #72767a;
-    letter-spacing: -0.02px;
-  }
-  
-  .login-page .text-wrapper-2 {
-    color: #1d9bf0;
-    letter-spacing: -0.02px;
-  }
-  
-  .login-page .OR-line {
+}
+
+@layer OR-line {
+
+  .OR-line {
+    margin: 20px 0px 20px 20px;
     height: 1px;
-    left: 77px;
-    position: absolute;
-    top: 303px;
+    position: relative;
     width: 308px;
   }
-  
-  .login-page .line {
+
+  .OR-line .line {
     height: 1px;
     left: 0;
     position: absolute;
     top: 0;
     width: 134px;
   }
-  
-  .login-page .img {
+
+  .OR-line .img {
     height: 1px;
     left: 174px;
     position: absolute;
     top: 0;
     width: 134px;
   }
-  
-  .login-page .left-title {
+
+  .OR-line .left-title {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     color: #ffffff;
@@ -168,227 +212,84 @@
     white-space: nowrap;
     width: 14px;
   }
+}
+
+@layer Signing-Term {
+
+    .title-term {
+      height: 63px;
+      position: relative;
+      width: 216px;
+      margin: 10px 0px 10px 20px;
   
-  .login-page .create-account {
-    background-color: #1d9bf0;
-    border-radius: 45.73px;
-    box-shadow: 0px 16.46px 27.44px #8277c51c;
-    height: 41px;
-    left: 77px;
-    position: absolute;
-    top: 323px;
-    width: 308px;
+    }
+
+    .title-term .group-term {
+      height: 26px;
+      left: 0;
+      position: absolute;
+      top: 36px;
+      width: 162px;
+    }
+
+    .title-term .div-wrapper-term {
+      height: 26px;
+      position: relative;
+      width: 164px;
+    }
+
+    .title-term .text-wrapper-term {
+      color: var(--dark-colortext-content);
+      font-family: "Montserrat-Bold", Helvetica;
+      font-size: 13px;
+      font-weight: 900;
+      left: 0;
+      letter-spacing: 0;
+      line-height: 25.8px;
+      position: absolute;
+      top: 0;
+      white-space: nowrap;
+    }
+
+    .title-term .by-signing-up-you {
+      color: transparent;
+      font-family: "Archivo-Medium", Helvetica;
+      font-size: 10px;
+      font-weight: 500;
+      left: 0;
+      letter-spacing: -0.23px;
+      line-height: 11.3px;
+      position: absolute;
+      top: -1px;
+      width: 216px;
+    }
+
+    .title-term .span-term {
+      color: #72767a;
+      letter-spacing: -0.02px;
+    }
+
+    .title-term .text-wrapper-2-term {
+      color: #1d9bf0;
+      letter-spacing: -0.02px;
+    }
+}
+
+@media (max-width: 640px) {
+  .SignInOptions {
+    padding-left: 10px; 
+    margin-top: 100px;
   }
-  
-  .login-page .group-wrapper {
-    height: 22px;
-    left: 103px;
-    position: relative;
-    top: 10px;
-    width: 100px;
+  .title,
+  .sign-in-platforme,
+  .buttons-target {
+    margin-left: 15px; 
   }
-  
-  .login-page .div {
-    height: 22px;
-    position: relative;
-    width: 102px;
+  .OR-line {
+    margin-left: 36px; 
   }
-  
-  .login-page .text-wrapper-3 {
-    color: #ffffff;
-    font-family: "Poppins-Medium", Helvetica;
-    font-size: 12.7px;
-    font-weight: 500;
-    left: 0;
-    letter-spacing: 0;
-    line-height: 21.2px;
-    position: absolute;
-    top: 0;
-    white-space: nowrap;
-  }
-  
-  .login-page .sign-in-platforme {
-    height: 139px;
-    left: 76px;
-    position: absolute;
-    top: 140px;
-    width: 310px;
-  }
-  
-  .login-page .apple {
-    background-color: var(--neutral-colorswhite);
-    border: 0.91px solid;
-    border-color: var(--neutral-colors500);
-    border-radius: 45.73px;
-    box-shadow: 0px 16.46px 27.44px #8277c51c;
-    height: 41px;
-    left: 1px;
-    position: absolute;
-    top: 0;
-    width: 308px;
-  }
-  
-  .login-page .button-content {
-    height: 21px;
-    left: 77px;
-    position: absolute;
-    top: 9px;
-    width: 18px;
-  }
-  
-  .login-page .text-wrapper-4 {
-    color: #000000;
-    font-family: "Poppins-SemiBold", Helvetica;
-    font-size: 12.7px;
-    font-weight: 600;
-    left: 113px;
-    letter-spacing: 0;
-    line-height: 21.2px;
-    position: absolute;
-    top: 10px;
-    white-space: nowrap;
-    width: 120px;
-  }
-  
-  .login-page .google {
-    background-color: var(--neutral-colorswhite);
-    border: 0.91px solid;
-    border-color: var(--neutral-colors500);
-    border-radius: 45.73px;
-    box-shadow: 0px 16.46px 27.44px #8277c51c;
-    height: 41px;
-    left: 2px;
-    position: absolute;
-    top: 49px;
-    width: 308px;
-  }
-  
-  .login-page .button-content-2 {
-    height: 16px;
-    left: 72px;
-    position: absolute;
-    top: 12px;
-    width: 16px;
-  }
-  
-  .login-page .text-wrapper-5 {
-    color: #000000;
-    font-family: "Poppins-SemiBold", Helvetica;
-    font-size: 12.7px;
-    font-weight: 600;
-    left: 108px;
-    letter-spacing: 0;
-    line-height: 21.2px;
-    position: absolute;
-    top: 10px;
-    white-space: nowrap;
-    width: 130px;
-  }
-  
-  .login-page .element-intra {
-    background-color: var(--neutral-colorswhite);
-    border: 0.91px solid;
-    border-color: var(--neutral-colors500);
-    border-radius: 45.73px;
-    box-shadow: 0px 16.46px 27.44px #8277c51c;
-    height: 41px;
-    left: 0;
-    position: absolute;
-    top: 99px;
-    width: 308px;
-  }
-  
-  .login-page .element {
-    height: 20px;
-    left: 73px;
-    object-fit: cover;
-    position: absolute;
-    top: 10px;
-    width: 20px;
-  }
-  
-  .login-page .text-wrapper-6 {
-    color: #000000;
-    font-family: "Poppins-SemiBold", Helvetica;
-    font-size: 12.7px;
-    font-weight: 600;
-    left: 108px;
-    letter-spacing: 0;
-    line-height: 21.2px;
-    position: absolute;
-    top: 9px;
-    white-space: nowrap;
-    width: 133px;
-  }
-  
-  .login-page .title-2 {
-    height: 76px;
-    left: 77px;
-    position: absolute;
-    top: 36px;
-    width: 243px;
-  }
-  
-  .login-page .group-2 {
-    height: 38px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 243px;
-  }
-  
-  .login-page .group-3 {
-    height: 38px;
-    position: relative;
-    width: 245px;
-  }
-  
-  .login-page .text-wrapper-7 {
-    color: var(--dark-colortext-content);
-    font-family: "Montserrat-Bold", Helvetica;
-    font-size: 28.9px;
-    font-weight: 700;
-    left: 0;
-    letter-spacing: 0;
-    line-height: 37.4px;
-    position: absolute;
-    top: 0;
-    white-space: nowrap;
+  .title-term {
+    margin-left: 30px; 
   }
 
-  .login-page .group-4 {
-    height: 26px;
-    left: 0;
-    position: absolute;
-    top: 50px;
-    width: 110px;
-  }
-  
-  .login-page .group-5 {
-    height: 26px;
-    position: relative;
-    width: 112px;
-  }
-  
-  .login-page .text-wrapper-8 {
-    color: var(--dark-colortext-content);
-    font-family: "Montserrat-Bold", Helvetica;
-    font-size: 19.9px;
-    font-weight: 700;
-    left: 0;
-    letter-spacing: 0;
-    line-height: 25.7px;
-    position: absolute;
-    top: 0;
-    white-space: nowrap;
-  }
-  
-  .login-page .rectangle {
-    height: 530px;
-    left: 1015px;
-    position: absolute;
-    top: 955px;
-    width: 459px;
-  }
-  
-
+}

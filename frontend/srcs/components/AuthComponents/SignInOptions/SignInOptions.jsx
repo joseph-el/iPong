@@ -1,84 +1,111 @@
 
 import React from 'react'
 import './SignInOptions.css'
-import {Input} from "@nextui-org/input";
+import GoogleLogo from "../assets/google_logo.svg"
+import AppleLogo from "../assets/apple_logo.svg"
+import IntraLogo from "../assets/42_logo.svg"
+import Line112 from "../assets/Line112.svg"
+import Line113 from "../assets/Line113.svg"
+import CustomButton from '../../UI/Button/CustomButton'
 
+// sm:w-96  sm:h-96  md:h-96  md:w-96 lg:h-96  lg:w-96  xm:h-96  xm:w-96 2xl:w-max 2xl:h-max 
+export const Title = () => {
+    return (
+        <div className="title">
+            <div className="group">
+                <div className="div-wrapper">
+                    <div className="text-wrapper">Happening now</div>
+                </div>
+            </div>
+            <div className="group-wrapper">
+                <div className="div">
+                    <div className="text-wrapper-2">Play today</div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export const SignInPlatforme = () => {
+    return (
+        <div className="sign-in-platforme">
+            <div className="apple">
+                <img className="button-content" alt="Button content" src={AppleLogo}/>
+                <div className="text-wrapper">Sign up with Apple</div>
+            </div>
+            <div className="google">
+                <img className="img" alt="Button content" src={GoogleLogo} />
+                <div className="div">Sign up with Google</div>
+            </div>
+            <div className="element-intra">
+                <img className="element" alt="Element" src={IntraLogo} />
+                <div className="text-wrapper-2">Sign up with 42intra</div>
+            </div>
+        </div>
+    );
+};
+
+export const OrLine = () => {
+    return (
+        <div className="OR-line">
+            <img className="line" alt="Line" src={Line112} />
+            <img className="img" alt="Line" src={Line113} />
+            <div className="left-title">or</div>
+        </div>
+    );
+};
+
+
+export const TermTitle = () => {
+    return (
+        <div className="title-term">
+            <div className="group-term">
+                <div className="div-wrapper-term">
+                    <div className="text-wrapper-term">Already have an account?</div>
+                </div>
+            </div>
+
+            <p className="by-signing-up-you">
+                <span className="span-term">By signing up, you agree to the </span>
+                <span className="text-wrapper-2-term">Terms of Service </span>
+                <span className="span-term">and </span>
+                <span className="text-wrapper-2-term">Privacy</span>
+                <span className="span-term">&nbsp;</span>
+                <span className="text-wrapper-2-term">Policy</span>
+                <span className="span-term">, including Cookie Use.</span>
+            </p>
+        </div>
+    );
+};
+
+ 
+
+//  w-[24rem] h-[37rem] sm:w-[24rem] sm:h-[37rem] md:w-[26.5rem] md:h-[37rem] lg:w-[27rem] lg:h-[37rem] xl:w-[29.5rem] xl:h-[37rem] 2xl:h-[37rem] 2xl:w-mx-auto">
 export default function SignInOptions() {
 
-
     return (
-
         <>
-            <div className='SignInOptions'>
+            <div className="SignInOptions max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden  h-[32rem] w-[25rem]   sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
 
-                <div className='top-title'>
-                    <p className='big-title'> Happening now</p>
-                    <p className='little-title'> Play today</p>
+                <Title/>
+                <SignInPlatforme/>
+                <OrLine/>
+                <div className='buttons-target'>
+                    <CustomButton
+                        classNames="create-account"
+                        text="Create account"
+                    />
                 </div>
-
-                <div className='SignUpWith-Component'>
-                    <div className="apple">
-                        <img className="button-content" alt="Button content" src='../assets/apple_logo.svg' />
-                        <div className="text-wrapper">Sign up with Apple</div>
-                    </div>
-
-                    <div className="google">
-                        <img className="button-content" alt="Button content" src='../assets/apple_logo.svg' />
-                        <div className="text-wrapper">Sign up with Apple</div>
-                    </div>
-
-                    <div className="42-intra">
-                        <img className="button-content" alt="Button content" src='../assets/apple_logo.svg' />
-                        <div className="text-wrapper">Sign up with Apple</div>
-                    </div>
+                <TermTitle/>
+                <div className='buttons-target'>
+                    <CustomButton
+                        classNames="create-account"
+                        text="Sign in"
+                    />
                 </div>
-
-                <div className="OR-line">
-                    <img className="line" alt="Line" src="line-112.svg" />
-                    <div className="left-title">or</div>
-                    <img className="img" alt="Line" src="line-113.svg" />
-                </div>
-
-                <div className="create-account">
-                    <div className="group-wrapper">
-                        <div className="div">
-                            <div className="text-wrapper-3">Create account</div>
-                        </div>
-                    </div>
-                </div>
+ 
             
-                <p className="by-signing-up-you">
-                    <span className="span">By signing up, you agree to the </span>
-                    <span className="text-wrapper-2">Terms of Service </span>
-                    <span className="span">and </span>
-                    <span className="text-wrapper-2">Privacy</span>
-                    <span className="span">&nbsp;</span>
-                    <span className="text-wrapper-2">Policy</span>
-                    <span className="span">, including Cookie Use.</span>
-                </p>
-
-                <div className="div-wrapper">
-                    <div className="text-wrapper">Already have an account?</div>
-                </div>
-
-                <div className="create-account">
-                    <div className="group-wrapper">
-                        <div className="div">
-                            <div className="text-wrapper-3">Sign in</div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <Input
-        isReadOnly
-      type="email"
-      label="Email"
-      variant="bordered"
-      defaultValue="junior@nextui.org"
-      className="max-w-xs"
-    />
             </div>
-        </>
+        </>   
     );
 }

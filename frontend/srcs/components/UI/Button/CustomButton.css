@@ -1,0 +1,36 @@
+.create-account {
+    background-color: #1d9bf0;
+    border-radius: 45.73px;
+    height: 41px;
+    width: 308px;
+}
+
+.create-account .group {
+    height: 22px;
+    left: 103px;
+    position: relative;
+    top: 10px;
+    width: 100px;
+}
+
+.create-account .div-wrapper {
+    height: 22px;
+    position: relative;
+    width: 102px;
+}
+
+.create-account .text-wrapper {
+    color: #ffffff;
+    font-family: "Poppins-Medium", Helvetica;
+    font-size: 12.7px;
+    font-weight: 500;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 21.2px;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+}
+
+/* New: */
+

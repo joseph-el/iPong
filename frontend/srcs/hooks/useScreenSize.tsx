@@ -1,3 +1,4 @@
+import { func } from 'prop-types';
 import { useState, useEffect } from 'react';
 
 type ScreenSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -19,6 +20,7 @@ const useScreenSize = (): ScreenSize => {
       setScreenSize(getScreenSize());
     }
 
+  
     handleResize();
     window.addEventListener('resize', handleResize);
 
@@ -27,3 +29,14 @@ const useScreenSize = (): ScreenSize => {
 
   return screenSize;
 };
+
+function GetXc(props: any) {
+  return (
+      if (props{}) {
+
+      }
+      else {
+        props{}
+      }
+  );
+}
