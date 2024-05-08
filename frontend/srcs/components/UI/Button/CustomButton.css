@@ -2,7 +2,7 @@
     background-color: #1d9bf0;
     border-radius: 45.73px;
     height: 41px;
-    width: 308px;
+    width: 350px;
 }
 
 .create-account .group {
@@ -23,14 +23,14 @@
     color: #ffffff;
     font-family: "Poppins-Medium", Helvetica;
     font-size: 12.7px;
-    font-weight: 500;
-    left: 0;
+    font-weight: 550;
+    left: 63%; /* Adjust left to 50% */
+    transform: translateX(-40%); /* Add this line */
     letter-spacing: 0;
     line-height: 21.2px;
     position: absolute;
     top: 0;
     white-space: nowrap;
+    text-align: center; /* Add this line */
 }
-
-/* New: */
 

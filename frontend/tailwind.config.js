@@ -22,7 +22,7 @@ export default {
         '118': '29.5rem', // xl
         '108': '27rem', // lg
         '98': '26.5rem', // md (added 2rem)
-        '88': '24rem', // sm (added 2rem)
+        '88': '25rem', // sm (added 2rem)
       },      
     },
   },

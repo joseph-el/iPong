@@ -1,0 +1,23 @@
+
+.sign-in-competent {
+    margin-top: 20px;
+    height: 90px;
+    background-image: url("../assets/maskgroup.svg");
+    background-color: black;
+    border: 0.5px solid #ffffff; 
+}
+
+
+.sign-in-competent .div {
+    color: var(--dark-colortext-content);
+    font-family: "Archivo-Bold", Helvetica;
+    font-size: 31.4px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 40.6px;
+    position: absolute;
+    white-space: nowrap;
+    padding:  20px 0px 0px 90px;
+}
+    
