@@ -1,0 +1,80 @@
+.SetUserNameAndPicture-frame {
+    margin-top: 20px;
+    background-color: black;
+    border: 0.5px solid #ffffff; 
+    max-width: 460px; 
+    max-height: 512px;  
+ 
+}
+
+.picture-target {
+    display: flex;
+    padding-left: 0px;
+    justify-content: center;
+}
+
+@layer CloseIcon {
+    .creat-close {
+        padding: 10px !important;
+        position: relative;
+        overflow: hidden;
+    }   
+}
+
+
+.SetUserNameAndPicture-frame .text-wrapper-3 {
+    color: #ffffff;
+    font-family: "Segoe UI-Bold", Helvetica;
+    font-size: 23.6px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    padding: 20px 0px 20px 42px;
+
+}
+
+.SetUserNameAndPicture-frame .text-wrapper-4 {
+    color: #ffffff;
+    font-family: "Segoe UI-Bold", Helvetica;
+    font-size: 23.6px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    padding: 20px 0px 20px 42px;
+
+}
+
+
+.SetUserNameAndPicture-frame .this-will-not-be {
+    font-family: "Archivo-Regular", Helvetica;
+    font-size: 13.3px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: -0.34px;
+    line-height: 16.3px;
+    top: 0;
+    width: 400px;
+    padding-left: 42px;
+}
+
+.SetUserNameAndPicture-frame .this-will-not-be {
+    color: #72767a;
+    letter-spacing: -0.04px;
+}
+
+.SetUserNameAndPicture-frame .this-will-not-be .user-name {
+    color: #1d9bf0;
+    letter-spacing: -0.04px;
+}
+
+.SetUserNameAndPicture-frame .max-w-xs {
+    padding: 0px 0px 100px 0px;
+    width: 400px;
+    max-width: 370px;
+}
+
+.input-padding {
+    padding-left: 42px;
+}
