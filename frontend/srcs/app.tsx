@@ -5,11 +5,12 @@ import './index.css'
 
 import SignInOptions from './components/AuthComponents/SignInOptions/SignInOptions'
 import SignIn from './components/AuthComponents/SignIn/SignIn'
-
+import CreateAccount from './components/AuthComponents/CreateAccount/CreateAccount'
 
 export default function App() {
   return (
       <>
+              <CreateAccount/>
               <SignIn />
               <SignInOptions />
       </>
