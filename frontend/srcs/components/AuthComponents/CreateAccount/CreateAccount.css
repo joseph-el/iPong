@@ -5,3 +5,11 @@
     max-width: 450px; 
     max-height: 512px;  
 }
+
+@layer CloseIcon {
+    .creat-close {
+        padding: 10px !important;
+    }   
+}
+
+
