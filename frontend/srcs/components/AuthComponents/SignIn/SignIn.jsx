@@ -31,8 +31,10 @@ export default function SignIn() {
                 </div>
                 <Close ClassName={"close"}/>
                 <Label />
-                <InputComponet type={"Email"} />
-                <InputComponet type={"pass"} />
+                <div className="move-left">
+                    <InputComponet type={"Email"} />
+                    <InputComponet type={"pass"} />
+                </div>
                 <LoginHelp title={"Forgot password?"} ClassName={"reset-pass"} />
                 <LoginHelp title={"Create Account?"} ClassName={"create-acc"} />
                 <div className='buttons-target'>
