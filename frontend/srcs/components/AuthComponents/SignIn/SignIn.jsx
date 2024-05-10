@@ -3,7 +3,7 @@ import './SignIn.css'
 import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
 import InputComponet from '../../UI/Input/Input'
 import MaskGroup from  '../assets/maskgroup.svg'
-
+import Close from '../../UI/Button/CloseButton/CloseButton'
 
 export const Label = () => {
     return (
@@ -29,7 +29,7 @@ export default function SignIn() {
                 <div className="maskgroup-svg">
                     <img src={MaskGroup} alt="Mask Group SVG" />
                 </div>
-                <Close />
+                <Close ClassName={"close"}/>
                 <Label />
                 <InputComponet type={"Email"} />
                 <InputComponet type={"pass"} />
