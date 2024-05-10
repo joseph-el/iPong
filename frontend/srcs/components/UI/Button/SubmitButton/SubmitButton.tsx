@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import "./CustomButton.css";
+import "./SubmitButton.css";
 
 export default function CustomButton ({ text, classNames  }) {
     return (
