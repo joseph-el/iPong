@@ -1,0 +1,21 @@
+
+.input-borders {
+    padding: 5px 0px 10px 0px;
+    max-width: 370px !important;
+}
+
+.input-borders .border-medium {
+
+    border: 0.8px solid #ffffff !important; 
+    border-radius: 5px !important;
+}
+
+.input-borders .border-medium:hover {
+    border: 0.8px solid #1d9aef !important;
+}
+
+.input-borders .border-medium:focus-within {
+    background-color: rgb(0, 0, 0) !important;
+    border: 0.8px solid #1d9aef !important;
+
+}
