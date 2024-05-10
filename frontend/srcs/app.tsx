@@ -7,10 +7,12 @@ import SignInOptions from './components/AuthComponents/SignInOptions/SignInOptio
 import SignIn from './components/AuthComponents/SignIn/SignIn'
 import CreateAccount from './components/AuthComponents/CreateAccount/CreateAccount'
 import SetUserNameAndPicture from './components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture'
+import WeSentCodeAndPassword from './components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword'
 
 export default function App() {
   return (
       <>
+              <WeSentCodeAndPassword/>
               <SetUserNameAndPicture></SetUserNameAndPicture>
               <CreateAccount/>
               <SignIn />
