@@ -1,17 +1,9 @@
 import React from 'react'
 import './SignIn.css'
-import CustomButton from '../../UI/Button/CustomButton'
-import CloseIcon from '../assets/Close.svg'
+import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
 import InputComponet from '../../UI/Input/Input'
 import MaskGroup from  '../assets/maskgroup.svg'
 
-export const Close = () => {
-    return (
-        <div className="close">
-            <img className="SF-symbol-xmark" alt="Sf symbol xmark" src={CloseIcon} />
-        </div>
-    );
-};
 
 export const Label = () => {
     return (
