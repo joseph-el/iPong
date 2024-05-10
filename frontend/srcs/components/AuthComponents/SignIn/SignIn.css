@@ -7,7 +7,7 @@
     border: 0.5px solid #ffffff; 
     position: relative;
 
-    max-width: 450px; 
+    max-width: 460px;  
     max-height: 512px; 
     overflow: hidden;
  
@@ -22,11 +22,6 @@
     pointer-events: none; 
 
 }
-
-
-
-
-
 
 @layer CloseIcon {
     .close {
@@ -51,6 +46,7 @@
     top: 0;
     white-space: nowrap;
 }
+
 
 .reset-pass {
     width: auto;
@@ -106,13 +102,9 @@
 }
 }
 
-
-
-
-
-
-
-
+.move-left {
+    padding: 10px 0px 0px 5px;
+}
 
 
 
