@@ -1,15 +1,117 @@
-.CreateAccount-competent{
+.CreateAccount-competent-frame {
     margin-top: 20px;
     background-color: black;
     border: 0.5px solid #ffffff; 
-    max-width: 450px; 
+    max-width: 460px; 
     max-height: 512px;  
+ 
 }
 
 @layer CloseIcon {
     .creat-close {
         padding: 10px !important;
+        position: relative;
+        overflow: hidden;
     }   
 }
 
+.CreateAccount-competent {
+    padding-left: 42px;
+}
 
+.CreateAccount-competent-frame .max-w-xs {
+    padding: 0px 0px 10px 0px;
+    width: 400px;
+    max-width: 370px;
+}
+
+.CreateAccount-competent .text-wrapper-3 {
+    color: #ffffff;
+    font-family: "Segoe UI-Bold", Helvetica;
+    font-size: 23.6px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    padding-bottom: 20px;
+
+}
+
+.CreateAccount-competent-frame .buttons-target {
+    padding: 30px 0px 30px 0px;
+}
+
+.CreateAccount-competent-frame .create-account {
+    background-color: #1d9bf0;
+    border-radius: 45.73px;
+    height: 41px;
+    width: 375px;
+}
+
+.CreateAccount-competent-frame .create-account .text-wrapper {
+    color: #ffffff;
+    font-family: "Poppins-Medium", Helvetica;
+    font-size: 12.7px;
+    font-weight: 550;
+    left: 80%;
+    transform: translateX(-40%);
+    letter-spacing: 0;
+    line-height: 21.2px;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+    text-align: center; 
+}
+
+
+
+
+
+/* Date of birth */
+
+@layer date_of_birth {
+    .date-of-birth {
+        height: 65px;
+        position: relative;
+        width: 374px;
+      }
+      
+      .date-of-birth .this-will-not-be {
+        color: #ffffff;
+        font-family: "Archivo-Regular", Helvetica;
+        font-size: 12.7px;
+        font-weight: 400;
+        left: 0;
+        letter-spacing: 0;
+        line-height: 19.1px;
+        opacity: 0.6;
+        position: absolute;
+        top: 25px;
+        width: 374px;
+      }
+      
+      .gender .text-wrapper-4 {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 13.9px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        top: -1px;
+        padding-bottom: 10px;
+      }
+    
+      .date-of-birth .text-wrapper {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 13.9px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        position: absolute;
+        top: -1px;
+      }
+      
+}
