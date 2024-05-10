@@ -6,10 +6,12 @@ import './index.css'
 import SignInOptions from './components/AuthComponents/SignInOptions/SignInOptions'
 import SignIn from './components/AuthComponents/SignIn/SignIn'
 import CreateAccount from './components/AuthComponents/CreateAccount/CreateAccount'
+import SetUserNameAndPicture from './components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture'
 
 export default function App() {
   return (
       <>
+              <SetUserNameAndPicture></SetUserNameAndPicture>
               <CreateAccount/>
               <SignIn />
               <SignInOptions />
