@@ -2,18 +2,19 @@ import React from "react";
 import {Input} from "@nextui-org/react";
 import {EyeFilledIcon} from "./EyeFilledIcon";
 import {EyeSlashFilledIcon} from "./EyeSlashFilledIcon";
+import './input.css'
 
-
-export default function InputComponent({ type }) {
+export default function InputComponent({ type, target}) {
     const [isVisible, setIsVisible] = React.useState(false);
   
     const toggleVisibility = () => setIsVisible(!isVisible);
   
     return (
       <Input
-
+        label={type == "fill" ? target: ""}
         variant="bordered"
         placeholder={type === "pass" ? "Enter your password" : "Enter your email"}
+       
         // isInvalid={true}
         // color={true ? "danger" : "success"}
         // isInvalid={true}
@@ -33,7 +34,7 @@ export default function InputComponent({ type }) {
 
         classNames={{
        
-          label: "text-black/50 dark:text-white/90",
+          label: "text-black/50",
           input: [
             "bg-transparent",
             "text-black/90 dark:text-white/90",
@@ -61,5 +62,5 @@ export default function InputComponent({ type }) {
         className="max-w-xs"
       />
     );
-  }
+}
   
