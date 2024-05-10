@@ -8,17 +8,16 @@ import SignIn from './components/AuthComponents/SignIn/SignIn'
 
 
 export default function App() {
-    return (
+  return (
       <>
-  
-          <SignIn/>
-          <SignInOptions></SignInOptions>
-
+              <SignIn />
+              <SignInOptions />
       </>
 
 
-    )
+  );
 }
+
 
 
 
