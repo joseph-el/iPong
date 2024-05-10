@@ -6,7 +6,7 @@ import AppleLogo from "../assets/apple_logo.svg"
 import IntraLogo from "../assets/42_logo.svg"
 import Line112 from "../assets/Line112.svg"
 import Line113 from "../assets/Line113.svg"
-import CustomButton from '../../UI/Button/CustomButton'
+import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
 
 // sm:w-96  sm:h-96  md:h-96  md:w-96 lg:h-96  lg:w-96  xm:h-96  xm:w-96 2xl:w-max 2xl:h-max 
 export const Title = () => {
