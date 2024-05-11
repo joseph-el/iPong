@@ -145,6 +145,21 @@
       justify-content: center;
   }
 
+  .sign-in-platforme .apple:hover,
+  .sign-in-platforme .google:hover,
+  .sign-in-platforme .element-intra:hover {
+      background-color:#CCCCCC;
+      border: 0.91px solid;
+      border-color: var(--neutral-colors500);
+      border-radius: 45.73px;
+      box-shadow: 0px 16.46px 27.44px #8277c51c;
+      height: 41px;
+      position: relative;
+      width: 22rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
 
   .sign-in-platforme .img,
   .sign-in-platforme .element {
