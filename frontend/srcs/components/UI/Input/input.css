@@ -11,17 +11,17 @@
 }
 
 .input-border {
-    border: 0.8px solid #ffffff; 
+    border: 1.2px solid #ffffff; 
     border-radius: 5px !important;
 }
 
 .input-border:hover {
-    border: 0.8px solid #1d9aef;
+    border: 1.2px solid #1d9aef;
 }
 
 .input-border:focus-within {
     background-color: rgb(0, 0, 0) !important;
-    border: 0.8px solid #1d9aef !important;
+    border: 1.2px solid #1d9aef !important;
 
 }
 
@@ -47,5 +47,24 @@
     letter-spacing: -0.36px;
     line-height: 19.2px;
     top: 0;
+    white-space: nowrap;
+}
+
+.max-w-xs label {
+    color: white !important;
+    opacity: 1 !important;
+
+}
+.max-w-xs  input::placeholder {
+    color: #ffffff;
+    font-family: "Archivo-Medium", Helvetica;
+    font-size: 13px;
+    font-weight: 500;
+    height: 19px;
+    left: 0;
+    letter-spacing: -0.36px;
+    line-height: 19.2px;
+    top: 0;
+    opacity: 0.6;
     white-space: nowrap;
 }
