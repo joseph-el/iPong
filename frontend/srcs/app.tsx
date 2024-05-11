@@ -12,14 +12,12 @@ import WeSentCodeAndPassword from './components/AuthComponents/WeSentCodeAndPass
 export default function App() {
   return (
       <>
-              <WeSentCodeAndPassword/>
+              <WeSentCodeAndPassword title={"Find your Account"} guide_title={"Enter the email associated with your account to change your password."} input_type="Email"  button_text="Next"/>
               <SetUserNameAndPicture></SetUserNameAndPicture>
               <CreateAccount/>
               <SignIn />
               <SignInOptions />
       </>
-
-
   );
 }
 
