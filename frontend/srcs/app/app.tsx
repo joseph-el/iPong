@@ -13,9 +13,7 @@ import SignAuth from '../pages/SignAuth/SignAuth'
 export default function App() {
     return (
         <>
-            <SignAuth>
-                
-            </SignAuth>
+            <SignAuth/>
         </>
     );
   }
