@@ -1,16 +1,13 @@
 
 .sign-in-competent {
     margin-top: 20px;
-
     background-color: black;
     color: #8F9294;
     border: 0.5px solid #ffffff; 
     position: relative;
-
     max-width: 460px;  
     max-height: 512px; 
     overflow: hidden;
- 
 }
 
 .maskgroup-svg {
@@ -20,7 +17,6 @@
     width: 100%;
     height: 100%;
     pointer-events: none; 
-
 }
 
 @layer CloseIcon {
@@ -47,7 +43,6 @@
     white-space: nowrap;
 }
 
-
 .reset-pass {
     width: auto;
     padding: 0px 0px 0px 30px;
@@ -65,7 +60,27 @@
     color: #1d9aef;
     display: -webkit-box;
     font-family: "Archivo-Medium", Helvetica;
-    font-size: 11.3px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 19px;
+    left: 0;
+    letter-spacing: -0.36px;
+    line-height: 19.2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    top: -1px;
+    white-space: nowrap;
+}
+
+.create-acc .left-title-help:hover ,
+.reset-pass .left-title-help:hover {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    color: #34a8ff;
+    cursor: pointer;
+    display: -webkit-box;
+    font-family: "Archivo-Medium", Helvetica;
+    font-size: 14px;
     font-weight: 500;
     height: 19px;
     left: 0;
@@ -77,6 +92,8 @@
     white-space: nowrap;
     
 }
+
+
 
 .sign-in-competent
 .buttons-target {
