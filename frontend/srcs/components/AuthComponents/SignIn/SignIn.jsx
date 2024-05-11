@@ -4,6 +4,7 @@ import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
 import InputComponet from '../../UI/Input/Input'
 import MaskGroup from  '../assets/maskgroup.svg'
 import Close from '../../UI/Button/CloseButton/CloseButton'
+import { Link } from 'react-router-dom'
 
 export const Label = () => {
     return (
