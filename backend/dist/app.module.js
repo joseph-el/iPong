@@ -19,6 +19,7 @@ const jwt_1 = require("@nestjs/jwt");
 const message_module_1 = require("./messages/message.module");
 const chatroom_module_1 = require("./chatroom/chatroom.module");
 const friendship_module_1 = require("./friendship/friendship.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,6 +33,7 @@ exports.AppModule = AppModule = __decorate([
             message_module_1.MessageModule,
             chatroom_module_1.ChatroomModule,
             friendship_module_1.FriendshipModule,
+            config_1.ConfigModule.forRoot({}),
         ],
         controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
         providers: [app_service_1.AppService, auth_service_1.AuthService],

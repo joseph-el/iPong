@@ -4,6 +4,7 @@ import { Request } from 'express';
 import { Inject, Req } from '@nestjs/common';
 import { JwtPayload } from '../types';
 import { UsersService } from 'src/users/users.service';
+import { env } from 'process';
 
 export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(@Inject(UsersService) private userService: UsersService) {
@@ -12,7 +13,7 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
         AtStrategy.cookieExtractor,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
-      secretOrKey: 'Secretkey',
+      secretOrKey: env.JWT_SECRET,
       ignoreExpiration: false,
     });
   }

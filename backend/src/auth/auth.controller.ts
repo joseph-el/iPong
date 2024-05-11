@@ -18,8 +18,6 @@ import { Response } from 'express';
 import { ApiCookieAuth } from '@nestjs/swagger';
 import { GetCurrentUser } from './decorators/getCurrentUser.decorator';
 import { RtGuard } from './Guards/refresh.guard';
-import { AtGuard } from './Guards/access.guard';
-import { Request } from 'express';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 @Controller('auth')
 export class AuthController {

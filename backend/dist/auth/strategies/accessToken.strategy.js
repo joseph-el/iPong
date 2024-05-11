@@ -18,6 +18,7 @@ const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("../../users/users.service");
+const process_1 = require("process");
 let AtStrategy = AtStrategy_1 = class AtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt') {
     constructor(userService) {
         super({
@@ -25,7 +26,7 @@ let AtStrategy = AtStrategy_1 = class AtStrategy extends (0, passport_1.Passport
                 AtStrategy_1.cookieExtractor,
                 passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ]),
-            secretOrKey: 'Secretkey',
+            secretOrKey: process_1.env.JWT_SECRET,
             ignoreExpiration: false,
         });
         this.userService = userService;

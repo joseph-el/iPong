@@ -16,6 +16,7 @@ exports.RtStrategy = void 0;
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const common_1 = require("@nestjs/common");
+const process_1 = require("process");
 class RtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt-refresh') {
     constructor() {
         super({
@@ -23,7 +24,7 @@ class RtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strateg
                 RtStrategy.cookieExtractor,
                 passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ]),
-            secretOrKey: 'rt-Secretkey',
+            secretOrKey: process_1.env.JWT_RT_SECRET,
             ignoreExpiration: false,
             passReqToCallback: true,
         });

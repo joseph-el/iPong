@@ -3,6 +3,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Req } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtPayloadWithRt } from '../types/jwtPayloadRT.type';
+import { env } from 'process';
 
 export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
   constructor() {
@@ -11,7 +12,7 @@ export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
         RtStrategy.cookieExtractor,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
-      secretOrKey: 'rt-Secretkey',
+      secretOrKey: env.JWT_RT_SECRET,
       ignoreExpiration: false,
       passReqToCallback: true,
     });

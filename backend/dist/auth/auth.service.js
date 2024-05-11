@@ -38,6 +38,7 @@ const bcrypt = __importStar(require("bcrypt"));
 const users_service_1 = require("../users/users.service");
 const database_service_1 = require("../database/database.service");
 const jwt_1 = require("@nestjs/jwt");
+const process_1 = require("process");
 let AuthService = class AuthService {
     constructor(userservice, dataservice, jwt) {
         this.userservice = userservice;
@@ -47,11 +48,11 @@ let AuthService = class AuthService {
     async getTokens(email, userId) {
         const [access_token, refresh_token] = await Promise.all([
             this.jwt.signAsync({ email, sub: userId }, {
-                secret: 'Secretkey',
+                secret: process_1.env.JWT_SECRET,
                 expiresIn: '2h',
             }),
             this.jwt.signAsync({ email, sub: userId }, {
-                secret: 'rt-Secretkey',
+                secret: process_1.env.JWT_RT_SECRET,
                 expiresIn: '7d',
             }),
         ]);

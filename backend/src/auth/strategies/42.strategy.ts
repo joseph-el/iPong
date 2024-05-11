@@ -6,6 +6,7 @@ import { UsersService } from 'src/users/users.service';
 import { AuthService } from '../auth.service';
 import { Response } from 'express';
 import VerifiedCallback from 'passport-42';
+import { env } from 'process';
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
@@ -14,10 +15,8 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
     private readonly AuthService: AuthService,
   ) {
     super({
-      clientID:
-        'u-s4t2ud-719fa4301e8df9595f855acaba25ab2cf2d81ffc009bf1052dcc4866358a5612',
-      clientSecret:
-        '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',
+      clientID: env.FT_CLIENT_ID,
+      clientSecret: env.FT_CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/auth/42/callback',
       passReqToCallback: true,
     });

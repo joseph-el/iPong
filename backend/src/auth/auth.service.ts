@@ -11,6 +11,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { Tokens } from './types';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { env } from 'process';
 
 @Injectable()
 export class AuthService {
@@ -24,14 +25,14 @@ export class AuthService {
       this.jwt.signAsync(
         { email, sub: userId },
         {
-          secret: 'Secretkey',
+          secret: env.JWT_SECRET,
           expiresIn: '2h',
         },
       ),
       this.jwt.signAsync(
         { email, sub: userId },
         {
-          secret: 'rt-Secretkey',
+          secret: env.JWT_RT_SECRET,
           expiresIn: '7d',
         },
       ),

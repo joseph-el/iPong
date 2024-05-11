@@ -18,11 +18,12 @@ const passport_1 = require("@nestjs/passport");
 const passport_42_1 = __importDefault(require("passport-42"));
 const users_service_1 = require("../../users/users.service");
 const auth_service_1 = require("../auth.service");
+const process_1 = require("process");
 let FortyTwoStrategy = class FortyTwoStrategy extends (0, passport_1.PassportStrategy)(passport_42_1.default, '42') {
     constructor(User, AuthService) {
         super({
-            clientID: 'u-s4t2ud-719fa4301e8df9595f855acaba25ab2cf2d81ffc009bf1052dcc4866358a5612',
-            clientSecret: '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',
+            clientID: process_1.env.FT_CLIENT_ID,
+            clientSecret: process_1.env.FT_CLIENT_SECRET,
             callbackURL: 'http://localhost:3000/auth/42/callback',
             passReqToCallback: true,
         });
