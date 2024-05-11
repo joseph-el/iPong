@@ -7,7 +7,7 @@ import IntraLogo from "../assets/42_logo.svg"
 import Line112 from "../assets/Line112.svg"
 import Line113 from "../assets/Line113.svg"
 import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
-
+import { Link } from 'react-router-dom'
 // sm:w-96  sm:h-96  md:h-96  md:w-96 lg:h-96  lg:w-96  xm:h-96  xm:w-96 2xl:w-max 2xl:h-max 
 export const Title = () => {
     return (
@@ -55,7 +55,6 @@ export const OrLine = () => {
     );
 };
 
-
 export const TermTitle = () => {
     return (
         <div className="title-term">
@@ -78,8 +77,6 @@ export const TermTitle = () => {
     );
 };
 
- 
-
 //  w-[24rem] h-[37rem] sm:w-[24rem] sm:h-[37rem] md:w-[26.5rem] md:h-[37rem] lg:w-[27rem] lg:h-[37rem] xl:w-[29.5rem] xl:h-[37rem] 2xl:h-[37rem] 2xl:w-mx-auto">
 export default function SignInOptions() {
 
@@ -90,19 +87,27 @@ export default function SignInOptions() {
                 <Title/>
                 <SignInPlatforme/>
                 <OrLine/>
-                <div className='buttons-target'>
-                    <CustomButton
-                        classNames="create-account"
-                        text="Create account"
-                    />
-                </div>
+
+                <Link to={"/Login/creat-account"}>
+
+                    <div className='buttons-target'>
+                        <CustomButton
+                            classNames="create-account"
+                            text="Create account"
+                        />
+                    </div>
+
+                </Link>
+
                 <TermTitle/>
-                <div className='buttons-target'>
-                    <CustomButton
-                        classNames="create-account"
-                        text="Sign in"
-                    />
-                </div>
+                <Link to={"/Login/sign-in"}>
+                        <div className='buttons-target'>
+                            <CustomButton
+                                classNames="create-account"
+                                text="Sign in"
+                            />
+                        </div>
+                </Link>
  
             
             </div>
