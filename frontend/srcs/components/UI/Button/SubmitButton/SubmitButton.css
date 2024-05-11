@@ -12,6 +12,11 @@
     width: 400px;
 }
 
+.sign-in-competent-sign-in:hover,
+.create-account:hover {
+    background-color: #34a8ff;
+}
+
 .sign-in-competent-sign-in .group,
 .create-account .group {
     height: 22px;
