@@ -115,3 +115,8 @@
       }
       
 }
+
+.sign-in-competent-sign-in:hover,
+.create-account:hover {
+    background-color: #34a8ff;
+}
