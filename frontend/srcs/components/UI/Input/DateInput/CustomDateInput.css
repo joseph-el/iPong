@@ -6,16 +6,28 @@
 
 .input-borders .border-medium {
 
-    border: 0.8px solid #ffffff !important; 
+    border: 1.2px solid #ffffff !important; 
     border-radius: 5px !important;
 }
 
 .input-borders .border-medium:hover {
-    border: 0.8px solid #1d9aef !important;
+    border: 1.2px solid #1d9aef !important;
 }
 
 .input-borders .border-medium:focus-within {
     background-color: rgb(0, 0, 0) !important;
-    border: 0.8px solid #1d9aef !important;
+    border: 1.2px solid #1d9aef !important;
 
+}
+
+.text-default-600 {
+    color: white !important;
+    opacity: 1 !important;
+}
+
+[data-slot="input-field"] div {
+    color: #8F9294 !important;
+    &:last-child {
+        color: #8F9294 !important;
+    }
 }
