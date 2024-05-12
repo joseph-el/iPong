@@ -3,14 +3,35 @@ import {Input} from "@nextui-org/react";
 import {EyeFilledIcon} from "./EyeFilledIcon";
 import {EyeSlashFilledIcon} from "./EyeSlashFilledIcon";
 import './input.css'
+import  { useState } from 'react';
 
 export default function InputComponent({ type, target}) {
     const [isVisible, setIsVisible] = React.useState(false);
   
     const toggleVisibility = () => setIsVisible(!isVisible);
   
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+        console.log(email);
+
+    };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const handleLogin = () => {
+      console.log("Email:", email);
+      console.log("Password:", password);
+  };
+
+
     return (
       <Input
+        onChange={handleEmailChange}
         label={type == "fill" ? target: ""}
         variant="bordered"
         placeholder={type === "pass" ? "Enter your password" : "Enter your email"}
@@ -31,9 +52,7 @@ export default function InputComponent({ type, target}) {
             </button>
           ) : null
         }
-
         classNames={{
-       
           label: "text-black/50",
           input: [
             "bg-transparent",
