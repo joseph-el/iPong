@@ -35,7 +35,7 @@ export const LoginHelp = ({title, ClassName}) => {
 export default function SignIn() {
 
     const dispatch = useDispatch<AppDispatch>();
-    dispatch(setIsInvalid(true));
+
 
     return (
         <>
@@ -52,7 +52,7 @@ export default function SignIn() {
                 
                 <div className="move-left">
                     <InputComponet type={"Email"} id="email_input_sign-in" />
-                    <InputComponet type={"pass"} id="password_input_sign-in" />
+                    <InputComponet type={"pass"}  id="password_input_sign-in" />
                 </div>
 
                 <LoginHelp title={"Forgot password?"} ClassName={"reset-pass"} />
