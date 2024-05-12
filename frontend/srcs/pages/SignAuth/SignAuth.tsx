@@ -8,13 +8,12 @@ import SignInOptions from '../../components/AuthComponents/SignInOptions/SignInO
 import SetUserNameAndPicture from '../../components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture'
 import WeSentCodeAndPassword from '../../components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword'
 
-
 export default function SignAuth()  {
     return  (
         <div className='SignAuth-page'>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/Login' element={<SignInOptions/>} > {/* DONE */}
+                    <Route path='/Login' element={<SignIn/>} > {/* DONE */}
 
                         <Route path="/Login/sign-in" element={
                                 <SignIn/>
