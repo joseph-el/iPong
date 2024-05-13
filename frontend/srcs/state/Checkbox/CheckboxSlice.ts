@@ -23,13 +23,13 @@ const genderSlice = createSlice({
       setGender: (state, action) => {
         state.UserGender = action.payload;
       },
-      setInvalide: (state, action) => {
+      setGenderInvalide: (state, action) => {
         state.Invalide = action.payload;
       },
     },
 
   });
   
-  export const { setGender, setInvalide } = genderSlice.actions;
+  export const { setGender, setGenderInvalide } = genderSlice.actions;
   export default genderSlice.reducer;
 
