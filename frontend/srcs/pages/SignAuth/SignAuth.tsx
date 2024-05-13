@@ -13,7 +13,7 @@ export default function SignAuth()  {
         <div className='SignAuth-page'>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/Login' element={<SignIn/>} > {/* DONE */}
+                    <Route path='/Login' element={<SignInOptions/>} /> {/* DONE */}
 
                         <Route path="/Login/sign-in" element={
                                 <SignIn/>
@@ -46,7 +46,6 @@ export default function SignAuth()  {
                                 <WeSentCodeAndPassword title={"We sent you a code"} guide_title={"Check your email to get your confirmation code."} input_type="verification code"  button_text="Next"/>
                             }/> {/* DONE */}
 
-                    </Route>
                 </Routes>
             </BrowserRouter>
 
