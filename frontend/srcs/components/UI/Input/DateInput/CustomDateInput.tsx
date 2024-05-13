@@ -3,31 +3,36 @@ import {DateInput} from "@nextui-org/react";
 import {CalendarDate} from "@internationalized/date";
 import './CustomDateInput.css'
 import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../state/store";
 
-// import {
-//   setDateIsInvalid,
-//   setDateErrorMessage,
-//   setDateValue,
-// } from "../DateInput/dateSlice";
+import {
+  setDateIsInvalid,
+  setDateErrorMessage,
+  setDateValue,
+} from "../../../../state/InputComponents/InputDateComponent/dateSlice";
 
 export default function CustomDateInput() {
-  // const dispatch = useDispatch();
-  // const value = useSelector((state) => state.date.value);
+  const isInvalid = useSelector((state: RootState) => state.date?.isInvalid );
+  const errorMessage = useSelector((state: RootState) => state.date?.errorMessage );
+  const dispatch = useDispatch();
 
-  // const handleDateChange = (newValue) => {
-  //   dispatch(setDateValue(newValue));
-  // };
+  const handleDateChange = (newValue) => {
+    dispatch(setDateValue(newValue.toString()));   
+  };
 
   return (
     <div className="input-borders">
       <div key={"bordered"} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+        
         <DateInput
           variant={"bordered"}
           label={"Birth date"}
+          isInvalid={isInvalid}
+          errorMessage={errorMessage}
           placeholderValue={new CalendarDate(1995, 11, 6)}
-          // onChange={handleDateChange}
-          // value={value}
+          onChange={handleDateChange}
         />
+
       </div>
     </div>
   );
