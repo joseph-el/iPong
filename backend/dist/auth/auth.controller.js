@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
+const users_service_1 = require("../users/users.service");
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const auth_service_1 = require("./auth.service");
@@ -22,8 +23,9 @@ const getCurrentUser_decorator_1 = require("./decorators/getCurrentUser.decorato
 const refresh_guard_1 = require("./Guards/refresh.guard");
 const create_user_dto_1 = require("../users/dto/create-user.dto");
 let AuthController = class AuthController {
-    constructor(authService) {
+    constructor(authService, UsersService) {
         this.authService = authService;
+        this.UsersService = UsersService;
     }
     fortyTwoAuth() {
     }
@@ -35,6 +37,24 @@ let AuthController = class AuthController {
             httpOnly: true,
             path: '/auth',
         });
+    }
+    async isUsernameUnique(req, res) {
+        const result = await this.UsersService.getUserByUsername(req.username);
+        if (result) {
+            res.status(common_1.HttpStatus.OK).send({ message: 'Username already exists' });
+        }
+        else {
+            res.status(common_1.HttpStatus.OK).send({ message: 'Username is unique' });
+        }
+    }
+    async isEmailUnique(req, res) {
+        const result = await this.UsersService.getUserByEmail(req.email);
+        if (result) {
+            res.status(common_1.HttpStatus.OK).send({ message: 'Email already exists' });
+        }
+        else {
+            res.status(common_1.HttpStatus.OK).send({ message: 'Email is unique' });
+        }
     }
     async signup(res, dto) {
         const tokens = await this.authService.signup(dto);
@@ -86,6 +106,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
+    (0, common_1.Get)('checkusername'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "isUsernameUnique", null);
+__decorate([
+    (0, common_1.Get)('checkemail'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "isEmailUnique", null);
+__decorate([
     (0, common_1.Post)('signup'),
     __param(0, (0, common_1.Res)({ passthrough: true })),
     __param(1, (0, common_1.Body)()),
@@ -116,6 +152,7 @@ __decorate([
 ], AuthController.prototype, "logout", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService,
+        users_service_1.UsersService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map
