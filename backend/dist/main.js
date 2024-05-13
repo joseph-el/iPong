@@ -9,7 +9,12 @@ const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule, { cors: true });
+    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.enableCors({
+        origin: ["http://localhost:5173"],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        credentials: true,
+    });
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.use((0, cookie_parser_1.default)());
     const config = new swagger_1.DocumentBuilder()
