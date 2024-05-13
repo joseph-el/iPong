@@ -15,7 +15,19 @@ import {
   setErrorMessage,
   setValue,
 } from "../../../state/InputComponents/inputSlice";
+import {
+    setDateIsInvalid,
+    setDateErrorMessage,
+    setDateValue,
+  } from "../../../state/InputComponents/InputDateComponent/dateSlice";
+
+import {
+    setInvalide,
+} from "../../../state/Checkbox/CheckboxSlice";
+
 import { useNavigate } from "react-router-dom";
+import { isFullNameValid, isEmailValid, isDateOfBirthValid } from '../../../utils/formValidation';
+import {GenderType} from '../../../state/Checkbox/CheckboxSlice';
 
 export const DateOfBirth = () => {
 
@@ -31,21 +43,78 @@ export const DateOfBirth = () => {
 
 };
 
-
 export default function CreateAccount() {
     
-    const fullname = useSelector((state: RootState) => state.input["creat-accout-full-nam"]?.value);
-    const password = useSelector((state: RootState) => state.input["creat-accout-email"]?.value);
-
+    const fullname = useSelector((state: RootState) => state.input["create-account-full-name"]?.value);
+    const email = useSelector((state: RootState) => state.input["create-account-email"]?.value);
+    const date_of_birth = useSelector((state: RootState) => state.date?.value);
+    const UserGender = useSelector((state: RootState) => state.gender?.UserGender);
+    
+    
+    const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
   
-    const handelonSubmit = () => {
-        var state: LoginState = LoginState.UNK;
+    const handleOnSubmit = () => {
+        const errors = getValidationErrors();
+
+        
+        if (!errors)  {
+            console.log("Fullname: ", fullname);
+            console.log("Email: ", email);
+            console.log("Date of birth: ", date_of_birth);
+            console.log("UserGender: ", UserGender);
+            
+            navigate("/create-account");
+        }
+         else 
+            handleErrors(errors);
+    };
+
+    const getValidationErrors = () => {
+        if (!fullname ) {
+            return { id: 'create-account-full-name', message: 'Fullname required!' };
+        } else if (!isFullNameValid(fullname)) {
+            return { id: 'create-account-full-name', message: 'Invalid name format' };
+        }
+    
+        if (!email) {
+            return { id: 'create-account-email', message: 'Email required!' };
+        } else if (!isEmailValid(email)) {
+            return { id: 'create-account-email', message: 'Invalid email format' };
+        }
+    
+        if (!date_of_birth) 
+            return { id: 'undefined', message: 'Date of birth required!' };
+        // } else if (!isDateOfBirthValid(date_of_birth)) {
+        //     return { id: 'undefined', message: 'Invalid date, should be after 2005' };
+        // }
+
+        if (UserGender == GenderType.UNK) {
+            return { id: 'undefined_gender', message: 'User gender required!'};
+        }
+
+        return null;
+    };
+    
+    const handleErrors = (error) => {
+        const { id, message } = error;
+        
+        if (id === 'undefined_gender') {
+            dispatch(setInvalide({ id, invalide: true }));
+            return;
+        }
+        if (id != 'undefined') {
+            dispatch(setIsInvalid({ id, isInvalid: true }));
+            dispatch(setErrorMessage({ id, errorMessage: message }));
+        } else {
+            dispatch(setDateIsInvalid({ isInvalid: true }));
+            dispatch(setDateErrorMessage({ errorMessage: message }));
+        }
+    };
     
     
-    
-    
-    }
-    
+
+
     return (
         <>
             <div className="CreateAccount-competent-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
@@ -55,8 +124,8 @@ export default function CreateAccount() {
                     
                     <div className="text-wrapper-3">Create an account</div>
                  
-                        <InputComponent type={"fill"} target={"Full Name"} id="creat-accout-full-name" placeholder="Enter your full name"/>
-                        <InputComponent type={"fill"} target={"Address Email"} id="creat-accout-email" placeholder="Enter your full email" />
+                        <InputComponent type={"fill"} target={"Full Name"} id="create-account-full-name" placeholder="Enter your full name"/>
+                        <InputComponent type={"fill"} target={"Address Email"} id="create-account-email" placeholder="Enter your full email" />
 
                         <DateOfBirth/>
                         <CustomDateInput/>
@@ -67,7 +136,7 @@ export default function CreateAccount() {
 
                         <CustomCheckbox/>
 
-                        <div className='buttons-target' onClick={handelonSubmit}>
+                        <div className='buttons-target' onClick={handleOnSubmit}>
                             <CustomButton
                                 classNames="create-account"
                                 text="Next"
