@@ -10,7 +10,7 @@ import {
   setIsInvalid,
   setErrorMessage,
   setValue,
-} from "../../../state/InputComponent/inputSlice";
+} from "../../../state/InputComponents/inputSlice";
 
 
 export default function InputComponent(props) {
@@ -26,8 +26,13 @@ export default function InputComponent(props) {
   const dispatch = useDispatch();
 
   const handleInputChange = (event) => {
+    if (isInvalid && errorMessage) {
+        dispatch(setIsInvalid({ id:input_id, isInvalid: false }));
+        dispatch(setValue({ id:input_id, value: "" }));
+        dispatch(setErrorMessage({ id:input_id, errorMessage: "" }));
+    }
     const inputValue = event.target.value;
-    dispatch(setValue({ input_id, value: inputValue }));
+    dispatch(setValue({ id:input_id, value: inputValue }));
   };
 
   return (
@@ -38,7 +43,7 @@ export default function InputComponent(props) {
           onChange={handleInputChange}
           label={props.type === "fill" ? props.target : ""}
           variant="bordered"
-          placeholder={"_placeholder"}
+          placeholder={props.placeholder}
           className="max-w-xs"
           value={value}
 
