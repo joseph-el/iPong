@@ -8,6 +8,10 @@ import Line112 from "../assets/Line112.svg"
 import Line113 from "../assets/Line113.svg"
 import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
 import { Link } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+
+import api from '../../../api/posts'
+
 // sm:w-96  sm:h-96  md:h-96  md:w-96 lg:h-96  lg:w-96  xm:h-96  xm:w-96 2xl:w-max 2xl:h-max 
 export const Title = () => {
     return (
@@ -27,6 +31,26 @@ export const Title = () => {
 };
 
 export const SignInPlatforme = () => {
+
+    const navigate = useNavigate();
+
+    const handleOnsubmit = async () => {
+        console.log("42intra");
+        
+        try {
+            const response = await api.get('/auth/42');
+            console.log("ree: ", response);
+            // Do something with the response data
+        } catch (error) {
+            console.log("error: ", error);
+            // Handle the error
+        }
+        
+
+
+    }
+
+
     return (
         <div className="sign-in-platforme">
             <div className="apple">
@@ -37,7 +61,7 @@ export const SignInPlatforme = () => {
                 <img className="img" alt="Button content" src={GoogleLogo} />
                 <div className="div">Sign up with Google</div>
             </div>
-            <div className="element-intra">
+            <div className="element-intra" onClick={handleOnsubmit}>
                 <img className="element" alt="Element" src={IntraLogo} />
                 <div className="text-wrapper-2">Sign up with 42intra</div>
             </div>
