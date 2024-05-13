@@ -21,8 +21,8 @@ const chatroom_module_1 = require("./chatroom/chatroom.module");
 const friendship_module_1 = require("./friendship/friendship.module");
 const config_1 = require("@nestjs/config");
 const user_profile_module_1 = require("./user-profile/user-profile.module");
-const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
-const clodinary_service_1 = require("./clodinary/clodinary.service");
+const cloudinary_module_1 = require("./imagesProvider/cloudinary.module");
+const cloudinary_service_1 = require("./imagesProvider/cloudinary.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -41,7 +41,7 @@ exports.AppModule = AppModule = __decorate([
             cloudinary_module_1.CloudinaryModule,
         ],
         controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
-        providers: [app_service_1.AppService, auth_service_1.AuthService, clodinary_service_1.ClodinaryService],
+        providers: [app_service_1.AppService, auth_service_1.AuthService, cloudinary_service_1.CloudinaryService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

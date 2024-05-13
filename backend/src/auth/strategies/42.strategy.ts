@@ -1,3 +1,4 @@
+import { CloudinaryService } from './../../imagesProvider/cloudinary.service';
 import { Injectable, Scope } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import Strategy from 'passport-42';
@@ -13,6 +14,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
   constructor(
     private readonly User: UsersService,
     private readonly AuthService: AuthService,
+    private readonly CloudinaryService: CloudinaryService
   ) {
     super({
       clientID: env.FT_CLIENT_ID,
@@ -56,8 +58,12 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
       lastName: profile['_json']['last_name'],
       intraId: profile['_json']['id'].toString(),
       email: profile['_json']['email'],
-      avatar: profile['_json']['image']['link'],
+      // avatar: profile['_json']['image']['link'],
     });
+    const resCloud = this.CloudinaryService.upload(
+      newUser.userId,
+      profile['_json']['image']['link'],
+    );
     const tokens = await this.AuthService.getTokens(
       newUser.email,
       newUser.userId,

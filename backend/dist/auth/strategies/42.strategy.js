@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FortyTwoStrategy = void 0;
+const cloudinary_service_1 = require("./../../imagesProvider/cloudinary.service");
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_42_1 = __importDefault(require("passport-42"));
@@ -20,7 +21,7 @@ const users_service_1 = require("../../users/users.service");
 const auth_service_1 = require("../auth.service");
 const process_1 = require("process");
 let FortyTwoStrategy = class FortyTwoStrategy extends (0, passport_1.PassportStrategy)(passport_42_1.default, '42') {
-    constructor(User, AuthService) {
+    constructor(User, AuthService, CloudinaryService) {
         super({
             clientID: process_1.env.FT_CLIENT_ID,
             clientSecret: process_1.env.FT_CLIENT_SECRET,
@@ -29,6 +30,7 @@ let FortyTwoStrategy = class FortyTwoStrategy extends (0, passport_1.PassportStr
         });
         this.User = User;
         this.AuthService = AuthService;
+        this.CloudinaryService = CloudinaryService;
     }
     async validate(req, accessToken, refreshToken, profile, cb) {
         const res = req.res;
@@ -53,8 +55,8 @@ let FortyTwoStrategy = class FortyTwoStrategy extends (0, passport_1.PassportStr
             lastName: profile['_json']['last_name'],
             intraId: profile['_json']['id'].toString(),
             email: profile['_json']['email'],
-            avatar: profile['_json']['image']['link'],
         });
+        const resCloud = this.CloudinaryService.upload(newUser.userId, profile['_json']['image']['link']);
         const tokens = await this.AuthService.getTokens(newUser.email, newUser.userId);
         await this.AuthService.updateHash(newUser.userId, tokens.refresh_token);
         res.cookie('access_token', tokens.access_token, {
@@ -73,6 +75,7 @@ exports.FortyTwoStrategy = FortyTwoStrategy;
 exports.FortyTwoStrategy = FortyTwoStrategy = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService,
-        auth_service_1.AuthService])
+        auth_service_1.AuthService,
+        cloudinary_service_1.CloudinaryService])
 ], FortyTwoStrategy);
 //# sourceMappingURL=42.strategy.js.map

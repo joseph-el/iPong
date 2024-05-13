@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { DatabaseService } from 'src/database/database.service';
 import { JwtModule } from '@nestjs/jwt';
 import { AtStrategy, RtStrategy } from './strategies';
+import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 
 @Module({
   imports: [UsersModule, JwtModule.register({ secret: 'Secretkey' })],
@@ -18,6 +19,7 @@ import { AtStrategy, RtStrategy } from './strategies';
     DatabaseService,
     RtStrategy,
     AtStrategy,
+    CloudinaryService,
   ],
 })
 export class AuthModule {}

@@ -16,6 +16,7 @@ const auth_service_1 = require("./auth.service");
 const database_service_1 = require("../database/database.service");
 const jwt_1 = require("@nestjs/jwt");
 const strategies_1 = require("./strategies");
+const cloudinary_service_1 = require("../imagesProvider/cloudinary.service");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -30,6 +31,7 @@ exports.AuthModule = AuthModule = __decorate([
             database_service_1.DatabaseService,
             strategies_1.RtStrategy,
             strategies_1.AtStrategy,
+            cloudinary_service_1.CloudinaryService,
         ],
     })
 ], AuthModule);
