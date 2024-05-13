@@ -29,5 +29,5 @@ const dateSlice = createSlice({
   },
 });
 
-export const { setDateValue } = dateSlice.actions;
+export const { setDateIsInvalid , setDateErrorMessage, setDateValue} = dateSlice.actions;
 export default dateSlice.reducer;
