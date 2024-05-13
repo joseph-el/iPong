@@ -9,10 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 import InputState from '../../../state/InputComponents/inputSlice'
 import {
-  setColor,
   setIsInvalid,
   setErrorMessage,
-  setValue,
 } from "../../../state/InputComponents/inputSlice";
 import { useNavigate } from "react-router-dom";
 import api from '../../../api/posts'
@@ -45,40 +43,36 @@ export default function SignIn() {
     const password = useSelector((state: RootState) => state.input["password_input"]?.value);
 
     const handelonSubmit = async () => {
+        var state: LoginState = LoginState.LOGIN_SUCCESS;
         try {
             const response = await api.post('/auth/login', {
                 email: email,
-                fullName: password
+                password: password
             });
-            const state: LoginState = response.data.state;
 
-            switch(state) {
-                case LoginState.INVALID_EMAIL:
-                    dispatch(setIsInvalid({ id: "email_input", isInvalid: true }));
-                    dispatch(setErrorMessage({ id: "email_input", errorMessage: "Invalid email" }));
-                    break;
-                case LoginState.INVALID_PASSWORD:
-                    dispatch(setIsInvalid({ id: "password_input", isInvalid: true }));
-                    dispatch(setErrorMessage({ id: "password_input", errorMessage: "Invalid password" }));
-                    break;
-                case LoginState.LOGIN_SUCCESS:
-                    navigate("/Home");
-                    break;
-                default:
-                    break;
-            }
         } catch (error) {
-            console.log("Error: ", error);
+            state = (error.response.data.statusCode == 404 || email == undefined) ? LoginState.INVALID_EMAIL : LoginState.INVALID_PASSWORD;
+        }
+        switch(state) {
+            case LoginState.INVALID_EMAIL:
+                dispatch(setIsInvalid({ id: "email_input", isInvalid: true }));
+                dispatch(setErrorMessage({ id: "email_input", errorMessage: "Invalid email" }));
+                break;
+            case LoginState.INVALID_PASSWORD:
+                dispatch(setIsInvalid({ id: "password_input", isInvalid: true }));
+                dispatch(setErrorMessage({ id: "password_input", errorMessage: "Invalid password" }));
+                break;
+            case LoginState.LOGIN_SUCCESS:
+                navigate("/Home");
+                break;
+            default:
+                break;
         }
     };
-
     const handleForgotPasswordClick = () => {
-        console.log("Forgot password clicked");
         navigate("/Login/find-your-account");
     };
-
     const handleCreateAccountClick = () => {
-        console.log("Create Account clicked");
         navigate("/Login/creat-account");
     };
 
