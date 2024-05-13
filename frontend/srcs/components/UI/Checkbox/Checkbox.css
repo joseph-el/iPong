@@ -1,0 +1,20 @@
+.Gender-type .text-medium {
+    color: #ffffff;
+    font-family: "Segoe UI-Regular", Helvetica;
+    font-size: 13.2px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+
+
+}
+
+.text-default-500 {
+    padding-top: 8px;
+    color: #f43333;
+    font-family: "Segoe UI-Regular", Helvetica;
+    font-size: 13.2px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+}
