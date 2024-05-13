@@ -72,12 +72,12 @@ let AuthService = class AuthService {
     async login(dto) {
         const user = await this.userservice.getUserByEmail(dto.email);
         if (!user) {
-            throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+            throw new common_1.HttpException('email_not_found', common_1.HttpStatus.NOT_FOUND);
         }
         const isMatch = await bcrypt.compare(dto.password, user.password);
         console.log(user.password, ' ', dto.password, ' ', isMatch);
         if (!isMatch) {
-            throw new common_1.HttpException('Invalid credentials', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException('password_not_correct', common_1.HttpStatus.BAD_REQUEST);
         }
         const tokens = await this.getTokens(user.email, user.userId);
         await this.updateHash(user.userId, tokens.refresh_token);
