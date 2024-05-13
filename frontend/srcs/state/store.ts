@@ -1,5 +1,5 @@
 import { ReducerType, configureStore } from '@reduxjs/toolkit'
-import inputReducer from "./InputComponent/inputSlice"
+import inputReducer from "./InputComponents/inputSlice"
 
 export const store = configureStore({
     reducer: {
