@@ -23,6 +23,8 @@ export default function InputComponent(props) {
   const isInvalid = useSelector((state: RootState) => state.input[props.id]?.isInvalid );
   const errorMessage = useSelector((state: RootState) => state.input[props.id]?.errorMessage );
   const value = useSelector((state: RootState) => state.input[props.id]?.value);
+  
+  
   const input_id = props.id;
   const dispatch = useDispatch();
 
