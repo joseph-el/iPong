@@ -22,7 +22,7 @@ import {
   } from "../../../state/InputComponents/InputDateComponent/dateSlice";
 
 import {
-    setInvalide,
+    setGenderInvalide,
 } from "../../../state/Checkbox/CheckboxSlice";
 
 import { useNavigate } from "react-router-dom";
@@ -64,7 +64,7 @@ export default function CreateAccount() {
             console.log("Date of birth: ", date_of_birth);
             console.log("UserGender: ", UserGender);
             
-            navigate("/create-account");
+            navigate("/Login/chose-new-password");
         }
          else 
             handleErrors(errors);
@@ -100,7 +100,7 @@ export default function CreateAccount() {
         const { id, message } = error;
         
         if (id === 'undefined_gender') {
-            dispatch(setInvalide({ id, invalide: true }));
+            dispatch(setGenderInvalide({ id, invalide: true }));
             return;
         }
         if (id != 'undefined') {
@@ -111,7 +111,6 @@ export default function CreateAccount() {
             dispatch(setDateErrorMessage({ errorMessage: message }));
         }
     };
-    
     
 
 
