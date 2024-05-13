@@ -17,30 +17,30 @@ export default function SignAuth()  {
 
                         <Route path="/Login/sign-in" element={
                                 <SignIn/>
-                            }/> {/* DONE */}
+                            }/> { /* DONE */ }
 
                         <Route path="/Login/creat-account" element={
                                 <CreateAccount/>
-                            }/> {/* DONE */}
+                            }/> { /* DONE */ }
                         <Route path="/Login/what-should-we-call-you"  element={  
                                  <SetUserNameAndPicture/>
-                            }/> {/* DONE */}
+                            }/> { /* DONE */ }
 
                         <Route path="/Login/find-your-account" element={   
                                 <WeSentCodeAndPassword title={"Find your Account"} guide_title={"Enter the email associated with your account to change your password."} input_type="Email"  button_text="Next"/>
-                            }/> {/* DONE */}
+                            }/> { /* DONE */ }
 
                         <Route path="/Login/chose-new-password" element={       
                                 <WeSentCodeAndPassword title={"Choose a new password"} guide_title={"Make sure it's 8 characters or more."} input_type="New Password"  button_text="Change password"/>
-                            }/> {/* DONE */}
+                            }/> { /* DONE */ }
 
                         <Route path="/Login/we-send-you-code" element={       
                                 <WeSentCodeAndPassword title={"We sent you a code"} guide_title={"Enter it below to verify your email"} input_type="verification code"  button_text="Next"/>
-                            }/> {/* DONE */}
+                            }/> { /* DONE */ }
 
                         <Route path="/Login/need-a-password"  element={       
                                 <WeSentCodeAndPassword title={"You'll need a password"} guide_title={"Make sure it's 8 characters or more."} input_type="Password"  button_text="Next"/>
-                            }/> {/* DONE */}
+                            }/> {/* DONE */ }
 
                         <Route path="/Login/We-sent-you-a-code-to-reset-password"  element={       
                                 <WeSentCodeAndPassword title={"We sent you a code"} guide_title={"Check your email to get your confirmation code."} input_type="verification code"  button_text="Next"/>
