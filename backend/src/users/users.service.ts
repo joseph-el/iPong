@@ -25,7 +25,7 @@ export class UsersService {
     return this.DatabaseService.user.findMany();
   }
   // TODO: Implement this method and add frindshipId to the user
-  async getUserById(id: string, FriendshipId?: String) {
+  async getUserById(id: string) {
     return this.DatabaseService.user.findUnique({
       where: {
         userId: id,

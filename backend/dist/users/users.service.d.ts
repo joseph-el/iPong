@@ -49,7 +49,7 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    getUserById(id: string, FriendshipId?: String): Promise<{
+    getUserById(id: string): Promise<{
         userId: string;
         email: string;
         username: string;

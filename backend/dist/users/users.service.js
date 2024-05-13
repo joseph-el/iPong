@@ -56,7 +56,7 @@ let UsersService = class UsersService {
     async getAllUsers() {
         return this.DatabaseService.user.findMany();
     }
-    async getUserById(id, FriendshipId) {
+    async getUserById(id) {
         return this.DatabaseService.user.findUnique({
             where: {
                 userId: id,

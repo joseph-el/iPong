@@ -20,6 +20,9 @@ const message_module_1 = require("./messages/message.module");
 const chatroom_module_1 = require("./chatroom/chatroom.module");
 const friendship_module_1 = require("./friendship/friendship.module");
 const config_1 = require("@nestjs/config");
+const user_profile_module_1 = require("./user-profile/user-profile.module");
+const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
+const clodinary_service_1 = require("./clodinary/clodinary.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -34,9 +37,11 @@ exports.AppModule = AppModule = __decorate([
             chatroom_module_1.ChatroomModule,
             friendship_module_1.FriendshipModule,
             config_1.ConfigModule.forRoot({}),
+            user_profile_module_1.UserProfileModule,
+            cloudinary_module_1.CloudinaryModule,
         ],
         controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
-        providers: [app_service_1.AppService, auth_service_1.AuthService],
+        providers: [app_service_1.AppService, auth_service_1.AuthService, clodinary_service_1.ClodinaryService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

@@ -11,6 +11,9 @@ import { MessageModule } from './messages/message.module';
 import { ChatroomModule } from './chatroom/chatroom.module';  
 import { FriendshipModule } from './friendship/friendship.module';
 import { ConfigModule } from '@nestjs/config';
+import { UserProfileModule } from './user-profile/user-profile.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ClodinaryService } from './clodinary/clodinary.service';
 
 
 @Module({
@@ -23,8 +26,10 @@ import { ConfigModule } from '@nestjs/config';
     ChatroomModule,
     FriendshipModule,
     ConfigModule.forRoot({}),
+    UserProfileModule,
+    CloudinaryModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  providers: [AppService, AuthService, ClodinaryService],
 })
 export class AppModule {}
