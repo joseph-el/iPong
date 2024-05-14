@@ -12,6 +12,8 @@ import {
     setErrorMessage,
   } from "../../../state/InputComponents/inputSlice";
 
+import { validateEmail } from '../../../utils/formValidation';
+
 import { useNavigate } from "react-router-dom";
 
 
@@ -27,30 +29,49 @@ export const UserGuide = ( {guide_title} ) => {
 
 export default function WeSentCodeAndPassword(props) {
     const dispatch = useDispatch<AppDispatch>();
-    const user_password   = useSelector((state: RootState) => state.input["set-user-password"]?.value);
+    const ret = useSelector((state: RootState) => state.input[props.title == "Find your Account" ? "find-your-email": "set-user-password" ]?.value);
+    
     const navigate = useNavigate();
     
 
-    const handelonSubmit = () => {
+    const handelonSubmit = async () => {
     
         if (props.title === "Choose a new password" || props.title === "You'll need a password") {
-            console.log("user_password: ", user_password);
+            console.log("user_password: ", ret);
             
-            if (typeof validatePassword(user_password) === 'string') {
-                const errorMessage = validatePassword(user_password);
+            if (typeof validatePassword(ret) === 'string') {
+                const errorMessage = validatePassword(ret);
           
                 dispatch(setIsInvalid({ id: 'set-user-password', isInvalid: true }));
                 dispatch(setErrorMessage({ id: 'set-user-password', errorMessage }));
-            } else{
+            } else {
                 if (props.title === "Choose a new password") {
-                    // console.log("Password is valid"); handel later
+                    navigate("/Login/WelcomeNewUser");
                 }
                 if (props.title === "You'll need a password") {
                     navigate("/Login/what-should-we-call-you");
 
                 }
             }
+        }
+        else if (props.title === "Find your Account") {
 
+            if (!ret) {
+                dispatch(setIsInvalid({ id: 'find-your-email', isInvalid: true }));
+                dispatch(setErrorMessage({ id: 'find-your-email', errorMessage: "Please enter your email" }));
+                return;
+            }
+            const emailError =  await validateEmail(ret)
+            if (emailError == null) {
+                dispatch(setIsInvalid({ id: 'find-your-email', isInvalid: true }));
+                dispatch(setErrorMessage({ id: 'find-your-email', errorMessage: 'Email not exists.' }));
+            }
+            else if (emailError === 'Invalid email address.') {
+                dispatch(setIsInvalid({ id: 'find-your-email', isInvalid: true }));
+                dispatch(setErrorMessage({ id: 'find-your-email', errorMessage: emailError }));
+            }else{
+                navigate("/Login/chose-new-password");
+            }
         }
 
     }
@@ -73,7 +94,7 @@ export default function WeSentCodeAndPassword(props) {
                 <UserGuide guide_title={props.guide_title}/>
 
                 <div className="input-padding">
-                    <InputComponent type={"fill"} target={props.input_type} id={(props.title === "Choose a new password" || props.title === "You'll need a password") ? "set-user-password" : ""} />
+                    <InputComponent type={"fill"} target={props.input_type} id={(props.title === "Choose a new password" || props.title === "You'll need a password") ? "set-user-password" : "find-your-email"} />
                 </div>
                 {
                     (props.title === "We sent you a code") ? <LoginHelp title={"Didn’t receive email?"} ClassName={"create-acc"} /> : null
