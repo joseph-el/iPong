@@ -19,12 +19,8 @@ async function validateUsername(username: string) {
         await api.post('/auth/checkusername', { username: username });
           return null;
     } catch (error) {
-           return "Email already exists.";
+           return "Username is already taken. Please choose another.";
     }
-
-
-
-    return true;
 }
 
 export default validateUsername;
