@@ -1,4 +1,6 @@
-function validateUsername(username: string): string | boolean {
+import api from '../api/posts'
+
+async function validateUsername(username: string) {
     const minLength = 3;
     const maxLength = 20;
     const validCharsRegex = /^[a-zA-Z0-9_]+$/;
@@ -12,6 +14,15 @@ function validateUsername(username: string): string | boolean {
     if (!hasValidChars) {
         return "Username can only contain letters, numbers, and underscores.";
     }
+
+    try {
+        await api.post('/auth/checkusername', { username: username });
+          return null;
+    } catch (error) {
+           return "Email already exists.";
+    }
+
+
 
     return true;
 }
