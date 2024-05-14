@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "../../../state/store";
 
 import {GenderType} from "../../../state/Checkbox/CheckboxSlice";
 import {
+  setGenderInvalide,
   setGender,
  
 } from "../../../state/Checkbox/CheckboxSlice";
@@ -20,17 +21,16 @@ const is_invalide  = useSelector((state: RootState) => state.gender?.Invalide);
 
 const dispatch = useDispatch<AppDispatch>();
 const handleMaleChange = () => {
-
+    dispatch(setGenderInvalide(false));
     dispatch(setGender(GenderType.MALE));
 };
 
 const handleFemaleChange = () => {
-
+  dispatch(setGenderInvalide(false));
     dispatch(setGender(GenderType.FELMALE));
 };
   
   return (
-
     <>
         <div className="flex gap-4">
             <Checkbox className="Gender-type"  isSelected={gender_type == GenderType.MALE} onChange={handleMaleChange}>male</Checkbox>
