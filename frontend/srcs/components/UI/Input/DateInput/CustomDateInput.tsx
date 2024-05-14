@@ -13,10 +13,12 @@ import {
 
 export default function CustomDateInput() {
   const isInvalid = useSelector((state: RootState) => state.date?.isInvalid );
-  const errorMessage = useSelector((state: RootState) => state.date?.errorMessage );
+  const errorMessageState = useSelector((state: RootState) => state.date?.errorMessage );
   const dispatch = useDispatch();
 
-  const handleDateChange = (newValue) => {
+  const handleDateChange = (newValue) => {  
+    dispatch(setDateIsInvalid(false));
+    dispatch(setDateErrorMessage(""));
     dispatch(setDateValue(newValue.toString()));   
   };
 
@@ -28,7 +30,7 @@ export default function CustomDateInput() {
           variant={"bordered"}
           label={"Birth date"}
           isInvalid={isInvalid}
-          errorMessage={errorMessage}
+          errorMessage={errorMessageState}
           placeholderValue={new CalendarDate(1995, 11, 6)}
           onChange={handleDateChange}
         />
