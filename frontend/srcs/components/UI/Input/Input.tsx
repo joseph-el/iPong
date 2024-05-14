@@ -26,15 +26,7 @@ export default function InputComponent(props) {
   
   
   const input_id = props.id;
-
-  console.log("color: ", color);
-  console.log("isInvalid: ", isInvalid);
-  console.log("errorMessage: ", errorMessage);
-  console.log("value: ", value);
-  
-  console.log("input_id: ", input_id)
   const dispatch = useDispatch();
-
   const handleInputChange = (event) => {
     if (isInvalid && errorMessage) {
         dispatch(setIsInvalid({ id:input_id, isInvalid: false }));
