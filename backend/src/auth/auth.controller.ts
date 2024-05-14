@@ -49,7 +49,7 @@ export class AuthController {
   async isUsernameUnique(@Body() req, @Res() res: Response) {
     const result = await this.UsersService.getUserByUsername(req.username);
     if (result) {
-      res.status(HttpStatus.OK).send({ message: 'Username already exists' });
+      res.status(HttpStatus.FOUND).send({ message: 'Username already exists' });
     } else {
       res.status(HttpStatus.OK).send({ message: 'Username is unique' });
     }
@@ -59,7 +59,7 @@ export class AuthController {
   async isEmailUnique(@Body() req, @Res() res) {
     const result = await this.UsersService.getUserByEmail(req.email);
     if (result) {
-      res.status(HttpStatus.OK).send({ message: 'Email already exists' });
+      res.status(HttpStatus.FOUND).send({ message: 'Email already exists' });
     } else {
       res.status(HttpStatus.OK).send({ message: 'Email is unique' });
     }
