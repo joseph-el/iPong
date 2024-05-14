@@ -34,6 +34,10 @@ export default function SignAuth()  {
                                 <WeSentCodeAndPassword title={"Choose a new password"} guide_title={"Make sure it's 8 characters or more."} input_type="New Password"  button_text="Change password"/>
                             }/> { /* DONE */ }
 
+                        {/* <Route path="/Login/chose-new-password" element={       
+                                <WeSentCodeAndPassword title={"Choose a new password"} guide_title={"Make sure it's 8 characters or more."} input_type="New Password"  button_text="Change password"/>
+                            }/>  */}
+
                         <Route path="/Login/we-send-you-code" element={       
                                 <WeSentCodeAndPassword title={"We sent you a code"} guide_title={"Enter it below to verify your email"} input_type="verification code"  button_text="Next"/>
                             }/> { /* DONE */ }
@@ -42,10 +46,15 @@ export default function SignAuth()  {
                                 <WeSentCodeAndPassword title={"You'll need a password"} guide_title={"Make sure it's 8 characters or more."} input_type="Password"  button_text="Next"/>
                             }/> {/* DONE */ }
 
-                        <Route path="/Login/We-sent-you-a-code-to-reset-password"  element={       
+                        <Route path="/Login/We-sent-you-a-code-to-reset-password"  element={
+
                                 <WeSentCodeAndPassword title={"We sent you a code"} guide_title={"Check your email to get your confirmation code."} input_type="verification code"  button_text="Next"/>
+                            
+                            
                             }/> {/* DONE */}
 
+
+                        {/* <Route path="/Home" element={isAuthenticated ? <Navigate to="/Home" /> : <Navigate to="/Login" />} /> */}
                 </Routes>
             </BrowserRouter>
 
