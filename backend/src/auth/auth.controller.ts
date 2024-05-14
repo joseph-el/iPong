@@ -26,7 +26,7 @@ export class AuthController {
     private UsersService: UsersService
   ) {}
   @Get('42')
-  @UseGuards(AuthGuard('42'))
+   @UseGuards(AuthGuard('42'))
   fortyTwoAuth() {
     // This route will trigger the authentication process
   }
@@ -45,7 +45,7 @@ export class AuthController {
     });
   }
 
-  @Get('checkusername')
+  @Post('checkusername')
   async isUsernameUnique(@Body() req, @Res() res: Response) {
     const result = await this.UsersService.getUserByUsername(req.username);
     if (result) {
@@ -55,7 +55,7 @@ export class AuthController {
     }
   }
 
-  @Get('checkemail')
+  @Post('checkemail')
   async isEmailUnique(@Body() req, @Res() res) {
     const result = await this.UsersService.getUserByEmail(req.email);
     if (result) {
