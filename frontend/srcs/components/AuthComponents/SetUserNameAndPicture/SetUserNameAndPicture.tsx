@@ -36,17 +36,23 @@ export default function SetUserNameAndPicture() {
     const username  = useSelector((state: RootState) => state.input["set-user-username"]?.value);
     const navigate = useNavigate();
     
-    const handelonSubmit = () => {
-      if (typeof validateUsername(username) === 'string') {
-          const errorMessage = validateUsername(username);
+    const handelonSubmit = async () => {
+
+    
+      if (!username) {
+        dispatch(setIsInvalid({ id: 'set-user-username', isInvalid: true }));
+        dispatch(setErrorMessage({ id: 'set-user-username', errorMessage: 'Please enter a username' }));
+        return ;
+      }
+      const ret = await validateUsername(username);
+      if (ret !== null) {
+        console.log(ret);
           dispatch(setIsInvalid({ id: 'set-user-username', isInvalid: true }));
-          dispatch(setErrorMessage({ id: 'set-user-username', errorMessage }));
+          dispatch(setErrorMessage({ id: 'set-user-username', errorMessage: ret }));
       }
       else{
-        navigate("/Login/what-should-we-call-you");
+        navigate("/Login/WelcomeNewUser"); // redirect to welcome page
       }
-
-      
     }
 
   const handleImageChange = (event) => {
@@ -56,8 +62,10 @@ export default function SetUserNameAndPicture() {
       reader.onloadend = () => {
         setSelectedImage(reader.result);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); 
     }
+    // console.log(event.target.files[0]);
+    // console.log(selectedImage);
   };
 
   return (
