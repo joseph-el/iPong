@@ -8,6 +8,15 @@ import GestUser from "../assets/gest_user.svg"
 import {CameraIcon} from '../../UI/icon/CameraIcon';
 
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../state/store";
+import {
+    setIsInvalid,
+    setErrorMessage,
+  } from "../../../state/InputComponents/inputSlice";
+
+import { useNavigate } from "react-router-dom";
+import validateUsername from "../../../utils/usernameValidation";
 
 export const UserNameTitle = () => {
   return (
@@ -22,6 +31,23 @@ export const UserNameTitle = () => {
 
 export default function SetUserNameAndPicture() {
   const [selectedImage, setSelectedImage] = useState(null);
+
+    const dispatch = useDispatch<AppDispatch>();
+    const username  = useSelector((state: RootState) => state.input["set-user-username"]?.value);
+    const navigate = useNavigate();
+    
+    const handelonSubmit = () => {
+      if (typeof validateUsername(username) === 'string') {
+          const errorMessage = validateUsername(username);
+          dispatch(setIsInvalid({ id: 'set-user-username', isInvalid: true }));
+          dispatch(setErrorMessage({ id: 'set-user-username', errorMessage }));
+      }
+      else{
+        navigate("/Login/what-should-we-call-you");
+      }
+
+      
+    }
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -75,10 +101,10 @@ export default function SetUserNameAndPicture() {
         <UserNameTitle />
 
         <div className="input-padding">
-          <InputComponent type={"fill"} target={"username"} />
+          <InputComponent type={"fill"} target={"username"} id={"set-user-username"} />
         </div>
 
-        <div className="buttons-target">
+        <div className="buttons-target" onClick={handelonSubmit} >
           <CustomButton classNames="create-account" text="Next" />
         </div>
       </div>
