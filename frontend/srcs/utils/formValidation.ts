@@ -16,10 +16,14 @@ async function validateEmail(email) {
         return "Invalid email address.";
     }
     try {
+
      await api.post('/auth/checkemail', { email: email });
        return null;
+    
+        // not found
     } catch (error) {
         return "Email already exists.";
+        // yes founded
     }
 }
 
