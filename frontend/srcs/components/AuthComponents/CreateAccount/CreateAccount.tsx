@@ -26,7 +26,7 @@ import {
 } from "../../../state/Checkbox/CheckboxSlice";
 
 import { useNavigate } from "react-router-dom";
-import { isFullNameValid, isEmailValid, isDateOfBirthValid } from '../../../utils/formValidation';
+import { isFullNameValid, validateEmail, isDateOfBirthValid } from '../../../utils/formValidation';
 import {GenderType} from '../../../state/Checkbox/CheckboxSlice';
 
 export const DateOfBirth = () => {
@@ -53,10 +53,9 @@ export default function CreateAccount() {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
   
-    const handleOnSubmit = () => {
-        const errors = getValidationErrors();
+    const handleOnSubmit = async () => {
+        const errors = await getValidationErrors();
 
-        
         if (!errors)  {
             console.log("Fullname: ", fullname);
             console.log("Email: ", email);
@@ -69,7 +68,8 @@ export default function CreateAccount() {
             handleErrors(errors);
     };
 
-    const getValidationErrors = () => {
+   
+    const getValidationErrors =  async () => {
         if (!fullname ) {
             return { id: 'create-account-full-name', message: 'Fullname required!' };
         } else if (!isFullNameValid(fullname)) {
@@ -78,20 +78,22 @@ export default function CreateAccount() {
     
         if (!email) {
             return { id: 'create-account-email', message: 'Email required!' };
-        } else if (!isEmailValid(email)) {
-            return { id: 'create-account-email', message: 'Invalid email format' };
         }
-    
+
+        const emailError =  await validateEmail(email)
+
+        if (typeof emailError === 'string') {
+            return { id: 'create-account-email', message: emailError };
+        }
         if (!date_of_birth) 
             return { id: 'undefined', message: 'Date of birth required!' };
+        
         // } else if (!isDateOfBirthValid(date_of_birth)) {
         //     return { id: 'undefined', message: 'Invalid date, should be after 2005' };
         // }
-
         if (UserGender == GenderType.UNK) {
             return { id: 'undefined_gender', message: 'User gender required!'};
         }
-
         return null;
     };
     
@@ -106,6 +108,8 @@ export default function CreateAccount() {
             dispatch(setDateIsInvalid({ isInvalid: true }));
             dispatch(setDateErrorMessage(message));
         } else {
+            console.log("id: ", id);
+            console.log("message: ", message);
             dispatch(setIsInvalid({ id, isInvalid: true }));
             dispatch(setErrorMessage({ id, errorMessage: message }));
         }
