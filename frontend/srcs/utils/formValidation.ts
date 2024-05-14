@@ -2,13 +2,29 @@ const nameRegex = /^[a-zA-Z\s]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const dateOfBirthRegex = /^\d{4}-\d{2}-\d{2}$/; 
 
+import api from '../api/posts'
+
+
 const isFullNameValid = (fullName) => {
     return nameRegex.test(fullName);
 };
 
-const isEmailValid = (email) => {
-    return emailRegex.test(email);
-};
+
+
+async function validateEmail(email) {
+    if (!emailRegex.test(email)) {
+        return "Invalid email address.";
+    }
+    try {
+     await api.post('/auth/checkemail', { email: email });
+       return null;
+    } catch (error) {
+        return "Email already exists.";
+    }
+}
+
+
+
 
 const isDateOfBirthValid = (dateOfBirth: string): boolean => {
     const currentYear = new Date().getFullYear();
@@ -42,4 +58,4 @@ const isDateOfBirthValid = (dateOfBirth: string): boolean => {
 };
 
 
-export { isFullNameValid, isEmailValid, isDateOfBirthValid };
+export { isFullNameValid, validateEmail, isDateOfBirthValid };
