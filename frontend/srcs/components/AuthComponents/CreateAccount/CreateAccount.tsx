@@ -50,7 +50,6 @@ export default function CreateAccount() {
     const date_of_birth = useSelector((state: RootState) => state.date?.value);
     const UserGender = useSelector((state: RootState) => state.gender?.UserGender);
     
-    
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
   
@@ -64,7 +63,7 @@ export default function CreateAccount() {
             console.log("Date of birth: ", date_of_birth);
             console.log("UserGender: ", UserGender);
             
-            navigate("/Login/chose-new-password");
+            navigate("/Login/need-a-password");
         }
          else 
             handleErrors(errors);
@@ -103,17 +102,15 @@ export default function CreateAccount() {
             dispatch(setGenderInvalide({ id, invalide: true }));
             return;
         }
-        if (id != 'undefined') {
+        if (id === 'undefined') {
+            dispatch(setDateIsInvalid({ isInvalid: true }));
+            dispatch(setDateErrorMessage(message));
+        } else {
             dispatch(setIsInvalid({ id, isInvalid: true }));
             dispatch(setErrorMessage({ id, errorMessage: message }));
-        } else {
-            dispatch(setDateIsInvalid({ isInvalid: true }));
-            dispatch(setDateErrorMessage({ errorMessage: message }));
         }
     };
     
-
-
     return (
         <>
             <div className="CreateAccount-competent-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
