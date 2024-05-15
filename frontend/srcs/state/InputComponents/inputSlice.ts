@@ -1,14 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface InputState {
-  color: string;
   isInvalid: boolean;
   errorMessage: string;
   value: string;
 }
 
 const initialState : InputState = {
-  color: "success",
   isInvalid: false,
   errorMessage: "",
   value: "",
@@ -18,11 +16,6 @@ const inputSlice = createSlice({
   name: "input",
   initialState: {},
   reducers: {
-    setColor: (state, action) => {
-      const { id, color } = action.payload;
-      if (!state[id]) state[id] = { ...initialState };
-      state[id].color = color;
-    },
     setIsInvalid: (state, action) => {
       const { id, isInvalid } = action.payload;
       if (!state[id]) state[id] = { ...initialState };
@@ -42,5 +35,5 @@ const inputSlice = createSlice({
 });
 
 
-export const { setColor, setIsInvalid, setErrorMessage, setValue } = inputSlice.actions;
+export const {  setIsInvalid, setErrorMessage, setValue } = inputSlice.actions;
 export default inputSlice.reducer;
