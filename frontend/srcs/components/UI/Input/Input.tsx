@@ -43,15 +43,15 @@ export default function InputComponent(props) {
           isInvalid={isInvalid}
           errorMessage={errorMessage}
           onChange={handleInputChange}
-          label={props.type === "fill" ? props.target : ""}
+          label={(props.type === "fill" || props.type === "fill-pass") ? props.target : ""}
           variant="bordered"
           placeholder={props.placeholder}
           className="max-w-xs"
           value={value}
 
           endContent={
-            props.type === "pass" ? (
-              <button
+            (props.type === "pass" || props.type === "fill-pass") ? (
+              <button 
                 className="focus:outline-none"
                 type="button"
                 onClick={toggleVisibility}
@@ -83,7 +83,7 @@ export default function InputComponent(props) {
             ],
           }}
           type={
-            props.type != "pass" || (isVisible && props.type === "pass") ? "text" : "password"
+            (props.type != "pass" && props.type != "fill-pass" )|| (isVisible && (props.type === "pass" || props.type === "fill-pass" )) ? "text" : "password"
           }
     />
   );
