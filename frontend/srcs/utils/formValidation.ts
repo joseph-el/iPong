@@ -30,35 +30,26 @@ async function validateEmail(email) {
 
 
 
-const isDateOfBirthValid = (dateOfBirth: string): boolean => {
+const isDateOfBirthValid = (dateOfBirth: string): string | null => {
+    const yearOfBirth = parseInt(dateOfBirth.slice(0, 4));
+
     const currentYear = new Date().getFullYear();
-    const minYear = 1900;
-    const ageLimit = 10;
 
-    const match = dateOfBirth.match(/^(\d{2})-(\d{2})-(\d{2})$/);
-    if (!match) {
-        return false;
+    if (yearOfBirth > currentYear || yearOfBirth.toString().length !== 4){
+        return "Invalid date of birth: Year cannot be in the future.";
     }
 
-    const year = parseInt(match[1], 10) + 2000;
-    const month = parseInt(match[2], 10);
-    const day = parseInt(match[3], 10);
+    const age = currentYear - yearOfBirth;
 
-    if (year < minYear || year > currentYear - ageLimit) {
-        return false;
+    console.log("currentYear: ", currentYear);
+    console.log("yearOfBirth: ", yearOfBirth);
+    console.log("age: ", age);
+    
+    if (age < 10) {
+        return "Invalid date of birth: Age must be greater than 10 years.";
     }
 
-    if (month < 1 || month > 12) {
-        return false;
-    }
-
-    const daysInMonth = new Date(year, month, 0).getDate();
-    if (day < 1 || day > daysInMonth) {
-        return false;
-    }
-
-    const age = currentYear - year - (new Date(currentYear, month - 1, day) > new Date() ? 1 : 0);
-    return age >= ageLimit;
+    return null;
 };
 
 
