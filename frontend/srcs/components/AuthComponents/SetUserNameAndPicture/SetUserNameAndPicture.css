@@ -11,6 +11,7 @@
     display: flex;
     justify-content: center;
     padding-bottom: 0.5rem;
+    padding-left: 20px;
 }
 
 @layer CloseIcon {
@@ -32,6 +33,10 @@
     line-height: normal;
     padding: 20px 0px 20px 42px;
 
+}
+
+.SetUserNameAndPicture-frame .text-default-500 {
+    color: #000000;
 }
 
 .SetUserNameAndPicture-frame .text-wrapper-4 {
@@ -74,13 +79,8 @@
     max-width: 370px;
 }
 
-.input-padding {
-    padding-left: 42px;
-}
 
-.SetUserNameAndPicture-frame .buttons-target {
-    padding: 33px 0px 30px 42px;
-}
+
 
 .SetUserNameAndPicture-frame .create-account {
     background-color: #1d9bf0;
@@ -89,12 +89,12 @@
     width: 375px;
 }
 
-.SetUserNameAndPicture-frame .create-account .text-wrapper {
+.SetUserNameAndPicture-frame .sign-in-competent-sign-in  .text-wrapper {
     color: #ffffff;
     font-family: "Poppins-Medium", Helvetica;
     font-size: 12.7px;
     font-weight: 550;
-    left: 80%;
+    left: 78%;
     transform: translateX(-40%);
     letter-spacing: 0;
     line-height: 21.2px;
@@ -112,3 +112,112 @@
     padding: 87px 0px 0px 0px;
 }
 
+
+
+.SetUserNameAndPicture-frame .sign-in-competent-sign-in {
+    max-width: 380px !important;
+}
+
+.SetUserNameAndPicture-frame .buttons-target {
+    padding: 33px 10px 30px 40px;
+}
+
+
+
+@media (max-width: 640px) {
+    .WeSentCodeAndPassword-frame .text-wrapper-3 {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 23.6px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        padding: 20px 0px 15px 25px;
+    }
+
+    .SetUserNameAndPicture-frame .max-w-xs {
+        padding: 0px 0px 5px 0px;
+        width: 400px;
+        max-width: 348px;
+    }
+
+    .WeSentCodeAndPassword-frame .this-will-not-be-user {
+        font-family: "Archivo-Regular", Helvetica;
+        font-size: 13.3px;
+        font-weight: 400;
+        left: 0;
+        letter-spacing: -0.34px;
+        line-height: 16.3px;
+        top: 0;
+        width: 400px;
+        padding: 0px 0px 10px 25px;
+    }
+    .input-padding {
+        padding-left: 25px;
+    }
+
+    .WeSentCodeAndPassword-frame .create-acc {
+        width: auto;
+        padding: 5px 0px 20px 28px;
+    }
+    
+    .WeSentCodeAndPassword-frame .create-account {
+        padding: 0 !important;
+    }
+    
+
+    .SetUserNameAndPicture-frame .buttons-target {
+     
+        padding: 30px 10px 0px 10px !important;
+        max-width: 31px !important;
+    }
+
+    .SetUserNameAndPicture-frame .text-wrapper-3 {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 23.6px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        padding: 20px 0px 20px 25px;
+    
+    }
+ 
+    .SetUserNameAndPicture-frame .text-wrapper-4 {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 23.6px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        padding: 20px 0px 20px 25px;
+    
+    }
+    
+
+    .SetUserNameAndPicture-frame .this-will-not-be-user {
+        padding-left: 25px !important;
+        color: #72767a;
+        letter-spacing: -0.04px;
+    }
+
+    .SetUserNameAndPicture-frame .sign-in-competent-sign-in  .text-wrapper {
+        color: #ffffff;
+        font-family: "Poppins-Medium", Helvetica;
+        font-size: 12.7px;
+        font-weight: 550;
+        left: 60%;
+        transform: translateX(-40%);
+        letter-spacing: 0;
+        line-height: 21.2px;
+        position: absolute;
+        top: 0;
+        white-space: nowrap;
+        text-align: center; 
+    }
+
+    
+}
