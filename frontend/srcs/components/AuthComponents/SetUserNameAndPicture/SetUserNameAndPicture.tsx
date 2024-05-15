@@ -55,6 +55,13 @@ export default function SetUserNameAndPicture() {
       }
     }
 
+    const handelonClose = () => {
+      // TDOD: Close the sign in component and navigate to the sign up component
+      // Clear the input fields state and error messages
+      navigate("/Login/need-a-password");
+      console.log("Close");
+  }
+  
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -71,7 +78,7 @@ export default function SetUserNameAndPicture() {
   return (
     <div className="SetUserNameAndPicture-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
       <div className="SetUserNameAndPicture">
-        <Close ClassName={"creat-close"} />
+        <Close func={handelonClose} ClassName={"creat-close"} />
 
         <div className="text-wrapper-3">Pick a profile picture</div>
 
@@ -87,9 +94,9 @@ export default function SetUserNameAndPicture() {
                 src="https://images.unsplash.com/broken"
                 fallback={
                   <CameraIcon
-                    className="animate-pulse w-6 h-6 text-default-500"
+                    className="animate-pulse w-8 h-8 text-default-500"
                     fill="currentColor"
-                    size={20}
+                    size={25}
                   />
                 }
               />
@@ -113,7 +120,7 @@ export default function SetUserNameAndPicture() {
         </div>
 
         <div className="buttons-target" onClick={handelonSubmit} >
-          <CustomButton classNames="create-account" text="Next" />
+          <CustomButton classNames="sign-in-competent-sign-in" text="Next" />
         </div>
       </div>
     </div>
