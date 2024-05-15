@@ -7,6 +7,7 @@ import CreateAccount from '../../components/AuthComponents/CreateAccount/CreateA
 import SignInOptions from '../../components/AuthComponents/SignInOptions/SignInOptions'
 import SetUserNameAndPicture from '../../components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture'
 import WeSentCodeAndPassword from '../../components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword'
+import WelcomeNewUser from '../../components/AuthComponents/WelcomeNewUser/WelcomeNewUser'
 
 export default function SignAuth()  {
     return  (
@@ -15,11 +16,19 @@ export default function SignAuth()  {
                 <Routes>
                     <Route path='/Login' element={<SignInOptions/>} /> {/* DONE */}
 
+
+                        {/* <Route path='/privacy-policy' component={() => {
+                            window.location.href = 'https://example.com/1234';
+                            return null;
+                            }}/> */}
+
+
+
                         <Route path="/Login/sign-in" element={
                                 <SignIn/>
                             }/> { /* DONE */ }
 
-                        <Route path="/Login/creat-account" element={
+                        <Route path="/Login/create-account" element={
                                 <CreateAccount/>
                             }/> { /* DONE */ }
                         <Route path="/Login/what-should-we-call-you"  element={  
@@ -34,9 +43,10 @@ export default function SignAuth()  {
                                 <WeSentCodeAndPassword title={"Choose a new password"} guide_title={"Make sure it's 8 characters or more."} input_type="New Password"  button_text="Change password"/>
                             }/> { /* DONE */ }
 
-                        {/* <Route path="/Login/chose-new-password" element={       
-                                <WeSentCodeAndPassword title={"Choose a new password"} guide_title={"Make sure it's 8 characters or more."} input_type="New Password"  button_text="Change password"/>
-                            }/>  */}
+                        <Route path="/Login/WelcomeNewUser" element={ 
+                                <WelcomeNewUser  button_text="Back to sign-in"/>
+                        }/> { /* DONE */ }
+                        
 
                         <Route path="/Login/we-send-you-code" element={       
                                 <WeSentCodeAndPassword title={"We sent you a code"} guide_title={"Enter it below to verify your email"} input_type="verification code"  button_text="Next"/>
