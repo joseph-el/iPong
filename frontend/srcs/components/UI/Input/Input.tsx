@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 
 import {
-  setColor,
   setIsInvalid,
   setErrorMessage,
   setValue,
