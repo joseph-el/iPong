@@ -11,8 +11,11 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import api from '../../../api/posts'
-
+import ResetUserData from '../../../state/UserInfo/ResetUserData'
 // sm:w-96  sm:h-96  md:h-96  md:w-96 lg:h-96  lg:w-96  xm:h-96  xm:w-96 2xl:w-max 2xl:h-max 
+
+
+
 export const Title = () => {
     return (
         <div className="title">
@@ -32,6 +35,7 @@ export const Title = () => {
 
 export const SignInPlatforme = () => {
 
+    ResetUserData();
     const navigate = useNavigate();
 
     const handleOnsubmit = async () => {
