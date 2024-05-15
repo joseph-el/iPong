@@ -11,13 +11,13 @@ export default function WelcomeNewUser(props) {
     
     const navigate = useNavigate();
 
-    const _fullname = useSelector((state: RootState) => state.input["create-account-full-name"]?.value);
-    const _email = useSelector((state: RootState) => state.input["create-account-email"]?.value);
+    const _fullname      = useSelector((state: RootState) => state.input["create-account-full-name"]?.value);
+    const _email         = useSelector((state: RootState) => state.input["create-account-email"]?.value);
     const _date_of_birth = useSelector((state: RootState) => state.date?.value);
-    const _UserGender = useSelector((state: RootState) => state.gender?.UserGender);
-    const _password = useSelector((state: RootState) => state.input["set-user-password"]?.value);
-    const _avatar = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
-    const _username = useSelector((state: RootState) => state.input["set-user-username"]?.value);
+    const _UserGender    = useSelector((state: RootState) => state.gender?.UserGender);
+    const _password      = useSelector((state: RootState) => state.input["set-user-password"]?.value);
+    const _avatar        = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
+    const _username      = useSelector((state: RootState) => state.input["set-user-username"]?.value);
 
 
     const extractUserData = async () => {
