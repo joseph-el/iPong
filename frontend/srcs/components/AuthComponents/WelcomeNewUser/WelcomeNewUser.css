@@ -1,0 +1,22 @@
+.WelcomeNewUser {
+    margin-top: 20px;
+  
+    padding: 40px 0px 30px 50px;
+    background-color: rgb(0, 0, 0);
+    border: 0.5px solid #ffffff; 
+  
+    max-width: 460px; 
+    max-height: 512px; 
+    overflow: hidden;
+  }
+
+  .WelcomeNewUser .buttons-target {
+    padding-top: 250px;
+  }
+
+  .WelcomeNewUser .title-welcome {
+    color: white;
+    height: 76px;
+    position: relative;
+    width: 243px;
+  }
