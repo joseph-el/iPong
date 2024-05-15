@@ -1,4 +1,7 @@
 import React from 'react'
+
+import './app.css'
+
 import {NextUIProvider} from '@nextui-org/react'
 
 import SignInOptions from '../components/AuthComponents/SignInOptions/SignInOptions'
@@ -8,12 +11,13 @@ import SetUserNameAndPicture from '../components/AuthComponents/SetUserNameAndPi
 import WeSentCodeAndPassword from '../components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword'
 
 import SignAuth from '../pages/SignAuth/SignAuth'
+import { SideBar } from '../components/SideBar/SideBar'
 
 
 export default function App() {
     return (
         <>
-            <SignAuth/>
+            <SideBar/>
         </>
     );
   }
