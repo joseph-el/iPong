@@ -1,5 +1,7 @@
 @layer CloseIcon {
-    .close {
-        padding: 10px;
-    }   
+
+    .SF-symbol-xmark:hover {
+        cursor: pointer !important;
+        opacity: 0.8 !important;
+    }  
 }
