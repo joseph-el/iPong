@@ -3,8 +3,7 @@
     background-color: black;
     border: 0.5px solid #ffffff; 
     max-width: 460px; 
-    max-height: 530px;  
- 
+    max-height: 580px;
 }
 
 @layer CloseIcon {
@@ -119,4 +118,120 @@
 .sign-in-competent-sign-in:hover,
 .create-account:hover {
     background-color: #34a8ff;
+}
+
+
+@media (max-width: 640px) {
+
+    .CreateAccount-competent-frame .max-w-xs {
+        padding: 0px 0px 10px 10px;
+        width: 450px;
+        max-width: 360px; 
+    }
+    .CreateAccount-competent-frame
+    .buttons-target {
+    display: flex;
+    justify-content: center;
+    padding: 5px 0px 20px 0px;
+    margin-left: 0;
+    }
+
+    .CreateAccount-competent .text-wrapper-3 {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 23.6px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        padding-bottom: 20px;
+        padding-left: 10px;
+    }
+
+
+    .CreateAccount-competent {
+        padding-left: 15px;
+    }
+
+    /* Date of birth */
+
+    .date-of-birth {
+        height: 65px;
+        position: relative;
+        width: 374px;
+      }
+      
+      .date-of-birth .this-will-not-be {
+        color: #ffffff;
+        font-family: "Archivo-Regular", Helvetica;
+        font-size: 12.7px;
+        font-weight: 400;
+        left: 0;
+        letter-spacing: 0;
+        line-height: 19.1px;
+        opacity: 0.6;
+        position: absolute;
+        top: 25px;
+        width: 379px;
+        padding-left: 10px;
+      }
+      
+      .gender .text-wrapper-4 {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 13.9px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        top: -1px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+      }
+    
+      .date-of-birth .text-wrapper {
+        color: #ffffff;
+        font-family: "Segoe UI-Bold", Helvetica;
+        font-size: 13.9px;
+        font-weight: 700;
+        left: 0;
+        letter-spacing: 0;
+        line-height: normal;
+        position: absolute;
+        top: -1px;
+        padding-left: 10px;
+
+      }
+      .CreateAccount-competent-frame .create-account .text-wrapper {
+        color: #ffffff;
+        font-family: "Poppins-Medium", Helvetica;
+        font-size: 12.7px;
+        font-weight: 550;
+        left: 70%;
+        transform: translateX(-40%);
+        letter-spacing: 0;
+        line-height: 21.2px;
+        position: absolute;
+        top: 0;
+        white-space: nowrap;
+        text-align: center; 
+    }
+
+    
+      .date-of-birth-resize {
+        padding-left: 10px;
+        max-width: 360px;
+      }
+      .move-gender {
+        padding-left: 10px;
+      }
+      .CreateAccount-competent-frame .buttons-target {
+        padding: 15px 0px 10px 10px;
+        max-width: 360px;
+    }
+    
+
+
+
+    
 }
