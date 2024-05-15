@@ -33,7 +33,24 @@ export default function WeSentCodeAndPassword(props) {
     
     const navigate = useNavigate();
     
+    const handelonClose = () => {
+        // TDOD: Close the sign in component and navigate to the sign up component
+        // Clear the input fields state and error messages
+        
+        if (props.title === "Find your Account") {
+            navigate("/login");
 
+        } 
+        
+        else if (props.title === "You'll need a password") {
+            navigate("/login/create-account");
+        }
+        else if (props.title === "Choose a new password") {
+            navigate("/login/find-your-account");
+
+        }
+        console.log("Close");
+    }
     const handelonSubmit = async () => {
     
         if (props.title === "Choose a new password" || props.title === "You'll need a password") {
@@ -86,7 +103,8 @@ export default function WeSentCodeAndPassword(props) {
             
     return (
         <div className="WeSentCodeAndPassword-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
-            <Close ClassName={"close-WeSentCodeAndPassword"}/>
+            <Close func={handelonClose} ClassName={"close-WeSentCodeAndPassword"} id={props.title == "Find your Account" ? "close": "back"}  />
+
             <div className='WeSentCodeAndPassword'>
 
                 <div className="text-wrapper-3">{props.title}</div>
@@ -94,13 +112,13 @@ export default function WeSentCodeAndPassword(props) {
                 <UserGuide guide_title={props.guide_title}/>
 
                 <div className="input-padding">
-                    <InputComponent type={"fill"} target={props.input_type} id={(props.title === "Choose a new password" || props.title === "You'll need a password") ? "set-user-password" : "find-your-email"} />
+                    <InputComponent type={"fill-pass"} target={props.input_type} id={(props.title === "Choose a new password" || props.title === "You'll need a password") ? "set-user-password" : "find-your-email"} />
                 </div>
                 {
                     (props.title === "We sent you a code") ? <LoginHelp title={"Didn’t receive email?"} ClassName={"create-acc"} /> : null
                 }
                 <div className="buttons-target" style={PaddingStyle} onClick={handelonSubmit} >
-                    <CustomButton classNames="create-account" text={props.button_text} />
+                    <CustomButton classNames="sign-in-competent-sign-in" text={props.button_text} />
                 </div>
             </div>
         </div>
