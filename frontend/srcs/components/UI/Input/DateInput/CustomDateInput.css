@@ -31,3 +31,12 @@
         color: #8F9294 !important;
     }
 }
+
+
+@media (max-width: 640px) {
+    .input-borders {
+        padding: 5px 0px 0px 0px;
+        max-width: 370px !important;
+    }
+
+}
