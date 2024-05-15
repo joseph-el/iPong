@@ -73,8 +73,15 @@ export default function SignIn() {
         navigate("/Login/find-your-account");
     };
     const handleCreateAccountClick = () => {
-        navigate("/Login/creat-account");
+        navigate("/Login/create-account");
     };
+
+    const handelonClose = () => {
+        // TDOD: Close the sign in component and navigate to the sign up component
+        // Clear the input fields state and error messages
+        navigate("/login");
+        console.log("Close");
+    }
 
     return (
         <>
@@ -83,7 +90,12 @@ export default function SignIn() {
                     <img src={MaskGroup} alt="Mask Group SVG" />
                 </div>
 
-                <Close ClassName={"close"}/>
+
+                <div className='go_back'>
+                    <div >
+                        <Close id={"close"} func={handelonClose} ClassName={"close"}  />
+                    </div>
+                </div>
                 
                 <Label />
                 
