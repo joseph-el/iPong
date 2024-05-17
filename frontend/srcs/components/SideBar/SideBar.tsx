@@ -1,25 +1,14 @@
 import React from "react";
-// import { IconsSystem } from "./IconsSystem";
-// import { IconsSystemEmail } from "./IconsSystemEmail";
-// import { IconsSystemHouse } from "./IconsSystemHouse";
-// import { IconsSystemUser } from "./IconsSystemUser";
-
-
 import "./SideBar.css";
 import { useState } from "react";
 
-
 import iPongLogo from './assets/iPongLogo.svg'
-
 import LogoHomeNoSelected from './assets/LogoHomeNoSelected.svg';
 import LogoHomeSelected from './assets/LogoHomeSelected.svg';
-
 import LogoChatNoSelected from './assets/LogoChatNoSelected.svg';
 import LogoChatSelected from './assets/LogoChatSelected.svg';
-
 import LogoStoreNoSelected from './assets/LogoStoreNoSelected.svg';
 import LogoStoreSelected from './assets/LogoStoreSelected.svg';
-
 import LogoUserProfileNoSelected from './assets/LogoUserProfileNoSelected.svg';
 import LogoUserProfileSelected from './assets/LogoUserProfileSelected.svg';
 
@@ -38,7 +27,7 @@ export  function SideBar() {
     
     const handleIconClick = (param, route) => {
         setActive(param);
-        // navigate(route);
+        // navigate(route); // TODO: navigate
     };
 
     const getIconSrc = (iconIndex) => {
