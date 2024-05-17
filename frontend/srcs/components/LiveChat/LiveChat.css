@@ -1,0 +1,6 @@
+/* LiveChat.css */
+.live-chat {
+    border-left: 0.537px solid #3C424D; /* Vertical line on the left */
+    height: 100%; /* Make it full height */
+    width: 10px !important;
+}
