@@ -18,6 +18,8 @@ export default function App() {
     return (
         <>
         <ChakraProvider>
+          
+            {/* <SignAuth/> */}
           <AppLayout/>
 
         </ChakraProvider>
