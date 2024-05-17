@@ -14,7 +14,7 @@ export default function SignAuth()  {
         <div className='SignAuth-page'>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/Login' element={<SignInOptions/>} /> {/* DONE */}
+                    <Route path='/Login' element={    <SignInOptions/>      } /> {/* DONE */}
 
 
                         {/* <Route path='/privacy-policy' component={() => {
@@ -25,6 +25,7 @@ export default function SignAuth()  {
 
 
                         <Route path="/Login/sign-in" element={
+                        
                                 <SignIn/>
                             }/> { /* DONE */ }
 
