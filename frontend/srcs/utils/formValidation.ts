@@ -1,4 +1,4 @@
-const nameRegex = /^[a-zA-Z\s]+$/;
+  const nameRegex = /^[a-zA-Z\s]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const dateOfBirthRegex = /^\d{4}-\d{2}-\d{2}$/; 
 
