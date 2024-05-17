@@ -1,0 +1,34 @@
+/* .price {
+    background-color: #ffffff;
+    border-radius: 5.34px;
+    height: 25px;
+    position: relative;
+    width: 80px;
+
+}
+
+.price .v-bucks-removebg {
+
+    width: 15px;
+    height: 15px;
+    object-fit: cover;
+    position: absolute;
+    top: 4px;
+} */
+
+.price {
+    padding: 4px;
+}
+
+.price .text-wrapper {
+    color: #323030;
+    font-family: "Poppins", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    top: 1px;
+    letter-spacing: 0;
+    line-height: normal;
+
+
+    white-space: nowrap;
+}
