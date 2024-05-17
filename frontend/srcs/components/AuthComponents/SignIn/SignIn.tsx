@@ -50,6 +50,8 @@ export default function SignIn() {
                 password: password
             });
 
+            console.log("hello: ", response);
+
         } catch (error) {
             state = (error.response.data.statusCode == 404 || email == undefined) ? LoginState.INVALID_EMAIL : LoginState.INVALID_PASSWORD;
         }
