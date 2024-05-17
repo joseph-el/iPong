@@ -3,7 +3,6 @@ import React from 'react'
 import './app.css'
 
 import {NextUIProvider} from '@nextui-org/react'
-
 import SignInOptions from '../components/AuthComponents/SignInOptions/SignInOptions'
 import SignIn from '../components/AuthComponents/SignIn/SignIn'
 import CreateAccount from '../components/AuthComponents/CreateAccount/CreateAccount'
@@ -12,12 +11,17 @@ import WeSentCodeAndPassword from '../components/AuthComponents/WeSentCodeAndPas
 
 import SignAuth from '../pages/SignAuth/SignAuth'
 import { SideBar } from '../components/SideBar/SideBar'
-
+import AppLayout from '../pages/AppLayout/AppLayout'
+ import { ChakraProvider } from '@chakra-ui/react'
 
 export default function App() {
     return (
         <>
-            <SideBar/>
+        <ChakraProvider>
+          <AppLayout/>
+
+        </ChakraProvider>
+
         </>
     );
   }

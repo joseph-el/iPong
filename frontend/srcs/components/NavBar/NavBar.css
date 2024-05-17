@@ -1,0 +1,12 @@
+
+
+.navbar {
+    background-color: #ffa3a3;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.SearchInput {
+    max-width: 25rem;
+}
