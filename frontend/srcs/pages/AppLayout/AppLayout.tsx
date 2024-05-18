@@ -8,7 +8,7 @@ import './AppLayout.css';
 
 // acczss_token
 import LiveChat from '../../components/LiveChat/LiveChat';
-
+import Home from '../Home/Home';
 
 
 export default function AppLayout() {
@@ -35,7 +35,7 @@ export default function AppLayout() {
       </GridItem>
 
       <GridItem pl='2' area={'main'} w="full" h="full">
-        main content
+        <Home />
       </GridItem>
 
       <GridItem pl='2' bg='black' area={'livechat'}>
