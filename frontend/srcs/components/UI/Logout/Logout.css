@@ -1,0 +1,300 @@
+
+.logout-component .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding-bottom: 20px;
+}
+.logout-component .user-info .User-avatar,
+.logout-component .user-info .header,
+.logout-component .user-info .User-email,
+.logout-component .user-info .profile-info {
+    align-self: center;
+}
+
+
+.logout-component .type {
+    color: #ffffff8c;
+    font-family: "SF Pro Text-Regular", Helvetica;
+    font-size: 13.4px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    line-height: 20.1px;
+    margin-top: -1.68px;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+
+.logout-component .profile-info {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 21.09px;
+    left: 80px;
+    /* position: absolute; */
+    top: 142px;
+    /* transform: rotate(89.82deg); */
+}
+
+.logout-component .profile-name-wallet {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 14.06px;
+    position: relative;
+}
+
+.logout-component  .group {
+    height: 28.12px;
+    margin-right: -2px;
+    position: relative;
+    width: 146.14px;
+}
+
+.logout-component  .div-wrapper {
+    background-color: #464646;
+    border-radius: 52.73px;
+    height: 28px;
+    position: relative;
+    width: 144px;
+}
+
+.logout-component  .text-wrapper {
+    color: #ffffff;
+    font-family: "Montserrat-Medium", Helvetica;
+    font-size: 12.3px;
+    font-weight: 500;
+    left: 18px;
+    letter-spacing: 0;
+    line-height: 14.1px;
+    position: absolute;
+    text-align: center;
+    top: 7px;
+    width: 109px;
+}
+
+.logout-component .listbox {
+    display: flex !important;
+    justify-content: center !important;
+
+}
+
+.logout-component .listbox .text-small {
+    color: #ffffff;
+
+    color: #ffffff;
+    font-family: "Montserrat-Medium", Helvetica;
+    font-size: 12.3px;
+    font-weight: 500;
+}
+
+
+.logout-buttons {
+    padding-left: 50px;
+
+}
+
+
+/*
+
+ .popover {
+    -webkit-backdrop-filter: blur(144.27px) brightness(100%);
+    backdrop-filter: blur(144.27px) brightness(100%);
+    box-shadow: 0px 16.78px 16.78px #00000026;
+    height: 314px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    transform: rotate(-89.82deg);
+    width: 376px;
+}
+
+ .overlap {
+    height: 314px;
+    position: relative;
+}
+
+ .popovers-right {
+    height: 314px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 376px;
+}
+
+ .overlap-group {
+    height: 373px;
+    left: -43px;
+    position: relative;
+    top: -30px;
+    width: 422px;
+}
+
+ .img {
+    height: 421px;
+    left: 25px;
+    position: absolute;
+    top: -24px;
+    transform: rotate(89.82deg);
+    width: 372px;
+}
+
+ .header {
+    background-color: transparent;
+    height: 20px;
+    left: 208px;
+    position: absolute;
+    top: 176px;
+    transform: rotate(90.66deg);
+    width: 99px;
+}
+
+ .title {
+    color: #ffffff;
+    font-family: "SF Pro Text-Semibold", Helvetica;
+    font-size: 15.1px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: 0.2px;
+    line-height: 20.1px;
+    position: absolute;
+    top: -2px;
+    width: 99px;
+}
+
+ .information {
+    height: 28px;
+    left: 147px;
+    position: absolute;
+    top: 172px;
+    transform: rotate(90.66deg);
+    width: 168px;
+}
+
+ .first-row {
+    height: 20px;
+    left: 1px;
+    position: relative;
+    top: 3px;
+    width: 134px;
+}
+
+ .item {
+    align-items: center;
+    display: inline-flex;
+    gap: 3.36px;
+    position: relative;
+}
+
+ .type {
+    color: #ffffff8c;
+    font-family: "SF Pro Text-Regular", Helvetica;
+    font-size: 13.4px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    line-height: 20.1px;
+    margin-top: -1.68px;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+ .profile-picture {
+    height: 97px;
+    left: 239px;
+    position: absolute;
+    top: 107px;
+    transform: rotate(89.82deg);
+    width: 97px;
+}
+
+ .buttons-push-large-primary {
+    border-radius: 8.25px !important;
+    display: flex !important;
+    gap: 11.79px !important;
+    height: 33px !important;
+    left: -39px !important;
+    padding: 7.07px 9.43px !important;
+    position: absolute !important;
+    top: 141px !important;
+    transform: rotate(89.82deg) !important;
+    width: 269px !important;
+}
+
+ .buttons-push-large-instance {
+    margin-top: -1.25px !important;
+}
+
+ .buttons-push-large-primary-instance {
+    background-color: #ffffff1a !important;
+    border-radius: 8.25px !important;
+    display: flex !important;
+    gap: 11.79px !important;
+    height: 33px !important;
+    left: -80px !important;
+    padding: 7.07px 9.43px !important;
+    position: absolute !important;
+    top: 141px !important;
+    transform: rotate(89.82deg) !important;
+    width: 269px !important;
+}
+
+ .design-component-instance-node {
+    color: #e51313 !important;
+    margin-top: -1.25px !important;
+}
+
+ .profile-info {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 21.09px;
+    left: 80px;
+    position: absolute;
+    top: 142px;
+    transform: rotate(89.82deg);
+}
+
+ .profile-name-wallet {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 14.06px;
+    position: relative;
+}
+
+ .group {
+    height: 28.12px;
+    margin-right: -2px;
+    position: relative;
+    width: 146.14px;
+}
+
+ .div-wrapper {
+    background-color: #464646;
+    border-radius: 52.73px;
+    height: 28px;
+    position: relative;
+    width: 144px;
+}
+
+ .text-wrapper {
+    color: #ffffff;
+    font-family: "Montserrat-Medium", Helvetica;
+    font-size: 12.3px;
+    font-weight: 500;
+    left: 18px;
+    letter-spacing: 0;
+    line-height: 14.1px;
+    position: absolute;
+    text-align: center;
+    top: 7px;
+    width: 109px;
+}
+
+*/
