@@ -1,0 +1,63 @@
+/* Auto-generated font-face rules */
+@font-face {
+    font-family: 'sfprodisplay-black-italic';
+    src: url('sfprodisplayblack-italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-bold';
+    src: url('sfprodisplaybold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-heavy-italic';
+    src: url('sfprodisplayheavy-italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-light-italic';
+    src: url('sfprodisplaylight-italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-medium';
+    src: url('sfprodisplaymedium.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-regular';
+    src: url('sfprodisplayregular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-semi-bold-italic';
+    src: url('sfprodisplaysemi-bold-italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-thin-italic';
+    src: url('sfprodisplaythin-italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'sfprodisplay-ultra-light-italic';
+    src: url('sfprodisplayultra-light-italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
