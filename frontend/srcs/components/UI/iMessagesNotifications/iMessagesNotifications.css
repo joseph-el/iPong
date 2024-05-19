@@ -2,8 +2,8 @@
 
 .wrapper-style {
     background-color: rgb(49, 49, 49, 0.7);
-    border: #313131b2 solid 1px;
-    border-radius: 10px;
+    border: #beb8b836 solid 0.5px !important;
+    border-radius: 10px !important;
 }
 
 .time-of-notification {
