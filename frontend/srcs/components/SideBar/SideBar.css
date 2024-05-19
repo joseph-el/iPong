@@ -109,3 +109,48 @@
     width: 35px;
   }
   
+
+
+  /*
+  @media (max-width: 768px) {
+    .side-bar {
+      width: 60px;
+    }
+    .side-bar .overlap-group-wrapper {
+      width: 68px;
+    }
+    .side-bar .the-logo {
+      height: 60px;
+      width: 54px;
+    }
+    .side-bar .icon-wrapper {
+      height: 50px;
+      width: 50px;
+    }
+    .side-bar .icon {
+      font-size: 26px;
+      height: 34px;
+      left: 8px;
+      line-height: 34.1px;
+      top: 7px;
+      width: 34px;
+    }
+    .side-bar .text-wrapper {
+      font-size: 26px;
+      height: 34px;
+      left: 8px;
+      line-height: 34.1px;
+      top: 7px;
+      width: 36px;
+    }
+    .side-bar .div {
+      font-size: 26px;
+      height: 34px;
+      left: 8px;
+      line-height: 34.1px;
+      top: 7px;
+      width: 31px;
+    }
+  }
+  */
+
