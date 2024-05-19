@@ -1,0 +1,23 @@
+
+
+.wrapper-style {
+    background-color: rgb(49, 49, 49, 0.7);
+    border: #313131b2 solid 1px;
+    border-radius: 10px;
+}
+
+.time-of-notification {
+    position: absolute;
+    left: 75%;
+
+    font-family: 'sfprodisplay-regular', sans-serif;
+    font-size: 13px;
+    font-weight: 450;
+    letter-spacing: -0.6px;
+    line-height: 26.6px;
+    opacity: 0.5;
+
+}
+
+
+
