@@ -2,8 +2,8 @@ import React from 'react'
 import './Home.css'
 
 import Logout from '../../components/UI/Logout/Logout';
-
-
+import NotificationsBar from '../../components/UI/NotificationsBar/NotificationsBar';
+import ImessagesNotifications from '../../components/UI/iMessagesNotifications/iMessagesNotifications';
 
 
 export default function Home() {
@@ -11,6 +11,8 @@ export default function Home() {
         <div className="Home">
             {/* <NotificationCenter/> */}
                 {/* <Logout /> */}
+
+                <ImessagesNotifications />
         </div>
     );
 };
