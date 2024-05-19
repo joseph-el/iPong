@@ -58,7 +58,7 @@ export default function AppLayout() {
       </GridItem>
     {
       isWideScreen ? null
-      : <GridItem pl='2' bg='red' area={'livechat'}>
+      : <GridItem pl='2' bg='black' area={'livechat'}>
           <LiveChat />
         </GridItem>
     }
