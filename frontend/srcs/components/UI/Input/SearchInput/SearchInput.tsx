@@ -2,12 +2,21 @@ import React from "react";
 import {Input} from "@nextui-org/react";
 import {SearchIcon} from "./SearchIcon";
 
-export default function SearchInput() {
+import './SearchInput.css'
+
+export default function SearchInput(props) {
+
+  const handleClear = () => {
+    props.onChange({ target: { value: '' } });
+  };
+  
   return (
-    <div className="flex justify-center">
-      <div className="w-full w-48 sm:w-48 md:w-64 lg:w-64 xl:w-96 2xl:w-96">
+    <div className="flex justify-center search">
+      <div className="flex w-full justify-center w-48 sm:w-48 md:w-64 lg:w-64 xl:w-72 2xl:w-80">
         <Input
+          onChange={props.onChange}
           isClearable
+          onClear={handleClear} 
           className="SearchInput"
           radius="lg"
           classNames={{
@@ -17,7 +26,9 @@ export default function SearchInput() {
               "text-black/90 dark:text-white/90",
               "placeholder:text-default-700/50 dark:placeholder:text-white/60",
             ],
-            innerWrapper: "bg-transparent",
+
+            innerWrapper: ["bg-transparent", "display", "inline-flex"],
+           
             inputWrapper: [
               "shadow-xl",
               "bg-default-200/50",
@@ -30,10 +41,11 @@ export default function SearchInput() {
               "dark:group-data-[focus=true]:bg-default/60",
               "!cursor-text",
             ],
+            
           }}
           placeholder="Type to search..."
           startContent={
-            <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+            <SearchIcon className="sss text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
           }
         />
       </div>
