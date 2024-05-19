@@ -22,19 +22,20 @@ export default function NavBarUser(props) {
     const userName = props.email.split('@')[0];
     const mailType = props.email.split('@')[1];
 
-    const isLongEmail = userName.length > 5 && windowWidth < 760;
+    const isLongEmail = userName.length > 5 && windowWidth < 1150;
 
     let truncatedUserName = isLongEmail ? userName.substring(0, 4) : userName;
 
     return (
         <>
-            <div className="NavBarUser w-full w-48 sm:w-48 md:w-64 lg:w-max-content xl:w-max-content 2xl:w-max-content">
+            <div className="NavBarUser w-max-content">
                 <User
                     name={props.fullName}
                     description={truncatedUserName + (isLongEmail ? '..' : '') + '@' + mailType}
                     avatarProps={{
                         src: props.avatar,
                     }}
+                    
                 />
                 <div className='user-info'>
                     <img src={DropDownArrow} alt='arrow down' className="img-info"/>
