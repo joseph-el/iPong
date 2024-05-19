@@ -4,7 +4,7 @@ import {Listbox, ListboxItem, Chip, ScrollShadow, Avatar, Selection} from "@next
 import {ListboxWrapper} from "./ListboxWrapper";
 import {users} from "./data";
 
-export default function SearchList() {
+export default function SearchList({users}) {
 
   const [values, setValues] = useState<Selection>(new Set(["1"]));
 
@@ -21,42 +21,45 @@ export default function SearchList() {
         className="w-full flex py-0.5 px-2 gap-1"
         orientation="horizontal"
       >
-       
-      <Chip > Users </Chip>
-      
+      <div className="search-title">
+        <Chip > Users </Chip>
+      </div>
       </ScrollShadow>
     );
   }, [arrayValues.length]);
 
   return (
-    <ListboxWrapper>
-      
-      <Listbox
-        topContent={topContent}
-        classNames={{
-          base: "max-w-lg ",
-          list: "max-h-[300px] overflow-scroll",
-        }}
-        defaultSelectedKeys={["1"]}
-        items={users}
-        label="Assigned to"
-        // selectionMode="multiple"
-        onSelectionChange={setValues}
-        variant="flat"
-      >
-        {(item) => (
-          <ListboxItem key={item.id} textValue={item.name}>
-            <div className="flex gap-2 items-center">
-              <Avatar alt={item.name} className="flex-shrink-0" size="sm" src={item.avatar} />
-              <div className="flex flex-col">
-                <span className="text-small">{item.name}</span>
-                <span className="text-tiny text-default-400">{item.email}</span>
+    <div className="list-search-box-items">
+      <ListboxWrapper>
+        
+        <Listbox
+          topContent={topContent}
+          classNames={{
+            base: "max-w-lg ",
+            list: "max-h-[300px] overflow-scroll",
+          }}
+          items={users}
+          label="Assigned to"
+          onSelectionChange={setValues}
+          variant="flat"
+        >
+          {(item) => (
+            <ListboxItem key={item.id} textValue={item.name} onClick={() => {
+              console.log("user_selected: ", item.name)
+            }}>  
+              <div className="flex gap-2 items-center">
+                <Avatar alt={item.name} className="flex-shrink-0" size="md" src={item.avatar} />
+                <div className="flex flex-col">
+                  <span className="text-small">{item.name}</span>
+                  <span className="text-tiny text-default-400">{item.email}</span>
+                </div>
               </div>
-            </div>
-          </ListboxItem>
-          
-        )}
-      </Listbox>
-    </ListboxWrapper>
+
+            </ListboxItem>
+            
+          )}
+        </Listbox>
+      </ListboxWrapper>
+    </div>
   );
 }
