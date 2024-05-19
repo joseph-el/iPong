@@ -1,0 +1,36 @@
+
+
+/*
+rgba(255, 255, 255, 0.1)
+*/
+/* SearchInput.css */
+/* styles.css */
+
+[data-slot="input-wrapper"] {
+    background-color: rgba(255, 255, 255, 0.1)!important; /* Assuming --default-200 is a defined CSS variable */
+}
+
+[data-slot="input-wrapper"]:focus-visible{
+    background-color: rgb(53, 144, 228) !important; /* Assuming --default-200 is a defined CSS variable */
+}
+
+[data-slot="input-wrapper"]:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important; /* Assuming --default-200 is a defined CSS variable */
+}
+
+input[data-slot="input"]::placeholder {
+    color: #CFD1D4 !important;
+}
+
+.search .text-black\/90 {
+    
+    color: rgba(255, 255, 255, 0.8)!important;
+    font-size: 14px;
+}
+.search .SearchInput{
+    /* padding-left: 3.5rem !important;
+     */
+     display: flex  !important;
+     justify-content: end !important;
+     
+}
