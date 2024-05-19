@@ -1,4 +1,5 @@
 import React from "react";
+
 export const users = [
   {
     id: 1,
@@ -8,7 +9,7 @@ export const users = [
     status: "active",
     age: "29",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/1.png",
-    email: "tony.reichert@example.com",
+    email: "tony.reichert",
   },
   {
     id: 2,
@@ -18,7 +19,7 @@ export const users = [
     status: "paused",
     age: "25",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/1.png",
-    email: "zoey.lang@example.com",
+    email: "zoey.lang",
   },
   {
     id: 3,
@@ -28,7 +29,7 @@ export const users = [
     status: "active",
     age: "22",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/2.png",
-    email: "jane.fisher@example.com",
+    email: "jane.fisher",
   },
   {
     id: 4,
@@ -38,7 +39,7 @@ export const users = [
     status: "vacation",
     age: "28",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/2.png",
-    email: "william.howard@example.com",
+    email: "william.howard",
   },
   {
     id: 5,
@@ -48,7 +49,7 @@ export const users = [
     status: "active",
     age: "24",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/3.png",
-    email: "kristen.cooper@example.com",
+    email: "kristen.cooper",
   },
   {
     id: 6,
@@ -57,7 +58,7 @@ export const users = [
     team: "Management",
     age: "29",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/3.png",
-    email: "brian.kim@example.com",
+    email: "brian.kim",
     status: "Active",
   },
   {
@@ -68,7 +69,7 @@ export const users = [
     status: "paused",
     age: "27",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/4.png",
-    email: "michael.hunt@example.com",
+    email: "michael.hunt",
   },
   {
     id: 8,
@@ -78,7 +79,7 @@ export const users = [
     status: "active",
     age: "31",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/4.png",
-    email: "samantha.brooks@example.com",
+    email: "Lina.brooks",
   },
   {
     id: 9,
@@ -88,7 +89,7 @@ export const users = [
     status: "vacation",
     age: "33",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/5.png",
-    email: "frank.harrison@example.com",
+    email: "frank.harrison",
   },
   {
     id: 10,
@@ -98,7 +99,7 @@ export const users = [
     status: "active",
     age: "35",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/5.png",
-    email: "emma.adams@example.com",
+    email: "emma.adams",
   },
   {
     id: 11,
@@ -108,7 +109,7 @@ export const users = [
     status: "active",
     age: "22",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/7.png",
-    email: "brandon.stevens@example.com",
+    email: "brandon.stevens",
   },
   {
     id: 12,
@@ -118,7 +119,7 @@ export const users = [
     status: "paused",
     age: "28",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/7.png",
-    email: "megan.richards@example.com",
+    email: "megan.richards",
   },
   {
     id: 13,
@@ -128,7 +129,7 @@ export const users = [
     status: "active",
     age: "37",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/8.png",
-    email: "oliver.scott@example.com",
+    email: "oliver.scott",
   },
   {
     id: 14,
@@ -138,7 +139,7 @@ export const users = [
     status: "active",
     age: "30",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/8.png",
-    email: "grace.allen@example.com",
+    email: "grace.allen",
   },
   {
     id: 15,
@@ -148,7 +149,7 @@ export const users = [
     status: "paused",
     age: "31",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/9.png",
-    email: "noah.carter@example.com",
+    email: "noah.carter",
   },
   {
     id: 16,
@@ -158,7 +159,7 @@ export const users = [
     status: "active",
     age: "29",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/9.png",
-    email: "ava.perez@example.com",
+    email: "ava.perez",
   },
   {
     id: 17,
@@ -168,7 +169,7 @@ export const users = [
     status: "active",
     age: "28",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/11.png",
-    email: "liam.johnson@example.com",
+    email: "liam.johnson",
   },
   {
     id: 18,
@@ -178,7 +179,7 @@ export const users = [
     status: "active",
     age: "27",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/11.png",
-    email: "sophia.taylor@example.com",
+    email: "sophia.taylor",
   },
   {
     id: 19,
@@ -188,7 +189,7 @@ export const users = [
     status: "paused",
     age: "32",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/male/12.png",
-    email: "lucas.harris@example.com",
+    email: "lucas.harris",
   },
   {
     id: 20,
@@ -198,6 +199,6 @@ export const users = [
     status: "active",
     age: "26",
     avatar: "https://d2u8k2ocievbld.cloudfront.net/memojis/female/12.png",
-    email: "mia.robinson@example.com",
+    email: "mia.robinson",
   },
 ];
