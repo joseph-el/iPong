@@ -78,12 +78,12 @@
 }
 
 
+
+
 /* search-bar */
-
-
 .nav-bar {
     display: flex;
-    justify-content: space-between; /* Align items at the start, center, and end */
+    justify-content: space-between; 
     align-items: center;
     padding: 10px 20px; 
 
@@ -99,7 +99,7 @@
 
 .search-bar {
     display: flex;
-    justify-content: center; /* Center the content horizontally */
+    justify-content: center;
     align-items: center;
 }
 
@@ -110,189 +110,38 @@
 }
 
 .search-bar {
-    position: relative; /* Add this to make .SearchList absolute positioning work */
+    position: relative;
 }
 
 .SearchList {
     position: absolute;
     top: 100%;
-    padding: 10px;
+    padding: 5px;
     left: 3;
-    
     z-index: 1;
+}
+
+.notification-button {
+    margin-top: 3px;
+    width: 20px;
+    height: 20px;
+}
+
+.notification-button:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 
 
-@media (max-width: 640px) {
+@media (max-width: 750px) {
+
 
 
     .page-name-breadcrumb{
         background-color: red !important;
         display: none !important;
     }
-    
+
 
 }
-
-
-
-
-/*
-
-
-
-.nav-bar .SF-symbol-bell-fill {
-    height: 11.16px;
-    position: relative;
-    width: 10px;
-}
-
-.nav-bar .price {
-    background-color: #ffffff;
-    border-radius: 5.34px;
-    height: 16px;
-    position: relative;
-    width: 40px;
-}
-
-.nav-bar .v-bucks-removebg {
-    height: 9px;
-    left: 4px;
-    object-fit: cover;
-    position: absolute;
-    top: 4px;
-    width: 10px;
-}
-
-.nav-bar .text-wrapper-4 {
-    color: #000000;
-    font-family: "Burbank Big Condensed-Bold", Helvetica;
-    font-size: 8.5px;
-    font-weight: 700;
-    left: 15px;
-    letter-spacing: 0;
-    line-height: normal;
-    position: absolute;
-    top: 4px;
-    white-space: nowrap;
-}
-
-.nav-bar .div-2 {
-    align-items: center;
-    display: inline-flex;
-    flex: 0 0 auto;
-    gap: 6.48px;
-    position: relative;
-}
-
-.nav-bar .profile-picture {
-    height: 21.59px;
-    position: relative;
-    width: 21.59px;
-}
-
-.nav-bar .user-name-email {
-    align-items: flex-start;
-    display: inline-flex;
-    flex: 0 0 auto;
-    flex-direction: column;
-    gap: 1.08px;
-    position: relative;
-}
-
-.nav-bar .text-wrapper-5 {
-    color: #ffffff;
-    font-family: "Poppins-Medium", Helvetica;
-    font-size: 7.6px;
-    font-weight: 500;
-    letter-spacing: 0;
-    line-height: 10.8px;
-    margin-top: -0.54px;
-    position: relative;
-    white-space: nowrap;
-    width: fit-content;
-}
-
-.nav-bar .text-wrapper-6 {
-    color: #ffffffc9;
-    font-family: "Poppins-Regular", Helvetica;
-    font-size: 6.5px;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 8.6px;
-    position: relative;
-    white-space: nowrap;
-    width: fit-content;
-}
-
-.nav-bar .vuesax-linear-arrow-down {
-    background-image: url(./arrow-down.svg) !important;
-    height: 10.79px !important;
-    position: relative !important;
-    width: 10.79px !important;
-}
-
-.nav-bar .search-bar {
-    align-items: center;
-    background-color: var(--dark-themesearchbar-placeholder);
-    border-radius: 4.64px;
-    display: flex;
-    gap: 6.96px;
-    justify-content: center;
-    left: 422px;
-    padding: 4.64px 4.64px 4.64px 9.28px;
-    position: absolute;
-    top: 11px;
-    width: 232px;
-}
-
-.nav-bar .vuesax-linear-search {
-    height: 11.6px !important;
-    position: relative !important;
-    width: 11.6px !important;
-}
-
-.nav-bar .text-wrapper-7 {
-    color: var(--dark-themesubheader-text);
-    font-family: "Poppins-Regular", Helvetica;
-    font-size: 8.1px;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 11.6px;
-    margin-top: -0.58px;
-    position: relative;
-    white-space: nowrap;
-    width: fit-content;
-}
-
-
-*/
-
-
-
-/* My style */
-/*
-.navbar {
-    background-color: #000000;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.SearchInput {
-    max-width: 22rem;
-}
-
-
-.Searchbar {
-    width: 40%;
-    max-width: 25rem;
-
-    display: flex;
-    flex-direction: column;
-    gap: 5px; 
-   
-}
-
-*/
