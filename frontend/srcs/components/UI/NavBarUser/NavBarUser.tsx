@@ -38,7 +38,7 @@ export default function NavBarUser(props) {
                     
                 />
                 <div className='user-info'>
-                    <img src={DropDownArrow} alt='arrow down' className="img-info"/>
+                    <img src={DropDownArrow} alt='arrow down' onClick={props.onClick} className="img-info"/>
                 </div>
             </div>
         </>
