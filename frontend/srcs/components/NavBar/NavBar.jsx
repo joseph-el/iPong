@@ -11,12 +11,13 @@ import SearchList from '../UI/SearchList/SearchList';
 import {users} from "../UI/SearchList/data";
 import { SearchIcon } from '../UI/Input/SearchInput/SearchIcon';
 import NotifactionIcon from "../UI/Button/Notifications/notificationicon.svg"
-
+import Logout from '../UI/Logout/Logout';
 
 export default function NavBar() {
     const [activeSearch, setActiveSearch] = React.useState([])
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [searchTerm, setSearchTerm] = React.useState(true);
+    const [LogoutButton, setLogoutButton] = React.useState(false);
 
     useEffect(() => {
       const handleResize = () => {
@@ -95,7 +96,19 @@ export default function NavBar() {
                         
                         <img src={NotifactionIcon} alt="noticon" className="notification-button" />
 
-                        <NavBarUser fullName="Taha Naceur" email="tahanaceur48@icloud.ma" avatar="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg" />
+                        <NavBarUser fullName="Taha Naceur" email="tahanaceur48@icloud.ma" 
+                            onClick={() => {setLogoutButton(!LogoutButton)}}
+                        avatar="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg" />
+                        
+                        {
+                            LogoutButton ? 
+                                <div className="logout-button-down">
+                                    <Logout />
+                                </div> : null
+                        }
+
+                    
+                    
                     </div> : null
             }
 
