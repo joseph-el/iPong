@@ -1,6 +1,7 @@
 import React from "react";
 export const SearchIcon = (props) => (
   <svg
+    onClick={props.onClick}
     aria-hidden="true"
     fill="none"
     focusable="false"
