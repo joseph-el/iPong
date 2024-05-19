@@ -21,14 +21,23 @@
 }
 
 .price .text-wrapper {
-    color: #323030;
+    color: #CFD1D4 !important;
     font-family: "Poppins", sans-serif;
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 600;
     top: 1px;
     letter-spacing: 0;
     line-height: normal;
 
 
     white-space: nowrap;
+}
+
+
+.coins-button .bg-white{
+    background-color: rgba(255, 255, 255, 0.1)!important; 
+}
+
+.coins-button .bg-white:hover{
+    background-color: rgba(255, 255, 255, 0.2)!important; 
 }
