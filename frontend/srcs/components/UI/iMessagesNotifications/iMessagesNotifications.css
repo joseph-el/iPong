@@ -1,23 +1,61 @@
-
-
 .wrapper-style {
-    background-color: rgb(49, 49, 49, 0.7);
+    background-color: rgba(49, 49, 49, 0.7) !important;
     border: #beb8b836 solid 0.5px !important;
-    border-radius: 10px !important;
+    border-radius: 20px !important;
+
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    max-width: 310px;
+    max-height: 60.91px;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .time-of-notification {
-    position: absolute;
-    left: 75%;
-
     font-family: 'sfprodisplay-regular', sans-serif;
     font-size: 13px;
     font-weight: 450;
     letter-spacing: -0.6px;
     line-height: 26.6px;
     opacity: 0.5;
+}
 
+.imessage-icon {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    margin-left: 25px;
+    margin-top: 25px;
 }
 
 
+.notification-content .text-small {
+   
+    color: #ffffff;
+     font-family: "Poppins", sans-serif;
+     font-style: normal;
+     font-size: 12px;
+     font-weight: 450;
+     letter-spacing: 0;
+     line-height: normal;
+ 
+ }
+ 
+.notification-content .text-tiny {
+    
+     color: #ffffff;
+     font-family: "Poppins", sans-serif;
+     font-style: normal;
+     font-size: 10px;
+     font-weight: 400;
+     letter-spacing: 0;
+     line-height: normal;
+     opacity: 0.7;
+ }
 
