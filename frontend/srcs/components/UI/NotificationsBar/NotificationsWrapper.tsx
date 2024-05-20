@@ -1,6 +1,7 @@
 import React from "react";
+import './NotificationsBar.css';
 export const NotificationsWrapper = ({children}) => (
-  <div className="w-full max-w-[230px] border-small bg-black  px-1 py-2 rounded-small border-default-200 ">
+  <div className="NotificationsBar-box">
     {children}
   </div>
 );
