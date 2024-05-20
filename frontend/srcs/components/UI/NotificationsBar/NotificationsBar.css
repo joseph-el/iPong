@@ -1,0 +1,112 @@
+.css-16bqh9d {
+    padding: 0px !important;
+}
+
+.NotificationsBar-box {
+    background-color: rgba(17, 19, 22, 1);
+    border-radius: 21.08px;
+    left: 1px;
+    position: relative;
+    width: 365px;
+    max-width: 452px;
+    height: 500px;
+    max-height: 1000px;
+    margin: 5px;
+}
+
+.NotificationsNavbar {
+    background-color: #191c1f;
+    height: 75px;
+    width: 365px;
+    border-radius: 21.08px 21.08px 0px 0px;
+}
+
+.NotificationsNavbar .overlap-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 10px 10px 10px;
+
+}
+
+.NotificationsNavbar .text-wrapper {
+    color: #fffffff2;
+    font-family: "sfprodisplay-medium", serif;
+    font-size: 20px;
+    font-weight: 500;
+    height: 27px;
+    left: 0;
+    letter-spacing: -0.45px;
+    line-height: 19.8px;
+
+    text-align: center;
+   
+}
+
+.NotificationsNavbar .push-button {
+
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+}
+
+
+
+/* Override min-width */
+.NotificationsNavbar .min-w-16 {
+    min-width: auto; /* Remove min-width constraint */
+}
+
+/* Override height */
+.NotificationsNavbar .h-8 {
+    height: auto; /* Adjust height to fit content */
+}
+
+/* Override padding */
+.NotificationsNavbar .px-3 {
+    padding-left: 19.03px; /* Horizontal padding from .navbar .push-button */
+    padding-right: 19.03px;
+    padding-top: 5.44px; /* Vertical padding from .navbar .push-button */
+    padding-bottom: 5.44px;
+}
+
+/* Override gap */
+.NotificationsNavbar .gap-2 {
+    gap: 13.59px; /* Gap between elements inside the button from .navbar .push-button */
+}
+
+/* Override border-radius */
+.NotificationsNavbar .rounded-small {
+    border-radius: 8.16px; /* Border radius from .navbar .push-button */
+}
+
+/* Override background */
+.NotificationsNavbar .bg-primary {
+    background: linear-gradient(180deg, rgb(75, 145, 247) 0%, rgb(54, 122, 246) 100%); /* Background from .navbar .push-button */
+}
+
+/* Override text color */
+.NotificationsNavbar .text-primary-foreground {
+    color: #ffffff; /* Text color from .navbar .text */
+}
+
+/* Additional styles for complete matching */
+.NotificationsNavbar .new-button {
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    box-shadow: 0px 0.68px 2.04px #367af640;
+    position: absolute;
+    left: 428px;
+    top: 0;
+}
+
+.NotificationsNavbar .new-button .text {
+    font-family: "SF Pro Display-Medium", Helvetica;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1.36px;
+    position: relative;
+    width: fit-content;
+}
