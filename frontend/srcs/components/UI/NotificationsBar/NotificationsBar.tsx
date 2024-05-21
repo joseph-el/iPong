@@ -11,7 +11,9 @@ import ImessagesNotifications from "../iMessagesNotifications/iMessagesNotificat
 
 import FriendNotifications from "../FriendNotifications/FriendNotifications";
 
-const NotificationsNavbar = () => {
+import users from './data';
+
+const NotificationsNavbar = (props) => {
     return (
         <div className="NotificationsNavbar">
 
@@ -21,14 +23,11 @@ const NotificationsNavbar = () => {
                 <div className="text-wrapper">Notification Centre</div>
 
                 <div className="push-button">
-                    <Button size="sm" color="primary">
+                    <Button size="sm" color="primary" onClick={props.handelClearClick}>
                         Clear All
                     </Button>
-                    <Close ClassName="close" id="close" />
+                    <Close ClassName="close" func={props.func} id="close" />
                 </div>
-               
-
-
 
             </div>
         </div>
@@ -36,8 +35,51 @@ const NotificationsNavbar = () => {
 };
 
 
+const formatTimeDifference = (time: Date): string => {
+    const now = new Date();
+    const diffInMs = now.getTime() - time.getTime();
+    const diffInMinutes = Math.floor(diffInMs / 60000);
 
-export default function NotificationsBar() {
+    if (diffInMinutes < 60) {
+        return `${diffInMinutes} min`;
+    } else if (diffInMinutes < 1440) {
+        const hours = Math.floor(diffInMinutes / 60);
+        const minutes = diffInMinutes % 60;
+        return `${hours}h ${minutes} min`;
+    } else if (diffInMinutes < 43200) { 
+        const days = Math.floor(diffInMinutes / 1440);
+        const hours = Math.floor((diffInMinutes % 1440) / 60);
+        return `${days}d ${hours}h`;
+    } else { 
+        const months = Math.floor(diffInMinutes / 43200);
+        const days = Math.floor((diffInMinutes % 43200) / 1440);
+        return `${months}mo ${days}d`;
+    }
+};
+
+
+
+export default function NotificationsBar(props) {
+    
+
+    const [NotificationsElement, setNotificationsElement] = React.useState(users);
+
+    
+
+    const handelClearClick = () => {
+        setNotificationsElement([]);
+    }
+
+    const handelDeleteClick = (index) => {
+
+        setNotificationsElement((prev) => prev.filter((_, i) => i !== index));
+    }
+
+    const handelConfirmClick = (index) => {
+
+        setNotificationsElement((prev) => prev.filter((_, i) => i !== index));
+    }
+
     return (
         <div className="NotificationsBar-frame">
             <NotificationsWrapper>
@@ -45,39 +87,32 @@ export default function NotificationsBar() {
                     <Grid
                         templateAreas={`"header"
                                         "main"`}
-
-
-                        gridTemplateRows={'80px 1fr 10px'}
+                        gridTemplateRows={'62px 1fr 10px'}
                         gridTemplateColumns={'365px '}
                         h='500px'
                         gap='0'
                         color='blackAlpha.700'
                         fontWeight='bold'
                         >
-                        <GridItem pl='2' area={'header'}>
-                            <NotificationsNavbar/>
+                        <GridItem pl='2'  area={'header'}>
+                            <NotificationsNavbar handelClearClick={handelClearClick} func={props.func}/>
                         </GridItem>
+
                         <GridItem pl='2' h='full' area={'main'}>
-                        <ScrollShadow className="w-[350px] h-[400px]">
+                        
+                            <ScrollShadow size={20} hideScrollBar className="w-[356px] h-[435px]">
 
-                            <FriendNotifications />
-                            <ImessagesNotifications />
-                            <FriendNotifications />
-                            <ImessagesNotifications />
-                            <ImessagesNotifications />
-                            <ImessagesNotifications />
-                            <ImessagesNotifications />
-                            <ImessagesNotifications />
+                                {NotificationsElement.map((user, index) => {
+                                    const formattedTime = formatTimeDifference(user.time);
 
+                                    if (user.type === "ImessagesNotifications") {
+                                        return <ImessagesNotifications    key={index} name={user.name} avatar={user.avatar} time={formattedTime} />;
+                                    } else {
+                                        return <FriendNotifications deleteButton={() => handelDeleteClick(index)} confirmButton={() => handelConfirmClick(index)} key={index} name={user.name} avatar={user.avatar} time={formattedTime} />;
+                                    }
+                                })}
 
-
-
-                        </ScrollShadow>
-                            
-
-
-
-
+                            </ScrollShadow>
                         </GridItem>
                     </Grid>
 
@@ -88,78 +123,3 @@ export default function NotificationsBar() {
     );
 }
 
-
-
-
-
-
-/*
-@layer components {
-
-    .NotificationsNavbar .overlap-group {
-        height: 35px;
-        left: 0; 
-        position: relative;
-        top: 35px;
-        width: 365px;
-    }
-    
-    .NotificationsNavbar .close {
-        height: 35px;
-        right: 0; 
-        position: absolute;
-        top: 0;
-        width: 35px;
-    }
-    
-    .NotificationsNavbar .frame {
-        height: 33px;
-        left: 0;
-        position: absolute;
-        top: 2px;
-        width: 365px; 
-    }
-    
-    .NotificationsNavbar .text-wrapper {
-        color: #fffffff2;
-        font-family: "SF Pro Text-Medium", Helvetica;
-        font-size: 26.4px;
-        font-weight: 500;
-        height: 27px;
-        left: 0;
-        letter-spacing: -0.45px;
-        line-height: 19.8px;
-        position: absolute;
-        text-align: center;
-        top: 2px;
-        width: 100%; 
-    }
-    
-    .NotificationsNavbar .push-button {
-        align-items: flex-start;
-        background: linear-gradient(180deg, rgb(75, 145, 247) 0%, rgb(54, 122, 246) 100%);
-        border-radius: 8.16px;
-        box-shadow: 0px 0.68px 2.04px #367af640;
-        display: inline-flex;
-        gap: 13.59px;
-        justify-content: flex-end;
-        right: 0;
-        padding: 5.44px 19.03px;
-        position: absolute;
-        top: 0;
-    }
-    
-    .NotificationsNavbar .continue {
-        color: #ffffff;
-        font-family: "SF Pro Display-Medium", Helvetica;
-        font-size: 19px;
-        font-weight: 500;
-        letter-spacing: 0;
-        line-height: normal;
-        margin-top: -1.36px;
-        position: relative;
-        width: fit-content;
-    }
-    
-}
-*/
