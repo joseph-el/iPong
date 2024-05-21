@@ -11,23 +11,10 @@ import NotificationsBar from '../../components/UI/NotificationsBar/Notifications
 export default function Home() {
     return (
         <div className="Home">
-            <NotificationsBar />
+            {/* <NotificationsBar /> */}
           
 
-                <ImessagesNotifications />
-                <br></br>
-
-                <FriendNotifications />
-                <br></br>
-                <ImessagesNotifications />
-                <br></br>
-
-                <ImessagesNotifications />
-                <br></br>
-
-                <ImessagesNotifications />
-                <br></br>
-                <ImessagesNotifications />
+    
 
         </div>
     );
