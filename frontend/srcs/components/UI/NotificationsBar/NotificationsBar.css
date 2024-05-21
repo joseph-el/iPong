@@ -1,10 +1,11 @@
+.css-cz2izx,
 .css-16bqh9d {
     padding: 0px !important;
 }
 
 .NotificationsBar-box {
     background-color: rgba(17, 19, 22, 1);
-    border-radius: 21.08px;
+    border-radius: 15px;
     left: 1px;
     position: relative;
     width: 365px;
@@ -16,44 +17,53 @@
 
 .NotificationsNavbar {
     background-color: #191c1f;
-    height: 75px;
+    height: 55px;
     width: 365px;
-    border-radius: 21.08px 21.08px 0px 0px;
+    border-radius: 15px 15px 0px 0px;
+    border-bottom: 0.8px solid rgba(230, 209, 209, 0.27);
 }
 
 .NotificationsNavbar .overlap-group {
     display: flex;
-    justify-content: space-between;
-    padding: 25px 10px 10px 10px;
+    justify-content: space-around;
+    padding: 15px 10px 10px 10px;
 
 }
 
 .NotificationsNavbar .text-wrapper {
     color: #fffffff2;
     font-family: "sfprodisplay-medium", serif;
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 17px;
+    font-weight: 500 !important;
     height: 27px;
     left: 0;
+    padding: 5px 0px 0px 0px;
     letter-spacing: -0.45px;
     line-height: 19.8px;
-
-    text-align: center;
-   
+    padding-top: 8.5px;
 }
 
-.NotificationsNavbar .push-button {
 
+
+.NotificationsNavbar .push-button {
+    padding: 4px 0px 0px 45px;
     display: flex;
-    gap: 5px;
+    gap: 10px;
     justify-content: flex-end;
 }
 
 
+.NotificationsNavbar .SF-symbol-xmark{
+    width: 25px !important;
+    height: 25px !important;
+}
 
 /* Override min-width */
 .NotificationsNavbar .min-w-16 {
-    min-width: auto; /* Remove min-width constraint */
+   
+   height: 23px !important;
+   width: 80px !important;
+    /* Remove min-width constraint */
 }
 
 /* Override height */
@@ -89,24 +99,6 @@
     color: #ffffff; /* Text color from .navbar .text */
 }
 
-/* Additional styles for complete matching */
-.NotificationsNavbar .new-button {
-    display: inline-flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    box-shadow: 0px 0.68px 2.04px #367af640;
-    position: absolute;
-    left: 428px;
-    top: 0;
-}
 
-.NotificationsNavbar .new-button .text {
-    font-family: "SF Pro Display-Medium", Helvetica;
-    font-size: 19px;
-    font-weight: 500;
-    letter-spacing: 0;
-    line-height: normal;
-    margin-top: -1.36px;
-    position: relative;
-    width: fit-content;
-}
+
+
