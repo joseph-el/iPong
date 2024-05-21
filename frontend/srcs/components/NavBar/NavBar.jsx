@@ -14,13 +14,14 @@ import NotifactionIcon from "../UI/Button/Notifications/notificationicon.svg"
 import Logout from '../UI/Logout/Logout';
 import NotificationsBar from '../UI/NotificationsBar/NotificationsBar';
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
+import { Show } from '@chakra-ui/react';
 
 export default function NavBar() {
     const [activeSearch, setActiveSearch] = React.useState([])
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    const [searchTerm, setSearchTerm] = React.useState(true);
-    const [LogoutButton, setLogoutButton] = React.useState(false);
-    const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
+    const [searchTerm, setSearchTerm] = React.useState(true); // search bar is active
+    const [LogoutButton, setLogoutButton] = React.useState(false); // logout button is active
+    const [ShowNotificationBar, setShowNotificationBar] = React.useState(false); // notification bar is active
 
     useEffect(() => {
       const handleResize = () => {
@@ -53,22 +54,22 @@ export default function NavBar() {
         console.log(matchedUsers);
     };
 
-
     const handleIconClick = () => {
         setSearchTerm(!searchTerm);
     };
 
     const handelCloseNotificationBar = () => {
         setShowNotificationBar(!ShowNotificationBar);
+
     }
 
 
     return (
         <div className="nav-bar">
             
-
+            {/* LEFT ITEMS  state: ✅*/}
             <div className="page-name-breadcrumb">
-                
+                {/* TODO: set the current page using store redux! */}
                 <div className="text-wrapper">Configurations</div>
                 <div className="breadcumb">
                     <div className="div">Main Page</div>
@@ -77,75 +78,94 @@ export default function NavBar() {
                 </div>
             </div>
 
-
-                {
-                    (isWideScreen && searchTerm) ? 
-                        <SearchIcon  onClick={handleIconClick}    />
-                    :
-                        <div className="search-bar" >
-                            <SearchInput onChange={handleOnChange} /> 
-                            {
-                                activeSearch.length != 0 ?
+            {/* SEARCH ITEMS  */}
+            {
+                (isWideScreen && searchTerm) ? 
+                    <SearchIcon  onClick={handleIconClick}    />
+                :
+                    <div className="search-bar" >
+                        <SearchInput onChange={handleOnChange} /> 
+                        {
+                            activeSearch.length != 0 ?
                                 <div className='SearchList'>
-                                    <SearchList  users={activeSearch} />
-                                </div> : null
-                            }   
-
-                        </div>  
-                }
+                                    <SearchList users={activeSearch} />
+                                </div>  : null
+                        }
+                    </div>
+            }
+            
+            {/* RIGHT ITEMS  */}
             {
                 searchTerm  ?
                     <div className="right-side-menu">
 
-
                         <CoinsButton  coins="9999"/>
-                        <Dropdown placement="bottom-start" backdrop="blur">
+
+                        <Dropdown className='drop-down-notifications' placement="bottom" backdrop="blur" isOpen={ShowNotificationBar} shouldBlockScroll={false} >
                             <DropdownTrigger>
                                 <img src={NotifactionIcon} alt="noticon" className="notification-button" onClick={
-                                    () => setShowNotificationBar(!ShowNotificationBar)
+                                    () => {setShowNotificationBar(!ShowNotificationBar);}
                                 } />
                             </DropdownTrigger>
-                           
-                            <DropdownMenu aria-label="User Actions" variant="flat">
-                            
-                            
-                            <DropdownItem>
-                                <div className="show-notification-bar">
-                                    <NotificationsBar func={handelCloseNotificationBar} />
-                                </div>  
-                            </DropdownItem>
 
+                            <DropdownMenu >
+
+
+                                <DropdownItem className='show-notification-bar centered-notification-bar'>
+                                   
+                                        <NotificationsBar   func={handelCloseNotificationBar} />
+                               
+                                </DropdownItem>
+
+                    
 
                             </DropdownMenu>
-                             
-                            
-
 
                         </Dropdown>
 
-
-
                         <NavBarUser fullName="Taha Naceur" email="tahanaceur48@icloud.ma" username="tnaceur"
-                            onClick={() => {setLogoutButton(!LogoutButton)}}
-                        avatar="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg" />
-                        
-
-
-                        
-                        {
-                            LogoutButton ? 
-                                <div className="logout-button-down">
-                                    <Logout />
-                                </div> : null
-                        }
-
+                            onClick={() => {}}
+                            avatar="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg" />
                     
                     
                     </div> : null
             }
-
-
-            
         </div>
     );
 };
+
+
+
+/*
+
+            {
+                (isWideScreen && searchTerm) ? 
+                    <SearchIcon  onClick={handleIconClick}    />
+                :
+
+                
+                    <div className="search-bar" >
+
+                        <Dropdown placement="bottom-start" backdrop="blur" isOpen={searchTerm} shouldBlockScroll={false} >
+                        
+                    <DropdownTrigger>
+                        <SearchInput onChange={handleOnChange} /> 
+                    </DropdownTrigger>
+                        
+                    <DropdownMenu  aria-label="User Actions" variant="flat"  >
+                        <DropdownItem >
+                        {
+                            activeSearch.length != 0 ?
+                            <div className='SearchList'>
+                                <SearchList users={activeSearch} />
+                            </div> : null
+                        }
+                        </DropdownItem>
+                    </DropdownMenu>
+                        
+                </Dropdown>
+                    </div>  
+
+
+            }
+*/
