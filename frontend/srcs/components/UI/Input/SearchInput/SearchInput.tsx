@@ -12,7 +12,7 @@ export default function SearchInput(props) {
   
   return (
     <div className="flex justify-center search">
-      <div className="flex w-full justify-center w-48 sm:w-48 md:w-64 lg:w-64 xl:w-72 2xl:w-80">
+      <div className="flex w-full justify-center w-[226px] sm:w-48 md:w-64 lg:w-64 xl:w-72 2xl:w-80">
         <Input
           onChange={props.onChange}
           isClearable
