@@ -123,7 +123,7 @@
 
 .right-side-menu{
     position: relative;
-    
+   
 }
 
 .logout-button-down {
@@ -134,19 +134,50 @@
     z-index: 1;   
 }
 
-.show-notification-bar{
-    position: absolute;
-    top: 100%;
-    right: 58%;
-    padding: 15px 0px 0px 50px;
+ .show-notification-bar{
 
-    z-index: 1;   
+    border: 0px !important;
+    background-color: transparent !important;
+    border-radius: 0px !important;
+    width: max-content;
+    height: max-content;
+    z-index: 1; 
+} 
+
+@media (max-width: 630px) {
+    .centered-notification-bar {
+        position: fixed;
+        top: 3400%;
+        right: 5000%;
+        transform: translate(-57%, -50%);
+        z-index: 1000; /* Ensure it's above other elements */
+
+  
+  
+    }
 }
+
+.drop-down-notifications {
+    
+    all: unset !important;
+}
+
+
+
+
+
+
+
+
+
+
 
 .notification-button {
     margin-top: 3px;
     width: 20px;
     height: 20px;
+    z-index: 999999;
+    position: relative;
 }
 
 .notification-button:hover {
@@ -154,24 +185,15 @@
     opacity: 0.8;
 }
 
-
-
 @media (max-width: 630px) {
 
     .show-notification-bar {
         position: absolute;
-
-   
         left: 0%;
         right: 0%;
-    
         z-index: 1;
     }
 }
-
-
-
-
 
 
 @media (min-width: 1150px) {
@@ -182,6 +204,8 @@
 
     }
 }
+
+
 
 
 @media (max-width: 750px) {
