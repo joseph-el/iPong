@@ -3,54 +3,44 @@ import './FriendNotifications.css';
 import {FriendNotificationsWrapper} from "./FriendNotificationsWrapper";
 import {User} from "@nextui-org/react";
 
-export const Actions = () => {
+export const Actions = (props) => {
     return (
         <div className="actions">
 
             <div className="alert-item">
-                <div className="action">Delete</div>
+                <div className="action" onClick={props.deleteButton}>Delete</div>
             </div>
 
             <div className="action-wrapper">
-                <div className="text-wrapper">Confirm</div>
+                <div className="text-wrapper" onClick={props.confirmButton}>Confirm</div>
             </div>
 
         </div>
     );
-};
+}
 
 
-
-export default function FriendNotifications() {
+export default function FriendNotifications(props) {
 
     return (
-        
+
         <div className="FriendNotifications-frame">
-
-        
             <FriendNotificationsWrapper>
-
                 <div className="wrapper-style-request">
                     <div className="FriendNotifications-content">
                         <User   
                             name="Friend Request"
-                            description="Zakaria El-khadir send you a friend request"
+                            description={ props.name + " send you a friend request"}
                             avatarProps={{
-                                src: "https://cdn.intra.42.fr/users/d253bf077c4fb611910625bca09ce269/zel-khad.jpeg"
+                                src: props.avatar
                             }}
                         />
                         <div className="FriendNotifications-time">
-                            15m ago
+                            {props.time}
                         </div>
-
                     </div>
-
                 </div>
-
-                <Actions />
-            
-                        
-
+                <Actions confirmButton={props.confirmButton} deleteButton={props.deleteButton} />
             </FriendNotificationsWrapper>
         </div>
     );
