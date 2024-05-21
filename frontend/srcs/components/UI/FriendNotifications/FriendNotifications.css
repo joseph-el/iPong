@@ -66,8 +66,8 @@ You can apply the theme on any DOM node, not just the `body`
     background-color: rgba(49, 49, 49, 0.7) !important;
     border: #beb8b836 solid 0.5px !important;
     border-radius: 20px !important;
-    max-width: 310px;
-    /* max-height: 150px; */
+    max-width: 347px;
+    margin: 0px 0px 5px 9px;
 } 
 
 .FriendNotifications-frame
@@ -87,6 +87,8 @@ You can apply the theme on any DOM node, not just the `body`
 }
 
 .FriendNotifications-time {
+    color: rgba(234, 234, 234, 1);
+
     font-family: 'sfprodisplay-regular', sans-serif;
     font-size: 13px;
     font-weight: 450;
@@ -118,14 +120,15 @@ You can apply the theme on any DOM node, not just the `body`
  
 .FriendNotifications-content .text-tiny {
     
-     color: #ffffff;
+     color: #ffffff !important;
      font-family: "Poppins", sans-serif;
      font-style: normal;
      font-size: 10px;
-     font-weight: 400;
+     font-weight: 450;
      letter-spacing: 0;
      line-height: normal;
      opacity: 0.7;
+     max-width: 217.34px;
  }
 
 
@@ -134,7 +137,7 @@ You can apply the theme on any DOM node, not just the `body`
     align-items: flex-start;
     display: flex;
     justify-content: center;
-    padding: 0px 0px 20px 0px; 
+    padding: 0px 7px 20px 0px; 
 
     /* padding: 48.28px 0px 0px; */
     position: relative;
@@ -166,6 +169,13 @@ You can apply the theme on any DOM node, not just the `body`
     margin-top: -1.62px;
     position: relative;
     text-align: center;
+    padding-right: 10px;
+}
+
+.actions .action:hover {
+    color: #ff0000e0;
+    cursor: pointer;
+
 }
 
 .actions .action-wrapper {
@@ -179,6 +189,8 @@ You can apply the theme on any DOM node, not just the `body`
     width: 75px;
 }
 
+
+
 .actions .text-wrapper {
     color: #007aff;
     flex: 1;
@@ -188,7 +200,14 @@ You can apply the theme on any DOM node, not just the `body`
     font-weight: var(--body-bold-font-weight);
     letter-spacing: var(--body-bold-letter-spacing);
     line-height: var(--body-bold-line-height);
-    margin-top: -1.59px;
+    margin-top: -1px;
     position: relative;
     text-align: center;
+    padding-left: 13px;
+    padding-top: 7px;
+}
+
+.actions .text-wrapper:hover {
+    color: #007bffd4;
+    cursor: pointer;
 }
