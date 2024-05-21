@@ -8,6 +8,9 @@ export default function UserProfile(props) {
         <>
             <div className='UserProfile-frame'>
                 User
+                <div className='UserProfile-info'>
+                <div className='UserProfile-info-item'>
+                </div>
             </div>
         </>
     );
