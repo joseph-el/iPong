@@ -12,12 +12,15 @@ import {users} from "../UI/SearchList/data";
 import { SearchIcon } from '../UI/Input/SearchInput/SearchIcon';
 import NotifactionIcon from "../UI/Button/Notifications/notificationicon.svg"
 import Logout from '../UI/Logout/Logout';
+import NotificationsBar from '../UI/NotificationsBar/NotificationsBar';
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
 
 export default function NavBar() {
     const [activeSearch, setActiveSearch] = React.useState([])
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [searchTerm, setSearchTerm] = React.useState(true);
     const [LogoutButton, setLogoutButton] = React.useState(false);
+    const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
 
     useEffect(() => {
       const handleResize = () => {
@@ -54,7 +57,12 @@ export default function NavBar() {
     const handleIconClick = () => {
         setSearchTerm(!searchTerm);
     };
-    
+
+    const handelCloseNotificationBar = () => {
+        setShowNotificationBar(!ShowNotificationBar);
+    }
+
+
     return (
         <div className="nav-bar">
             
@@ -84,21 +92,45 @@ export default function NavBar() {
                             }   
 
                         </div>  
-                
                 }
-
             {
                 searchTerm  ?
                     <div className="right-side-menu">
 
 
                         <CoinsButton  coins="9999"/>
-                        
-                        <img src={NotifactionIcon} alt="noticon" className="notification-button" />
+                        <Dropdown placement="bottom-start" backdrop="blur">
+                            <DropdownTrigger>
+                                <img src={NotifactionIcon} alt="noticon" className="notification-button" onClick={
+                                    () => setShowNotificationBar(!ShowNotificationBar)
+                                } />
+                            </DropdownTrigger>
+                           
+                            <DropdownMenu aria-label="User Actions" variant="flat">
+                            
+                            
+                            <DropdownItem>
+                                <div className="show-notification-bar">
+                                    <NotificationsBar func={handelCloseNotificationBar} />
+                                </div>  
+                            </DropdownItem>
 
-                        <NavBarUser fullName="Taha Naceur" email="tahanaceur48@icloud.ma" 
+
+                            </DropdownMenu>
+                             
+                            
+
+
+                        </Dropdown>
+
+
+
+                        <NavBarUser fullName="Taha Naceur" email="tahanaceur48@icloud.ma" username="tnaceur"
                             onClick={() => {setLogoutButton(!LogoutButton)}}
                         avatar="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg" />
+                        
+
+
                         
                         {
                             LogoutButton ? 
