@@ -39,6 +39,16 @@
 
 
 
+
+
+
+.bg-content1 {
+    background-color: rgba(17, 19, 22, 1) !important;  /* Assuming --content1 is a custom property */
+}
+
+
+
+
 @media (max-width: 1150px) {
 
     .img-info {
