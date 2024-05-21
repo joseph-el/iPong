@@ -38,13 +38,18 @@
 }
 
 
-
-
-
-
-.bg-content1 {
-    background-color: rgba(17, 19, 22, 1) !important;  /* Assuming --content1 is a custom property */
+.NavBarUser
+.bg-content1 ,
+.bg-background
+{
+    background-color: rgba(17, 19, 22, 1) !important; 
 }
+
+
+
+
+
+
 
 
 
