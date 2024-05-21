@@ -170,6 +170,8 @@ You can apply the theme on any DOM node, not just the `body`
     position: relative;
     text-align: center;
     padding-right: 10px;
+    padding-top: 7px;
+
 }
 
 .actions .action:hover {
