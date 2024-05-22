@@ -1,3 +1,36 @@
 .UserProfile-frame {
-    background-color: red;
+    width: 100%;
+    height: 100%; 
+    background-color: black;
+  }
+  
+  .user-cover-image {
+    width: 100%; 
+    height: 180px;
+    object-fit: cover;
+    border-radius: 0px 0px 30px 30px;
+  }
+
+.profile-cover {
+    position: relative;
 }
+
+.profile-cover
+.avatar {
+    position: absolute;
+    top: 60%;
+    left: 5%;
+    border: 5px solid rgb(0, 0, 0);
+
+}
+
+.user-LevelBar {
+    position: absolute;
+    top: 30%;
+    right: 35%;
+}
+  
+  .css-mt257t,
+  .css-ozxp7e {
+    padding: 0px !important;
+  }
