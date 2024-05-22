@@ -11,7 +11,9 @@ import LogoStoreNoSelected from './assets/LogoStoreNoSelected.svg';
 import LogoStoreSelected from './assets/LogoStoreSelected.svg';
 import LogoUserProfileNoSelected from './assets/LogoUserProfileNoSelected.svg';
 import LogoUserProfileSelected from './assets/LogoUserProfileSelected.svg';
+import { redirect } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
 
 enum SideBarIcons {
     UNK = 0,
@@ -21,13 +23,15 @@ enum SideBarIcons {
     USER_PROFILE = 4,
 }
 
-export  function SideBar() {
+export default function SideBar() {
     const [selectedIcon, setActive] = useState(SideBarIcons.UNK);
     
     
     const handleIconClick = (param, route) => {
         setActive(param);
-        // navigate(route); // TODO: navigate
+        console.log("route", route);
+        window.location.replace(route);
+      
     };
 
     const getIconSrc = (iconIndex) => {
@@ -55,7 +59,7 @@ export  function SideBar() {
                             <img className="icon-wrapper" alt="Icons system house" src={getIconSrc(SideBarIcons.HOME)} onClick={() => handleIconClick(SideBarIcons.HOME, '/home')} />
                             <img className="icon-wrapper" alt="Icons system house" src={getIconSrc(SideBarIcons.CHAT)} onClick={() => handleIconClick(SideBarIcons.CHAT, '/chat')} />
                             <img className="icon-wrapper" alt="Icons system house" src={getIconSrc(SideBarIcons.STORE)} onClick={() => handleIconClick(SideBarIcons.STORE, '/store')} />
-                            <img className="icon-wrapper" alt="Icons system house" src={getIconSrc(SideBarIcons.USER_PROFILE)} onClick={() => handleIconClick(SideBarIcons.USER_PROFILE, '/user-profile')} />
+                            <img className="icon-wrapper" alt="Icons system house" src={getIconSrc(SideBarIcons.USER_PROFILE)} onClick={() => handleIconClick(SideBarIcons.USER_PROFILE, '/users')} />
                         </div>
                     </div>
                 </div>
