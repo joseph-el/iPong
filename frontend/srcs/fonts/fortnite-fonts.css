@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'fortnite-1';
+    src: url('fortnite_font1.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'fortnite-2';
+    src: url('fortnite_font2.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
