@@ -1,7 +1,6 @@
 
 const { nextui } = require("@nextui-org/react");
 
-
 export default {
   content: [
     "./index.html",
@@ -11,11 +10,11 @@ export default {
   theme: {
     extend: {
       height: {
-        '128': '37rem', // 2xl
-        '118': '34.5rem', // xl
-        '108': '32rem', // lg
-        '98': '29.5rem', // md
-        '88': '27rem', // sm
+        '128': '37rem',    // 2xl
+        '118': '34.5rem',   // xl
+        '108': '32rem',     // lg
+        '98': '29.5rem',    // md
+        '88': '27rem',      // sm
       },      
       width: {
         '128': '32rem', // 2xl
