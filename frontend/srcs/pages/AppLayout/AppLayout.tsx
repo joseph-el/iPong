@@ -1,13 +1,15 @@
 import React from 'react'
 import { Grid, GridItem } from '@chakra-ui/react'
-import { SideBar } from '../../components/SideBar/SideBar';
+import  SideBar  from '../../components/SideBar/SideBar';
 import {Divider} from "@nextui-org/divider";
 import NavBar from '../../components/NavBar/NavBar';
 import './AppLayout.css';
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router,Outlet, Route, Link, BrowserRouter, Routes } from 'react-router-dom';
 
 import LiveChat from '../../components/LiveChat/LiveChat';
 import Home from '../Home/Home';
+import UserProfile from '../UserProfile/UserProfile';
 
 export default function AppLayout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -50,11 +52,30 @@ export default function AppLayout() {
       </GridItem>
 
       <GridItem pl='2' area={'sidebar'}>
+
+
+
         <SideBar />
+      
+      
+      
+      
       </GridItem>
 
       <GridItem pl='2'  area={'main'} w="full" h="full">
-        <Home />
+        
+        
+      <BrowserRouter>
+                <Routes>
+                    <Route path='/home' element={    <Home/>    } /> 
+                    <Route path='/Users' element={    <UserProfile/>    } /> 
+  
+                </Routes>
+      </BrowserRouter>
+        
+
+
+
       </GridItem>
     {
       isWideScreen ? null
