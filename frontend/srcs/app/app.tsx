@@ -10,19 +10,16 @@ import SetUserNameAndPicture from '../components/AuthComponents/SetUserNameAndPi
 import WeSentCodeAndPassword from '../components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword'
 
 import SignAuth from '../pages/SignAuth/SignAuth'
-import { SideBar } from '../components/SideBar/SideBar'
 import AppLayout from '../pages/AppLayout/AppLayout'
  import { ChakraProvider } from '@chakra-ui/react'
 
 export default function App() {
     return (
         <>
-        <ChakraProvider>
-          
-            {/* <SignAuth/> */}
-          <AppLayout/>
 
-        </ChakraProvider>
+            <ChakraProvider>
+              <AppLayout/>
+            </ChakraProvider>
 
         </>
     );
