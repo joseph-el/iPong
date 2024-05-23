@@ -8,22 +8,22 @@
 
 .level .overlap {
     height: 59px;
-    left: 93px;
+    left: 125px;
     position: absolute;
-    top: 5px;
+    top: 10px;
     width: 326px;
 }
 
 .level .LEVEL {
     color: transparent;
-    font-family: "fortnite-2", Helvetica;
-    font-size: 35px;
+    font-family: "fortnite-1", Helvetica;
+    font-size: 45px;
     font-weight: 900;
     left: 5px;
-    letter-spacing: 0;
+    letter-spacing: 1px;
     line-height: normal;
     position: absolute;
-    top: 0;
+    top: -10px;
     white-space: nowrap;
 }
 
@@ -75,26 +75,24 @@
 .level .div {
     color: #5d6a85;
     font-family: "fortnite-1", serif;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 900;
-    left: 215px;
+    left: 315px;
     letter-spacing: 0;
     line-height: normal;
     position: absolute;
-    top: 5px;
+    top: 12px;
     white-space: nowrap;
 }
 
 .level .element {
-    height: 86px;
-    left: -8px;
+    height: 150px;
+    left: -25px;
     position: absolute;
-    top: -6px;
+    top: -30px;
     transform: rotate(-0.07deg);
-    width: 88px;
+    width: 150px !important;
 }
-
-
 
 .container {
     width: 100%;
@@ -103,37 +101,31 @@
   }
   
   .box1 {
-    width: 323.5px;
-    height: 24px;
+    width: 460px;
+    height: 35px;
     position: absolute;
     background: #1E1F1F;
-    border: 1px solid;
+    border: 0px solid red;
     transform: skewX(-20deg);
     left: 0;
-    top: 0;
+    top: 2px;
   }
   
   .box2 {
-    width: 131.5px;
-    height: 22px;
+    width: 210px;
+    height: 38px;
     position: absolute;
-    background: white;
-    border: 1px solid;
+    background: rgb(255, 255, 255);
+    border: 0px solid red;
     transform: skewX(-20deg);
     left: 0;
-    top: 3px;
+    top: 0px;
   }
   
-  .text {
-    position: absolute;
-    color: #5D6A85;
-    font-size: 15px;
-    font-family: 'Burbank Big Condensed';
-    font-weight: 700;
-    left: 215px;
-    top: 6.25px;
-    white-space: nowrap;
-  }
+
+
+  
+
   
 
 
