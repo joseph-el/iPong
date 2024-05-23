@@ -1,3 +1,9 @@
+.css-mt257t,
+.css-ozxp7e {
+  padding: 0px !important;
+}
+
+
 .UserProfile-frame {
     width: 100%;
     height: 100%; 
@@ -9,28 +15,150 @@
     height: 180px;
     object-fit: cover;
     border-radius: 0px 0px 30px 30px;
+
   }
 
+.user-verification-badge {
+  width: 20px;
+  height: 20px;
+}
 .profile-cover {
     position: relative;
+    margin-bottom: 45px;
 }
 
+.text-styled-primary:focus-within {
+  color: red !important;
+}
+
+.text-styled-primary {
+    /* color: #999999 !important; */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 8.95px;
+    display: inline-block;
+
+}
 .profile-cover
 .avatar {
     position: absolute;
     top: 60%;
-    left: 5%;
     border: 5px solid rgb(0, 0, 0);
-
+    left: 5%;
+    /* left: 40%;
+    z-index: 1; */
 }
 
 .user-LevelBar {
     position: absolute;
     top: 30%;
-    right: 35%;
+    right: 37%;
+}
+
+.users-tabs {
+  padding-left: 10px;
 }
   
-  .css-mt257t,
-  .css-ozxp7e {
-    padding: 0px !important;
-  }
+
+
+.User-details-and-menu {
+  padding: 5px 20px 0px 20px;
+  display: flex;
+  gap: 10px;
+
+}
+
+.user-fullname-and-username {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-left: 2%;
+
+}
+
+.user-fullname-and-verification-badge {
+  display: flex;
+  gap: 10px;
+}
+
+
+.menu-icon {
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+}
+
+.user-fullname{
+
+  color: var(--Dark-color-Text-content, #ECECEC);
+  font-family: 'Poppins', sans-serif;
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20.704px; 
+}
+
+.groupParent {
+  /* margin-left: 30px; */
+
+  border-radius: 33.57px;
+  background-color: #21242a;
+  width: 160px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+
+.tnaceur {
+  
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+
+  font-size: 14px;
+  line-height: 8.95px;
+  font-weight: 400;
+  display: inline-block;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @media (max-width: 1000px) {
+    .level .div,
+    .box2,
+    .box1{
+      display: none;
+    }
+    .user-LevelBar {
+      top: 30%;
+      right: -40%;
+      left: 35%;
+    }
+    .level .LEVEL {
+      top: 10px !important;
+
+    }
+
+
+}
