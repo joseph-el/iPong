@@ -13,11 +13,14 @@ import SignAuth from '../pages/SignAuth/SignAuth'
 import AppLayout from '../pages/AppLayout/AppLayout'
  import { ChakraProvider } from '@chakra-ui/react'
 
+ import MatchHistory from '../components/UI/MatchHistory/MatchHistory'
 export default function App() {
     return (
         <>
 
             <ChakraProvider>
+
+                {/* <MatchHistory/> */}
               <AppLayout/>
             </ChakraProvider>
 
