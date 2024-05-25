@@ -11,138 +11,195 @@ import {Divider} from "@nextui-org/react";
 import VerifiedBadge from './Verified-badge.svg'
 import MatchHistory from '../../components/UI/MatchHistory/MatchHistory'
 
-export default function UserProfile(props) {
+import LocationIcon from './LocationIcon.svg'
+import CalendarIcon from './CalendarIcon.svg'
 
-    const currentLevel = 2;
-    const currentXp = 1000;
-    const nextLevelXp = 30000;
+import ArchivementIcon from './archivementicon.svg'
+import SecutityIcon from './securityicon.svg'
+import EditIcon from './editicon.svg'
+
+
+const UserDescriptions = () => {
     return (
-        <div className='UserProfile-frame'>
-          
-
-           <div className='profile-cover'>
-                <img className='user-cover-image' alt="NextUI Fruit Image with Zoom" src={CoverImage}/>
-                <Avatar   src="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg" className="w-28 h-28 text-large avatar" />
-                <div className='user-LevelBar'>
-                    <LevelBar/>
+        <div className="info">
+            {/* <p className="description">
+                أُحِبُّ الصَّالِحِينَ وَلَسْتُ مِنْهُمْ لَـعَـلِّـي أَنْ أَنَـالَ بِـهِـمْ شَـفَاعَة وَأَكْـرَهُ مَـنْ
+                تِـجَارَتُهُ الْمَعَاصِي وَلَـوْ كُـنَّـا سَـوَاءً فِي الْبِضَاعَة🌼
+            </p> */}
+            <p className="description">
+            Unraveling the mysteries of life, from cells to ecosystems. Join the journey! 🌱🔬 Science and discovery.
+            </p>
+            <div className="meta-details">
+                <div className="div-2">
+                    <img className="img" alt="Location icon" src={LocationIcon} />
+                    <div className="text-wrapper-2">Maroc</div>
+                </div>
+                <div className="div-2">
+                    <img className="img" alt="Calendar icon" src={CalendarIcon} />
+                    <div className="text-wrapper-2">Joined fav 2024</div>
                 </div>
             </div>
 
-            <div className='User-details-and-menu'>
-
-                <div className='user-fullname-and-username'>
-                    <div className='user-fullname-and-verification-badge'>
-                        <p className='user-fullname'> Taha Naceur </p>
-                        <img src={VerifiedBadge} alt='verified-badge' className='user-verification-badge'/>
-                    </div>
-
-                    <div className="groupParent">
-                        <div className="tnaceur">@tnaceur</div>
-                    </div>
-
+            <div className="follower-counts">
+                <div className="following">
+                    <div className="text-wrapper">95</div>
+                    <div className="div">Following</div>
+                </div>
             </div>
-
-                <Dropdown backdrop="blur">
-                    <DropdownTrigger>
-                        <img src={MenuIcon} alt='menu-icon' className='menu-icon'/>
-                    </DropdownTrigger>
-
-                    <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
-                
-                        <DropdownItem
-                            key="new"
-                        
-                            startContent={<img src={VerifiedBadge} alt='menu-icon' className='menu-icon'/>}
-                        >
-                        New file
-                        </DropdownItem>
-
-                        <DropdownItem
-                            key="new"
-                      
-                            startContent={<img src={VerifiedBadge} alt='menu-icon' className='menu-icon'/>}
-                        >
-                        New file
-                        </DropdownItem>
-
-                        <DropdownItem
-                            key="new"
-                            startContent={<img src={VerifiedBadge} alt='menu-icon' className='menu-icon'/>}
-                        >
-                        New file
-                        </DropdownItem>
-
-
-                    </DropdownMenu>
-                </Dropdown>
-            </div>
-     
-
-
-            <div className='users-tabs'>
-
-                    <div className="flex w-full flex-col">
-                    <Tabs 
-                        aria-label="Options" 
-                        color="primary" 
-                        variant="underlined"
-                        classNames={{
-                        tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-                        cursor: "w-full bg-[#119CF1] ",
-                        tab: "max-w-fit px-0 h-12",
-                        tabContent: "text-styled-primary "
-                        }}
-                    >
-                        <Tab
-                            key="photos"
-                            title={
-                                <div className="flex items-center space-x-2 ">
-
-                                    <span>Match History </span>
-    
-                                </div>
-                            }
-                        >
-                          {/* <MatchHistory/> */}
-                          <Divider className="w-full" />
-                        </Tab>
-
-
-                        <Tab
-                            key="music"
-                            title={
-                                <div className="flex items-center space-x-2">
-
-                                    <span>Friends</span>
-
-                                </div>
-                            }
-                        />
-                        
-                        <Tab
-                        key="videos"
-                                title={
-                                    <div className="flex items-center space-x-2 ">
-
-                                        <span>Blocked</span>
-
-                                    </div>
-                                }
-                        />
-                    </Tabs>
-                    </div>  
-            </div>
-            
-            
-
-             
-
         </div>
-        
     );
+};
 
 
+export default function UserProfile(props) {
+  return (
+    <div className="UserProfile-frame">
+
+      <div className="profile-cover">
+        <img
+          className="user-cover-image"
+          alt="NextUI Fruit Image with Zoom"
+          src={CoverImage}
+        />
+        <Avatar
+          src="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg"
+          className="w-28 h-28 text-large avatar"
+        />
+        <div className="user-LevelBar">
+          <LevelBar />
+        </div>
+      </div>
+
+
+      <div className="User-details-and-menu">
+        <div className="user-fullname-and-username">
+          <div className="user-fullname-and-verification-badge">
+            <p className="user-fullname"> Taha Naceur </p>
+            <img
+              src={VerifiedBadge}
+              alt="verified-badge"
+              className="user-verification-badge"
+            />
+          </div>
+
+          <div className="groupParent">
+            <div className="tnaceur">@tnaceur</div>
+          </div>
+            <UserDescriptions/>
+        </div>
+
+        <Dropdown backdrop="blur" className='menu-icon-dropdown-frame'>
+          <DropdownTrigger>
+            <img src={MenuIcon} alt="menu-icon" className="menu-icon" />
+          </DropdownTrigger>
+
+          <DropdownMenu  color='primary' aria-label="Dropdown menu with icons">
+            <DropdownItem
+              className='menu-item-dropdown-font'
+              key="new"
+              startContent={
+                <img
+                  src={ArchivementIcon}
+                  alt="menu-icon"
+                  className="menu-icon-dropdown"
+                />
+              }
+            >
+              Achievement 
+            </DropdownItem>
+
+            <DropdownItem
+              className='menu-item-dropdown-font'
+              key="new"
+              startContent={
+                <img
+                  src={EditIcon}
+                  alt="menu-icon"
+                  className="menu-icon-dropdown"
+                />
+              }
+            >
+             Edit Profile
+            </DropdownItem>
+      
+            <DropdownItem
+            className='menu-item-dropdown-font'
+              key="new"
+              startContent={
+                <img
+                  src={SecutityIcon}
+                  alt="menu-icon"
+                  className="menu-icon-dropdown"
+                />
+              }
+            >
+              Edit Security
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+
+
+
+      </div>
+
+
+
+      <div className="users-tabs">
+        <div className="flex w-full flex-col">
+          
+          <Tabs
+            aria-label="Options"
+            color="primary"
+            variant="underlined"
+            classNames={{
+              tabList:
+                "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+              cursor: "w-full bg-[#119CF1]",
+              tab: "max-w-fit px-0 h-12",
+              tabContent:
+                "group-data-[selected=true]:text-[#ECECEC] text-styled-primary",
+            }}
+          >
+            <Tab
+              key="history"
+              title={
+                <div className="flex items-center space-x-2 ">
+                  <span>Match History </span>
+                </div>
+              }
+            >
+
+        
+
+                <MatchHistory />
+           
+            </Tab>
+
+            <Tab
+              key="friends"
+              title={
+                <div className="flex items-center space-x-2">
+                  <span>Friends</span>
+                </div>
+              }
+            />
+
+            <Tab
+              key="blocked"
+              title={
+                <div className="flex items-center space-x-2 ">
+                  <span>Blocked</span>
+                </div>
+              }
+            />
+          </Tabs>
+        </div>
+      </div>
+      
+    </div>
+  );
 }
+
 
 
 

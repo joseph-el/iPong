@@ -52,26 +52,17 @@ export default function AppLayout() {
       </GridItem>
 
       <GridItem pl='2' area={'sidebar'}>
-
-
-
-        <SideBar />
-      
-      
-      
-      
+        <SideBar />      
       </GridItem>
 
-      <GridItem pl='2'  area={'main'} w="full" h="full">
+      <GridItem pl='2'  area={'main'} w="full" h="full" >
         
-        
-      <BrowserRouter>
-                <Routes>
-                    <Route path='/home' element={    <Home/>    } /> 
-                    <Route path='/Users' element={    <UserProfile/>    } /> 
-  
-                </Routes>
-      </BrowserRouter>
+          <BrowserRouter>
+                    <Routes>
+                        <Route path='/home' element={    <Home/>    } /> 
+                        <Route path='/Users' element={    <UserProfile/>    } /> 
+                    </Routes>
+          </BrowserRouter>
         
 
 

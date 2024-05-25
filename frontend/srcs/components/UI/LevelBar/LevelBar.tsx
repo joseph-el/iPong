@@ -18,21 +18,53 @@ const MyComponent = () => {
   );
 };
 
-export const LevelBar = () => {
-  
-    return (
-        <div className="level  w-16  ">
-            <div className="overlap">
+
+
+
+export function LevelBar() {
+  return (
+        <div className="levels w-max  ">
+
+            <img className="element" alt="Element" src={LevelImg} />
+
+            <div className="score">
                 <p className="LEVEL">
                     <span className="text-wrapper">LEVEL</span>
                     <span className="span"> </span>
                     <span className="text-wrapper-2">2</span>
                 </p>
+
                 <div className="group">
                     <div className="overlap-group">
                     <MyComponent/>
                         <p className="div"
-                    
+                        >30,000 XP to LVL 3</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+  );
+
+}
+export const LevelBars = () => {
+  
+    return (
+        <div className="level w-max  ">
+
+            <div className="overlap">
+              
+                <p className="LEVEL">
+                    <span className="text-wrapper">LEVEL</span>
+                    <span className="span"> </span>
+                    <span className="text-wrapper-2">2</span>
+                </p>
+
+                <div className="group">
+                    <div className="overlap-group">
+                    <MyComponent/>
+                        <p className="div"
                         >30,000 XP to LVL 3</p>
                     </div>
                 </div>

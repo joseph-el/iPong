@@ -4,10 +4,14 @@ import App from './app/app'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import {store} from "./state/store.ts"
-
+import {NextUIProvider} from "@nextui-org/react";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <Provider store={store}>
+    <React.StrictMode>
+    <NextUIProvider>
+      <main className="dark text-foreground bg-background">
         <App />
-    </Provider>
+      </main>
+    </NextUIProvider>
+  </React.StrictMode>,
 )
