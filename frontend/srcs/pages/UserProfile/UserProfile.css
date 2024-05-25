@@ -85,15 +85,15 @@
   width: 40px;
   height: 40px;
 }
+
 .menu-icon-dropdown {
-
-
   width: 20px;
   height: 20px;
 }
 
 
-.menu-item-dropdown-font{
+.menu-item-dropdown-font {
+  
       color: #ffffffdf !important;
       font-feature-settings: 'case' on !important;
       font-family: "sfprodisplay-regular" !important;
@@ -128,7 +128,7 @@
 }
 
 .groupParent {
-  /* margin-left: 30px; */
+
 
   border-radius: 33.57px;
   background-color: #21242a;
@@ -193,9 +193,6 @@
   width: 95%;
   border-color: #21242A !important;
 } 
-
-
-
 
 
 
@@ -339,4 +336,44 @@
     }
 
 
+}
+
+
+
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(11, 98, 191, 0.117); 
+  backdrop-filter: blur(5.1px); 
+  z-index: 1000;
+}
+
+
+
+.AchievementList-place {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001; 
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.arch-items {
+  position: absolute;
+  ;
 }
