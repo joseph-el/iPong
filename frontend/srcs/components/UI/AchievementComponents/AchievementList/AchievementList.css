@@ -1,0 +1,104 @@
+.AchievementListBar-box {
+    background-color: #000;
+    border-radius: 15px;
+    left: 1px;
+    position: relative;
+    border: 0.5px solid #3C424D;
+    width: 500px;
+    max-width: 452px;
+    height: 500px;
+    max-height: 1000px;
+    margin: 5px;
+}
+
+
+.arch-place{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001; 
+  }
+
+
+.AchievementListNavbar {
+    background-color: #111316;
+    height: 55px;
+    width: 450px;
+    border-radius: 15px 15px 0px 0px;
+    border-bottom: 0.8px solid rgba(230, 209, 209, 0.27);
+}
+
+.AchievementListNavbar .overlap-group {
+    display: flex;
+    justify-content: center;
+    padding: 15px 10px 10px 10px;
+
+}
+
+.AchievementListNavbar .text-wrapper {
+    color: var(--Dark-color-Text-content, #ECECEC);
+    font-family: Montserrat;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 43.688px;
+    padding-left: 60px;
+    margin-top: -10px;
+}
+
+
+.AchievementListNavbar .overlap-group {
+    display: flex;
+    justify-content: space-between; /* Distributes space between items */
+    align-items: center; /* Vertically centers items */
+    padding: 15px 10px 10px 10px;
+}
+
+.AchievementListNavbar .text-wrapper {
+    color: var(--Dark-color-Text-content, #ECECEC);
+    font-family: Montserrat;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 43.688px;
+    flex: 1; /* Allows the text-wrapper to take up available space */
+    text-align: center; /* Centers the text */
+
+}
+
+.AchievementListNavbar .push-button {
+    margin-left: auto; /* Pushes the button to the end of the flex container */
+}
+
+.arch-padding-items{
+
+
+    /* display: flex;
+    justify-content: end; */
+    
+
+}
+
+.center-items {
+    display: flex;
+    justify-content: center;
+}
+
+.AchievementListNavbar-button {
+    padding-right: 20px;
+        color: #007BFE;
+        margin-top: -10px;
+        text-align: right;
+        font-family: "SF Pro Text";
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 46.423px; /* 110% */
+        letter-spacing: -0.861px;
+   
+}
+.AchievementListNavbar-button:hover {
+    color: #007bfed4;
+    cursor: pointer;
+}
