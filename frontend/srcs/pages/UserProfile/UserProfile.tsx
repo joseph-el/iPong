@@ -76,7 +76,6 @@ export default function UserProfile() {
   const [showEditProfile, setShowEditProfile] = React.useState(false);
   const [showEditSecurity, setShowEditSecurity] = React.useState(false);
   const [showTwoFactorAuthentication, setShowTwoFactorAuthentication] = React.useState(false);
-  const [showTwoFactorAuthenticationContent, setShowTwoFactorAuthenticationContent] = React.useState(false);
 
   const handleCloseClick = () => {
     setShowAchievementList(false);
@@ -269,17 +268,11 @@ export default function UserProfile() {
         </div>
       ) : null}
 
-
-      <div className="blur-background">
+      {/* <div className="blur-background">
           <div className="AchievementList-place fade-in">
           <CongratulationsBadge  level={1}/>
           </div>
-      </div>
-
-
-
-
-      
+      </div> */}
     </div>
   );
 }
