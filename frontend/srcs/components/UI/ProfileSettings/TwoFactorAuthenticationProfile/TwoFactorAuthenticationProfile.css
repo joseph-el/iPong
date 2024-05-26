@@ -1,0 +1,186 @@
+.TwoFactorAuthenticationProfileWrapper-box {
+  background-color: #000000;
+  border-radius: 15px;
+  left: 1px;
+  position: relative;
+  border: 0.5px solid #3c424d;
+  width: 500px;
+  max-width: 452px;
+  height: 650px;
+  max-height: 1000px;
+  margin: 5px;
+}
+.left-titile-icon {
+  display: flex;
+  gap: 5px;
+  margin-top: -5px;
+}
+
+.left-titile-icon:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.TwoFactorAuthenticationProfileNavbar {
+  background-color: #111316;
+  height: 55px;
+  width: 450px;
+  border-radius: 15px 15px 0px 0px;
+  border-bottom: 0.8px solid rgba(230, 209, 209, 0.27);
+}
+
+.TwoFactorAuthenticationProfileNavbar .overlap-group {
+  display: flex;
+  justify-content: center;
+  padding: 15px 10px 10px 10px;
+}
+
+.TwoFactorAuthenticationProfileNavbar .text-wrapper {
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: Montserrat;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 43.688px;
+  padding-left: -30px;
+  margin-top: -10px;
+  margin-right: 90px;
+}
+
+.TwoFactorAuthenticationProfileNavbar .overlap-group {
+  display: flex;
+  justify-content: space-between; /* Distributes space between items */
+  align-items: center; /* Vertically centers items */
+  padding: 15px 10px 10px 10px;
+}
+
+.TwoFactorAuthenticationProfileNavbar .text-wrapper {
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 43.688px;
+  flex: 1; /* Allows the text-wrapper to take up available space */
+  text-align: center; /* Centers the text */
+}
+
+.TwoFactorAuthenticationProfileNavbar .push-button {
+  margin-left: auto; /* Pushes the button to the end of the flex container */
+}
+
+.text-wrappers {
+  margin-top: 0.5px;
+  overflow: hidden;
+  color: var(--Default-SystemBlue-Light, #007aff);
+  font-feature-settings: "case" on;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-family: "SF Pro Text";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.408px;
+}
+
+.code-QR  {
+    margin: 20px;
+}
+.code-QR .text-wrapper {
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: Montserrat;
+  font-size: 20.357px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28.098px; /* 138.025% */
+}
+
+.code-QR .flexcontainer {
+  display: flex;
+  flex-direction: column;
+  /* gap: 20px; */
+}
+
+.code-QR .flexcontainer .text .span {
+    color: #72767A;
+    font-family: "Archivo-Regular", Helvetica;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.686px; /* 97.758% */
+    letter-spacing: -0.42px;
+    width: 300px;
+ 
+}
+
+
+.Qr-vector {
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.Authentication-submit {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 20px 20px 26px;
+    position: fixed;
+    top: 72%;
+}
+.Authentication-submit .rounded-medium {
+   
+    width: 500px !important;
+    max-width: 400px !important;
+    /* all: unset; */
+}
+.Authentication-submit 
+.text-small {
+    color: #72767a;
+    font-family: "Archivo-Regular", Helvetica;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13.686px;
+    letter-spacing: -0.42px;
+    width: 300px;
+}
+
+.fa-width {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.fa-width {
+    width: 158px;
+    height: 158px;
+}
+
+.fa-width:hover {
+    width: 160px;
+    height: 160px;
+    opacity: 0.8;
+
+    transition: 0.3s;
+}
+.Authentication-aleardy-setup-text {
+    color: var(--Dark-color-Text-content, #ececec);
+    font-family: Montserrat;
+    font-size: 16.357px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28.098px; /* 138.025% */
+    width:300px;
+    position: fixed;
+    top: 60%;
+    left: 57%;
+    transform: translate(-50%, -50%);
+}
+
+.already {
+    margin-left: 55px;
+}
