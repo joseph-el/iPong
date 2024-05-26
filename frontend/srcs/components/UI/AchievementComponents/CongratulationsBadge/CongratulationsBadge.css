@@ -1,0 +1,73 @@
+.CongratulationsBadgeWrapper-box{
+    background-color: #000;
+    border-radius: 15px;
+    left: 1px;
+    position: relative;
+    border: 0.5px solid #3C424D;
+    width: 460px;
+    height: 500px;
+    max-height: 1000px;
+    margin: 5px;
+}
+
+
+.CongratulationsBadgeNavbar {
+    background-color: #000000;
+    height: 55px;
+    width: 459px;
+    border-radius: 15px 15px 0px 0px;
+    /* border-bottom: 0.8px solid rgba(230, 209, 209, 0.27); */
+}
+
+.CongratulationsBadgeNavbar  .overlap-group {
+    display: flex;
+    justify-content: center;
+    padding: 15px 10px 10px 10px;
+
+}
+
+.CongratulationsBadgeNavbar  .text-wrapper {
+    color: #ECEDF0;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: -50px;
+    margin-left: -60px;
+
+}
+.CongratulationsBadgeNavbar 
+.push-button {
+    margin-top: -50px;
+}
+
+.CongratulationsBadgeNavbar  
+.object-cover {
+    margin-top: -21px;
+}
+
+.div-class-name-badge {
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;  
+}
+
+.Tooltip-Button {
+    position: fixed;
+    top: 96%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+}
+
+.CongratulationsBadgeNavbar  .overlap-group {
+    display: flex;
+    justify-content: space-between; /* Distributes space between items */
+    align-items: center; /* Vertically centers items */
+    padding: 15px 10px 10px 10px;
+}
