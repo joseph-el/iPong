@@ -22,15 +22,15 @@
   width: 20px;
   height: 20px;
 }
-.profile-cover {
-    position: relative;
-    margin-bottom: 45px;
-}
 
 .text-styled-primary:focus-within {
   color: red !important;
 }
 
+.profile-cover {
+    position: relative;
+    margin-bottom: 45px;
+}
 
 .profile-cover
 .avatar {
@@ -103,8 +103,6 @@
       line-height: 11.404px !important;
       letter-spacing: 2 !important;
       /* border-buttom: 1px solid #3C424D; */
-
-
 }
 
 .menu-icon-dropdown-frame {
@@ -339,7 +337,6 @@
 }
 
 
-
 .blur-background {
   position: fixed;
   top: 0;
@@ -350,6 +347,7 @@
   backdrop-filter: blur(5.1px); 
   z-index: 1000;
 }
+
 
 
 
