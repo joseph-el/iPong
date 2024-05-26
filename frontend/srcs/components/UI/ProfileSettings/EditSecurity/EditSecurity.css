@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.EditProfileWrapper-box {
+  background-color: #000000;
+  border-radius: 15px;
+  left: 1px;
+  position: relative;
+  border: 0.5px solid #3c424d;
+  width: 500px;
+  max-width: 452px;
+  height: 650px;
+  max-height: 1000px;
+  margin: 5px;
+}
+
+.security-form {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 20px 20px 26.5px;
+}
+.move-forgot-password {
+  margin-top: -10px;
+}
+.security-form .rounded-medium {
+  width: 500px !important;
+  max-width: 400px !important;
+  /* all: unset; */
+}
+.security-form .text-black50 {
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: Montserrat;
+  font-size: 14px;
+  /* font-family: "Archivo", sans-serif; */
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20.704px;
+  /* margin-top: -20px; */
+}
+
+.security-form .text-black60 {
+  overflow: hidden;
+  color: #1d9aef !important;
+  font-feature-settings: "case" on;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Archivo", sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 169.231% */
+  letter-spacing: -0.408px;
+}
+
+/* security-form  */
+.rounded-mediums {
+  margin-left: -8px;
+  width: 500px !important;
+  max-width: 400px !important;
+}
+
+.security-form .transition-none {
+  transition: none;
+  display: inline-block !important; /* Ensure the element is treated as a block for transformation */
+  transform: scaleX(-1) !important;
+}
+
+.security-form 
+.text-small {
+    color: #1d9befc3 !important;
+}
+
+.two-factor 
+.text-small {
+    color: #72767A !important;
+}
+
+.security-form .text-black50 {
+  color: var(--Dark-color-Text-content, #ecececd1) !important;
+  font-family: Montserrat !important;
+  font-size: 15px !important;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20.704px;
+}
