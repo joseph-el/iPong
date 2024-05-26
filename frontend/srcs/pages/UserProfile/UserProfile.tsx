@@ -31,6 +31,10 @@ import AchievementList from "../../components/UI/AchievementComponents/Achieveme
 
 import BlockedTable from "../../components/UI/BlockedTable/BlockedTable";
 
+import CongratulationsBadge from "../../components/UI/AchievementComponents/CongratulationsBadge/CongratulationsBadge";
+
+import EditProfile from "../../components/UI/ProfileSettings/EditProfile/EditProfile";
+
 const UserDescriptions = () => {
   return (
     <div className="info">
@@ -65,9 +69,11 @@ const UserDescriptions = () => {
 
 export default function UserProfile() {
   const [showAchievementList, setShowAchievementList] = React.useState(false);
+  const [showEditProfile, setShowEditProfile] = React.useState(false);
 
   const handleCloseClick = () => {
     setShowAchievementList(false);
+    setShowEditProfile(false);
   };
 
   return (
@@ -126,6 +132,7 @@ export default function UserProfile() {
             </DropdownItem>
 
             <DropdownItem
+              onClick={() => setShowEditProfile(true)}
               className="menu-item-dropdown-font"
               key="new"
               startContent={
@@ -211,6 +218,14 @@ export default function UserProfile() {
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
             <AchievementList closeList={handleCloseClick} />
+          </div>
+        </div>
+      ) : null}
+
+      {showEditProfile ? (
+        <div className="blur-background">
+          <div className="AchievementList-place fade-in">
+            <EditProfile closeEditProfile={handleCloseClick} />
           </div>
         </div>
       ) : null}
