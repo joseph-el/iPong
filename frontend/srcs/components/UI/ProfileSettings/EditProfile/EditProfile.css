@@ -153,10 +153,15 @@
 .text-small {
     color: rgba(29, 154, 239, 1) !important;
 }
+
 .edit-profile-form 
 .text-black50{
-    color: #dce3ea !important;
-
+color: var(--Dark-color-Text-content, #ECECEC) !important;
+font-family: Montserrat;
+font-size: 15px;
+font-style: normal;
+font-weight: 700;
+line-height: 20.704px; 
 }
 
 .input-edit-profile {
