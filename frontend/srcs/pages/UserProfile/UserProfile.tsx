@@ -35,6 +35,10 @@ import CongratulationsBadge from "../../components/UI/AchievementComponents/Cong
 
 import EditProfile from "../../components/UI/ProfileSettings/EditProfile/EditProfile";
 
+
+import EditSecurity from "../../components/UI/ProfileSettings/EditSecurity/EditSecurity";
+
+import TwoFactorAuthenticationProfile from "../../components/UI/ProfileSettings/TwoFactorAuthenticationProfile/TwoFactorAuthenticationProfile";
 const UserDescriptions = () => {
   return (
     <div className="info">
@@ -70,13 +74,21 @@ const UserDescriptions = () => {
 export default function UserProfile() {
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [showEditProfile, setShowEditProfile] = React.useState(false);
+  const [showEditSecurity, setShowEditSecurity] = React.useState(false);
+  const [showTwoFactorAuthentication, setShowTwoFactorAuthentication] = React.useState(false);
+  const [showTwoFactorAuthenticationContent, setShowTwoFactorAuthenticationContent] = React.useState(false);
 
   const handleCloseClick = () => {
     setShowAchievementList(false);
     setShowEditProfile(false);
+    setShowEditSecurity(false);
+    setShowTwoFactorAuthentication(false);
+    setShowTwoFactorAuthenticationContent(false);
+
   };
 
   return (
+
     <div className="UserProfile-frame">
       <div className="profile-cover">
         <img
@@ -85,7 +97,7 @@ export default function UserProfile() {
           src={CoverImage}
         />
         <Avatar
-          src="https://cdn.intra.42.fr/users/1e212df3b450650d04418d1c03827563/tnaceur.jpg"
+          src="https://scontent.frba4-1.fna.fbcdn.net/v/t39.30808-1/417474877_1084959666153312_6596618040732418232_n.jpg?stp=dst-jpg_p480x480&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHwTc_R7JPrAPtBWxFRaFe-erb5zxyu1hd6tvnPHK7WF9S_wr1S8zpCfu2aMDYk7-iTba5XwscZ6PA2aqXg6Q-h&_nc_ohc=r3Gu5KyihjkQ7kNvgGYZlZx&_nc_ht=scontent.frba4-1.fna&oh=00_AYBJlWqZwMOPo4HJqEk88jKQPnd68pOIPERWEytk02mbZw&oe=6658F8C7"
           className="w-28 h-28 text-large avatar"
         />
         <div className="user-LevelBar">
@@ -147,6 +159,7 @@ export default function UserProfile() {
             </DropdownItem>
 
             <DropdownItem
+              onClick={() => setShowEditSecurity(true)}
               className="menu-item-dropdown-font"
               key="new"
               startContent={
@@ -229,6 +242,44 @@ export default function UserProfile() {
           </div>
         </div>
       ) : null}
+
+      {showEditSecurity ? (
+        <div className="blur-background">
+          <div className="AchievementList-place fade-in">
+            <EditSecurity 
+              setShowTwoFactorAuthentication={() => setShowTwoFactorAuthentication(true)}
+              closeEditSecurity={handleCloseClick}
+            
+            />
+          </div>
+        </div>
+      ) : null}
+
+
+      {showTwoFactorAuthentication ? (
+        <div className="blur-background">
+          <div className="AchievementList-place fade-in">
+            <TwoFactorAuthenticationProfile handelLeftTitle={
+              () => {
+                setShowTwoFactorAuthentication(false);
+                setShowTwoFactorAuthenticationContent(true);
+              }
+            }/>
+          </div>
+        </div>
+      ) : null}
+
+
+      <div className="blur-background">
+          <div className="AchievementList-place fade-in">
+          <CongratulationsBadge  level={1}/>
+          </div>
+      </div>
+
+
+
+
+      
     </div>
   );
 }
