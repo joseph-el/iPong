@@ -91,9 +91,9 @@ export default function AchievementList(props) {
               className="w-[356px] h-[435px]"
             >
               <div className="flex-arch-items">
-                <div className="gap-2 grid grid-cols-2 grid-cols-4  arch-padding-items">
+                <div className="gap-2 grid grid-cols-2  arch-padding-items">
                   {list.map((item, index) => (
-                    <Popover placement="buttom">
+                    <Popover placement="bottom-end">
                       <PopoverTrigger>
                         <Card shadow="md" key={index} isPressable>
                           <CardBody
