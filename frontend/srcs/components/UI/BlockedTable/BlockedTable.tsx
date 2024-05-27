@@ -1,7 +1,3 @@
-
-
-
-
 import React from "react";
 import {
   Table,
@@ -11,6 +7,7 @@ import {
   TableRow,
   TableCell,
   Input,
+  useDisclosure,
   Button,
   DropdownTrigger,
   Dropdown,
@@ -21,31 +18,28 @@ import {
   Pagination,
   Selection,
   ChipProps,
-  SortDescriptor
+  SortDescriptor,
 } from "@nextui-org/react";
-import {PlusIcon} from "./PlusIcon";
-import {VerticalDotsIcon} from "./VerticalDotsIcon";
-import {ChevronDownIcon} from "./ChevronDownIcon";
-import {SearchIcon} from "./SearchIcon";
-import {columns, matches, statusOptions} from "./data";
-import {capitalize} from "./utils";
-import {ScrollShadow} from "@nextui-org/react";
-import './BlockedTable.css';
+import { PlusIcon } from "./PlusIcon";
+import { VerticalDotsIcon } from "./VerticalDotsIcon";
+import { ChevronDownIcon } from "./ChevronDownIcon";
+import { SearchIcon } from "./SearchIcon";
+import { columns, matches, statusOptions } from "./data";
+import { capitalize } from "./utils";
+import { ScrollShadow } from "@nextui-org/react";
+import "./BlockedTable.css";
 
+import IPongAlert from "../iPongAlert/iPongAlert";
 
-import IPongAlert  from "../iPongAlert/iPongAlert";
-
-
-import {Divider} from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["BLOCKED FRIEND", "UNBLOCK"];
 import { useState } from "react";
 
-type Match = typeof matches[0];
+type Match = (typeof matches)[0];
 
 const TopContent = (props) => {
   return (
     <div className="flex flex-col gap-4 MatchHistoryBar">
-
       <div className="flex  justify-between gap-3 items-end hello  ">
         <Input
           isClearable
@@ -61,48 +55,60 @@ const TopContent = (props) => {
           onChange={props.onSearchChanges}
         />
       </div>
-
     </div>
   );
 };
 
 export default function BlockedTable() {
-
-  const [showAlert, setShowAlert] = useState("false");
-
-  const visibleColumns =  INITIAL_VISIBLE_COLUMNS;
+  const visibleColumns = INITIAL_VISIBLE_COLUMNS;
   const [filteredItems, setfilteredItems] = useState(matches);
 
   const headerColumns = React.useMemo(() => {
-    return columns; 
+    return columns;
   }, [visibleColumns]);
 
-  const onSearchChanges = (event) => {    
+  const onSearchChanges = (event) => {
     const searchTerm = event.target.value.toLowerCase();
-        
-    if (searchTerm === '') {
- 
-        setfilteredItems(matches);
-        return;
+
+    if (searchTerm === "") {
+      setfilteredItems(matches);
+      return;
     }
-    const matchedUsers = matches.filter(user => 
-        user.versus.toLowerCase().includes(searchTerm) ||
-        user.username.toLowerCase().includes(searchTerm)
-    ).slice(0, 8);
+    const matchedUsers = matches
+      .filter(
+        (user) =>
+          user.versus.toLowerCase().includes(searchTerm) ||
+          user.username.toLowerCase().includes(searchTerm)
+      )
+      .slice(0, 8);
 
     setfilteredItems(matchedUsers);
-  } 
+  };
 
   const onSearchChangesClear = () => {
     setfilteredItems(matches);
-  }
+  };
 
-  const handelAlert = (username) => {
-     
-      setShowAlert("Do You Want to unblock " + username + "?");
+  const AlertProps = (username) => {
+    return [
+      {},
+      {
+        UserAlertHeader: `Are You Sure You Want to Unblock ${username} ?`,
+        UserAlertMessage: `Are you sure you want to unblock ${username} ? You will be able to see their content and interact with them again.`,
+        UserOptions: "Unblock",
+      },
+    ];
+  };
 
-  }
+  const [showAlert, setShowAlert] = useState(AlertProps("")[0]);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handelAlert = (userName) => {
+    setShowAlert(AlertProps(userName)[1]);
+
+    onOpen();
+  };
 
   const renderCell = React.useCallback((user: Match, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof Match];
@@ -111,7 +117,7 @@ export default function BlockedTable() {
       case "blockedfriend":
         return (
           <User
-            avatarProps={{radius: "sm", size: "md", src: user.avatar}}
+            avatarProps={{ radius: "sm", size: "md", src: user.avatar }}
             classNames={{
               description: "ver",
             }}
@@ -123,146 +129,94 @@ export default function BlockedTable() {
         );
       case "unblock":
         return (
-            <Button size="sm"  color="primary" onClick={() => handelAlert(user.username)} >
-              Unblock
-            </Button>
+          <Button
+            size="sm"
+            color="primary"
+            onClick={() => handelAlert(user.username)}
+          >
+            Unblock
+          </Button>
         );
     }
   }, []);
-  
 
   const classNames = React.useMemo(
     () => ({
       wrapper: ["max-h-[382px]", "max-w-3xl"],
       th: ["bg-transparent", "text-default-500", "the-style"],
       td: [
- 
         "group-data-[first=true]:first:before:rounded-none",
         "group-data-[first=true]:last:before:rounded-none",
-   
+
         "group-data-[middle=true]:before:rounded-none",
-    
+
         "group-data-[last=true]:first:before:rounded-none",
         "group-data-[last=true]:last:before:rounded-none",
       ],
-     
     }),
-    [],
+    []
   );
 
   return (
     <div className="friends-frame">
-          <TopContent onSearchChanges={onSearchChanges} onSearchChangesClear={onSearchChangesClear}/>
-          
+      <TopContent
+        onSearchChanges={onSearchChanges}
+        onSearchChangesClear={onSearchChangesClear}
+      />
 
-          <div>
-  {showAlert !== "false" && (
-    <>
-      <div className="blur-background"></div>
-      <div className="alert-place fade-in">
-        <IPongAlert
-          Description={showAlert}
-          rightButton={"Unblock"}
-          leftButton="Cancel"
-          handelRightButton={() => setShowAlert("false")}
-          handelLeftButton={() => setShowAlert("false")}
-        />
+      <IPongAlert
+        isOpen={isOpen}
+        onClose={onClose}
+        UserAlertHeader={showAlert.UserAlertHeader}
+        UserAlertMessage={showAlert.UserAlertMessage}
+        UserOptions={showAlert.UserOptions}
+      ></IPongAlert>
+
+      <div className="friends-header">
+        <Table removeWrapper>
+          <TableHeader columns={headerColumns}>
+            {(column) => (
+              <TableColumn key={column.uid}>{column.name}</TableColumn>
+            )}
+          </TableHeader>
+          <TableBody></TableBody>
+        </Table>
       </div>
-    </>
-  )}
-</div>
 
-          <div className="friends-header">
-              <Table removeWrapper>
-                <TableHeader columns={headerColumns} >
-                    {(column) => (
-                      <TableColumn
-                      key={column.uid}
-                      >
-                      {column.name}
-                      </TableColumn>
-                    )}
-                  </TableHeader>
-                  <TableBody>
-                  </TableBody>
-              </Table>
-          </div>
-          
-          <Divider />
+      <Divider />
 
-          <ScrollShadow
-                size={10}
-                className=" h-[280px] Friends-Table">      
-                  <Table
-                    isCompact
-                    removeWrapper
-                    bottomContentPlacement="outside"
-                    classNames={classNames}
-                  >
-                    <TableHeader columns={headerColumns} >
-                      {(column) => (
-                        <TableColumn
-                        className="header-items"
-                          key={column.uid}        
-                        >
-                        </TableColumn>
-                      )}
+      <ScrollShadow size={10} className=" h-[280px] Friends-Table">
+        <Table
+          isCompact
+          removeWrapper
+          bottomContentPlacement="outside"
+          classNames={classNames}
+        >
+          <TableHeader columns={headerColumns}>
+            {(column) => (
+              <TableColumn
+                className="header-items"
+                key={column.uid}
+              ></TableColumn>
+            )}
+          </TableHeader>
 
-
-                    </TableHeader>
-
-                      <TableBody emptyContent={"No users found"} items={filteredItems} >
-                          {(item) => (
-                          <TableRow key={item.id}   >
-                                {(columnKey) =>  <TableCell className="border-button-row">{renderCell(item, columnKey)}</TableCell> }
-                            </TableRow>
-                          )}
-                      </TableBody>
-
-                  </Table> 
-          </ScrollShadow>
-
-
-          
-
+          <TableBody emptyContent={"No users found"} items={filteredItems}>
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell className="border-button-row">
+                    {renderCell(item, columnKey)}
+                  </TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </ScrollShadow>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -524,35 +478,6 @@ export default function MatchHistory() {
 
 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -738,6 +663,3 @@ export default function MatchHistory() {
 
 }
 */
-
-
-
