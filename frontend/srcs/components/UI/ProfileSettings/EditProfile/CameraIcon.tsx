@@ -1,6 +1,6 @@
 import React from "react";
 export const CameraIcon = ({
-  fill = 'currentColor',
+  fill = "currentColor",
   filled,
   size,
   height,
