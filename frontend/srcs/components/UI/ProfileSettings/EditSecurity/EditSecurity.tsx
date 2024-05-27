@@ -86,7 +86,9 @@ export default function EditSecurity(props) {
           <button
             className="focus:outline-none"
             type="button"
-            onClick={() => { toggleVisibility(props.varient)} }
+            onClick={() => {
+              toggleVisibility(props.varient);
+            }}
           >
             {props.isVisible ? (
               <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
