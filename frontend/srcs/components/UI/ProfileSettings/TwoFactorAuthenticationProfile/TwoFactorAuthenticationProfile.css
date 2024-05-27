@@ -85,8 +85,8 @@
   letter-spacing: -0.408px;
 }
 
-.code-QR  {
-    margin: 20px;
+.code-QR {
+  margin: 20px;
 }
 .code-QR .text-wrapper {
   color: var(--Dark-color-Text-content, #ececec);
@@ -104,83 +104,79 @@
 }
 
 .code-QR .flexcontainer .text .span {
-    color: #72767A;
-    font-family: "Archivo-Regular", Helvetica;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 13.686px; /* 97.758% */
-    letter-spacing: -0.42px;
-    width: 300px;
- 
+  color: #72767a;
+  font-family: "Archivo-Regular", Helvetica;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13.686px; /* 97.758% */
+  letter-spacing: -0.42px;
+  width: 300px;
 }
-
 
 .Qr-vector {
-    position: fixed;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .Authentication-submit {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 20px 20px 20px 26px;
-    position: fixed;
-    top: 72%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 20px 20px 26px;
+  position: fixed;
+  top: 72%;
 }
 .Authentication-submit .rounded-medium {
-   
-    width: 500px !important;
-    max-width: 400px !important;
-    /* all: unset; */
+  width: 500px !important;
+  max-width: 400px !important;
+  /* all: unset; */
 }
-.Authentication-submit 
-.text-small {
-    color: #72767a;
-    font-family: "Archivo-Regular", Helvetica;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 13.686px;
-    letter-spacing: -0.42px;
-    width: 300px;
+.Authentication-submit .text-small {
+  color: #72767a;
+  font-family: "Archivo-Regular", Helvetica;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13.686px;
+  letter-spacing: -0.42px;
+  width: 300px;
 }
 
 .fa-width {
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .fa-width {
-    width: 158px;
-    height: 158px;
+  width: 158px;
+  height: 158px;
 }
 
 .fa-width:hover {
-    width: 160px;
-    height: 160px;
-    opacity: 0.8;
+  width: 160px;
+  height: 160px;
+  opacity: 0.8;
 
-    transition: 0.3s;
+  transition: 0.3s;
 }
 .Authentication-aleardy-setup-text {
-    color: var(--Dark-color-Text-content, #ececec);
-    font-family: Montserrat;
-    font-size: 16.357px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 28.098px; /* 138.025% */
-    width:300px;
-    position: fixed;
-    top: 60%;
-    left: 57%;
-    transform: translate(-50%, -50%);
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: Montserrat;
+  font-size: 16.357px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28.098px; /* 138.025% */
+  width: 300px;
+  position: fixed;
+  top: 60%;
+  left: 57%;
+  transform: translate(-50%, -50%);
 }
 
 .already {
-    margin-left: 55px;
+  margin-left: 55px;
 }
