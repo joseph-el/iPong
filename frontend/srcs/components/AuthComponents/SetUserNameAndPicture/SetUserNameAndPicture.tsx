@@ -1,19 +1,19 @@
-import React from 'react'
-import './SetUserNameAndPicture.css'
-import InputComponent from '../../UI/Input/Input'
-import Close from '../../UI/Button/CloseButton/CloseButton'
-import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
-import {Avatar} from "@nextui-org/react";
-import GestUser from "../assets/gest_user.svg"
-import {CameraIcon} from '../../UI/icon/CameraIcon';
+import React from "react";
+import "./SetUserNameAndPicture.css";
+import InputComponent from "../../UI/Input/Input";
+import Close from "../../UI/Button/CloseButton/CloseButton";
+import CustomButton from "../../UI/Button/SubmitButton/SubmitButton";
+import { Avatar } from "@nextui-org/react";
+import GestUser from "../assets/gest_user.svg";
+import { CameraIcon } from "../../UI/icon/CameraIcon";
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 import {
-    setIsInvalid,
-    setErrorMessage,
-  } from "../../../state/InputComponents/inputSlice";
+  setIsInvalid,
+  setErrorMessage,
+} from "../../../state/InputComponents/inputSlice";
 
 import { useNavigate } from "react-router-dom";
 import validateUsername from "../../../utils/usernameValidation";
@@ -32,36 +32,40 @@ export const UserNameTitle = () => {
 export default function SetUserNameAndPicture() {
   const [selectedImage, setSelectedImage] = useState(null);
 
-    const dispatch = useDispatch<AppDispatch>();
-    const username  = useSelector((state: RootState) => state.input["set-user-username"]?.value);
-    const navigate = useNavigate();
-    
-    const handelonSubmit = async () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const username = useSelector(
+    (state: RootState) => state.input["set-user-username"]?.value
+  );
+  const navigate = useNavigate();
 
-    
-      if (!username) {
-        dispatch(setIsInvalid({ id: 'set-user-username', isInvalid: true }));
-        dispatch(setErrorMessage({ id: 'set-user-username', errorMessage: 'Please enter a username' }));
-        return ;
-      }
-      const ret = await validateUsername(username);
-      if (ret !== null) {
-        console.log(ret);
-          dispatch(setIsInvalid({ id: 'set-user-username', isInvalid: true }));
-          dispatch(setErrorMessage({ id: 'set-user-username', errorMessage: ret }));
-      }
-      else{
-        navigate("/Login/WelcomeNewUser"); // redirect to welcome page
-      }
+  const handelonSubmit = async () => {
+    if (!username) {
+      dispatch(setIsInvalid({ id: "set-user-username", isInvalid: true }));
+      dispatch(
+        setErrorMessage({
+          id: "set-user-username",
+          errorMessage: "Please enter a username",
+        })
+      );
+      return;
     }
+    const ret = await validateUsername(username);
+    if (ret !== null) {
+      console.log(ret);
+      dispatch(setIsInvalid({ id: "set-user-username", isInvalid: true }));
+      dispatch(setErrorMessage({ id: "set-user-username", errorMessage: ret }));
+    } else {
+      navigate("/Login/WelcomeNewUser"); // redirect to welcome page
+    }
+  };
 
-    const handelonClose = () => {
-      // TDOD: Close the sign in component and navigate to the sign up component
-      // Clear the input fields state and error messages
-      navigate("/Login/need-a-password");
-      console.log("Close");
-  }
-  
+  const handelonClose = () => {
+    // TDOD: Close the sign in component and navigate to the sign up component
+    // Clear the input fields state and error messages
+    navigate("/Login/need-a-password");
+    console.log("Close");
+  };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -69,7 +73,7 @@ export default function SetUserNameAndPicture() {
       reader.onloadend = () => {
         setSelectedImage(reader.result);
       };
-      reader.readAsDataURL(file); 
+      reader.readAsDataURL(file);
     }
     // console.log(event.target.files[0]);
     // console.log(selectedImage);
@@ -83,9 +87,11 @@ export default function SetUserNameAndPicture() {
         <div className="text-wrapper-3">Pick a profile picture</div>
 
         <div className="picture-target">
+          <Avatar
+            src={!selectedImage ? GestUser : selectedImage}
+            className="w-32 h-32 text-large"
+          />
 
-          <Avatar src={!selectedImage ? GestUser : selectedImage} className="w-32 h-32 text-large" />
-       
           <div className="camera-icon-padding">
             <label htmlFor="fileInput">
               <Avatar
@@ -116,10 +122,14 @@ export default function SetUserNameAndPicture() {
         <UserNameTitle />
 
         <div className="input-padding">
-          <InputComponent type={"fill"} target={"username"} id={"set-user-username"} />
+          <InputComponent
+            type={"fill"}
+            target={"username"}
+            id={"set-user-username"}
+          />
         </div>
 
-        <div className="buttons-target" onClick={handelonSubmit} >
+        <div className="buttons-target" onClick={handelonSubmit}>
           <CustomButton classNames="sign-in-competent-sign-in" text="Next" />
         </div>
       </div>
