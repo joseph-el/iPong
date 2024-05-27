@@ -17,7 +17,7 @@ import AppLayout from '../pages/AppLayout/AppLayout'
 export default function App() {
     return (
         <>
-
+    
             <ChakraProvider>
 
                 {/* <MatchHistory/> */}
