@@ -1,8 +1,6 @@
 import React from "react";
-import './iMessagesNotifications.css';
+import "./iMessagesNotifications.css";
 
-export const ImessagesNotificationsWrapper = ({children}) => (
-  <div className="wrapper-style">
-    {children}
-  </div>
+export const ImessagesNotificationsWrapper = ({ children }) => (
+  <div className="wrapper-style">{children}</div>
 );
