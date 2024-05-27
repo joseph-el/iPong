@@ -10,7 +10,7 @@ import { BrowserRouter as Router,Outlet, Route, Link, BrowserRouter, Routes } fr
 import LiveChat from '../../components/LiveChat/LiveChat';
 import Home from '../Home/Home';
 import UserProfile from '../UserProfile/UserProfile';
-
+import UserProfileViewAs from '../UserProfileViewAs/UserProfileViewAs';
 export default function AppLayout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -60,7 +60,7 @@ export default function AppLayout() {
           <BrowserRouter>
                     <Routes>
                         <Route path='/home' element={    <Home/>    } /> 
-                        <Route path='/Users' element={    <UserProfile/>    } /> 
+                        <Route path='/Users' element={   <UserProfileViewAs/> } /> 
                     </Routes>
           </BrowserRouter>
         
