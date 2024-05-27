@@ -1,68 +1,68 @@
-import React from 'react'
-import './WelcomeNewUser.css'
-import { Link } from 'react-router-dom'
+import React from "react";
+import "./WelcomeNewUser.css";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import CustomButton from '../../UI/Button/SubmitButton/SubmitButton'
-import { useSelector } from 'react-redux';
+import CustomButton from "../../UI/Button/SubmitButton/SubmitButton";
+import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
-import api from '../../../api/posts';
+import api from "../../../api/posts";
 
 export default function WelcomeNewUser(props) {
-    
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const _fullname      = useSelector((state: RootState) => state.input["create-account-full-name"]?.value);
-    const _email         = useSelector((state: RootState) => state.input["create-account-email"]?.value);
-    const _date_of_birth = useSelector((state: RootState) => state.date?.value);
-    const _UserGender    = useSelector((state: RootState) => state.gender?.UserGender);
-    const _password      = useSelector((state: RootState) => state.input["set-user-password"]?.value);
-    const _avatar        = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
-    const _username      = useSelector((state: RootState) => state.input["set-user-username"]?.value);
+  const _fullname = useSelector(
+    (state: RootState) => state.input["create-account-full-name"]?.value
+  );
+  const _email = useSelector(
+    (state: RootState) => state.input["create-account-email"]?.value
+  );
+  const _date_of_birth = useSelector((state: RootState) => state.date?.value);
+  const _UserGender = useSelector(
+    (state: RootState) => state.gender?.UserGender
+  );
+  const _password = useSelector(
+    (state: RootState) => state.input["set-user-password"]?.value
+  );
+  const _avatar =
+    "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
+  const _username = useSelector(
+    (state: RootState) => state.input["set-user-username"]?.value
+  );
 
+  const extractUserData = async () => {
+    await api.post("/auth/signup", {
+      username: _username,
+      email: _email,
+      password: _password,
+      firstName: _fullname.split(" ")[0],
+      lastName: _fullname.split(" ")[1],
+      bio: "Hey there! I'm using iPong",
+      intraId: "UNKNOWN",
+      avatar: _avatar,
+    });
+    navigate("/Login");
+  };
 
-    const extractUserData = async () => {
-
-        await api.post('/auth/signup', {
-            username: _username,
-            email: _email,
-            password: _password,
-            firstName: _fullname.split(" ")[0],
-            lastName: _fullname.split(" ")[1],
-            bio: "Hey there! I'm using iPong",
-            intraId: "UNKNOWN",
-            avatar: _avatar,
-        })
-        navigate("/Login");
-
-    }
-
-    return (
-        <>
-            <div className="WelcomeNewUser max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden  h-[32rem] w-[25rem]   sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
-                <div className="title-welcome">
-                    <div className="group-welcome">
-                        <div className="div-wrapper-welcome">
-                            <div className="text-wrapper-welcome">Welcome to </div>
-                        </div>
-                    </div>
-                    <div className="group-welcome">
-                        <div className="div-wrapper-welcome">
-                            <div className="text-wrapper-welcome">iPong</div>
-                        </div>
-                    </div>
-                </div>
-            
-                    <div className='buttons-target' onClick={extractUserData} >
-                        <CustomButton
-                            classNames="create-account"
-                            text={props.button_text}
-                        />
-                    </div>
-              
-
-
+  return (
+    <>
+      <div className="WelcomeNewUser max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden  h-[32rem] w-[25rem]   sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
+        <div className="title-welcome">
+          <div className="group-welcome">
+            <div className="div-wrapper-welcome">
+              <div className="text-wrapper-welcome">Welcome to </div>
             </div>
-        </>
-    );
-    
+          </div>
+          <div className="group-welcome">
+            <div className="div-wrapper-welcome">
+              <div className="text-wrapper-welcome">iPong</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="buttons-target" onClick={extractUserData}>
+          <CustomButton classNames="create-account" text={props.button_text} />
+        </div>
+      </div>
+    </>
+  );
 }
