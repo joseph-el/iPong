@@ -1,16 +1,13 @@
-
 .levels {
   background-color: #ffffff03;
   border-radius: 100px;
-  display: flex; 
+  display: flex;
 }
-
 
 .score {
   display: flex;
   flex-direction: column;
 }
-
 
 .score .LEVEL {
   color: transparent;
@@ -20,7 +17,6 @@
   letter-spacing: 1px;
   line-height: normal;
 }
-
 
 .levels .text-wrapper {
   color: #30effe;
@@ -34,8 +30,6 @@
   color: #caf2fe;
 }
 
-
-
 .container {
   width: 100%;
   height: 100%;
@@ -46,7 +40,7 @@
   width: 460px;
   height: 35px;
   position: absolute;
-  background: #1E1F1F;
+  background: #1e1f1f;
   border: 0px solid red;
   transform: skewX(-20deg);
   left: 0;
@@ -92,15 +86,11 @@
   white-space: nowrap;
 }
 
-
-
 .levels .element {
-
   margin-top: -34px;
   transform: rotate(-0.07deg);
   width: 150px !important;
 }
-
 
 /*
 .level {
@@ -142,13 +132,6 @@
   
   */
 
-
-  
-
-  
-
-
-
 /* 
 .progress-container {
     display: flex;
@@ -183,4 +166,3 @@
     font-size: 18px;
     color: #7f8c8d;
   } */
-  
