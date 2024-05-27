@@ -7,6 +7,7 @@ import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
+  useDisclosure,
   DropdownItem,
 
 } from "@nextui-org/react";
@@ -76,6 +77,7 @@ export default function UserProfile() {
     setShowEditSecurity(false);
     setShowTwoFactorAuthentication(false);
   };
+
 
   return (
     <div className="UserProfile-frame">
@@ -199,7 +201,7 @@ export default function UserProfile() {
                 </div>
               }
             >
-              <FriendsTable />
+              <FriendsTable  />
             </Tab>
 
             <Tab
