@@ -64,14 +64,12 @@
   transform: scaleX(-1) !important;
 }
 
-.security-form 
-.text-small {
-    color: #1d9befc3 !important;
+.security-form .text-small {
+  color: #1d9befc3 !important;
 }
 
-.two-factor 
-.text-small {
-    color: #72767A !important;
+.two-factor .text-small {
+  color: #72767a !important;
 }
 
 .security-form .text-black50 {
