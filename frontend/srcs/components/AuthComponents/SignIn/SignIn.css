@@ -1,157 +1,127 @@
-
 .sign-in-competent {
-    margin-top: 20px;
-    background-color: black;
-    color: #8F9294;
-    border: 0.5px solid #ffffff; 
-    position: relative;
-    max-width: 460px;  
-    max-height: 530px; 
-    overflow: hidden;
+  margin-top: 20px;
+  background-color: black;
+  color: #8f9294;
+  border: 0.5px solid #ffffff;
+  position: relative;
+  max-width: 460px;
+  max-height: 530px;
+  overflow: hidden;
 }
 
 .maskgroup-svg {
-    position: absolute; 
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; 
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 @layer CloseIcon {
-    .sign-in-competent .go_back {
-        padding: 15px 0px 180px 15px;
-    }  
-
-
+  .sign-in-competent .go_back {
+    padding: 15px 0px 180px 15px;
+  }
 }
 
 .sign-in-competent .label {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
 }
 
 .label .text-wrapper {
-    color: #ececec;
-    font-family: "Archivo-Bold", Helvetica;
-    font-size: 31.4px;
-    font-weight: 700;
-    left: 0;
-    letter-spacing: 0;
-    line-height: 40.6px;
-    top: 0;
-    white-space: nowrap;
+  color: #ececec;
+  font-family: "Archivo-Bold", Helvetica;
+  font-size: 31.4px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 40.6px;
+  top: 0;
+  white-space: nowrap;
 }
 
 .reset-pass {
-    width: auto;
-    padding: 0px 0px 0px 30px;
-
+  width: auto;
+  padding: 0px 0px 0px 30px;
 }
 .create-acc {
-    width: auto;
-    padding: 0px 0px 20px 30px;
+  width: auto;
+  padding: 0px 0px 20px 30px;
 }
 
-.create-acc .left-title-help ,
+.create-acc .left-title-help,
 .reset-pass .left-title-help {
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    color: #1d9aef;
-    display: -webkit-box;
-    font-family: "Archivo-Medium", Helvetica;
-    font-size: 14px;
-    font-weight: 500;
-    height: 19px;
-    left: 0;
-    letter-spacing: -0.36px;
-    line-height: 19.2px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    top: -1px;
-    white-space: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: #1d9aef;
+  display: -webkit-box;
+  font-family: "Archivo-Medium", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  height: 19px;
+  left: 0;
+  letter-spacing: -0.36px;
+  line-height: 19.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  top: -1px;
+  white-space: nowrap;
 }
 
-.create-acc .left-title-help:hover ,
+.create-acc .left-title-help:hover,
 .reset-pass .left-title-help:hover {
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    color: #34a8ff;
-    cursor: pointer;
-    display: -webkit-box;
-    font-family: "Archivo-Medium", Helvetica;
-    font-size: 14px;
-    font-weight: 500;
-    height: 19px;
-    left: 0;
-    letter-spacing: -0.36px;
-    line-height: 19.2px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    top: -1px;
-    white-space: nowrap;
-    
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: #34a8ff;
+  cursor: pointer;
+  display: -webkit-box;
+  font-family: "Archivo-Medium", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  height: 19px;
+  left: 0;
+  letter-spacing: -0.36px;
+  line-height: 19.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  top: -1px;
+  white-space: nowrap;
 }
 
-
-
-.sign-in-competent
-.buttons-target {
-    display: flex;
-    justify-content: center;
-    padding: 5px 0px 30px 0px;
+.sign-in-competent .buttons-target {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0px 30px 0px;
 }
 
 .move-left {
-    padding: 10px 0px 0px 5px;
+  padding: 10px 0px 0px 5px;
 }
 
 @media (max-width: 640px) {
-
-    .sign-in-competent .max-w-xs {
-        padding: 0px 0px 10px 20px;
-        width: 450px;
-        max-width: 372px;
-    }
-    .sign-in-competent
-    .buttons-target {
+  .sign-in-competent .max-w-xs {
+    padding: 0px 0px 10px 20px;
+    width: 450px;
+    max-width: 372px;
+  }
+  .sign-in-competent .buttons-target {
     display: flex;
     justify-content: center;
     padding: 5px 0px 20px 0px;
     margin-left: 0;
-    }
-    .move-left {
-        padding: 2px 0px 0px 5px;
-    }
+  }
+  .move-left {
+    padding: 2px 0px 0px 5px;
+  }
 
-    .reset-pass {
-        width: auto;
-        padding: 0px 0px 0px 30px;
-    
-    }
-    .create-acc {
-        width: auto;
-        padding: 0px 0px 15px 30px;
-    }
-
-
+  .reset-pass {
+    width: auto;
+    padding: 0px 0px 0px 30px;
+  }
+  .create-acc {
+    width: auto;
+    padding: 0px 0px 15px 30px;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
