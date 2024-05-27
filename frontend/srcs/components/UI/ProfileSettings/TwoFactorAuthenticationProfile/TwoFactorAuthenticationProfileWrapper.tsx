@@ -1,8 +1,6 @@
 import React from "react";
-import './TwoFactorAuthenticationProfile.css';
+import "./TwoFactorAuthenticationProfile.css";
 
-export const TwoFactorAuthenticationProfileWrapper = ({children}) => (
-  <div className="TwoFactorAuthenticationProfileWrapper-box">
-    {children}
-  </div>
+export const TwoFactorAuthenticationProfileWrapper = ({ children }) => (
+  <div className="TwoFactorAuthenticationProfileWrapper-box">{children}</div>
 );
