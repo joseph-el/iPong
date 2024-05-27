@@ -1,116 +1,110 @@
 import React from "react";
 
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import "./NavBarUser.css";
 
-import DropDownArrow from './arrow-down.svg'
-import './NavBarUser.css'
-
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, Button, User} from "@nextui-org/react";
-       
-
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+  Button,
+  User,
+} from "@nextui-org/react";
 
 export default function NavBarUser(props) {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-    const userName = props.email.split('@')[0];
-    const mailType = props.email.split('@')[1];
-    const isLongEmail = userName.length > 5 && windowWidth < 1150;
-    let truncatedUserName = isLongEmail ? userName.substring(0, 4) : userName;
-    return (
-            <div className="flex items-center gap-4 NavBarUser w-max-content">
-
-    <Dropdown
-      showArrow
-      radius="sm"
-      classNames={{
-        base: "before:bg-default-700",
-        content: "p-0 border-small border-divider bg-background",
-      }}
-    >
-        <DropdownTrigger onClick={props.onClick} >
-            <User    
-                name={props.fullName + " "}
-                description={truncatedUserName + (isLongEmail ? '..' : '') + '@' + mailType}
-                avatarProps={{
-                    src: props.avatar,
-                }}     
-                />
-        </DropdownTrigger>
-
-
-      <DropdownMenu
-        aria-label="Custom item styles"
-        disabledKeys={["profile"]}
-        className="p-3"
-        itemClasses={{
-          base: [
-            "rounded-md",
-            "text-default-500",
-            "transition-opacity",
-            "data-[hover=true]:text-foreground",
-            "data-[hover=true]:bg-default-100",
-            "dark:data-[hover=true]:bg-default-50",
-            "data-[selectable=true]:focus:bg-default-50",
-            "data-[pressed=true]:opacity-70",
-            "data-[focus-visible=true]:ring-default-500",
-          ],
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const userName = props.email.split("@")[0];
+  const mailType = props.email.split("@")[1];
+  const isLongEmail = userName.length > 5 && windowWidth < 1150;
+  let truncatedUserName = isLongEmail ? userName.substring(0, 4) : userName;
+  return (
+    <div className="flex items-center gap-4 NavBarUser w-max-content">
+      <Dropdown
+        showArrow
+        radius="sm"
+        classNames={{
+          base: "before:bg-default-700",
+          content: "p-0 border-small border-divider bg-background",
         }}
       >
+        <DropdownTrigger onClick={props.onClick}>
+          <User
+            name={props.fullName + " "}
+            description={
+              truncatedUserName + (isLongEmail ? ".." : "") + "@" + mailType
+            }
+            avatarProps={{
+              src: props.avatar,
+            }}
+          />
+        </DropdownTrigger>
 
-        <DropdownSection aria-label="Profile & Actions" showDivider>
-          <DropdownItem
-            isReadOnly
-            key="profile"
-            className="h-14 gap-2"
-            className="opacity-100"
-          >
-            <User
-              name={props.fullName}
-              description={"@" + props.username}
-              classNames={{
-                name: "text-default-600",
-                description: "text-default-500",
-              }}
-              avatarProps={{
-                size: "sm",
-                src: props.avatar,
-              }}
-            />
-          </DropdownItem>
+        <DropdownMenu
+          aria-label="Custom item styles"
+          disabledKeys={["profile"]}
+          className="p-3"
+          itemClasses={{
+            base: [
+              "rounded-md",
+              "text-default-500",
+              "transition-opacity",
+              "data-[hover=true]:text-foreground",
+              "data-[hover=true]:bg-default-100",
+              "dark:data-[hover=true]:bg-default-50",
+              "data-[selectable=true]:focus:bg-default-50",
+              "data-[pressed=true]:opacity-70",
+              "data-[focus-visible=true]:ring-default-500",
+            ],
+          }}
+        >
+          <DropdownSection aria-label="Profile & Actions" showDivider>
+            <DropdownItem
+              isReadOnly
+              key="profile"
+              className="h-14 gap-2"
+              className="opacity-100"
+            >
+              <User
+                name={props.fullName}
+                description={"@" + props.username}
+                classNames={{
+                  name: "text-default-600",
+                  description: "text-default-500",
+                }}
+                avatarProps={{
+                  size: "sm",
+                  src: props.avatar,
+                }}
+              />
+            </DropdownItem>
 
-          <DropdownItem key="dashboard" color="success">
-            see profile
-          </DropdownItem>
+            <DropdownItem key="dashboard" color="success">
+              see profile
+            </DropdownItem>
+          </DropdownSection>
 
-        </DropdownSection>
+          <DropdownSection aria-label="Help & Feedback">
+            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+            <DropdownItem key="delete" className="text-danger" color="danger">
+              Log Out
+            </DropdownItem>
+          </DropdownSection>
+        </DropdownMenu>
+      </Dropdown>
 
-        <DropdownSection aria-label="Help & Feedback">
-          <DropdownItem key="help_and_feedback">
-            Help & Feedback
-          </DropdownItem>
-          <DropdownItem key="delete" className="text-danger" color="danger">Log Out</DropdownItem>
-        </DropdownSection> 
-      </DropdownMenu>
-
-    </Dropdown>
-
-
-
-
-
-
-            {
-              /*
+      {/*
                 <Dropdown placement="bottom-end" closeOnSelect={true}>
                         <DropdownTrigger onClick={props.onClick} >
                             <User    
@@ -171,16 +165,10 @@ export default function NavBarUser(props) {
                             </DropdownSection> 
                         </DropdownMenu>
                 </Dropdown>
-              */
-            }
-
-
-            </div>
-    );
+              */}
+    </div>
+  );
 }
-
-
-
 
 /*
 
@@ -286,8 +274,6 @@ export default function NavBarUser(props) {
   
 */
 
-
-
 /*
 export default function NavBarUser(props) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -329,5 +315,3 @@ export default function NavBarUser(props) {
 }
 
 */
-
-
