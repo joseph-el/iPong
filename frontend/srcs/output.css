@@ -3132,7 +3132,7 @@ video {
   will-change: transform;
 }
 
-:root,.light,[data-theme="dark"] {
+:root,.light,[data-theme="light"] {
   color-scheme: light;
   --nextui-background: 0 0% 100%;
   --nextui-foreground-50: 0 0% 98.04%;
