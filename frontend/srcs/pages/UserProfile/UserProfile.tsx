@@ -1,44 +1,36 @@
 import React from "react";
 import "./UserProfile.css";
-import { Image } from "@nextui-org/react";
-import { LevelBar } from "../../components/UI/LevelBar/LevelBar";
-import CoverImage from "./cover-image.jpeg";
-import { Avatar } from "@nextui-org/react";
-import MenuIcon from "./profile-menu-icon.svg";
-import { Tabs, Tab, Chip } from "@nextui-org/react";
 import {
+  Tabs,
+  Tab,
+  Avatar,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button,
-  cn,
+
 } from "@nextui-org/react";
-import { Divider } from "@nextui-org/react";
-import VerifiedBadge from "./Verified-badge.svg";
-import MatchHistory from "../../components/UI/MatchHistoryTable/MatchHistory";
 
-import LocationIcon from "./LocationIcon.svg";
-import CalendarIcon from "./CalendarIcon.svg";
+import MenuIcon         from "./profile-menu-icon.svg";
+import EditIcon         from "./editicon.svg";
+import CoverImage       from "./cover-image.jpeg";
+import MatchHistory     from "../../components/UI/MatchHistoryTable/MatchHistory";
+import LocationIcon     from "./LocationIcon.svg";
+import CalendarIcon     from "./CalendarIcon.svg";
+import SecutityIcon     from "./securityicon.svg";
+import VerifiedBadge    from "./Verified-badge.svg";
+import ArchivementIcon  from "./archivementicon.svg";
 
-import ArchivementIcon from "./archivementicon.svg";
-import SecutityIcon from "./securityicon.svg";
-import EditIcon from "./editicon.svg";
-
+import { LevelBar } from "../../components/UI/LevelBar/LevelBar";
 import FriendsTable from "../../components/UI/FriendsTable/FriendsTable";
-
 import AchievementList from "../../components/UI/AchievementComponents/AchievementList/AchievementList";
-
 import BlockedTable from "../../components/UI/BlockedTable/BlockedTable";
-
 import CongratulationsBadge from "../../components/UI/AchievementComponents/CongratulationsBadge/CongratulationsBadge";
-
 import EditProfile from "../../components/UI/ProfileSettings/EditProfile/EditProfile";
-
-
 import EditSecurity from "../../components/UI/ProfileSettings/EditSecurity/EditSecurity";
-
 import TwoFactorAuthenticationProfile from "../../components/UI/ProfileSettings/TwoFactorAuthenticationProfile/TwoFactorAuthenticationProfile";
+
+
 const UserDescriptions = () => {
   return (
     <div className="info">
@@ -75,19 +67,17 @@ export default function UserProfile() {
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [showEditProfile, setShowEditProfile] = React.useState(false);
   const [showEditSecurity, setShowEditSecurity] = React.useState(false);
-  const [showTwoFactorAuthentication, setShowTwoFactorAuthentication] = React.useState(false);
+  const [showTwoFactorAuthentication, setShowTwoFactorAuthentication] =
+    React.useState(false);
 
   const handleCloseClick = () => {
     setShowAchievementList(false);
     setShowEditProfile(false);
     setShowEditSecurity(false);
     setShowTwoFactorAuthentication(false);
-    setShowTwoFactorAuthenticationContent(false);
-
   };
 
   return (
-
     <div className="UserProfile-frame">
       <div className="profile-cover">
         <img
@@ -245,25 +235,25 @@ export default function UserProfile() {
       {showEditSecurity ? (
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
-            <EditSecurity 
-              setShowTwoFactorAuthentication={() => setShowTwoFactorAuthentication(true)}
+            <EditSecurity
+              setShowTwoFactorAuthentication={() =>
+                setShowTwoFactorAuthentication(true)
+              }
               closeEditSecurity={handleCloseClick}
-            
             />
           </div>
         </div>
       ) : null}
 
-
       {showTwoFactorAuthentication ? (
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
-            <TwoFactorAuthenticationProfile handelLeftTitle={
-              () => {
+            <TwoFactorAuthenticationProfile
+              handelLeftTitle={() => {
                 setShowTwoFactorAuthentication(false);
                 setShowTwoFactorAuthenticationContent(true);
-              }
-            }/>
+              }}
+            />
           </div>
         </div>
       ) : null}
