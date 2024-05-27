@@ -1,8 +1,6 @@
 import React from "react";
-import './FriendNotifications.css';
+import "./FriendNotifications.css";
 
-export const FriendNotificationsWrapper = ({children}) => (
-  <div className="wrapper-stylek">
-    {children}
-  </div>
+export const FriendNotificationsWrapper = ({ children }) => (
+  <div className="wrapper-stylek">{children}</div>
 );
