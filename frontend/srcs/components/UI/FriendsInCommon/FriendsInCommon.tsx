@@ -1,4 +1,8 @@
 import React from "react";
+import "./FriendsInCommon.css";
+import { useState } from "react";
+import { SearchIcon } from "./SearchIcon";
+import { columns, matches } from "./data"; // static data
 import {
   Table,
   TableHeader,
@@ -7,38 +11,18 @@ import {
   TableRow,
   TableCell,
   Input,
+  ScrollShadow,
   Button,
-  Image,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Chip,
+  Divider,
   User,
-  Pagination,
-  Selection,
-  ChipProps,
-  SortDescriptor,
+  Image,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
-import { SearchIcon } from "./SearchIcon";
-import { columns, matches, statusOptions } from "./data";
-import { capitalize } from "./utils";
-import { ScrollShadow } from "@nextui-org/react";
-import "./FriendsInCommon.css";
 
-import IPongAlert from "../iPongAlert/iPongAlert";
+import AddFriendIcon from "../../../pages/iPongProfile/assets/add-friend-icon.svg";
+import PenddingIcon from "../../../pages/iPongProfile/assets/penddingicon.svg";
+import AlreadyFriendIcon from "../../../pages/iPongProfile/assets/alreadyFriendIcon.svg";
 
-import AddFriendIcon from "../../../pages/UserProfileViewAs/add-friend-icon.svg";
-import PenddingIcon from "../../../pages/UserProfileViewAs/penddingicon.svg";
-import AlreadyFriendIcon from "../../../pages/UserProfileViewAs/alreadyFriendIcon.svg";
-
-import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["FRIEND NAME", "ACTIONS"];
-import { useState } from "react";
-
 type Match = (typeof matches)[0];
 
 const TopContent = (props) => {
@@ -208,10 +192,7 @@ export default function FriendsInCommon() {
               <TableRow key={item.id}>
                 {(columnKey) => (
                   <TableCell className="border-button-row">
-                    <RenderCellComponent
-                      user={item}
-                      columnKey={columnKey}
-                    />
+                    <RenderCellComponent user={item} columnKey={columnKey} />
                   </TableCell>
                 )}
               </TableRow>
