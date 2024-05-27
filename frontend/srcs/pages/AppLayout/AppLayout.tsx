@@ -59,8 +59,8 @@ export default function AppLayout() {
         
           <BrowserRouter>
                     <Routes>
-                        <Route path='/home' element={    <Home/>    } /> 
-                        <Route path='/Users' element={   <UserProfileViewAs/> } /> 
+                        <Route path='/Profile' element={   <UserProfile/>   } /> 
+                        <Route path='/Users/tnaceur' element={   <UserProfileViewAs/> } /> 
                     </Routes>
           </BrowserRouter>
         
