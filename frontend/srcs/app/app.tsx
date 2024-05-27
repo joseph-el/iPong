@@ -9,18 +9,14 @@ import CreateAccount from '../components/AuthComponents/CreateAccount/CreateAcco
 import SetUserNameAndPicture from '../components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture'
 import WeSentCodeAndPassword from '../components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword'
 
-import SignAuth from '../pages/SignAuth/SignAuth'
 import AppLayout from '../pages/AppLayout/AppLayout'
- import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 
- import MatchHistory from '../components/UI/MatchHistory/MatchHistory'
 export default function App() {
     return (
         <>
     
             <ChakraProvider>
-
-                {/* <MatchHistory/> */}
               <AppLayout/>
             </ChakraProvider>
 
