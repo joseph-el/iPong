@@ -163,7 +163,7 @@ export default function UserProfileViewAs() {
 
               <Button
                 color="primary"
-                isDisabled
+                // isDisabled
                 startContent={
                   <Image
                     width={"20px"}
