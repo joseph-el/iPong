@@ -88,7 +88,7 @@ export default function AchievementList(props) {
             <ScrollShadow
               size={5}
               hideScrollBar
-              className="w-[356px] h-[435px]"
+              className="w-[360px] h-[470px]"
             >
               <div className="flex-arch-items">
                 <div className="gap-2 grid grid-cols-2  arch-padding-items">
