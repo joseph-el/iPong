@@ -35,44 +35,28 @@ export function LevelBar() {
     </div>
   );
 }
-export const LevelBars = () => {
-  return (
-    <div className="level w-max  ">
-      <div className="overlap">
-        <p className="LEVEL">
-          <span className="text-wrapper">LEVEL</span>
-          <span className="span"> </span>
-          <span className="text-wrapper-2">2</span>
-        </p>
 
-        <div className="group">
-          <div className="overlap-group">
-            <MyComponent />
-            <p className="div">30,000 XP to LVL 3</p>
-          </div>
-        </div>
-      </div>
+// export const LevelBars = () => {
+//   return (
+//     <div className="level w-max  ">
+//       <div className="overlap">
+//         <p className="LEVEL">
+//           <span className="text-wrapper">LEVEL</span>
+//           <span className="span"> </span>
+//           <span className="text-wrapper-2">2</span>
+//         </p>
 
-      <img className="element" alt="Element" src={LevelImg} />
-    </div>
-  );
-};
+//         <div className="group">
+//           <div className="overlap-group">
+//             <MyComponent />
+//             <p className="div">30,000 XP to LVL 3</p>
+//           </div>
+//         </div>
+//       </div>
 
-const ProgressBar = ({ level, xp, maxXp }) => {
-  const progressPercentage = (xp / maxXp) * 100;
+//       <img className="element" alt="Element" src={LevelImg} />
+//     </div>
+//   );
+// };
 
-  return (
-    <div className="progress-container">
-      <div className="level-indicator">LEVEL {level}</div>
-      <div className="progress-bar">
-        <div
-          className="progress-bar-fill"
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
-      <div className="xp-indicator">
-        {xp.toLocaleString()} XP to LVL {level + 1}
-      </div>
-    </div>
-  );
-};
+
