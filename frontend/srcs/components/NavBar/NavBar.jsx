@@ -115,6 +115,7 @@ export default function NavBar() {
                 src={NotifactionIcon}
                 alt="noticon"
                 className="notification-button"
+                style={{ zIndex: ShowNotificationBar ? 999999 : 0}}
                 onClick={() => {
                   setShowNotificationBar(!ShowNotificationBar);
                 }}
