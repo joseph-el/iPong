@@ -19,27 +19,27 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
-import BornIcon           from "../assets/bornicon.svg";
-import BlockIcon          from "../assets/block-icon.svg";
-import GithubIcon         from "../assets/githubicon.svg";
-import CoverImage         from "../assets/cover-image.jpeg";
-import LocationIcon       from "../assets/LocationIcon.svg";
-import CalendarIcon       from "../assets/CalendarIcon.svg";
-import SendMessageIcon    from "../assets/send-message.svg";
-import LinkedinIcon       from "../assets/Linkedinicon.svg";
-import UnfriendIcon       from "../assets/unfriend-icon.svg";
-import VerifiedBadge      from "../assets/Verified-badge.svg";
-import ArchivementIcon    from "../assets/archivementicon.svg";
-import AddFriendIcon      from "../assets/add-friend-icon.svg";
-import MenuIcon           from "../assets/profile-menu-icon.svg";
+import BornIcon from "../assets/bornicon.svg";
+import BlockIcon from "../assets/block-icon.svg";
+import GithubIcon from "../assets/githubicon.svg";
+import CoverImage from "../assets/cover-image.jpeg";
+import LocationIcon from "../assets/LocationIcon.svg";
+import CalendarIcon from "../assets/CalendarIcon.svg";
+import SendMessageIcon from "../assets/send-message.svg";
+import LinkedinIcon from "../assets/Linkedinicon.svg";
+import UnfriendIcon from "../assets/unfriend-icon.svg";
+import VerifiedBadge from "../assets/Verified-badge.svg";
+import ArchivementIcon from "../assets/archivementicon.svg";
+import AddFriendIcon from "../assets/add-friend-icon.svg";
+import MenuIcon from "../assets/profile-menu-icon.svg";
 
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { LevelBar } from "../../../components/UI/LevelBar/LevelBar";
+import IPongAlert from "../../../components/UI/iPongAlert/iPongAlert";
 import FriendsInCommon from "../../../components/UI/FriendsInCommon/FriendsInCommon";
-import MatchHistory       from "../../../components/UI/MatchHistoryTable/MatchHistory";
+import MatchHistory from "../../../components/UI/MatchHistoryTable/MatchHistory";
 import AchievementList from "../../../components/UI/AchievementComponents/AchievementList/AchievementList";
-
 
 const UserDescriptions = () => {
   return (
@@ -79,7 +79,7 @@ const UserDescriptions = () => {
 
 export default function UserProfileViewAs() {
   const [showAchievementList, setShowAchievementList] = React.useState(false);
-
+  const [ShowZindex, setShowZindex] = React.useState(false);
   const handleCloseClick = () => {
     setShowAchievementList(false);
   };
@@ -106,7 +106,7 @@ export default function UserProfileViewAs() {
               src="https://scontent.frba4-1.fna.fbcdn.net/v/t39.30808-1/417474877_1084959666153312_6596618040732418232_n.jpg?stp=dst-jpg_p480x480&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHwTc_R7JPrAPtBWxFRaFe-erb5zxyu1hd6tvnPHK7WF9S_wr1S8zpCfu2aMDYk7-iTba5XwscZ6PA2aqXg6Q-h&_nc_ohc=r3Gu5KyihjkQ7kNvgGYZlZx&_nc_ht=scontent.frba4-1.fna&oh=00_AYBJlWqZwMOPo4HJqEk88jKQPnd68pOIPERWEytk02mbZw&oe=6658F8C7"
               className="w-28 h-28 text-large avatar"
             />
-            <div className="user-LevelBar">
+            <div className="user-LevelBars">
               <LevelBar />
             </div>
           </div>
@@ -177,8 +177,13 @@ export default function UserProfileViewAs() {
               </Button>
 
               <Dropdown backdrop="blur" className="menu-icon-dropdown-frame">
-                <DropdownTrigger>
-                  <img src={MenuIcon} alt="menu-icon" className="menu-icon" />
+                <DropdownTrigger onClick={() => setShowZindex(!ShowZindex)}>
+                  <img
+                    src={MenuIcon}
+                    alt="menu-icon"
+                    className="menu-icon"
+                    style={{ zIndex: ShowZindex ? 999999 : 0 }}
+                  />
                 </DropdownTrigger>
 
                 <DropdownMenu
@@ -284,33 +289,19 @@ export default function UserProfileViewAs() {
             </div>
           ) : null}
 
-          <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
-            <ModalContent>
-              {(onClose) => (
-                <>
-                  <ModalHeader className="flex flex-col gap-1">
-                    {" "}
-                    {UserOptions}{" "}
-                  </ModalHeader>
-                  <ModalBody>
-                    {UserOptions === "Unfriend" ? (
-                      <p>Are you sure you want to unfriend this user?</p>
-                    ) : UserOptions === "Block" ? (
-                      <p>Are you sure you want to block this user?</p>
-                    ) : null}
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                      Closed
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                      {UserOptions === "Unfriend" ? "Unfriend" : "Block"}
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
+          <IPongAlert
+            isOpen={isOpen}
+            onClose={onClose}
+            UserAlertHeader={UserOptions}
+            UserAlertMessage={
+              UserOptions === "Unfriend"
+                ? "Are you sure you want to unfriend tnaceur?"
+                : UserOptions === "Block"
+                ? "Are you sure you want to block tnaceur?"
+                : null
+            }
+            UserOptions={UserOptions === "Unfriend" ? "Unfriend" : "Block"}
+          ></IPongAlert>
         </div>
       </NextThemesProvider>
     </NextUIProvider>
