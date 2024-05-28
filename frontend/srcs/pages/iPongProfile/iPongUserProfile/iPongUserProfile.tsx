@@ -18,6 +18,8 @@ import CalendarIcon     from "../assets/CalendarIcon.svg";
 import SecutityIcon     from "../assets/securityicon.svg";
 import VerifiedBadge    from "../assets/Verified-badge.svg";
 import ArchivementIcon  from "../assets/archivementicon.svg";
+import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { LevelBar } from "../../../components/UI/LevelBar/LevelBar";
 import FriendsTable from "../../../components/UI/FriendsTable/FriendsTable";
 import BlockedTable from "../../../components/UI/BlockedTable/BlockedTable";
@@ -76,6 +78,8 @@ export default function UserProfile() {
   };
 
   return (
+    <NextUIProvider>
+    <NextThemesProvider attribute="class" defaultTheme="dark">
     <div className="UserProfile-frame">
       <div className="profile-cover">
         <img
@@ -262,5 +266,7 @@ export default function UserProfile() {
           </div>
       </div> */}
     </div>
+    </NextThemesProvider>
+    </NextUIProvider>
   );
 }
