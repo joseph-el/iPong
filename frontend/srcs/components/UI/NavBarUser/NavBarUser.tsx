@@ -11,8 +11,11 @@ import {
   DropdownItem,
   Button,
   User,
+  Image,
+  Divider
 } from "@nextui-org/react";
 
+import IpongLogo from "../../../components/SideBar/assets/iPongLogo.svg"
 export default function NavBarUser(props) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -30,16 +33,19 @@ export default function NavBarUser(props) {
   const isLongEmail = userName.length > 5 && windowWidth < 1150;
   let truncatedUserName = isLongEmail ? userName.substring(0, 4) : userName;
   return (
-    <div className="flex items-center gap-4 NavBarUser w-max-content">
+    <div className="flex items-center gap-4 NavBarUser w-max-content  ">
       <Dropdown
         showArrow
         radius="sm"
+        className="modal-header-text-color"
         classNames={{
           base: "before:bg-default-700",
           content: "p-0 border-small border-divider bg-background",
         }}
       >
-        <DropdownTrigger onClick={props.onClick}>
+        <DropdownTrigger onClick={props.onClick} 
+          
+        >
           <User
             name={props.fullName + " "}
             description={
@@ -51,57 +57,22 @@ export default function NavBarUser(props) {
           />
         </DropdownTrigger>
 
-        <DropdownMenu
-          aria-label="Custom item styles"
-          disabledKeys={["profile"]}
-          className="p-3"
-          itemClasses={{
-            base: [
-              "rounded-md",
-              "text-default-500",
-              "transition-opacity",
-              "data-[hover=true]:text-foreground",
-              "data-[hover=true]:bg-default-100",
-              "dark:data-[hover=true]:bg-default-50",
-              "data-[selectable=true]:focus:bg-default-50",
-              "data-[pressed=true]:opacity-70",
-              "data-[focus-visible=true]:ring-default-500",
-            ],
-          }}
-        >
-          <DropdownSection aria-label="Profile & Actions" showDivider>
-            <DropdownItem
-              isReadOnly
-              key="profile"
-              className="h-14 gap-2"
-              className="opacity-100"
-            >
-              <User
-                name={props.fullName}
-                description={"@" + props.username}
-                classNames={{
-                  name: "text-default-600",
-                  description: "text-default-500",
-                }}
-                avatarProps={{
-                  size: "sm",
-                  src: props.avatar,
-                }}
-              />
-            </DropdownItem>
+        <DropdownMenu aria-label="Static Actions">
 
-            <DropdownItem key="dashboard" color="success">
-              see profile
-            </DropdownItem>
-          </DropdownSection>
+        {/* <DropdownItem key="SeeProfile"
+          isDisabled>
+            <Image src={IpongLogo} style={{ margin: "20px 20px 10px 55px" }} alt="avatar" width={70} height={70} />
+        </DropdownItem> */}
 
-          <DropdownSection aria-label="Help & Feedback">
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="delete" className="text-danger" color="danger">
-              Log Out
-            </DropdownItem>
-          </DropdownSection>
-        </DropdownMenu>
+        <DropdownItem isSelected variant="faded">
+          See Profile
+   
+          
+          </DropdownItem>
+        <DropdownItem  isSelected  variant="faded" className="text-danger" color="danger">
+          Log Out
+        </DropdownItem>
+      </DropdownMenu>
       </Dropdown>
 
       {/*
