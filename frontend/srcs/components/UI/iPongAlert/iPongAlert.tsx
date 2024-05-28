@@ -27,11 +27,11 @@ export default function IPongAlert(props) {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <ModalHeader className="flex flex-col modal-header-text-color gap-1">
               {" "}
               {props.UserAlertHeader}{" "}
             </ModalHeader>
-            <ModalBody>{props.UserAlertMessage}</ModalBody>
+            <ModalBody className="modal-body-text-color" >{props.UserAlertMessage}</ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>
                 Closed
