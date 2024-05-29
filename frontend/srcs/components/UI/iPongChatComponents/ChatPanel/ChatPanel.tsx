@@ -6,6 +6,8 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import ChatPanelHeader from "../ChatPanelHeader/ChatPanelHeader";
 import ChatPanelFooter from "../ChatPanelFooter/ChatPanelFooter";
 
+
+import {RightChatBubbles} from "../ChatBubbles/ChatBubbles";
 export default function ChatPanel() {
   return (
     <div className="ChatPanel-frame">
@@ -25,7 +27,7 @@ export default function ChatPanel() {
         </GridItem>
 
         <GridItem pl="2" w={"full"} h={"full"}  bg={"black"} area={"main"}>
-          Main
+          <RightChatBubbles message={"Hi guys! 👋 I am good. I have been working like crazy all last week, what did I miss? 😀"}/>
         </GridItem>
 
         <GridItem pl="2" w={"full"} h={"full"}  area={"Footer"}>
