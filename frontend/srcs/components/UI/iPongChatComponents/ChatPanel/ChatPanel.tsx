@@ -27,7 +27,7 @@ export default function ChatPanel() {
         </GridItem>
 
         <GridItem pl="2" w={"full"} h={"full"}  bg={"black"} area={"main"}>
-          <RightChatBubbles message={"Hi guys! 👋 I am good. I have been working like crazy all last week, what did I miss? 😀"}/>
+          <RightChatBubbles message={"Hi guys! 👋 I am good. I have been working like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀 , like crazy all last week, what did I miss? 😀 , like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀 like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀,like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀, like crazy all last week, what did I miss? 😀,like crazy all last week, what did I miss? 😀 ,like crazy all last week, what did I miss? 😀 ,like crazy all last week, what did I miss? 😀 ,like crazy all last week, what did I miss? 😀"}/>
         </GridItem>
 
         <GridItem pl="2" w={"full"} h={"full"}  area={"Footer"}>
