@@ -87,14 +87,14 @@ const chatBubbleProps = [
     avatarUrl: "https://randomuser.me/api/portraits/women/20.jpg"
   }
 ];
-
+     
 
 import { ScrollShadow } from "@nextui-org/react";
 
 export default function ChatPanel() {
     return (
         <div className="ChatPanel-frame">
-            <ScrollShadow  hideScrollBar className="ChatPanel-frame">
+            <ScrollShadow size={10} hideScrollBar className="ChatPanel-frame">
             {
                 chatBubbleProps.map((chatBubble, index) => {
                     return index % 2 === 0 ? (
