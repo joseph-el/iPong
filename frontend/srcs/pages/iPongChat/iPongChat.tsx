@@ -2,7 +2,7 @@ import React from "react";
 import "./iPongChat.css";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import ChatPanel from "../../components/UI/iPongChatComponents/ChatPanel/ChatPanel";
+import ChatPanelLayout from "../../components/UI/iPongChatComponents/ChatPanel/ChatPanelLayout";
 
 
 import UserListMessages from "../../components/UI/iPongChatComponents/UserListMessages/UserListMessages";
@@ -46,9 +46,9 @@ export default function IPongChat() {
           </GridItem>
         ) : null}
 
-        <GridItem pl="2" w={"w-full"} bg={"black"} area={"main"}>
+        <GridItem pl="2"  h={"full"}   area={"main"}>
           
-          <ChatPanel/>
+          <ChatPanelLayout/>
 
 
         </GridItem>
