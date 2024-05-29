@@ -3,30 +3,27 @@ import "./ChatPanelFooter.css";
 import Autocomplete from "react-google-autocomplete";
 
 import SendMessageIcon from "./Messages-sendIcon.svg";
-
-// 
+import {Suggestions} from "./exampleSuggestions";
+//
 
 import { Input } from "@nextui-org/input";
-import {Chip} from "@nextui-org/chip";
+import { Chip } from "@nextui-org/chip";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function ChatPanelFooter() {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  const exampleSuggestions = ["Hello", "How are you?", "What's up?", "Good morning", "Good evening"];
-
   const handleInputChange = (event) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-    
-    const filteredSuggestions = exampleSuggestions.filter(suggestion =>
-      suggestion.toLowerCase().includes(newValue.toLowerCase())
+    const newValue = event.target.value;    
+    const lastWord = newValue.split(' ').pop();
+    const filteredSuggestions = Suggestions.filter(suggestion =>
+      suggestion.toLowerCase().includes(lastWord.toLowerCase())
     );
     setSuggestions(filteredSuggestions);
+    setInputValue(newValue);
   };
-
   const handleSuggestionClick = (suggestion) => {
     setInputValue(suggestion);
     setSuggestions([]);
@@ -47,9 +44,14 @@ export default function ChatPanelFooter() {
         value={inputValue}
         placeholder="Type a message"
         onChange={handleInputChange}
-        endContent={<img src={SendMessageIcon} className="SendMessage" alt="Send Message" />}
+        endContent={
+          <img
+            src={SendMessageIcon}
+            className="SendMessage"
+            alt="Send Message"
+          />
+        }
       />
     </div>
   );
 }
-
