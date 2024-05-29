@@ -7,7 +7,7 @@
 
 
 
-@media (max-width: 1900px) {
+@media (min-width: 1900px) {
     .ChatPanelFooter-frame {
         padding: 20px 400px 0px 400px;
     }
