@@ -1,6 +1,50 @@
 /* LiveChat.css */
 .live-chat {
-    border-left: 0.537px solid #3C424D; /* Vertical line on the left */
-    height: 100%; /* Make it full height */
-    width: 10px !important;
+  border-left: 0.537px solid #3c424d; /* Vertical line on the left */
+  height: 100%; /* Make it full height */
+  width: 100% !important;
 }
+
+.live-chat-nav {
+  width: 100%;
+  height: 60px;
+  background-color: #000000;
+
+ padding: 10px 3px 10px 3px;
+  border-bottom: 0.8px solid #3c424d;
+  display: flex;
+  justify-content: space-between;
+}
+
+.LiveChatNavLogo {
+  width: 90px;
+  height: 50px;
+}
+
+.User-online {
+    margin-top: 14px;
+    margin-right: 4px;
+  display: flex;
+  gap: 3px;
+}
+
+.OnlineIcon {
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+}
+
+.User-online-number,
+.User-online-text {
+  color: #fff;
+    opacity: 0.7;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "sfprodisplay-semibold", serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.072px;
+}
+
