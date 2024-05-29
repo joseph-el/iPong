@@ -1,0 +1,59 @@
+.RightChatBubbles-frame {
+  display: flex;
+  gap: 10px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+
+  border-radius: 14px;
+  padding: 15px 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  color: var(--Dark-Text, #fff);
+
+  font-family: "sfprodisplay-regular", serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  
+}
+
+.yours {
+  align-items: flex-start;
+}
+
+.yours .message {
+
+  background-color: var(--Dark-Quaternary,rgba(255, 255, 255, 0.10) );;
+  position: relative;
+}
+
+.yours .message.last:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -7px;
+  height: 20px;
+  width: 20px;
+  background:  #1A1A1A;
+  border-bottom-right-radius: 15px;
+}
+
+.yours .message.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+  height: 20px;
+  background: rgb(0, 0, 0);
+  border-bottom-right-radius: 10px;
+}
