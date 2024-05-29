@@ -1,4 +1,5 @@
-.RightChatBubbles-frame {
+.RightChatBubbles-frame,
+.LeftChatBubbles-frame {
   display: flex;
   gap: 10px;
 }
@@ -7,27 +8,24 @@
   display: flex;
   flex-direction: column;
 }
-.RightChatBubbles-frame 
-.User-avatar {
-    margin-top: auto;
+.RightChatBubbles-frame .User-avatar {
+  margin-top: auto;
 }
 
 .message {
-
-  border-radius: 14px;
-  padding: 15px 15px;
+  border-radius: 25px;
+  padding: 10px 15px;
   margin-top: 5px;
   margin-bottom: 5px;
   display: inline-block;
   color: var(--Dark-Text, #fff);
 
   font-family: "sfprodisplay-regular", serif;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  max-width:500px;
+  max-width: 500px;
   /* line-height: 15px; */
-  
 }
 
 .yours {
@@ -35,8 +33,7 @@
 }
 
 .yours .message {
-
-  background-color: var(--Dark-Quaternary,rgba(255, 255, 255, 0.10) );;
+  background-color: var(--Dark-Quaternary, rgba(255, 255, 255, 0.1));
   position: relative;
 }
 
@@ -47,7 +44,7 @@
   left: -7px;
   height: 20px;
   width: 20px;
-  background:  #1A1A1A;
+  background: #1a1a1a;
   border-bottom-right-radius: 15px;
 }
 
@@ -62,3 +59,68 @@
   background: rgb(0, 0, 0);
   border-bottom-right-radius: 10px;
 }
+
+
+
+
+
+/*  Chat items */
+
+.LeftChatBubbles-messages {
+  display: flex;
+  flex-direction: column;
+}
+.LeftChatBubbles-frame .User-avatar {
+  margin-top: auto;
+}
+
+.LeftChatBubbles-message {
+  border-radius: 25px;
+  padding: 10px 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  color: var(--Dark-Text, #fff);
+
+  font-family: "sfprodisplay-regular", serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  max-width: 500px;
+  /* line-height: 15px; */
+}
+
+.LeftChatBubbles-yours {
+  align-items: flex-start;
+}
+
+.LeftChatBubbles-yours .LeftChatBubbles-message {
+  background-color: var(--Dark-Quaternary, #0a84ff);
+  position: relative;
+}
+
+.LeftChatBubbles-yours .LeftChatBubbles-message.LeftChatBubbles-last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  right: -8px;
+  height: 20px;
+  width: 20px;
+  background: var(--Dark-Quaternary, #0a84ff);
+  background-attachment: fixed;
+  border-bottom-left-radius: 15px;
+}
+
+.LeftChatBubbles-yours .LeftChatBubbles-message.LeftChatBubbles-last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+  height: 20px;
+  background: rgb(0, 0, 0);
+  border-bottom-left-radius: 10px;
+}
+
