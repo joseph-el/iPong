@@ -5,6 +5,14 @@
     padding: 20px 100px 0px 100px;
 }
 
+
+
+@media (max-width: 1900px) {
+    .ChatPanelFooter-frame {
+        padding: 20px 400px 0px 400px;
+    }
+   
+}
 .css-13w9pnp {
     padding: 0px !important;
 }
