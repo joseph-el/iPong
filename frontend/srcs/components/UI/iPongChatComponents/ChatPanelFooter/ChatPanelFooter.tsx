@@ -8,7 +8,7 @@ export default function ChatPanelFooter() {
   return (
     <div className="ChatPanelFooter-frame">
       <Input
-        
+        className="ChatPanelFooter-Input"
         placeholder="Type a message"
         endContent={<img src={SendMessageIcon} className="SendMessage" alt="Send Message" />}
       />
