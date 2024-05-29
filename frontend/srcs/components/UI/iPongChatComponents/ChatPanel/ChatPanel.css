@@ -1,7 +1,9 @@
 .ChatPanel-frame {
     display: flex;
     flex-direction: column;
-    height: 600px;
+    /* height: 600px; */
+    overflow-y: auto;
+    overflow-x: auto;
 }
   
   .RightChatBubbles-frame {
