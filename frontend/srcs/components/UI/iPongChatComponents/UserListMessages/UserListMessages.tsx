@@ -7,7 +7,7 @@ import MessagesItems from "../MessagesItems/MessagesItems";
 
 const messages = [
     { 
-        name: "Taha Naceur elidrissi", 
+        name: "Taha Naceur Elidrissi", 
         messageTime: "9:38 PM", 
         lastMessage: "Nice. I don't know why people get all worked up about Hawaiian pizza. I njknjk",
         avatar: "https://i.pravatar.cc/150?img=1"
@@ -19,88 +19,292 @@ const messages = [
         avatar: "https://i.pravatar.cc/150?img=2"
     },
     { 
-        name: "Touate Django", 
-        messageTime: "9:45 PM", 
-        lastMessage: "wach akhy hani",
-        avatar: "https://i.pravatar.cc/150?img=2"
-    },
-    { 
-        name: "Jane Doe", 
-        messageTime: "10:15 AM", 
-        lastMessage: "Just finished reading that book. Highly recommend it!",
+        name: "Mohammed Ali", 
+        messageTime: "10:00 AM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         avatar: "https://i.pravatar.cc/150?img=3"
     },
     { 
-        name: "John Smith", 
-        messageTime: "2:45 PM", 
-        lastMessage: "Meeting rescheduled to tomorrow. Please confirm your availability. Lorem kds kd  jdlqs sd dsfdjsk sdlkfjbds qsYEZ ZELSDJBFDLF SDLFDS",
+        name: "Omar Khalifa", 
+        messageTime: "11:30 AM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         avatar: "https://i.pravatar.cc/150?img=4"
     },
     { 
-        name: "Alice Johnson", 
-        messageTime: "1:30 PM", 
-        lastMessage: "Loved the new cafe downtown. Great atmosphere and coffee!",
+        name: "Fatima Ahmed", 
+        messageTime: "1:00 PM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         avatar: "https://i.pravatar.cc/150?img=5"
     },
     { 
-        name: "Bob Brown", 
-        messageTime: "8:00 AM", 
-        lastMessage: "Looking forward to the weekend. Any plans?",
+        name: "Ali Hassan", 
+        messageTime: "2:30 PM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
         avatar: "https://i.pravatar.cc/150?img=6"
     },
     { 
-        name: "Charlie Davis", 
-        messageTime: "5:55 PM", 
-        lastMessage: "Can you send me the report by EOD?",
+        name: "Aisha Ibrahim", 
+        messageTime: "3:45 PM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         avatar: "https://i.pravatar.cc/150?img=7"
     },
     { 
-        name: "Diana Evans", 
-        messageTime: "12:20 PM", 
-        lastMessage: "Just signed up for the marathon. Training starts tomorrow.",
+        name: "Youssef Mansour", 
+        messageTime: "4:15 PM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         avatar: "https://i.pravatar.cc/150?img=8"
     },
     { 
-        name: "Ethan Foster", 
-        messageTime: "4:10 PM", 
-        lastMessage: "Had a great time at the concert last night. Amazing performance!",
+        name: "Layla Mahmoud", 
+        messageTime: "5:20 PM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         avatar: "https://i.pravatar.cc/150?img=9"
     },
     { 
-        name: "Fiona Green", 
-        messageTime: "9:00 AM", 
-        lastMessage: "Could we have a quick call to discuss the project details?",
+        name: "Amir Kareem", 
+        messageTime: "6:40 PM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         avatar: "https://i.pravatar.cc/150?img=10"
     },
     { 
-        name: "George Harris", 
-        messageTime: "3:15 PM", 
-        lastMessage: "Happy birthday! Hope you have a fantastic day!",
+        name: "Noura Farid", 
+        messageTime: "7:10 PM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
         avatar: "https://i.pravatar.cc/150?img=11"
     },
     { 
-        name: "Hannah Irwin", 
-        messageTime: "7:25 PM", 
-        lastMessage: "The new recipe turned out great. Will bring some to work tomorrow.",
+        name: "Ahmed Mahmoud", 
+        messageTime: "8:30 PM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         avatar: "https://i.pravatar.cc/150?img=12"
     },
     { 
-        name: "Ian Jacobs", 
-        messageTime: "11:50 AM", 
-        lastMessage: "Thanks for the help with the presentation. It went really well.",
+        name: "Yara Fawzi", 
+        messageTime: "9:45 PM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         avatar: "https://i.pravatar.cc/150?img=13"
     },
     { 
-        name: "Julia Kim", 
-        messageTime: "6:40 PM", 
-        lastMessage: "Don't forget about the team dinner tonight at 7.",
+        name: "Khalid Samir", 
+        messageTime: "10:20 PM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         avatar: "https://i.pravatar.cc/150?img=14"
     },
     { 
-        name: "Kevin Lee", 
-        messageTime: "8:45 PM", 
-        lastMessage: "Any updates on the project status?",
+        name: "Sara Ali", 
+        messageTime: "11:00 PM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         avatar: "https://i.pravatar.cc/150?img=15"
+    },
+    { 
+        name: "Amira Hassan", 
+        messageTime: "11:30 PM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        avatar: "https://i.pravatar.cc/150?img=16"
+    },
+    { 
+        name: "Moustafa Ali", 
+        messageTime: "12:00 AM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        avatar: "https://i.pravatar.cc/150?img=17"
+    },
+    { 
+        name: "Nadia Salah", 
+        messageTime: "12:30 AM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        avatar: "https://i.pravatar.cc/150?img=18"
+    },
+    { 
+        name: "Karim Adel", 
+        messageTime: "1:00 AM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        avatar: "https://i.pravatar.cc/150?img=19"
+    },
+    { 
+        name: "Rana Ibrahim", 
+        messageTime: "2:00 AM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        avatar: "https://i.pravatar.cc/150?img=20"
+    },
+    { 
+        name: "Mohammed Kamal", 
+        messageTime: "3:00 AM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        avatar: "https://i.pravatar.cc/150?img=21"
+    },
+    { 
+        name: "Aya Khaled", 
+        messageTime: "4:00 AM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        avatar: "https://i.pravatar.cc/150?img=22"
+    },
+    { 
+        name: "Aliya Mahmoud", 
+        messageTime: "5:00 AM", 
+        lastMessage: "Lorem ipsum dolorsit amet, consectetur adipiscing elit.",
+        avatar: "https://i.pravatar.cc/150?img=23"
+    },
+    { 
+        name: "Ahmad Salem", 
+        messageTime: "6:00 AM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        avatar: "https://i.pravatar.cc/150?img=24"
+    },
+    { 
+        name: "Lina Magdi", 
+        messageTime: "7:00 AM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        avatar: "https://i.pravatar.cc/150?img=25"
+    },
+    { 
+        name: "Amr Youssef", 
+        messageTime: "8:00 AM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        avatar: "https://i.pravatar.cc/150?img=26"
+    },
+    { 
+        name: "Nada Osama", 
+        messageTime: "9:00 AM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        avatar: "https://i.pravatar.cc/150?img=27"
+    },
+    { 
+        name: "Mahmoud Samir", 
+        messageTime: "10:00 AM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        avatar: "https://i.pravatar.cc/150?img=28"
+    },
+    { 
+        name: "Yasmin Hassan", 
+        messageTime: "11:00 AM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        avatar: "https://i.pravatar.cc/150?img=29"
+    },
+    { 
+        name: "Khaled Adel", 
+        messageTime: "12:00 PM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        avatar: "https://i.pravatar.cc/150?img=30"
+    },
+    { 
+        name: "Hala Tarek", 
+        messageTime: "1:00 PM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        avatar: "https://i.pravatar.cc/150?img=31"
+    },
+    { 
+        name: "Ahmed Yassin", 
+        messageTime: "2:00 PM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        avatar: "https://i.pravatar.cc/150?img=32"
+    },
+    { 
+        name: "Laila Mohamed", 
+        messageTime: "3:00 PM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        avatar: "https://i.pravatar.cc/150?img=33"
+    },
+    { 
+        name: "Samiya Karim", 
+        messageTime: "4:00 PM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        avatar: "https://i.pravatar.cc/150?img=34"
+    },
+    { 
+        name: "Karim Salah", 
+        messageTime: "5:00 PM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        avatar: "https://i.pravatar.cc/150?img=35"
+    },
+    { 
+        name: "Hassan Mahmoud", 
+        messageTime: "6:00 PM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        avatar: "https://i.pravatar.cc/150?img=36"
+    },
+    { 
+        name: "Nora Ahmed", 
+        messageTime: "7:00 PM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        avatar: "https://i.pravatar.cc/150?img=37"
+    },
+    { 
+        name: "Fahad Samir", 
+        messageTime: "8:00 PM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        avatar: "https://i.pravatar.cc/150?img=38"
+    },
+    { 
+        name: "Rana Adel", 
+        messageTime: "9:00 PM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        avatar: "https://i.pravatar.cc/150?img=39"
+    },
+    { 
+        name: "Saeed Kareem", 
+        messageTime: "10:00 PM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        avatar: "https://i.pravatar.cc/150?img=40"
+    },
+    { 
+        name: "Noura Magdy", 
+        messageTime: "11:00 PM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        avatar: "https://i.pravatar.cc/150?img=41"
+    },
+    { 
+        name: "Aliya Mohamed", 
+        messageTime: "12:00 AM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        avatar: "https://i.pravatar.cc/150?img=42"
+    },
+    { 
+        name: "Hassan Mahmoud", 
+        messageTime: "1:00 AM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        avatar: "https://i.pravatar.cc/150?img=43"
+    },
+    { 
+        name: "Nora Ahmed", 
+        messageTime: "2:00 AM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        avatar: "https://i.pravatar.cc/150?img=44"
+    },
+    { 
+        name: "Fahad Samir", 
+        messageTime: "3:00 AM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        avatar: "https://i.pravatar.cc/150?img=45"
+    },
+    { 
+        name: "Rana Adel", 
+        messageTime: "4:00 AM", 
+        lastMessage: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        avatar: "https://i.pravatar.cc/150?img=46"
+    },
+    { 
+        name: "Saeed Kareem", 
+        messageTime: "5:00 AM", 
+        lastMessage: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        avatar: "https://i.pravatar.cc/150?img=47"
+    },
+    { 
+        name: "Noura Magdy", 
+        messageTime: "6:00 AM", 
+        lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        avatar: "https://i.pravatar.cc/150?img=48"
+    },
+    { 
+        name: "Aliya Mohamed", 
+        messageTime: "7:00 AM", 
+        lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        avatar: "https://i.pravatar.cc/150?img=49"
+    },
+    { 
+        name: "Hassan Mahmoud", 
+        messageTime: "8:00 AM", 
+        lastMessage: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        avatar: "https://i.pravatar.cc/150?img=50"
     }
 ];
 
