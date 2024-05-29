@@ -14,7 +14,7 @@ import {
 import LiveChat from "../../components/LiveChat/LiveChat";
 import UserProfile from "../iPongProfile/iPongUserProfile/iPongUserProfile";
 import UserProfileViewAs from "../iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
-
+import IPongChat from "../iPongChat/iPongChat";
 export default function AppLayout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -65,6 +65,8 @@ export default function AppLayout() {
           <Routes>
             <Route path="/Profile" element={<UserProfile />} />
             <Route path="/Users/tnaceur" element={<UserProfileViewAs />} />
+            <Route path="/ipongchat" element={<IPongChat />} />
+          
           </Routes>
         </BrowserRouter>
       </GridItem>
