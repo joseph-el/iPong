@@ -1,0 +1,13 @@
+.LiveChatBubbles-frame {
+    background-color: rgba(30, 34, 36, 1);  
+    width: 95%;
+    padding: 20px 5px 20px 5px;
+    height: max-content; 
+    border-radius: 30px;
+    display: flex;
+}
+
+.LiveChatBubbles-bubble {
+    display: flex;
+    flex-direction: column;
+}
