@@ -23,8 +23,9 @@ export default function ChatPanelLayout() {
           <ChatPanelHeader />
         </GridItem>
 
-        <GridItem pl="2" bg={"black"} area={"main"}>
+        <GridItem pl="2" style={{ overflowY: 'auto' }} area={"main"}>
           <ChatPanel />
+
         </GridItem>
 
         <GridItem pl="2"  area={"Footer"}>
