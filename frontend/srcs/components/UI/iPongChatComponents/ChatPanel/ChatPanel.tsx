@@ -10,7 +10,7 @@ export default function ChatPanel() {
         templateAreas={`"header header"
                         "main main"
                         "main main"`}
-        gridTemplateRows={"60px 1fr 30px"}
+        gridTemplateRows={"55px 1fr 30px"}
         gridTemplateColumns={"150px 1fr"}
         h="100%"
         w={"100%"}
