@@ -42,6 +42,13 @@
 }
 
 @font-face {
+    font-family: 'sfprodisplay-semibold';
+    src: url('semibold.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'sfprodisplay-semi-bold-italic';
     src: url('sfprodisplaysemi-bold-italic.otf') format('opentype');
     font-weight: normal;
