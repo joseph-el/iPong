@@ -5,6 +5,7 @@
     flex-direction: column;
     gap: 2px;
     padding: 5px 0px 10px 0px;
+    
   }
 
   .nav-bar .text-wrapper {
@@ -83,6 +84,7 @@
 
   background-color: #000000;
   border-bottom: 0.537px solid #3c424d;
+  border-bottom: 1px solid #3c424d !important;
 }
 
 .page-name-breadcrumb {
