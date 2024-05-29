@@ -4,6 +4,8 @@ import "./ChatPanel.css";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 import ChatPanelHeader from "../ChatPanelHeader/ChatPanelHeader";
+import ChatPanelFooter from "../ChatPanelFooter/ChatPanelFooter";
+
 export default function ChatPanel() {
   return (
     <div className="ChatPanel-frame">
@@ -27,7 +29,7 @@ export default function ChatPanel() {
         </GridItem>
 
         <GridItem pl="2" w={"full"} h={"full"}  area={"Footer"}>
-          footer
+          <ChatPanelFooter/>
         </GridItem>
 
       </Grid>
