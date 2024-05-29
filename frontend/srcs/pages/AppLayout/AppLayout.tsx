@@ -46,7 +46,7 @@ export default function AppLayout() {
 `
       }
       gridTemplateRows={"72px 1fr 30px"}
-      gridTemplateColumns={"78px 1fr 200px"}
+      gridTemplateColumns={"78px 1fr 300px"}
       h="100vh"
       gap="0"
       color="white"
