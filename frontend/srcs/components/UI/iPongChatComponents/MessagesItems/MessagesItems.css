@@ -1,0 +1,77 @@
+.MessagesItems-frame {
+    width: 100%;
+    height: max-content;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 20px 13px 20px;
+  }
+  
+  .MessagesItems-frame:hover {
+    background-color: #3a3a3c;
+  }
+  
+  .css-1a7s7t4,
+  .css-1y2lay6 {
+    padding: 0px !important;
+  }
+  
+  .MessagesItems-frame .User-avatar {
+    padding: 0; /* Remove padding if not needed */
+  }
+  
+  .MessagesItems-frame .Messages-info {
+    flex-grow: 1;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .Name-and-Message-time {
+    display: flex;
+    justify-content: space-between;
+
+  }
+  
+  .Messages-info .Name {
+    color: #fff;
+    font-family: "sfprodisplay-semibold", serif;
+    font-size: 18px;
+    font-style: normal;
+    line-height: 19.125px;
+  }
+  
+  .Messages-info .Message-time {
+    color: rgba(235, 235, 245, 0.6);
+    text-align: right;
+    font-family: "sfprodisplay-regular", serif;
+    font-size: 17.04px;
+    font-style: normal;
+    font-weight: 400 !important;
+    line-height: 17.387px;
+  }
+  
+  .Messages-info .last-Message {
+    color: rgba(235, 235, 245, 0.6);
+    font-family: "sfprodisplay-regular", serif;
+    font-size: 15.04px;
+    font-style: normal;
+    font-weight: 500 !important;
+    line-height: 17.387px; /* 133.333% */
+  }
+  
+  .time-and-select-conversation {
+    margin-right: -20px;
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+  
+  .select-conversation-icon {
+    margin-top: -1px;
+    width: 20px;
+    height: 17px;
+  }
+  
