@@ -1,0 +1,45 @@
+.UserListHeader-frame {
+  background-color: rgba(17, 17, 17, 0.94);
+  width: 100%;
+  height: 100%;
+  border-right: 1px solid #343232;
+  border-bottom: 1px solid #343232;
+
+}
+
+.write-button {
+  display: flex;
+}
+.write-button-img {
+  width: 30px;
+  height: 30px;
+
+  margin: 20px 10px 10px auto;
+}
+
+.write-button-img:hover {
+    cursor: pointer;
+    opacity: 0.8;    
+}
+.ipongchat-titile {
+  color: #fff;
+  font-family: "sfprodisplay-bold", serif;
+  font-size: 35.889px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 31.219px;
+  margin: -15px 0 10px 10px;
+}
+
+.filter-List-buttons {
+    margin: 15px 10px 10px 10px;
+  display: flex;
+  gap: 7px;
+}
+
+
+.filter-List-buttons-chip:hover {
+    cursor: pointer;
+    opacity: 0.8;
+
+}
