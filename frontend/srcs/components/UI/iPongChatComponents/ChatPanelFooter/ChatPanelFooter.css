@@ -2,14 +2,23 @@
     width: 100%;
     height: 100%;
 
-    padding: 20px 100px 0px 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0px 100px 0px 100px;
+    /* background-color: red; */
+
 }
 
-
+.autocomplete {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+}
 
 @media (min-width: 1900px) {
     .ChatPanelFooter-frame {
-        padding: 20px 400px 0px 400px;
+        padding: 0px 400px 0px 400px;
     }
    
 }
@@ -21,10 +30,6 @@
     height: 26px;
 }
 
-/* .ChatPanelFooter-Input {
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-} */
 
 .ChatPanelFooter-frame .SendMessage:hover {
     cursor: pointer;
