@@ -36,7 +36,7 @@ export default function IPongChat() {
         gridTemplateRows={"50px 1fr 35px"}
         gridTemplateColumns={` ${ windowWidth <= 900 ? "250px" :  windowWidth <= 2000  ? "380px" : "410px"} 1fr`}
         h="100%"
-        color="blackAlpha.700"
+
         fontWeight="bold"
       >
 
