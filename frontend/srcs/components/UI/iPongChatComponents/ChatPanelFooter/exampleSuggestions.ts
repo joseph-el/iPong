@@ -1,4 +1,4 @@
-export   const Suggestions = [
+export  const Suggestions = [
     "Hello", "Hi", "Hey", "Howdy", "Greetings", "Salutations", "Good morning",
     "Good afternoon", "Good evening", "How are you?", "What's up?", "How's it going?",
     "Nice to meet you", "Pleasure to meet you", "Long time no see", "Goodbye", "Farewell",
