@@ -4,7 +4,8 @@
   height: 100%;
   border-right: 1px solid #343232;
   border-bottom: 1px solid #343232;
-
+  /* border-top: 0.8px solid #3c424d; */
+  margin-top: 1px;
 }
 
 .write-button {
@@ -18,8 +19,8 @@
 }
 
 .write-button-img:hover {
-    cursor: pointer;
-    opacity: 0.8;    
+  cursor: pointer;
+  opacity: 0.8;
 }
 .ipongchat-titile {
   color: #fff;
@@ -28,18 +29,16 @@
   font-style: normal;
   font-weight: 700;
   line-height: 31.219px;
-  margin: -15px 0 10px 10px;
+  margin: -20px 0 10px 10px;
 }
 
 .filter-List-buttons {
-    margin: 15px 10px 10px 10px;
+  margin: 15px 10px 10px 10px;
   display: flex;
   gap: 7px;
 }
 
-
 .filter-List-buttons-chip:hover {
-    cursor: pointer;
-    opacity: 0.8;
-
+  cursor: pointer;
+  opacity: 0.8;
 }
