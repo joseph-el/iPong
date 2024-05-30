@@ -84,7 +84,7 @@
 
   background-color: #000000;
   border-bottom: 0.537px solid #3c424d;
-  border-bottom: 1px solid #3c424d !important;
+  border-bottom: 0.8px solid #3c424d !important;
 }
 
 .page-name-breadcrumb {
@@ -143,7 +143,7 @@
     top: 3400%;
     right: 5000%;
     transform: translate(-57%, -50%);
-    z-index: 1000; /* Ensure it's above other elements */
+    z-index: 1000; 
   }
 }
 
@@ -172,6 +172,8 @@
   }
 }
 
+/* 73.26 - 61 */
+
 @media (min-width: 1150px) {
   .logout-button-down {
     padding: 20px 0px 0px 142px;
@@ -182,5 +184,9 @@
   .page-name-breadcrumb {
     background-color: red !important;
     display: none !important;
+  }
+  .nav-bar {
+    padding-top: 16.13px;
+    padding-bottom: 16.14px;
   }
 }
