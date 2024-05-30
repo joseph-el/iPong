@@ -6,7 +6,7 @@ import { Avatar } from "@nextui-org/avatar";
 export function RightChatBubbles(props) {
   return (
     <div className="RightChatBubbles-frame">
-      <Avatar className="User-avatar w-14 h-14" src={props.avatarUrl} />
+      <Avatar  className="User-avatar w-12 h-12" src={props.avatarUrl} />
       <div className="yours messages">
         <div className="message last">{props.message}</div>
       </div>
@@ -22,7 +22,7 @@ export function LeftChatBubbles(props) {
           {props.message}
         </div>
       </div>
-      <Avatar className="User-avatar w-14 h-14" src={props.avatarUrl} />
+      <Avatar  className="User-avatar w-12 h-12" src={props.avatarUrl} />
     </div>
   );
 }
