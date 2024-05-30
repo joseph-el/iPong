@@ -22,16 +22,11 @@ export default function MessagesItems(props) {
   return (
     <div className="MessagesItems-frame">
       <div className="User-avatar">
-        <Avatar
-          src={props.avatar}
-          className="w-14 h-14 text-large"
-        />
+        <Avatar src={props.avatar} className="w-14 h-14 text-large" />
       </div>
 
       <div className="Messages-info">
-
         <div className="Name-and-Message-time">
-
           <div className="Name">{props.name}</div>
           <div className="time-and-select-conversation">
             <div className="Message-time">{props.messageTime}</div>
@@ -41,13 +36,11 @@ export default function MessagesItems(props) {
               className="select-conversation-icon"
             />
           </div>
-
         </div>
 
         <div className="last-Message">
           {handleLastMessageSize(props.lastMessage)}
         </div>
-
       </div>
     </div>
   );
