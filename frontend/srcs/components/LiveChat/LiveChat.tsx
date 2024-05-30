@@ -150,7 +150,7 @@ export default function LiveChat() {
         templateAreas={`"header header"
                   "main main"
                   "footer footer"`}
-        gridTemplateRows={"60px 1fr 70px"}
+        gridTemplateRows={"73.26px 1fr 70px"}
         gridTemplateColumns={"150px 1fr"}
         h="100%"
       >
