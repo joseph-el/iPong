@@ -14,11 +14,14 @@ import { useState } from "react";
 export default function ChatPanelFooter() {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [style, setStyle] = useState("30px");
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
 
     if (!newValue) {
+    setStyle("20px");
+
       setSuggestions([]);
       setInputValue(newValue);
       return;
@@ -27,6 +30,14 @@ export default function ChatPanelFooter() {
     const filteredSuggestions = Suggestions.filter((suggestion) =>
       suggestion.toLowerCase().includes(lastWord.toLowerCase())
     );
+
+    if (filteredSuggestions.length === 0) {
+      setStyle("20px");
+      setSuggestions([]);
+      setInputValue(newValue);
+      return;
+    }
+    setStyle("0px");
     setSuggestions(filteredSuggestions);
     setInputValue(newValue);
   };
@@ -35,11 +46,12 @@ export default function ChatPanelFooter() {
     words.pop();
     setInputValue(words.join(" ") + " " + suggestion);
     setSuggestions([]);
+    setStyle("20px");
   };
 
   return (
-    <div className="ChatPanelFooter-frame">
-      <div className="autocomplete">
+    <div className="ChatPanelFooter-frame"  >
+      <div className="autocomplete"  style={{ marginTop: style }} >
         {suggestions.slice(0, 6).map((suggestion, index) => (
           <Chip key={index} onClick={() => handleSuggestionClick(suggestion)}>
             {suggestion}
@@ -49,6 +61,7 @@ export default function ChatPanelFooter() {
 
       <Input
         className="ChatPanelFooter-Input"
+        
         value={inputValue}
         placeholder="Type a message"
         onChange={handleInputChange}
