@@ -16,10 +16,11 @@ import UserProfile from "../iPongProfile/iPongUserProfile/iPongUserProfile";
 import UserProfileViewAs from "../iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
 import IPongChat from "../iPongChat/iPongChat";
 
-
 import SeeUsers from "../../components/UI/iPongChatComponents/SeeUsers/SeeUsers";
 import SeeGroup from "../../components/UI/iPongChatComponents/SeeGroup/SeeGroup";
-
+import CreatNewMessage from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatNewMessage";
+import CreatGroupChat from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatGroupChat/CreatGroupChat";
+import StartFriendChat from "../../components/UI/iPongChatComponents/CreatNewMessage/StartFriendChat/StartFriendChat";
 export default function AppLayout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -70,8 +71,7 @@ export default function AppLayout() {
           <Routes>
             <Route path="/Profile" element={<UserProfile />} />
             <Route path="/Users/tnaceur" element={<UserProfileViewAs />} />
-            <Route path="/ipongchat" element={<SeeGroup />} />
-          
+            <Route path="/ipongchat" element={<IPongChat />} />
           </Routes>
         </BrowserRouter>
       </GridItem>
