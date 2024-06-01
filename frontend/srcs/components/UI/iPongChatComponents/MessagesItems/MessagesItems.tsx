@@ -19,8 +19,12 @@ const MessageLenght = (message) => {
 };
 
 export default function MessagesItems(props) {
+
+
+  const [IsSelectes, setIsSelectes] = React.useState(false);
+  // style={ {backgroundColor: (props.IsSelectes ? "#3a3a3c" : "#000")} } 
   return (
-    <div className="MessagesItems-frame">
+    <div className="MessagesItems-frame"  onClick={ () => {setIsSelectes(true)} } style={ {backgroundColor: (IsSelectes ? "#3a3a3c" : "#000")} }  >
       <div className="User-avatar">
         <Avatar src={props.avatar} className="w-14 h-14 text-large" />
       </div>
