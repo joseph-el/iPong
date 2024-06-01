@@ -6,8 +6,20 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import ChatPanelHeader from "../ChatPanelHeader/ChatPanelHeader";
 import ChatPanelFooter from "../ChatPanelFooter/ChatPanelFooter";
 import ChatPanel from "./ChatPanel";
+import CreatNewMessage from "../CreatNewMessage/CreatNewMessage";
 
 export default function ChatPanelLayout() {
+
+  const [ShowGroupChatSettings, setShowGroupChat] = React.useState(false);
+  const [ShowFriendChatSetting, setShowFriendChatSetting] =
+    React.useState(false);
+
+  const handleCloseClick = () => {
+ 
+    setShowGroupChat(false);
+    setShowFriendChatSetting(false);
+  };
+
   return (
     <div className="ChatPanel-frame">
       <Grid
@@ -23,12 +35,21 @@ export default function ChatPanelLayout() {
           <ChatPanelHeader />
         </GridItem>
 
-        <GridItem pl="2" style={{ overflowY: 'auto' }} area={"main"}>
+        <GridItem pl="2" style={{ overflowY: "auto" }} area={"main"}>
           <ChatPanel />
+
+
+
+
+
+
+
+
+
 
         </GridItem>
 
-        <GridItem pl="2"  area={"Footer"}>
+        <GridItem pl="2" area={"Footer"}>
           <ChatPanelFooter />
         </GridItem>
       </Grid>
