@@ -114,6 +114,7 @@ const EditGroup = (props) => {
 
               <ModalBody>
                 <div className="Edit-profile">
+                  
                   <div className="Groups-Info">
                     <Avatar
                       className="User-avatar w-24 h-24"
@@ -245,7 +246,7 @@ export default function SeeGroup() {
                 }}
                 src={EditIcon}
                 alt="Customize-chat-icon"
-                className="Customize-chat-icon"
+                className="Customize-chat-icon animate-pulse"
               />
               {/* <div className="Customize-chat">
                 <div className="Customize-chat-title">Customize Chat</div>
@@ -351,7 +352,7 @@ export default function SeeGroup() {
                   <div
                     className="DeleteChat"
                     onClick={() => {
-                      handleOpen("DeleteChat");
+                      handleOpen("Delete Chat");
                     }}
                   >
                     {" "}
@@ -360,7 +361,7 @@ export default function SeeGroup() {
                   <div
                     className="Leave-this-conversation"
                     onClick={() => {
-                      handleOpen("Leave-this-conversation");
+                      handleOpen("Leave this Group");
                     }}
                   >
                     Leave this Group
@@ -375,19 +376,19 @@ export default function SeeGroup() {
             onClose={onClose}
             UserAlertHeader={UserOptions}
             UserAlertMessage={
-              UserOptions === "DeleteChat"
+              UserOptions === "Delete Chat"
                 ? "Are you sure you want to Delete this chat ?"
-                : UserOptions === "Leave this conversation"
+                : UserOptions === "Leave this Group"
                 ? "Are you sure you want to Leave this Group?"
                 : null
             }
             UserOptions={
-              UserOptions === "DeleteChat" ? "Delete Chat" : "Leave Group"
+              UserOptions === "Delete Chat" ? "Delete Chat" : "Leave Group"
             }
           ></IPongAlert>
 
           <EditGroup
-            isOpen={true}
+            isOpen={EditProfileState}
             onClose={() => {
               setEditProfileState(!EditProfileState);
             }}
