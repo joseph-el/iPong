@@ -15,7 +15,7 @@ import LiveChat from "../../components/LiveChat/LiveChat";
 import UserProfile from "../iPongProfile/iPongUserProfile/iPongUserProfile";
 import UserProfileViewAs from "../iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
 import IPongChat from "../iPongChat/iPongChat";
-
+import IPongStore from "../iPongStore/iPongStore";
 import SeeUsers from "../../components/UI/iPongChatComponents/SeeUsers/SeeUsers";
 import SeeGroup from "../../components/UI/iPongChatComponents/SeeGroup/SeeGroup";
 import CreatNewMessage from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatNewMessage";
@@ -70,6 +70,8 @@ export default function AppLayout() {
         <BrowserRouter>
           <Routes>
             <Route path="/Profile" element={<UserProfile />} />
+            <Route path="/store" element={<IPongStore />} />
+
             <Route path="/Users/tnaceur" element={<UserProfileViewAs />} />
             <Route path="/ipongchat" element={<IPongChat />} />
           </Routes>
