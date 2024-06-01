@@ -9,7 +9,7 @@
 }
 
 .MessagesItems-frame:hover {
-  background-color: #3a3a3c;
+  background-color: #3a3a3c !important;
 }
 
 .css-1a7s7t4,
