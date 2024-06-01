@@ -1,0 +1,55 @@
+.StartFriendChatWrapper-box {
+  background-color: #000000;
+  border-radius: 15px;
+  left: 1px;
+  position: relative;
+  border: 0.5px solid #3c424d;
+  width: 500px;
+  max-width: 400px;
+  height: 550px;
+  max-height: 1000px;
+  margin: 5px;
+}
+
+.StartFriendChat-frame .StartFriendChat-header {
+  margin: 30px 0px 50px 40px;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  /* font-family: "sfprodisplay-semibold", sans-serif; */
+  font-weight: 200;
+  font-style: normal;
+  font-size: 25.8px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.StartFriendChat-frame .descriptions  {
+  margin: 0px 0px 195px 40px;
+}
+
+.StartFriendChat-frame .descriptions .text-ovrride {
+  color: #72767a;
+
+  font-family: "sfprodisplay-regular", sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px; /* 105.277% */
+  letter-spacing: -0.39px;
+  width: 330px;
+}
+
+
+.StartFriendChat-frame .Select-friend {
+  margin: 0px 10px 10px 30px;
+}
+.StartFriendChat-frame .buttons-target {
+  margin-bottom: 20px;
+}
+
+.StartFriendChat-frame .closeicons {
+  margin-left: 360px;
+  margin-top: 10px;
+  margin-bottom: -30px;
+}

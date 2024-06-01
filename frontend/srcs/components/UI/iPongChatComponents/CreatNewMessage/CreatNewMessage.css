@@ -1,0 +1,58 @@
+.CreatNewMessageWrapper-box {
+  background-color: #000000;
+  border-radius: 15px;
+  left: 1px;
+  position: relative;
+  border: 0.5px solid #3c424d;
+  width: 500px;
+  max-width: 400px;
+  height: 550px;
+  max-height: 1000px;
+  margin: 5px;
+}
+
+
+.div-title{
+  display: flex;
+  margin-top: 40px ;
+}
+.closeicon {
+  margin-left: auto;
+  margin-right:20px;
+  margin-top: -20px;
+}
+.CreatNewMessage-frame .title {
+  color: #e0e0e0;
+  /* font-family: "sfprodisplay-semibold", sans-serif;  */
+  font-family: "popins-medium", sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  margin-left: 30px;
+  /* margin: 40px 0px 10px 30px; */
+}
+
+.Select-Type {
+  margin: 70px 0px 140px 25px;
+}
+.CreatNewMessage-frame .sign-in-competent-sign-in {
+  max-width: 350px;
+  margin-left: 25px;
+  margin-bottom: 20px;
+}
+
+
+.Tooltip-required {
+  margin-top: -120px;
+  margin-left: 105px;
+  margin-bottom: 90px;
+
+}
+
+.CreatNewMessage-frame .sign-in-competent-sign-in:hover {
+  cursor: pointer;
+}
+
+.CreatNewMessage-frame .sign-in-competent-sign-in .text-wrapper {
+  left: 68%;
+  transform: translateX(-40%);
+}
