@@ -24,7 +24,7 @@ const messages = [
     messageTime: "10:00 AM",
     lastMessage: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     avatar: "https://i.pravatar.cc/150?img=3",
-  },
+  }, /*
   {
     name: "Omar Khalifa",
     messageTime: "11:30 AM",
@@ -344,8 +344,20 @@ const messages = [
     lastMessage:
       "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     avatar: "https://i.pravatar.cc/150?img=50",
-  },
+  },*/
 ];
+
+
+
+interface UserListMessagesProps {
+  type: string;
+  name: string;
+  avatar: string;
+  lastMessage: string;
+  messageTime: string;
+  isSelectes: boolean;
+}
+
 
 export default function UserListMessages(props) {
   return (
