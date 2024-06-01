@@ -32,6 +32,12 @@ let chatBubbleProps = [
   },
   {
     message:
+      "Hi  how are you? ????",
+    avatarUrl: "https://randomuser.me/api/portraits/men/5.jpg",
+  },
+  /*
+  {
+    message:
       "The new cafe down the street has the best coffee I've ever tasted. ☕ You should try it sometime. 😋",
     avatarUrl: "https://randomuser.me/api/portraits/women/6.jpg",
   },
@@ -104,7 +110,7 @@ let chatBubbleProps = [
     message:
       "Have you tried the new restaurant downtown? 🍽️ The food is incredible and the atmosphere is great. 🥂🎉",
     avatarUrl: "https://randomuser.me/api/portraits/women/20.jpg",
-  },
+  },*/
 ];
 
 import { ScrollShadow } from "@nextui-org/react";
