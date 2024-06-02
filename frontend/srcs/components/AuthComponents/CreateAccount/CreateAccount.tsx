@@ -15,7 +15,7 @@ import {
   setDateIsInvalid,
   setDateErrorMessage,
 } from "../../../state/InputComponents/InputDateComponent/dateSlice";
-
+import { ScrollShadow } from "@nextui-org/react";
 import { setGenderInvalide } from "../../../state/Checkbox/CheckboxSlice";
 
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ import {
   validateEmail,
   isDateOfBirthValid,
 } from "../../../utils/formValidation";
-import { GenderType } from "../../../state/Checkbox/CheckboxSlice";
+
 
 export const DateOfBirth = () => {
   return (
@@ -57,14 +57,14 @@ export default function CreateAccount() {
     const errors = await getValidationErrors();
 
     if (!errors) {
-      navigate("/Login/need-a-password");
+      navigate("/auth/set-password");
     } else handleErrors(errors);
   };
 
   const handelonClose = () => {
     // TDOD: Close the sign in component and navigate to the sign up component
     // Clear the input fields state and error messages
-    navigate("/login");
+    navigate("/auth");
     console.log("Close");
   };
 
@@ -88,9 +88,12 @@ export default function CreateAccount() {
     if (validationResult !== null) {
       return { id: "undefined", message: validationResult };
     }
-    if (UserGender == GenderType.UNK) {
+    if (!UserGender) {
       return { id: "undefined_gender", message: "User gender required!" };
     }
+
+    console.log("No errors");
+    console.log("gender", UserGender);
     return null;
   };
 
@@ -113,7 +116,7 @@ export default function CreateAccount() {
   };
 
   return (
-    <>
+    <ScrollShadow hideScrollBar size={4} className="h-auto">
       <div className="CreateAccount-competent-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
         <Close ClassName={"creat-close"} id={"close"} func={handelonClose} />
 
@@ -152,6 +155,6 @@ export default function CreateAccount() {
           </div>
         </div>
       </div>
-    </>
+    </ScrollShadow>
   );
 }
