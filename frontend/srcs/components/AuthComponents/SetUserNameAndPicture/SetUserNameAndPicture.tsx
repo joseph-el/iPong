@@ -55,14 +55,14 @@ export default function SetUserNameAndPicture() {
       dispatch(setIsInvalid({ id: "set-user-username", isInvalid: true }));
       dispatch(setErrorMessage({ id: "set-user-username", errorMessage: ret }));
     } else {
-      navigate("/Login/WelcomeNewUser"); // redirect to welcome page
+      navigate("/auth/welcome"); // redirect to welcome page
     }
   };
 
   const handelonClose = () => {
     // TDOD: Close the sign in component and navigate to the sign up component
     // Clear the input fields state and error messages
-    navigate("/Login/need-a-password");
+    navigate("/auth/set-password");
     console.log("Close");
   };
 
