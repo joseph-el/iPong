@@ -11,6 +11,7 @@ import {
   Routes,
 } from "react-router-dom";
 
+import IPongGame from "../iPongGame/iPongGame";
 import LiveChat from "../../components/LiveChat/LiveChat";
 import UserProfile from "../iPongProfile/iPongUserProfile/iPongUserProfile";
 import UserProfileViewAs from "../iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
@@ -71,6 +72,8 @@ export default function AppLayout() {
           <Routes>
             <Route path="/Profile" element={<UserProfile />} />
             <Route path="/store" element={<IPongStore />} />
+            <Route path="/game" element={<IPongGame />} />
+
 
             <Route path="/Users/tnaceur" element={<UserProfileViewAs />} />
             <Route path="/ipongchat" element={<IPongChat />} />
