@@ -5,7 +5,7 @@ import "./Checkbox.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 
-import { GenderType } from "../../../state/Checkbox/CheckboxSlice";
+
 import {
   setGenderInvalide,
   setGender,
@@ -20,12 +20,12 @@ export default function CustomCheckbox() {
   const dispatch = useDispatch<AppDispatch>();
   const handleMaleChange = () => {
     dispatch(setGenderInvalide(false));
-    dispatch(setGender(GenderType.MALE));
+    dispatch(setGender("MALE"));
   };
 
   const handleFemaleChange = () => {
     dispatch(setGenderInvalide(false));
-    dispatch(setGender(GenderType.FELMALE));
+    dispatch(setGender("FELMALE"));
   };
 
   return (
@@ -33,14 +33,14 @@ export default function CustomCheckbox() {
       <div className="flex gap-4">
         <Checkbox
           className="Gender-type"
-          isSelected={gender_type == GenderType.MALE}
+          isSelected={gender_type == "MALE"}
           onChange={handleMaleChange}
         >
           male
         </Checkbox>
         <Checkbox
           className="Gender-type"
-          isSelected={gender_type == GenderType.FELMALE}
+          isSelected={gender_type == "FELMALE"}
           onChange={handleFemaleChange}
         >
           female
