@@ -86,8 +86,7 @@ export default function SignAuth(props) {
         />
       );
       break;
-    default:
-      componentToRender = <div>Page not found</div>;
+ 
   }
 
   return (
@@ -95,7 +94,7 @@ export default function SignAuth(props) {
       <div className="SignAuth-page">
         {componentToRender}
        
-        <Outlet />
+        
        
       </div>
     </>
