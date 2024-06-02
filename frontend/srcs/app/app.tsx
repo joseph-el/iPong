@@ -21,8 +21,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth",
-    element: <SignAuth path="/auth" />,
+    // element: <SignAuth  />,
     children: [
+      {
+        path: "/auth/",
+        element: <SignAuth path="/auth" />,
+      },
       {
         path: "/auth/sign-in",
         element: <SignAuth path="/auth/sign-in" />,
@@ -62,6 +66,7 @@ const router = createBrowserRouter([
     ],
   },
 
+  
   {
     path: "/ipong",
     element: <AppLayout />,
