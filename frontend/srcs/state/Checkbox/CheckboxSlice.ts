@@ -1,18 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export enum GenderType {
-    UNK,
-    MALE,
-    FELMALE
-}
+
 
 interface GenderState {
-    UserGender: GenderType;
+    UserGender:  String;
     Invalide: boolean;
 }
 
 const initialState : GenderState = {
-    UserGender: GenderType.UNK,
+    UserGender: "Undefined",
     Invalide: false
 };
 
