@@ -22,7 +22,8 @@ import SeeGroup from "../../components/UI/iPongChatComponents/SeeGroup/SeeGroup"
 import CreatNewMessage from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatNewMessage";
 import CreatGroupChat from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatGroupChat/CreatGroupChat";
 import StartFriendChat from "../../components/UI/iPongChatComponents/CreatNewMessage/StartFriendChat/StartFriendChat";
-export default function AppLayout() {
+
+export default function AppLayout(props) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -68,7 +69,18 @@ export default function AppLayout() {
       </GridItem>
 
       <GridItem pl="2" area={"main"} w="full" h="full">
-        <BrowserRouter>
+        
+        {/* 
+              HOME
+              PROFILE
+              STORE
+              GAME
+              CHAT
+        */}
+
+
+
+        {/* <BrowserRouter>
           <Routes>
             <Route path="/Profile" element={<UserProfile />} />
             <Route path="/store" element={<IPongStore />} />
@@ -78,7 +90,8 @@ export default function AppLayout() {
             <Route path="/Users/tnaceur" element={<UserProfileViewAs />} />
             <Route path="/ipongchat" element={<IPongChat />} />
           </Routes>
-        </BrowserRouter>
+        </BrowserRouter> */}
+
       </GridItem>
       {isWideScreen ? null : (
         <GridItem pl="2" bg="black" area={"livechat"}>
