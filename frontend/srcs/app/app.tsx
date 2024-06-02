@@ -6,6 +6,12 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import IPongLeadingPage from "../pages/iPongLeadingPage/iPongLeadingPage";
 import SignAuth from "../pages/iPongSignAuth/iPongSignAuth";
+import AppLayout from "../pages/AppLayout/AppLayout";
+import IPongStore from "../pages/iPongStore/iPongStore";
+import IPongChat from "../pages/iPongChat/iPongChat";
+import IPongGame from "../pages/iPongGame/iPongGame";
+import IPongProfile from "../pages/iPongProfile/iPongUserProfile/iPongUserProfile";
+import IPongProfileViewAs from "../pages/iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
 
 const router = createBrowserRouter([
   {
@@ -14,44 +20,73 @@ const router = createBrowserRouter([
     errorElement: <h1> Not Found </h1>,
   },
   {
-    path: "/Auth",
+    path: "/auth",
     element: <SignAuth path="/auth" />,
+    children: [
+      {
+        path: "/auth/sign-in",
+        element: <SignAuth path="/auth/sign-in" />,
+      },
+      {
+        path: "/auth/create-account",
+        element: <SignAuth path="/auth/create-account" />,
+      },
+      {
+        path: "/auth/set-username-picture",
+        element: <SignAuth path="/auth/set-username-picture" />,
+      },
+      {
+        path: "/auth/reset-password",
+        element: <SignAuth path="/auth/reset-password" />,
+      },
+      {
+        path: "/auth/new-password",
+        element: <SignAuth path="/auth/new-password" />,
+      },
+      {
+        path: "/auth/welcome",
+        element: <SignAuth path="/auth/welcome" />,
+      },
+      {
+        path: "/auth/verify-email",
+        element: <SignAuth path="/auth/verify-email" />,
+      },
+      {
+        path: "/auth/set-password",
+        element: <SignAuth path="/auth/set-password" />,
+      },
+      {
+        path: "/auth/verify-reset-code",
+        element: <SignAuth path="/auth/verify-reset-code" />,
+      },
+    ],
   },
+
   {
-    path: "/auth/sign-in",
-    element: <SignAuth path="/auth/sign-in" />,
-  },
-  {
-    path: "/auth/create-account",
-    element: <SignAuth path="/auth/create-account" />,
-  },
-  {
-    path: "/auth/set-username-picture",
-    element: <SignAuth path="/auth/set-username-picture" />,
-  },
-  {
-    path: "/auth/reset-password",
-    element: <SignAuth path="/auth/reset-password" />,
-  },
-  {
-    path: "/auth/new-password",
-    element: <SignAuth path="/auth/new-password" />,
-  },
-  {
-    path: "/auth/welcome",
-    element: <SignAuth path="/auth/welcome" />,
-  },
-  {
-    path: "/auth/verify-email",
-    element: <SignAuth path="/auth/verify-email" />,
-  },
-  {
-    path: "/auth/set-password",
-    element: <SignAuth path="/auth/set-password" />,
-  },
-  {
-    path: "/auth/verify-reset-code",
-    element: <SignAuth path="/auth/verify-reset-code" />,
+    path: "/ipong",
+    element: <AppLayout />,
+    children: [
+      {
+        path: "home",
+        element: <IPongGame />,
+      },
+      {
+        path: "profile",
+        element: <IPongProfile />,
+      },
+      {
+        path: "chat",
+        element:<IPongChat />,
+      },
+      {
+        path: "store",
+        element: <IPongStore />,
+      },
+      {
+        path: "users",
+        element: <IPongProfileViewAs />,
+      },
+    ],
   },
 ]);
 
@@ -64,40 +99,3 @@ export default function App() {
     </>
   );
 }
-
-/*
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-import HomePage from './pages/HomePage';
-import NotFoundPage from './pages/NotFoundPage';
-import ProfilePage from './pages/ProfilePage';
-import ProfilesPage from './pages/ProfilesPage';
-
-import './index.css';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <HomePage />,
-    errorElement: <NotFoundPage />,
-  },
-  {
-    path: '/profiles',
-    element: <ProfilesPage />,
-    children: [
-      {
-        path: '/profiles/:profileId',
-        element: <ProfilePage />,
-      },
-    ],
-  },
-]);
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-);
-*/
