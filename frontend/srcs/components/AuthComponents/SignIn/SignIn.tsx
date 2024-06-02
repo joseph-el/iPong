@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import api from "../../../api/posts";
 import { LoginState } from "../LoginState/LoginState";
-
+import { ScrollShadow } from "@nextui-org/react";
 export const Label = () => {
   return (
     <div className="label">
@@ -75,17 +75,17 @@ export default function SignIn() {
         );
         break;
       case LoginState.LOGIN_SUCCESS:
-        navigate("/Home");
+        navigate("/ipong");
         break;
       default:
         break;
     }
   };
   const handleForgotPasswordClick = () => {
-    navigate("auth/reset-password");
+    navigate("/auth/reset-password");
   };
   const handleCreateAccountClick = () => {
-    navigate("/Auth/create-account");
+    navigate("/auth/create-account");
   };
 
   const handelonClose = () => {
@@ -96,7 +96,8 @@ export default function SignIn() {
   };
 
   return (
-    <>
+    <ScrollShadow hideScrollBar size={4} className="h-auto">
+
       <div className="sign-in-competent max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
         <div className="maskgroup-svg">
           <img src={MaskGroup} alt="Mask Group SVG" />
@@ -135,6 +136,6 @@ export default function SignIn() {
           <CustomButton classNames="sign-in-competent-sign-in" text="Log in" />
         </div>
       </div>
-    </>
+    </ScrollShadow>
   );
 }
