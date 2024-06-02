@@ -14,7 +14,6 @@ import LogoUserProfileSelected from "./assets/LogoUserProfileSelected.svg";
 import { redirect } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
-
 enum SideBarIcons {
   UNK = 0,
   HOME = 1,
@@ -24,12 +23,13 @@ enum SideBarIcons {
 }
 
 export default function SideBar() {
+  const navigate = useNavigate();
   const [selectedIcon, setActive] = useState(SideBarIcons.UNK);
 
   const handleIconClick = (param, route) => {
     setActive(param);
     console.log("route", route);
-    window.location.replace(route);
+    navigate(route);
   };
 
   const getIconSrc = (iconIndex) => {
@@ -59,33 +59,47 @@ export default function SideBar() {
     <div className="side-bar">
       <div className="overlap-group-wrapper">
         <div className="overlap-group">
-          <img className="the-logo" alt="The logo" src={iPongLogo} />
+          <img
+            className="the-logo"
+            alt="The logo"
+            src={iPongLogo}
+            onClick={() => {
+              setActive(SideBarIcons.HOME);
+              navigate("/ipong/home");
+            }}
+          />
           <div className="sidebar">
             <div className="menu">
               <img
                 className="icon-wrapper"
                 alt="Icons system house"
                 src={getIconSrc(SideBarIcons.HOME)}
-                onClick={() => handleIconClick(SideBarIcons.HOME, "/home")}
+                onClick={() =>
+                  handleIconClick(SideBarIcons.HOME, "/ipong/home")
+                }
               />
               <img
                 className="icon-wrapper"
                 alt="Icons system house"
                 src={getIconSrc(SideBarIcons.CHAT)}
-                onClick={() => handleIconClick(SideBarIcons.CHAT, "/chat")}
+                onClick={() =>
+                  handleIconClick(SideBarIcons.CHAT, "/ipong/chat")
+                }
               />
               <img
                 className="icon-wrapper"
                 alt="Icons system house"
                 src={getIconSrc(SideBarIcons.STORE)}
-                onClick={() => handleIconClick(SideBarIcons.STORE, "/store")}
+                onClick={() =>
+                  handleIconClick(SideBarIcons.STORE, "/ipong/store")
+                }
               />
               <img
                 className="icon-wrapper"
                 alt="Icons system house"
                 src={getIconSrc(SideBarIcons.USER_PROFILE)}
                 onClick={() =>
-                  handleIconClick(SideBarIcons.USER_PROFILE, "/users")
+                  handleIconClick(SideBarIcons.USER_PROFILE, "/ipong/profile")
                 }
               />
             </div>
