@@ -99,14 +99,14 @@ export default function SignInOptions() {
         <SignInPlatforme />
         <OrLine />
 
-        <Link to={"/Login/create-account"}>
+        <Link to={"/Auth/create-account"}>
           <div className="buttons-target">
             <CustomButton classNames="create-account" text="Create account" />
           </div>
         </Link>
 
         <TermTitle />
-        <Link to={"/Login/sign-in"}>
+        <Link to={"/Auth/sign-in"}>
           <div className="buttons-target">
             <CustomButton classNames="create-account" text="Sign in" />
           </div>
