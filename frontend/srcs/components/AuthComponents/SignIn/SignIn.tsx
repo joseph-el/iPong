@@ -82,16 +82,16 @@ export default function SignIn() {
     }
   };
   const handleForgotPasswordClick = () => {
-    navigate("/Login/find-your-account");
+    navigate("auth/reset-password");
   };
   const handleCreateAccountClick = () => {
-    navigate("/Login/create-account");
+    navigate("/Auth/create-account");
   };
 
   const handelonClose = () => {
     // TDOD: Close the sign in component and navigate to the sign up component
     // Clear the input fields state and error messages
-    navigate("/login");
+    navigate("/auth");
     console.log("Close");
   };
 
