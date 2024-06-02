@@ -42,11 +42,11 @@ export default function WeSentCodeAndPassword(props) {
     // Clear the input fields state and error messages
 
     if (props.title === "Find your Account") {
-      navigate("/login");
+      navigate("/auth");
     } else if (props.title === "You'll need a password") {
-      navigate("/login/create-account");
+      navigate("/auth/create-account");
     } else if (props.title === "Choose a new password") {
-      navigate("/login/find-your-account");
+      navigate("/auth/reset-password");
     }
     console.log("Close");
   };
@@ -64,10 +64,10 @@ export default function WeSentCodeAndPassword(props) {
         dispatch(setErrorMessage({ id: "set-user-password", errorMessage }));
       } else {
         if (props.title === "Choose a new password") {
-          navigate("/Login/WelcomeNewUser");
+          navigate("/auth/welcome");
         }
         if (props.title === "You'll need a password") {
-          navigate("/Login/what-should-we-call-you");
+          navigate("/auth/set-username-picture");
         }
       }
     } else if (props.title === "Find your Account") {
@@ -96,7 +96,7 @@ export default function WeSentCodeAndPassword(props) {
           setErrorMessage({ id: "find-your-email", errorMessage: emailError })
         );
       } else {
-        navigate("/Login/chose-new-password");
+        navigate("/auth/new-password");
       }
     }
   };
