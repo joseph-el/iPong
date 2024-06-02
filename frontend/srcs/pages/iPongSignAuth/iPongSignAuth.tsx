@@ -94,9 +94,9 @@ export default function SignAuth(props) {
     <>
       <div className="SignAuth-page">
         {componentToRender}
-        <div>
-    
-        </div>
+       
+        <Outlet />
+       
       </div>
     </>
   );
