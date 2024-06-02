@@ -40,7 +40,7 @@ export default function WelcomeNewUser(props) {
       intraId: "UNKNOWN",
       avatar: _avatar,
     });
-    navigate("/Login");
+    navigate("/auth");
   };
 
   return (
