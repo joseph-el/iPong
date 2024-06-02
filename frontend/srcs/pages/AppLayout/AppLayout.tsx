@@ -9,6 +9,7 @@ import {
   Route,
   BrowserRouter,
   Routes,
+  Outlet,
 } from "react-router-dom";
 
 import IPongGame from "../iPongGame/iPongGame";
@@ -23,7 +24,7 @@ import CreatNewMessage from "../../components/UI/iPongChatComponents/CreatNewMes
 import CreatGroupChat from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatGroupChat/CreatGroupChat";
 import StartFriendChat from "../../components/UI/iPongChatComponents/CreatNewMessage/StartFriendChat/StartFriendChat";
 
-export default function AppLayout(props) {
+export default function AppLayout({ children }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -39,65 +40,47 @@ export default function AppLayout(props) {
   const isWideScreen = windowWidth < 1150;
 
   return (
-    <Grid
-      templateAreas={
-        isWideScreen
-          ? `
+    <>
+      <Grid
+        templateAreas={
+          isWideScreen
+            ? `
     "sidebar nav  nav"
     "sidebar main main"
     "sidebar main main"
   `
-          : `
+            : `
   "sidebar nav  livechat"
   "sidebar main livechat"
   "sidebar main livechat"
 `
-      }
-      gridTemplateRows={"72px 1fr 30px"}
-      gridTemplateColumns={"78px 1fr 300px"}
-      h="100vh"
-      gap="0"
-      color="white"
-      fontWeight="bold"
-    >
-      <GridItem pl="2" area={"nav"} rowSpan={1}>
-        <NavBar />
-      </GridItem>
-
-      <GridItem pl="2" area={"sidebar"}>
-        <SideBar />
-      </GridItem>
-
-      <GridItem pl="2" area={"main"} w="full" h="full">
-        
-        {/* 
-              HOME
-              PROFILE
-              STORE
-              GAME
-              CHAT
-        */}
-
-
-
-        {/* <BrowserRouter>
-          <Routes>
-            <Route path="/Profile" element={<UserProfile />} />
-            <Route path="/store" element={<IPongStore />} />
-            <Route path="/game" element={<IPongGame />} />
-
-
-            <Route path="/Users/tnaceur" element={<UserProfileViewAs />} />
-            <Route path="/ipongchat" element={<IPongChat />} />
-          </Routes>
-        </BrowserRouter> */}
-
-      </GridItem>
-      {isWideScreen ? null : (
-        <GridItem pl="2" bg="black" area={"livechat"}>
-          <LiveChat />
+        }
+        gridTemplateRows={"72px 1fr 30px"}
+        gridTemplateColumns={"78px 1fr 300px"}
+        h="100vh"
+        gap="0"
+        color="white"
+        fontWeight="bold"
+      >
+        <GridItem pl="2" area={"nav"} rowSpan={1}>
+          <NavBar />
         </GridItem>
-      )}
-    </Grid>
+
+        <GridItem pl="2" area={"sidebar"}>
+          <SideBar />
+        </GridItem>
+
+        <GridItem pl="2" area={"main"} w="full" h="full">
+          {children}
+
+          <Outlet />
+        </GridItem>
+        {isWideScreen ? null : (
+          <GridItem pl="2" bg="black" area={"livechat"}>
+            <LiveChat />
+          </GridItem>
+        )}
+      </Grid>
+    </>
   );
 }
