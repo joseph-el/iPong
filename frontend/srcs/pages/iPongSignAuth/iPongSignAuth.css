@@ -2,6 +2,6 @@
   height: 100vh;
   width: 100%;
 
-  background: url("../public/pic.jpeg") no-repeat center center/cover;
+  background: url("../public/pic.jpg") no-repeat center center/cover;
   background-size: cover;
 }
