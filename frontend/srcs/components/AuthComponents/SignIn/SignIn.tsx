@@ -50,8 +50,7 @@ export default function SignIn() {
         email: email,
         password: password,
       });
-
-      console.log("hello: ", response);
+    
     } catch (error) {
       state =
         error.response.data.statusCode == 404 || email == undefined
@@ -98,7 +97,7 @@ export default function SignIn() {
   return (
     <ScrollShadow hideScrollBar size={4} className="h-auto">
 
-      <div className="sign-in-competent max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
+      <div className="sign-in-competent max-w-md rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
         <div className="maskgroup-svg">
           <img src={MaskGroup} alt="Mask Group SVG" />
         </div>
