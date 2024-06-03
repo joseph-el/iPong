@@ -54,7 +54,7 @@ export default function WelcomeNewUser(props) {
           </div>
           <div className="group-welcome">
             <div className="div-wrapper-welcome">
-              <div className="text-wrapper-welcome">iPong</div>
+              <div className="text-wrapper-welcome text-wrapper-welcome-move">iPong</div>
             </div>
           </div>
         </div>
