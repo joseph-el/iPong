@@ -117,7 +117,7 @@ export default function CreateAccount() {
 
   return (
     <ScrollShadow hideScrollBar size={4} className="h-auto">
-      <div className="CreateAccount-competent-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
+      <div className="CreateAccount-competent-frame max-w-md rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
         <Close ClassName={"creat-close"} id={"close"} func={handelonClose} />
 
         <div className="CreateAccount-competent">
