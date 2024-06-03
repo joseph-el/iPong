@@ -1,9 +1,13 @@
 .CreateAccount-competent-frame {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   background-color: black;
   border: 0.5px solid #ffffff;
+  
+  
+  width: 460px;
+  height: 530px;
   max-width: 460px;
-  max-height: 580px;
+  max-height: 530px;
 }
 
 @layer CloseIcon {
@@ -115,6 +119,14 @@
 }
 
 @media (max-width: 640px) {
+
+  .CreateAccount-competent-frame
+  {
+    width: 460px;
+    height: 530px;
+    max-width: 400px;
+    max-height: 512px;
+  }
   .CreateAccount-competent-frame .max-w-xs {
     padding: 0px 0px 10px 10px;
     width: 450px;
