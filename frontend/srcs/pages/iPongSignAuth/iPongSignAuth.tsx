@@ -92,7 +92,7 @@ export default function SignAuth(props) {
   return (
     <>
       <div className="SignAuth-page">
-        <div className="render">
+        <div className="component-container">
           {componentToRender}
 
         </div>
