@@ -1,10 +1,11 @@
 .sign-in-competent {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   background-color: black;
   color: #8f9294;
   border: 0.5px solid #ffffff;
   position: relative;
   max-width: 460px;
+
   max-height: 530px;
   overflow: hidden;
 }
@@ -97,7 +98,7 @@
 }
 
 .move-left {
-  padding: 10px 0px 0px 5px;
+  padding: 10px 45px 0px 5px;
 }
 
 @media (max-width: 640px) {
@@ -113,7 +114,7 @@
     margin-left: 0;
   }
   .move-left {
-    padding: 2px 0px 0px 5px;
+    padding: 2px 0px 0px 5px !important;
   }
 
   .reset-pass {
