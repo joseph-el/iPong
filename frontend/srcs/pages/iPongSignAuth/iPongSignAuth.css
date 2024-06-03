@@ -2,16 +2,28 @@
   height: 100vh;
   width: 100%;
 
-  background: url("../public/pic.jpg") no-repeat center center/cover;
+  background: url("../public/Gpic.jpg") no-repeat center center/cover;
   background-size: cover;
 
-  display: flex;
-  justify-content: flex-end !important;
-  align-items: center;
+  position: relative;
   height: 100vh;
-  padding-right: 3.7rem;
-  height: 100vh;
-  box-sizing: border-box;
  
 }
 
+
+
+
+.component-container {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-right: 2rem; 
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .component-container {
+    padding-right: 3.5rem;
+  }
+}
