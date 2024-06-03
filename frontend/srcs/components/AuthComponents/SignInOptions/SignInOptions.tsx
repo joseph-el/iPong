@@ -94,7 +94,7 @@ export const TermTitle = () => {
 export default function SignInOptions() {
   return (
     <>
-      <div className="SignInOptions max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden  h-[32rem] w-[25rem]   sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
+      <div className="SignInOptions bg-white rounded-xl shadow-md overflow-hidden  h-[32rem] w-[25rem]   sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
         <Title />
         <SignInPlatforme />
         <OrLine />
