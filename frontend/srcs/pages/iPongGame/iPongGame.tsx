@@ -6,6 +6,9 @@ import Versus3d from "./assets/Versus-3d.svg";
 import UserBadge from "./assets/user-badge.svg";
 import VersusBadge from "./assets/versus-badge.svg";
 
+
+import BotMode from "../../game/components/BotMode/BotMode";
+
 function UserBadgeComponent(props) {
   return (
     <div className="iPongGame-UserBadge">
@@ -54,7 +57,10 @@ export default function iPongGame() {
     <div className="iPongGame-frame">
       <IPongGameNav username="Taha Naceur" opponent="youssef Naceur" />
 
-        
+
+      <BotMode />
+
+
 
     </div>
   );
