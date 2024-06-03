@@ -12,6 +12,7 @@ import {
   setErrorMessage,
 } from "../../../state/InputComponents/inputSlice";
 
+import { ScrollShadow } from "@nextui-org/react";
 import { validateEmail } from "../../../utils/formValidation";
 
 import { useNavigate } from "react-router-dom";
@@ -110,6 +111,7 @@ export default function WeSentCodeAndPassword(props) {
 
   return (
     <div className="WeSentCodeAndPassword-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
+      {/* <ScrollShadow \ideScrollBar className="h-[530px]" size={3}> */}
       <Close
         func={handelonClose}
         ClassName={"close-WeSentCodeAndPassword"}
@@ -147,6 +149,7 @@ export default function WeSentCodeAndPassword(props) {
           />
         </div>
       </div>
+    {/* </ScrollShadow> */}
     </div>
   );
 }
