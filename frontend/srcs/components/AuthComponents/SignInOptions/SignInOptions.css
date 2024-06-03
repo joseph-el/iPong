@@ -41,15 +41,15 @@
 }
 
 .SignInOptions {
-
-
-  padding: 40px 40px 30px 50px !important;
+  padding: 40px 40px 30px 55px !important;
   background-color: rgb(0, 0, 0);
   border: 0.5px solid #ffffff;
-/* 
+
+  width: 460px;
+  height: 530px;
   max-width: 460px;
-  max-height: 512px;
-  overflow: hidden; */
+  max-height: 530px;
+  overflow: hidden;
 }
 
 @layer Title {
@@ -291,9 +291,12 @@
 
 @media (max-width: 640px) {
   .SignInOptions {
-    padding-left: 10px;
-
-    margin-top: 100px;
+    padding-left: 10px !important;
+    width: 460px;
+    height: 530px;
+    max-width: 400px;
+    max-height: 512px;
+    /* margin-top: 100px; */
   }
   .title,
   .sign-in-platforme,
