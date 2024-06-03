@@ -1,9 +1,11 @@
 .SetUserNameAndPicture-frame {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   background-color: black;
   border: 0.5px solid #ffffff;
+  width: 460px;
+  /* height: 530px; */
   max-width: 460px;
-  max-height: 530px;
+  max-height: 550px;
 }
 
 .picture-target {
@@ -76,6 +78,7 @@
 }
 
 .SetUserNameAndPicture-frame .create-account {
+  
   background-color: #1d9bf0;
   border-radius: 45.73px;
   height: 41px;
@@ -110,10 +113,20 @@
 }
 
 .SetUserNameAndPicture-frame .buttons-target {
-  padding: 33px 10px 30px 40px;
+  margin-top: 65px;
+  padding: 0px 10px 20px 40px !important;
+
 }
 
 @media (max-width: 640px) {
+  .WeSentCodeAndPassword-frame 
+  {
+    width: 460px;
+    height: 530px;
+    max-width: 400px;
+    max-height: 512px;
+  }
+
   .WeSentCodeAndPassword-frame .text-wrapper-3 {
     color: #ffffff;
     font-family: "Segoe UI-Bold", Helvetica;
