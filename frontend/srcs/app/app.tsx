@@ -65,8 +65,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
-  
   {
     path: "/ipong",
     element: <AppLayout />,
