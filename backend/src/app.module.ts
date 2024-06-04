@@ -8,13 +8,17 @@ import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { JwtModule } from '@nestjs/jwt';
 import { MessageModule } from './messages/message.module';
-import { ChatroomModule } from './chatroom/chatroom.module';  
+import { ChatroomModule } from './chatroom/chatroom.module';
 import { FriendshipModule } from './friendship/friendship.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserProfileModule } from './user-profile/user-profile.module';
 import { CloudinaryModule } from './imagesProvider/cloudinary.module';
 import { CloudinaryService } from './imagesProvider/cloudinary.service';
-
+import { NotificationsModule } from './notifications/notifications.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ChatGateway } from './chat/chat.gateway';
+import { APP_GUARD } from '@nestjs/core';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -28,8 +32,20 @@ import { CloudinaryService } from './imagesProvider/cloudinary.service';
     ConfigModule.forRoot({}),
     UserProfileModule,
     CloudinaryModule,
+    NotificationsModule,
+    EventEmitterModule.forRoot(),
+    ChatModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService, CloudinaryService],
+  providers: [
+    AppService,
+    AuthService,
+    CloudinaryService,
+    ChatGateway,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: GatewayAdapter,
+    // },
+  ],
 })
 export class AppModule {}
