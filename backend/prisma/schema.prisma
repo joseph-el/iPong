@@ -22,12 +22,19 @@ model User {
   firstName        String?
   bio              String?
   lastName         String?
+  cover            String?
+  level            Int              @default(0)
+  isVerified       Boolean          @default(false)
+  FriendsCount     Int              @default(0)
+  githubLink       String?
+  linkedInLink     String?
   password         String?
   refreshToken     String?
   avatar           String?
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
-  recipient        Notification[]
+  recipient        Notification[]  @relation("recipient")
+  sender           Notification[] @relation("sender")
   firstFriendship  Friendship[]     @relation("from")
   secondFriendship Friendship[]     @relation("to")
   blockedByUser    BlockedUser[]    @relation("blockeById")
@@ -120,16 +127,19 @@ model Game {
   player2    User     @relation("player2", fields: [player2Id], references: [userId], onDelete: Cascade)
   winnerId  String?
   winner     User?    @relation("winner", fields: [winnerId], references: [userId], onDelete: SetNull)
+  
 }
 
 model Notification {
   id          String           @id @default(uuid())
   createdAt   DateTime         @default(now())
-  type        NotificationType
-  content     String
+  entityType        NotificationType
+  entityId    String?
   isRead      Boolean          @default(false)
-  recipient   User             @relation(fields: [recipientId], references: [userId], onDelete: Cascade)
-  recipientId String
+  receiver   User             @relation("recipient" ,fields: [receiverId], references: [userId], onDelete: Cascade)
+  receiverId String
+  sender      User             @relation("sender", fields: [senderId], references: [userId], onDelete: Cascade)
+  senderId    String
 }
 
 enum FriendshipStatus {
@@ -141,9 +151,8 @@ enum FriendshipStatus {
 
 enum NotificationType {
   FriendRequest
+  FriendRequestAccepted
   MessageReceived
-  RoomInvitation
-  Other
 }
 
 enum ChatRoomType {
