@@ -1,3 +1,4 @@
+import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import {
   ForbiddenException,
   HttpException,
@@ -19,6 +20,7 @@ export class AuthService {
     private userservice: UsersService,
     private dataservice: DatabaseService,
     private jwt: JwtService,
+    private CloudinaryService: CloudinaryService,
   ) {}
   async getTokens(email: string, userId: string): Promise<Tokens> {
     const [access_token, refresh_token] = await Promise.all([
@@ -53,29 +55,17 @@ export class AuthService {
   }
 
   async login(dto: AuthDto): Promise<Tokens> {
-
-
     const user = await this.userservice.getUserByEmail(dto.email);
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-
     const isMatch = await bcrypt.compare(dto.password, user.password);
 
-    console.log(user.password, ' ', dto.password, ' ', isMatch);
-  
     if (!isMatch) {
       throw new HttpException('Invalid credentials', HttpStatus.BAD_REQUEST);
     }
-
-
-
     const tokens = await this.getTokens(user.email, user.userId);
-
-
     await this.updateHash(user.userId, tokens.refresh_token);
-
-    
     return tokens;
   }
 
@@ -84,8 +74,7 @@ export class AuthService {
     const newUser = await this.userservice.createUser({
       email: dto.email,
       password: hashPassword,
-      username: dto.username, // Added 'firstName' property
-      avatar: dto.avatar,
+      username: dto.username,
       bio: dto.bio,
       firstName: dto.firstName,
       lastName: dto.lastName,
@@ -96,7 +85,7 @@ export class AuthService {
   }
 
   async logout(userId: string) {
-    await this.userservice.updateUser(userId, { refreshToken: null });
+    await this.userservice.update(userId, { refreshToken: null });
   }
 
   async refresh(refresh_token: string, userId: string): Promise<Tokens> {
