@@ -5,8 +5,4 @@ export class CreateMessageDto {
   @IsString()
   @IsNotEmpty()
   content: string;
-
-  @IsString()
-  @IsNotEmpty()
-  clientMessageId?: string;
 }

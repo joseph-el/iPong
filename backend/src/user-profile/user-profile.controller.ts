@@ -1,3 +1,5 @@
+import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
+import { UsersService } from 'src/users/users.service';
 import {
   Controller,
   Get,
@@ -12,40 +14,54 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
+  Res,
 } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
 import {UserProfileDto } from './dto/UserProfile.dto';
 import { AtGuard } from 'src/auth/Guards/access.guard';
 import { GetCurrentUser } from 'src/auth/decorators/getCurrentUser.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { use } from 'passport';
 
 @Controller('user-profile')
 export class UserProfileController {
-  constructor(private readonly userProfileService: UserProfileService) {}
+  constructor(
+    private readonly userProfileService: UserProfileService,
+    private readonly UsersService: UsersService,
+    private readonly CloudinaryService: CloudinaryService,
+  ) {}
 
   @UseGuards(AtGuard)
   @Get('me')
   async getMyProfile(
     @GetCurrentUser('userId') userId: string,
   ): Promise<UserProfileDto> {
-    return await this.userProfileService.getMyProfile(userId);
+
+    console.log('userIddddddd', userId);
+    return;
   }
 
-  // @Post('avatar')
-  // @UseInterceptors(FileInterceptor('image'))
+  @Get(':id')
+  @UseGuards(AtGuard)
+  async getUserById(
+    @Param('id') Id: string,
+    @GetCurrentUser('userId') userId: string,
+  ): Promise<UserProfileDto> {
+    return await this.userProfileService.getFriendProfile(Id, userId);
+  }
+  @Post('avatar')
   // @UseGuards(AtGuard)
-  // uploadAvatar(
-  //   @GetCurrentUser('userId') userId: string,
-  //   @UploadedFile(
-  //     new ParseFilePipe({
-  //       validators: [
-  //         new MaxFileSizeValidator({ maxSize: 5e6 }),
-  //         new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
-  //       ],
-  //     }),
-  //   )
-  //   file: Express.Multer.File,
-  // ) {
-  //   return this.userProfileService.uploadAvatar(userId, file);
-  // }
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadAvatar(
+    @GetCurrentUser('userId') userId: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.userProfileService.uploadAvatar(userId, file);
+  }
+
+  // @UseGuards(AtGuard)
+  @Get('avatar')
+  async getAvatar(@Body() userId: string) {
+    return await this.userProfileService.getAvatar(userId);
+  }
 }

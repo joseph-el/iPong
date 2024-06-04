@@ -8,6 +8,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "@nextui-org/react";
 
 import MenuIcon         from "../assets/profile-menu-icon.svg";
@@ -31,6 +32,8 @@ import CongratulationsBadge from "../../../components/UI/AchievementComponents/C
 import TwoFactorAuthenticationProfile from "../../../components/UI/ProfileSettings/TwoFactorAuthenticationProfile/TwoFactorAuthenticationProfile";
 
 
+
+import { useEffect } from "react";
 const UserDescriptions = () => {
   return (
     <div className="info">
@@ -77,6 +80,8 @@ export default function UserProfile() {
     setShowTwoFactorAuthentication(false);
   };
 
+
+
   return (
     <NextUIProvider>
     <NextThemesProvider attribute="class" defaultTheme="dark">
@@ -95,6 +100,8 @@ export default function UserProfile() {
           <LevelBar />
         </div>
       </div>
+
+
 
       <div className="User-details-and-menu">
         <div className="user-fullname-and-username">

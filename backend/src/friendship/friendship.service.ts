@@ -1,20 +1,65 @@
+import { usersSearchDto } from './../users/dto/search-user.dto';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { add_friendDto } from './dto/add-friendship.dto';
-import { UpdateFriendshipDto } from './dto/update-friendship.dto';
 import { DatabaseService } from 'src/database/database.service';
-import { $Enums } from '@prisma/client';
+import { $Enums, NotificationType } from '@prisma/client';
 import { res_friendship } from './dto/res-friends.dto';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { profile } from './dto/profile.dto';
+import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
 
 @Injectable()
 export class FriendshipService {
-  constructor(private databaseservice: DatabaseService) {}
+  constructor(
+    private databaseservice: DatabaseService,
+    private readonly eventEmitter: EventEmitter2,
+    private NotificationsService: NotificationsService,
+  ) {}
   async addFriend(add_friendDto: add_friendDto, userId: string) {
-    console.log(add_friendDto.friendId, ' ', userId);
     if (add_friendDto.friendId === userId) {
       throw new HttpException(
         'userd id is the same as firend id',
         HttpStatus.FORBIDDEN,
+      );
+    }
+     const user = await this.databaseservice.user.findUnique({
+       where: {
+         userId,
+       },
+     });
+
+     if (!user) {
+       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+     }
+
+     const friend = await this.databaseservice.user.findUnique({
+       where: {
+         userId: add_friendDto.friendId,
+       },
+     });
+
+     if (!friend) {
+       throw new HttpException('Friend not found', HttpStatus.NOT_FOUND);
+     }
+    const blocked = await this.databaseservice.blockedUser.findFirst({
+      where: {
+        OR: [
+          {
+            blockedBy: userId,
+            blocked: add_friendDto.friendId,
+          },
+          {
+            blockedBy: add_friendDto.friendId,
+            blocked: userId,
+          },
+        ],
+      },
+    });
+    if (blocked) {
+      throw new HttpException(
+        'This user is blocked',
+        HttpStatus.BAD_REQUEST,
       );
     }
     const friendshipId = `${userId}+${add_friendDto.friendId}`;
@@ -39,6 +84,13 @@ export class FriendshipService {
       update: {},
     });
     const responseOfReq = new res_friendship(friends);
+    const notification: CreateNotificationDto = {
+      receiverId: add_friendDto.friendId,
+      senderId: userId,
+      entityId: friendshipId,
+      entityType: NotificationType.FriendRequest,
+    };
+    this.NotificationsService.emit('sendNotification', notification);
     return responseOfReq;
   }
 
@@ -50,10 +102,17 @@ export class FriendshipService {
       select: {
         blockedId: {
           select: {
+            userId: true,
             username: true,
             firstName: true,
             lastName: true,
             avatar: true,
+            bio: true,
+            githubLink: true,
+            linkedInLink: true,
+            isVerified: true,
+            level: true,
+            FriendsCount: true,
           },
         },
       },
@@ -64,18 +123,27 @@ export class FriendshipService {
   async acceptReq(userId: string, friendId: string) {
     if (userId === friendId) {
       throw new HttpException(
-        'userd id is the same as firend id',
+        'User ID is the same as Friend ID',
         HttpStatus.FORBIDDEN,
       );
     }
-    const request = await this.databaseservice.friendship.findMany({
+
+    const request = await this.databaseservice.friendship.findFirst({
       where: {
         OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
       },
     });
+
     if (!request) {
-      throw new HttpException('', HttpStatus.NOT_FOUND);
+      throw new HttpException('Friend request not found', HttpStatus.NOT_FOUND);
     }
+
+    // Check if the friendship status is already accepted
+    if (request.status === $Enums.FriendshipStatus.ACCEPTED) {
+      console.log('Friend request already accepted');
+      return new res_friendship(request);
+    }
+
     const result = await this.databaseservice.friendship.updateMany({
       where: {
         OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
@@ -84,6 +152,21 @@ export class FriendshipService {
         status: $Enums.FriendshipStatus.ACCEPTED,
       },
     });
+
+    if (result) {
+      await this.databaseservice.user.updateMany({
+        where: {
+          userId: {
+            in: [userId, friendId],
+          },
+        },
+        data: {
+          FriendsCount: {
+            increment: 1,
+          },
+        },
+      });
+    }
     return new res_friendship(result);
   }
 
@@ -142,6 +225,12 @@ export class FriendshipService {
             firstName: true,
             lastName: true,
             avatar: true,
+            bio: true,
+            githubLink: true,
+            linkedInLink: true,
+            isVerified: true,
+            level: true,
+            FriendsCount: true,
           },
         },
         to: {
@@ -151,6 +240,12 @@ export class FriendshipService {
             firstName: true,
             lastName: true,
             avatar: true,
+            bio: true,
+            githubLink: true,
+            linkedInLink: true,
+            isVerified: true,
+            level: true,
+            FriendsCount: true,
           },
         },
       },
@@ -215,37 +310,56 @@ export class FriendshipService {
       );
     }
 
-    // Check if the block already exists
-  const existingBlock = await this.databaseservice.blockedUser.findFirst({
-    where: {
-      OR: [
-        {
-          blockedBy: userId,
-          blocked: friendId,
-        },
-        {
-          blockedBy: friendId,
-          blocked: userId,
-        },
-      ],
-    },
-  });
-
-  if (existingBlock) {
-    if (existingBlock.blockedBy === userId) {
-      // You have blocked this user
-      throw new HttpException(
-        'This user is already blocked',
-        HttpStatus.BAD_REQUEST,
-      );
-    } else {
-      // This user has blocked you
-      throw new HttpException(
-        'This user has already blocked you',
-        HttpStatus.BAD_REQUEST,
-      );
+    const user = await this.databaseservice.user.findUnique({
+      where: {
+        userId,
+      },
+    });
+    
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-  }
+
+    const friend = await this.databaseservice.user.findUnique({
+      where: {
+        userId: friendId,
+      },
+    }); 
+
+    if (!friend) {
+      throw new HttpException('Friend not found', HttpStatus.NOT_FOUND);
+    }
+    // Check if the block already exists
+    const existingBlock = await this.databaseservice.blockedUser.findFirst({
+      where: {
+        OR: [
+          {
+            blockedBy: userId,
+            blocked: friendId,
+          },
+          {
+            blockedBy: friendId,
+            blocked: userId,
+          },
+        ],
+      },
+    });
+
+    if (existingBlock) {
+      if (existingBlock.blockedBy === userId) {
+        // You have blocked this user
+        throw new HttpException(
+          'This user is already blocked',
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        // This user has blocked you
+        throw new HttpException(
+          'This user has already blocked you',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
 
     // Delete any existing friendship between the users
     await this.databaseservice.friendship.deleteMany({
@@ -265,13 +379,13 @@ export class FriendshipService {
         },
       },
     });
+    console.log('commonRoom', commonRoom);
     // Create a new block
     await this.databaseservice.blockedUser.create({
       data: {
         blocked: friendId,
         blockedBy: userId,
         dmId: commonRoom?.id,
-
       },
     });
 
@@ -292,5 +406,23 @@ export class FriendshipService {
       },
     });
     return { send: 'done' };
+  }
+
+  async checkIfBlocked(userId: string, friendId: string) {
+    const blocked = await this.databaseservice.blockedUser.findFirst({
+      where: {
+        OR: [
+          {
+            blockedBy: userId,
+            blocked: friendId,
+          },
+          {
+            blockedBy: friendId,
+            blocked: userId,
+          },
+        ],
+      },
+    });
+    return blocked;
   }
 }

@@ -13,26 +13,58 @@ export class UsersService {
     });
   }
   async update(userId: string, udateuserDto: UpdateUserDto) {
+    if (udateuserDto.password) {
+      const hashPassword = await bcrypt.hash(udateuserDto.password, 10);
+      udateuserDto.password = hashPassword;
+    }
     return this.DatabaseService.user.update({
       where: {
         userId: userId,
       },
       data: udateuserDto,
     });
-    
   }
   async getAllUsers() {
     return this.DatabaseService.user.findMany();
   }
   // TODO: Implement this method and add frindshipId to the user
-  async getUserById(id: string) {
-    return this.DatabaseService.user.findUnique({
-      where: {
-        userId: id,
-      },
+  async getUserById(userId: string, friendId?: string) {
+    return await this.DatabaseService.user.findUnique({
+      where: { userId },
+      ...(friendId
+        ? {
+            include: {
+              firstFriendship: {
+                where: {
+                  OR: [
+                    { id: `${userId}+${friendId}` },
+                    { id: `${friendId}+${userId}` },
+                  ],
+                },
+                select: {
+                  status: true,
+                  fromUser: true,
+                  toUser: true,
+                },
+              },
+              secondFriendship: {
+                where: {
+                  OR: [
+                    { id: `${userId}+${friendId}` },
+                    { id: `${friendId}+${userId}` },
+                  ],
+                },
+                select: {
+                  status: true,
+                  fromUser: true,
+                  toUser: true,
+                },
+              },
+            },
+          }
+        : {}),
     });
   }
-
   async getUserByUsername(username: string) {
     return this.DatabaseService.user.findUnique({
       where: {
@@ -45,23 +77,6 @@ export class UsersService {
     return this.DatabaseService.user.findUnique({
       where: {
         email: email,
-      },
-    });
-  }
-
-  async updateUser(id: string, updateUserDto: UpdateUserDto) {
-    const hashPassword = await bcrypt.hash(updateUserDto.password, 10);
-    return this.DatabaseService.user.update({
-      where: {
-        userId: id,
-      },
-      data: {
-        username: updateUserDto.username,
-        email: updateUserDto.email,
-        firstName: updateUserDto.firstName,
-        lastName: updateUserDto.lastName,
-        avatar: updateUserDto.avatar,
-        password: hashPassword,
       },
     });
   }
@@ -191,13 +206,23 @@ export class UsersService {
         },
       },
     });
-    console.log(users);
+    users;
     return users.map((user) => {
       return {
         username: user.username,
         email: user.email,
         avatar: user.avatar,
       };
+    });
+  }
+  async getAvatar(id: string) {
+    return this.DatabaseService.user.findUnique({
+      where: {
+        userId: id,
+      },
+      select: {
+        avatar: true,
+      },
     });
   }
 }

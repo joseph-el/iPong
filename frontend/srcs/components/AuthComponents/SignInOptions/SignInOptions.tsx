@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import api from "../../../api/posts";
 import ResetUserData from "../../../state/UserInfo/ResetUserData";
+import axios from "axios";
 
 export const Title = () => {
   return (
@@ -35,8 +36,17 @@ export const SignInPlatforme = () => {
 
   const handleOnsubmit = async () => {
     console.log("42intra");
+    
+    // try {
+    //   const response = await api.get("/auth/42");
+    //   console.log("response::", response);
+    // } catch (error) {
+    //   console.log("error::", error);
+    // }
+    
+    window.location.replace("http://localhost:3000/auth/42/");
 
-    window.location.replace("http://localhost:3000/auth/42");
+
   };
 
   return (

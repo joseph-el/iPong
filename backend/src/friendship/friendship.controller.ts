@@ -49,9 +49,9 @@ export class FriendshipController {
   }
 
   @UseGuards(AtGuard)
-  @Post('blockingList')
+  @Get('blockingList')
   async blockingList(@GetCurrentUser('userId') userId: string) {
-    this.friendshipService.blockedUsers(userId);
+    return this.friendshipService.blockedUsers(userId);
   }
 
   @UseGuards(AtGuard)
@@ -65,10 +65,17 @@ export class FriendshipController {
   }
 
   @UseGuards(AtGuard)
-  @Get('friendList')
+  @Get('')
   async friendList(@GetCurrentUser('userId') userId: string) {
     return this.friendshipService.friendList(userId);
   }
+
+  @UseGuards(AtGuard)
+  @Get('friendList/:userId')
+  async friendListById(@Param('userId') userId: string) {
+    return this.friendshipService.friendList(userId);
+  }
+    
 
   @UseGuards(AtGuard)
   @Get('pendingList')

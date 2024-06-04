@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
@@ -25,13 +26,16 @@ export class MessageController {
     @Body() createMessageDto: CreateMessageDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.messageService.create(roomId, userId, createMessageDto);
+    return await this.messageService.create(roomId, userId, createMessageDto);
   }
 
   @UseGuards(AtGuard)
   @Get('room/:roomId')
   // TODO: get limit and offset from query
-  async findAll(@Param('roomId') roomId: string, @GetCurrentUser('userId') userId: string){
-    return this.messageService.findAll(roomId, userId);
+  async findAll(
+    @Param('roomId') roomId: string,
+    @GetCurrentUser('userId') userId: string,
+  ) {
+    return this.messageService.findAll(userId, roomId);
   }
 }

@@ -23,6 +23,11 @@ import {
 } from "@nextui-org/react";
 import { Show } from "@chakra-ui/react";
 
+
+import api from "../../api/posts"
+import axios from "axios";
+
+
 export default function NavBar() {
   const [activeSearch, setActiveSearch] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -70,6 +75,32 @@ export default function NavBar() {
   const handelCloseNotificationBar = () => {
     setShowNotificationBar(!ShowNotificationBar);
   };
+
+
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+
+    const fetchUser = async () => {
+      const responses = await api.get("/user-profile/me");
+
+      // const response = await api.get("/user-profile/me");
+      setUser(responses.data);
+      console.log(responses.data);
+    };
+    fetchUser();
+  }, [] );
+
+  
+
+
+
+
+
+
+
+
 
   return (
     <div className="nav-bar">
@@ -144,37 +175,3 @@ export default function NavBar() {
     </div>
   );
 }
-
-/*
-
-            {
-                (isWideScreen && searchTerm) ? 
-                    <SearchIcon  onClick={handleIconClick}    />
-                :
-
-                
-                    <div className="search-bar" >
-
-                        <Dropdown placement="bottom-start" backdrop="blur" isOpen={searchTerm} shouldBlockScroll={false} >
-                        
-                    <DropdownTrigger>
-                        <SearchInput onChange={handleOnChange} /> 
-                    </DropdownTrigger>
-                        
-                    <DropdownMenu  aria-label="User Actions" variant="flat"  >
-                        <DropdownItem >
-                        {
-                            activeSearch.length != 0 ?
-                            <div className='SearchList'>
-                                <SearchList users={activeSearch} />
-                            </div> : null
-                        }
-                        </DropdownItem>
-                    </DropdownMenu>
-                        
-                </Dropdown>
-                    </div>  
-
-
-            }
-*/

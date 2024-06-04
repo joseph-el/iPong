@@ -1,7 +1,10 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { EventEmitter } from 'stream';
+import { ChatRoom } from '@prisma/client';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { ChatRoomType } from '@prisma/client';
+import { MessageFormatDto } from './dto/msgFormat.dto';
 
 @Injectable()
 export class MessageService {
@@ -11,63 +14,233 @@ export class MessageService {
     senderId: string,
     createMessageDto: CreateMessageDto,
   ) {
-    const chatroom = await this.database.chatRoom.findUnique({
-      where: {
-        id: roomId,
-      },
+    if (!createMessageDto.content) {
+      throw new HttpException('Content is required', 400);
+    }
+    if (createMessageDto.content.length > 100) {
+      throw new HttpException('Client message id is invalid', 400);
+    }
+    const room = await this.database.chatRoom.findUnique({
+      where: { id: roomId },
       select: {
-        ownerId: true,
         type: true,
+        ownerId: true,
         members: {
-          where: {
-            memberID: senderId,
-          },
+          where: { memberID: senderId },
         },
       },
     });
-    if (!chatroom) {
-      return new HttpException('Room not found', 404);
+    if (!room) {
+      throw new HttpException('Room not found', 404);
     }
-    if (chatroom.type === ChatRoomType.Dm) {
-      const isBlocked = await this.database.blockedUser.findFirst({
+    if (room.type === ChatRoomType.Dm) {
+      const blocked = await this.database.blockedUser.findFirst({
         where: {
           dmId: roomId,
         },
       });
-      if (isBlocked) {
-        return new HttpException('You are blocked', 403);
+      if (blocked) {
+        throw new HttpException('You are blocked', 403);
       }
     }
-    const roomMember = chatroom.members[0];
-    if (!roomMember) {
-      return new HttpException('You are not a member of this room', 403);
+    const memebr = room.members.find((m) => m.memberID === senderId);
+    console.log(memebr);
+    if (!memebr) {
+      throw new HttpException('You are not a member of this room', 403);
     }
-    if (roomMember.isBanned) {
-      return new HttpException('You are banned', 403);
+    if (memebr.isBanned) {
+      throw new HttpException('You are banned', 403);
     }
-    if (roomMember.isMuted) {
-      if (roomMember.muted_exp && roomMember.muted_exp > new Date()) {
-        return new HttpException('You are muted', 403);
+    if (memebr.isMuted) {
+      const now = new Date();
+      if (memebr.muted_exp < now) {
+        throw new HttpException(
+          `You are muted for ${memebr.muted_exp.valueOf() - now.valueOf()}`,
+          HttpStatus.FORBIDDEN,
+        );
       }
+      await this.database.chatRoomMember.update({
+        where: {
+          unique_member_room: {
+            chatRoomId: roomId,
+            memberID: senderId,
+          },
+        },
+        data: {
+          muted_exp: null,
+          isMuted: false,
+        },
+      });
     }
-    await this.database.chatRoomMember.update({
-      where: {
-        id: roomMember.id,
-      },
-      data: {
-        isMuted: false,
-        muted_exp: null,
-      },
-    });
+
     const message = await this.database.message.create({
       data: {
-        authorId: senderId,
-        chatRoomId: roomId,
         content: createMessageDto.content,
+        chatRoomId: roomId,
+        authorId: senderId,
+      },
+      include: {
+        author: {
+          select: {
+            avatar: true,
+            username: true,
+          },
+        },
+        ChatRoom: {
+          select: {
+            type: true,
+          },
+        },
       },
     });
+    //fetching room members
+    const membersIDs = await this.database.chatRoomMember.findMany({
+      where: {
+        chatRoomId: roomId,
+        isBanned: false,
+        isMuted: false,
+        NOT: {
+          memberID: senderId,
+        },
+      },
+      select: {
+        memberID: true,
+      },
+    });
+    //fetching blocked users
+    const blockedUsers = await this.database.blockedUser.findMany({
+      where: {
+        OR: [{ blockedBy: senderId }, { blocked: senderId }],
+      },
+      select: {
+        blocked: true,
+        blockedBy: true,
+      },
+    });
+    //Filtering Blocked Room Members:
+    const filteredBlockedMembers = membersIDs
+      .filter((member) => {
+        return blockedUsers.some((blocked) => {
+          return (
+            blocked.blocked === member.memberID ||
+            blocked.blockedBy === member.memberID
+          );
+        });
+      })
+      .map((member) => member.memberID);
+    // Formatting the Response Message
+    const responseMessage = {
+      ...message,
+      blockedMembers: filteredBlockedMembers,
+    };
+    //event emitter
+    return responseMessage;
   }
-
   async findAll(userId: string, roomId: string) {
+    const room = await this.database.chatRoom.findUnique({
+      where: { id: roomId },
+      select: {
+        type: true,
+        ownerId: true,
+        members: {
+          where: { memberID: userId },
+        },
+      },
+    });
+    if (!room) {
+      throw new HttpException('Room not found', 404);
+    }
+    const roomMember = await this.database.chatRoomMember.findFirst({
+      where: {
+        memberID: userId,
+        chatRoomId: roomId,
+      },
+    });
+
+    if (!roomMember) {
+      throw new HttpException(
+        'You are not in this channel',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    const memebr = room.members.find((m) => m.memberID === userId);
+    if (!memebr) {
+      throw new HttpException('You are not a member of this room', 403);
+    }
+    if (memebr.isBanned) {
+      throw new HttpException('You are banned', 403);
+    }
+    const messages = await this.database.message.findMany({
+      where: {
+        chatRoomId: roomId,
+        ...(roomMember.isBanned && {
+          createdAt: { lte: roomMember.bannedAt },
+        }),
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        author: {
+          select: {
+            avatar: true,
+            username: true,
+          },
+        },
+        ChatRoom: {
+          select: {
+            type: true,
+          },
+        },
+      },
+    });
+
+    //fetching room members
+    const membersIDs = await this.database.chatRoomMember.findMany({
+      where: {
+        chatRoomId: roomId,
+        isBanned: false,
+        isMuted: false,
+        NOT: {
+          memberID: userId,
+        },
+      },
+      select: {
+        memberID: true,
+      },
+    });
+
+    //fetching blocked users
+
+    const blockedUsers = await this.database.blockedUser.findMany({
+      where: {
+        OR: [{ blockedBy: userId }, { blocked: userId }],
+      },
+      select: {
+        blocked: true,
+        blockedBy: true,
+      },
+    });
+
+    //Filtering Blocked Room Members:
+    const filteredBlockedMembers = membersIDs
+      .filter((member) => {
+        return blockedUsers.some((blocked) => {
+          return (
+            blocked.blocked === member.memberID ||
+            blocked.blockedBy === member.memberID
+          );
+        });
+      })
+      .map((member) => member.memberID);
+    
+    // Formatting the Response Message
+    const responseMessages = messages.map((message) => {
+      return {
+        ...message,
+        blockedMembers: filteredBlockedMembers,
+      };
+    });
+    // return messages.map((message) => new MessageFormatDto(message));
   }
 }

@@ -22,8 +22,9 @@ import { RtGuard } from './Guards/refresh.guard';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService,
-    private UsersService: UsersService
+  constructor(
+    private authService: AuthService,
+    private UsersService: UsersService,
   ) {}
   @Get('42')
   @UseGuards(AuthGuard('42'))
@@ -46,20 +47,20 @@ export class AuthController {
   }
 
   @Post('checkusername')
-  async isUsernameUnique(@Body() req:any, @Res() res: Response) {
+  async isUsernameUnique(@Body() req, @Res() res: Response) {
     const result = await this.UsersService.getUserByUsername(req.username);
     if (result) {
-      res.status(HttpStatus.OK).send({ message: 'Username already exists' });
+      res.status(HttpStatus.FOUND).send({ message: 'Username already exists' });
     } else {
       res.status(HttpStatus.OK).send({ message: 'Username is unique' });
     }
   }
 
   @Post('checkemail')
-  async isEmailUnique(@Body() req:any, @Res() res) {
+  async isEmailUnique(@Body() req, @Res() res) {
     const result = await this.UsersService.getUserByEmail(req.email);
     if (result) {
-      res.status(HttpStatus.OK).send({ message: 'Email already exists' });
+      res.status(HttpStatus.FOUND).send({ message: 'Email already exists' });
     } else {
       res.status(HttpStatus.OK).send({ message: 'Email is unique' });
     }
