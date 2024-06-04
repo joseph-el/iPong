@@ -8,9 +8,12 @@ import { DatabaseService } from 'src/database/database.service';
 import { JwtModule } from '@nestjs/jwt';
 import { AtStrategy, RtStrategy } from './strategies';
 import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
+import { UserProfileService } from 'src/user-profile/user-profile.service';
+import { FriendshipService } from 'src/friendship/friendship.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Module({
-  imports: [UsersModule, JwtModule.register({ secret: 'Secretkey' })],
+  imports: [UsersModule, JwtModule.register({ secret: process.env.JWT_SECRET })],
   controllers: [AuthController],
   providers: [
     FortyTwoStrategy,
@@ -20,6 +23,9 @@ import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
     RtStrategy,
     AtStrategy,
     CloudinaryService,
+    UserProfileService,
+    FriendshipService,
+    NotificationsService
   ],
 })
 export class AuthModule {}
