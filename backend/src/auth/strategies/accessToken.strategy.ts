@@ -25,7 +25,6 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: any): Promise<JwtPayload> {
-    console.log(payload);
     const curruser = await this.userService.getUserById(payload.sub);
     return { ...curruser, email: payload.email , userId: payload.sub};
   }
