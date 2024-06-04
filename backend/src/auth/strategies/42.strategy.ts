@@ -8,13 +8,15 @@ import { AuthService } from '../auth.service';
 import { Response } from 'express';
 import VerifiedCallback from 'passport-42';
 import { env } from 'process';
+import { UserProfileService } from 'src/user-profile/user-profile.service';
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
   constructor(
     private readonly User: UsersService,
     private readonly AuthService: AuthService,
-    private readonly CloudinaryService: CloudinaryService
+    private readonly CloudinaryService: CloudinaryService,
+    private readonly userProfileService: UserProfileService,
   ) {
     super({
       clientID: env.FT_CLIENT_ID,
@@ -32,10 +34,9 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
     cb: Function,
   ): Promise<any> {
     const res: Response = req.res;
-    const UserExust = await this.User.getUserByIntraId(
-      profile['_json']['id'].toString(),
+    const UserExust = await this.User.getUserByEmail(
+      profile['_json']['email'].toString(),
     );
-    console.log(profile['_json']['first_name']);
     if (UserExust) {
       const tokens = await this.AuthService.getTokens(
         UserExust.email,
@@ -49,7 +50,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
         httpOnly: true,
         path: '/auth',
       });
-      res.redirect('http://localhost:3000');
+      res.redirect('http://localhost:5173/ipong/home');
       return cb(null, profile);
     }
     const newUser = await this.User.createUser({
@@ -58,12 +59,8 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
       lastName: profile['_json']['last_name'],
       intraId: profile['_json']['id'].toString(),
       email: profile['_json']['email'],
-      // avatar: profile['_json']['image']['link'],
+      avatar: profile['_json']['image']['link'],
     });
-    const resCloud = this.CloudinaryService.upload(
-      newUser.userId,
-      profile['_json']['image']['link'],
-    );
     const tokens = await this.AuthService.getTokens(
       newUser.email,
       newUser.userId,
@@ -76,8 +73,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
       httpOnly: true,
       path: '/auth',
     });
-    res.redirect('http://localhost:3000');
-    console.log(newUser);
+    res.redirect('http://localhost:5173/ipong/home');
     return cb(null, profile);
   }
 }
