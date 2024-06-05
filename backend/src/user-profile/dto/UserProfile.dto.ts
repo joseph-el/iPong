@@ -19,7 +19,7 @@ export class UserProfileDto {
     this.email = userData.email;
     this.picture = userData.avatar;
     this.username = userData.username;
-    this.level = userData.level;
+    this.xp = userData.xp;
     this.isVerified = userData.isVerified;
     this.linkedInLink = userData.linkedInLink;
     this.githubLink = userData.githubLink;
@@ -41,7 +41,7 @@ export class UserProfileDto {
   bio: string;
   phone: string;
   picture: string;
-  level: number;
+  xp: number;
   isVerified: boolean;
   linkedInLink: string;
   githubLink: string;
