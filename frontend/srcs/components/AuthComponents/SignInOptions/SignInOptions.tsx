@@ -36,17 +36,8 @@ export const SignInPlatforme = () => {
 
   const handleOnsubmit = async () => {
     console.log("42intra");
-    
-    // try {
-    //   const response = await api.get("/auth/42");
-    //   console.log("response::", response);
-    // } catch (error) {
-    //   console.log("error::", error);
-    // }
-    
+
     window.location.replace("http://localhost:3000/auth/42/");
-
-
   };
 
   return (
