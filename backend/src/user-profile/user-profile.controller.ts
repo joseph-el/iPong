@@ -36,9 +36,7 @@ export class UserProfileController {
   async getMyProfile(
     @GetCurrentUser('userId') userId: string,
   ): Promise<UserProfileDto> {
-
-    console.log('userIddddddd', userId);
-    return;
+    return await this.userProfileService.getMyProfile(userId);
   }
 
   @Get(':id')
