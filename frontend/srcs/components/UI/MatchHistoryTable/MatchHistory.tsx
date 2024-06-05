@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -17,7 +17,18 @@ import "./MatchHistory.css";
 import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "V-BUCKS", "RESULTS", "DATE"];
 import { useState } from "react";
+import api from "../../../api/posts";
+
 type Match = (typeof matches)[0];
+
+async function fetchHistory() {
+  try {
+    const response = await api.get("/game-history");
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const TopContent = (props) => {
   return (
@@ -48,6 +59,10 @@ export default function App() {
   const headerColumns = React.useMemo(() => {
     return columns;
   }, [visibleColumns]);
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
 
   const onSearchChanges = (event) => {
     const searchTerm = event.target.value.toLowerCase();
