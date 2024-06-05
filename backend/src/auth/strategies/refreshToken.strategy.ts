@@ -24,6 +24,6 @@ export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
   }
   async validate(@Req() req: Request, payload: any): Promise<JwtPayloadWithRt> {
     const refreshToken = RtStrategy.cookieExtractor(req);
-    return { userId: payload.sub, email: payload.email, refreshToken };
+    return { userId: payload.userId, email: payload.email, refreshToken };
   }
 }
