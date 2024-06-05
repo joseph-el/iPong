@@ -42,8 +42,7 @@ export class UserProfileController {
   @Get('getinfoById:userId')
   async getInfo(
     @Param('userId') userId: string,
-  ):Promise<UserProfileDto>{
-    console.log("this is : ", userId);
+  ): Promise<UserProfileDto> {
     return await this.userProfileService.getMyProfile(userId);
   }
 

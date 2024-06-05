@@ -44,7 +44,7 @@ export class FriendshipController {
     @Body() rejectReqDto: add_friendDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    console.log("hahahaha",rejectReqDto.friendId);
+    console.log('hahahaha', rejectReqDto.friendId);
     this.friendshipService.rejectFriend(userId, rejectReqDto.friendId);
   }
 
@@ -75,7 +75,6 @@ export class FriendshipController {
   async friendListById(@Param('userId') userId: string) {
     return this.friendshipService.friendList(userId);
   }
-    
 
   @UseGuards(AtGuard)
   @Get('pendingList')
@@ -105,5 +104,23 @@ export class FriendshipController {
     @GetCurrentUser('userId') userId: string,
   ) {
     return this.friendshipService.unblockUser(userId, friendId.friendId);
+  }
+
+  @UseGuards(AtGuard)
+  @Post('unfriend')
+  async unfriend(
+    @Body() friendId: add_friendDto,
+    @GetCurrentUser('userId') userId: string,
+  ) {
+    return this.friendshipService.unfriend(userId, friendId.friendId);
+  }
+  
+  @UseGuards(AtGuard)
+  @Get('friendshipStatus')
+  async friendshipStatus(
+    @Body() friendId: isFriendDto,
+    @GetCurrentUser('userId') userId: string,
+  ) {
+    return this.friendshipService.friendshipStatus(userId, friendId.friendId);
   }
 }

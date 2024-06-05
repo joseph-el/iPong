@@ -94,6 +94,21 @@ export class FriendshipService {
     return responseOfReq;
   }
 
+  async unfriend(userId: string, friendId: string) { 
+    if (userId === friendId) {
+      throw new HttpException(
+        'userd id is the same as firend id',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    await this.databaseservice.friendship.deleteMany({
+      where: {
+        OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
+      },
+    });
+    return { send: 'done' };
+  }
+
   async blockedUsers(userId: string) {
     const blocked = await this.databaseservice.blockedUser.findMany({
       where: {
@@ -424,5 +439,19 @@ export class FriendshipService {
       },
     });
     return blocked;
+  }
+
+  async friendshipStatus(userId: string, friendId: string) {
+    const friendship = await this.databaseservice.friendship.findFirst({
+      where: {
+        OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
+      },
+      select: {
+        status: true,
+        from: true,
+        to: true,
+      },
+    });
+    return friendship;
   }
 }
