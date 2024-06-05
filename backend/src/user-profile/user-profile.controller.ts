@@ -38,6 +38,16 @@ export class UserProfileController {
     return await this.userProfileService.getMyProfile(userId);
   }
 
+  @UseGuards(AtGuard)
+  @Get('getinfoById:userId')
+  async getInfo(
+    @Param('userId') userId: string,
+  ){
+    console.log("this is : ", userId);
+    return await this.UsersService.getUserById(userId);
+  }
+
+
   @Get(':id')
   @UseGuards(AtGuard)
   async getUserById(
