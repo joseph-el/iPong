@@ -10,6 +10,8 @@ import { ConnectionService } from './connection.service';
 import { UserStatus } from './enums/user-status.enum';
 import { SOCKET_EVENT } from './constants/socket.constants';
 import { GAME_SETTINGS } from './constants/game.settings';
+import { USER_WALLET_REWARDS } from './constants/rewards.user';
+import { RewardsUserService } from './rewards.service';
 
 @Injectable()
 export class GameService {
@@ -29,6 +31,10 @@ export class GameService {
   private players: string[] = [];
   isGameStarted: boolean = false;
   private isGamePaused: boolean = false;
+  private winnerScore: number = 0;
+  private loserScore: number = 0;
+  private winnerGameVBucks: number = 0;
+  private loserGameVBucks: number = 0;
   private isCancelledGame: boolean = false;
 
   private playerWidthPercentage: number =
@@ -48,6 +54,7 @@ export class GameService {
   constructor(
     private readonly database: DatabaseService,
     private readonly connectionService: ConnectionService,
+    private readonly rewardUserService: RewardsUserService,
   ) {
     this.initGameEntities();
   }
@@ -75,11 +82,17 @@ export class GameService {
   }
 
   async updateGameState(): Promise<void> {
+    this.loserScore = Math.min(this.leftPlayer.score, this.rightPlayer.score);
+    this.winnerScore = Math.max(this.leftPlayer.score, this.rightPlayer.score);
+    this.calculateGameVbucks();
+
     const updateGame: UpdateGameDto = {
       winner: { connect: { userId: this.winner } },
       gameStatus: GameStatus.PLAYED,
-      minScore: Math.min(this.leftPlayer.score, this.rightPlayer.score),
-      maxScore: Math.max(this.leftPlayer.score, this.rightPlayer.score),
+      minScore: this.loserScore,
+      maxScore: this.winnerScore,
+      winnerVbucks: this.winnerGameVBucks,
+      loserVbucks: this.loserGameVBucks,
     };
 
     try {
@@ -90,6 +103,30 @@ export class GameService {
     } catch (error) {
       console.error('Failed to update game state:', error);
       throw error;
+    }
+  }
+
+  private calculateGameVbucks() {
+    if (this.winnerScore === this.target && this.loserScore === 0) {
+      this.winnerGameVBucks = USER_WALLET_REWARDS.WALLET_WINNER_L_AMOUNT;
+      this.loserGameVBucks = USER_WALLET_REWARDS.WALLET_LOSER_S_AMOUNT;
+    } else if (
+      this.winnerScore === this.target &&
+      this.loserScore > 0 &&
+      this.loserScore <= this.target / 2
+    ) {
+      this.winnerGameVBucks = USER_WALLET_REWARDS.WALLET_WINNER_M_AMOUNT;
+      this.loserGameVBucks = USER_WALLET_REWARDS.WALLET_LOSER_M_AMOUNT;
+    } else if (
+      this.winnerScore === this.target &&
+      this.loserScore > 0 &&
+      this.loserScore > this.target / 2
+    ) {
+      this.winnerGameVBucks = USER_WALLET_REWARDS.WALLET_WINNER_S_AMOUNT;
+      this.loserGameVBucks = USER_WALLET_REWARDS.WALLET_LOSER_L_AMOUNT;
+    } else {
+      this.winnerGameVBucks = USER_WALLET_REWARDS.WALLET_DEFAULT_AMOUNT;
+      this.loserGameVBucks = USER_WALLET_REWARDS.WALLET_LOSER_DEFAULT_AMOUNT;
     }
   }
 
@@ -204,6 +241,20 @@ export class GameService {
       console.error('could not save game in the database');
     }
 
+    await this.rewardUserService.rewardGameWinner(
+      this.winner,
+      this.winnerScore,
+      this.loserScore,
+      this.winnerGameVBucks,
+    );
+
+    await this.rewardUserService.rewardGameLoser(
+      this.getLoser(),
+      this.winnerScore,
+      this.loserScore,
+      this.loserGameVBucks,
+    );
+
     this.server.to(this.room).emit(SOCKET_EVENT.GAME_END, {
       winnerUserName: winner.username,
       winnerId: this.winner,
@@ -314,5 +365,16 @@ export class GameService {
     if (userId) {
       this.winner = userId;
     }
+  }
+
+  private getLoser(): string | null {
+    if (this.players) {
+      for (const player of this.players) {
+        if (player !== this.winner) {
+          return player;
+        }
+      }
+    }
+    return null;
   }
 }

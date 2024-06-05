@@ -9,6 +9,7 @@ import { ModuleRef } from '@nestjs/core';
 import { UserStatus } from './enums/user-status.enum';
 import { SOCKET_ERROR, SOCKET_EVENT } from './constants/socket.constants';
 import { ERROR } from './constants/errors.messages';
+import { RewardsUserService } from './rewards.service';
 
 interface RoomData {
   players: string[];
@@ -27,6 +28,7 @@ export class MatchmakingService {
     private readonly connectionService: ConnectionService,
     private readonly database: DatabaseService,
     private readonly moduleRef: ModuleRef,
+    private readonly rewardUserService: RewardsUserService,
   ) {}
 
   setServer(server: Server) {
@@ -160,6 +162,7 @@ export class MatchmakingService {
         case UserStatus.WAITING_GAME:
         case UserStatus.COUNTDOWN:
         case UserStatus.IN_GAME:
+          await this.rewardUserService.disciplineUser(userId);
           this.logger.warn(
             `User ${userId} Disconnected status: ${UserStatus[userStatus]}`,
           );
@@ -338,6 +341,7 @@ export class MatchmakingService {
         if (opponentId) {
           const opponentSocket =
             this.connectionService.getSocketByUserId(opponentId);
+          await this.rewardUserService.rewardLeftUser(opponentId);
           this.connectionService.updateUserStatus(
             opponentId,
             UserStatus.ONLINE,
@@ -362,6 +366,14 @@ export class MatchmakingService {
         userId,
       );
       if (livePlayerSocket) {
+        const livePlayerId = this.connectionService.getUserBySocketId(
+          livePlayerSocket.id,
+        );
+        await this.rewardUserService.rewardLeftUser(livePlayerId);
+        this.connectionService.updateUserStatus(
+          livePlayerId,
+          UserStatus.ONLINE,
+        );
         livePlayerSocket.emit(SOCKET_EVENT.MATCH_CANCELLED, {
           message: SOCKET_ERROR.OPPONENT_DISCONNECT,
         });

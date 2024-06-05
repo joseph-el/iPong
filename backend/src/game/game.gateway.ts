@@ -67,7 +67,6 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       await this.matchmakingService.handleDisconnect(userId, client);
       this.connectionService.removeUserSocket(userId);
       this.connectedUsers.delete(userId);
-      // this.connectionService.dataLogger();
     } else {
       this.logger.error(`client [${client.id}] is not mapped to any user`);
     }

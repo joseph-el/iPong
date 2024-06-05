@@ -6,11 +6,13 @@ import { PlayedGamesDto } from './dtos/playedGames.dto';
 export class GameHistoryService {
   constructor(private readonly database: DatabaseService) {}
 
-  async handleGetGamesHistory(userId: string): Promise<PlayedGamesDto[]> {
+  async handleGetGamesHistory(queryId: string): Promise<PlayedGamesDto[]> {
+    if (!queryId) return [];
+
     try {
       const games = await this.database.game.findMany({
         where: {
-          OR: [{ player1Id: userId }, { player2Id: userId }],
+          OR: [{ player1Id: queryId }, { player2Id: queryId }],
         },
       });
       if (!games.length) {
@@ -22,10 +24,13 @@ export class GameHistoryService {
         playedGame.gameId = game.id;
         playedGame.createdAt = game.createdAt;
         playedGame.opponentId =
-          game.player1Id === userId ? game.player2Id : game.player1Id;
-        playedGame.status = game.winnerId === userId ? 'win' : 'loss';
+          game.player1Id === queryId ? game.player2Id : game.player1Id;
+        playedGame.status = game.winnerId === queryId ? 'win' : 'loss';
+        playedGame.winnerVbucks = game.winnerVbucks;
+        playedGame.loserVVbucks = game.loserVbucks;
         return playedGame;
       });
+
       return playedGamesData;
     } catch (error) {
       console.error('Error fetching game-history: ', error);

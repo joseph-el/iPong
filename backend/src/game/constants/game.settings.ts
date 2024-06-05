@@ -3,7 +3,7 @@ export const GAME_SETTINGS = {
   GAME_WIDTH: 800,
   GAME_HEIGHT: 500,
   FRAME_PER_SECONDS: 60,
-  GAME_TARGET: 10,
+  GAME_TARGET: 4,
 
   /* Players Settings */
   PLAYERS_WIDTH_PERCENTAGE: 3,

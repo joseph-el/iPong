@@ -5,4 +5,6 @@ export class UpdateGameDto {
   gameStatus?: GameStatus;
   minScore?: number;
   maxScore?: number;
+  winnerVbucks?: number;
+  loserVbucks?: number;
 }

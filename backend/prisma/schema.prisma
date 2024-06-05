@@ -47,6 +47,10 @@ model User {
   player1          Game[]           @relation("player1")
   player2          Game[]           @relation("player2")
   winner           Game[]           @relation("winner")
+
+  // l3alamia
+  xp               Int              @default(0)
+  wallet           Int              @default(10)
 }
 
 model Friendship {
@@ -131,9 +135,11 @@ model Game {
   winner      User?    @relation("winner", fields: [winnerId], references: [userId], onDelete: SetNull)
 
   // by abdo
-  gameStatus  GameStatus
-  minScore    Int
-  maxScore    Int
+  gameStatus    GameStatus
+  minScore      Int
+  maxScore      Int
+  winnerVbucks  Int    @default(0)
+  loserVbucks   Int    @default(0)
 }
 
 model Notification {

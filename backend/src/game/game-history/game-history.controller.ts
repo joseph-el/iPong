@@ -1,7 +1,6 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { PlayedGamesDto } from './dtos/playedGames.dto';
 import { AtGuard } from 'src/auth/Guards/access.guard';
-import { GetCurrentUser } from 'src/auth/decorators/getCurrentUser.decorator';
 import { GameHistoryService } from './game-history.service';
 
 /* use: http://localhost:3000/game-history */
@@ -12,10 +11,10 @@ export class GameHistoryController {
 
   /* GET ALL GAMES OF CURRENT USER */
   @UseGuards(AtGuard)
-  @Get()
+  @Get(':id')
   async handleGetAllGames(
-    @GetCurrentUser('userId') userId: string,
+    @Param('id') queryId: string,
   ): Promise<PlayedGamesDto[]> {
-    return await this.getGameHistoryService.handleGetGamesHistory(userId);
+    return await this.getGameHistoryService.handleGetGamesHistory(queryId);
   }
 }
