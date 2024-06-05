@@ -29,8 +29,8 @@ export class UsersController {
   
   @UseGuards(AtGuard)
   @Post('update')
-  async update(@Request() req: any, @Body() updateUserDto: UpdateUserDto) {
-    const result = this.usersService.update(req.user.userId, updateUserDto);
+  async update( @GetCurrentUser('userId') userId: string, @Body() updateUserDto: UpdateUserDto) {
+    const result = this.usersService.update(userId, updateUserDto);
     if (result) {
       return { message: 'User updated successfully' };
     } 
