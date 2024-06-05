@@ -54,6 +54,7 @@ export class ChatGateway
     try {
       const decoded = this.jwtService.verify(token);
       client.data.user = decoded;
+      console.log(decoded)
     } catch (error) {
       console.log('Invalid access token');
       client.disconnect(true);
