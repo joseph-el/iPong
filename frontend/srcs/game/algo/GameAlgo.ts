@@ -37,12 +37,16 @@ export class GameAlgo {
   mapPath: string;
   skinPath: string;
   winnerCallback: (winner: string) => void;
+  playerScoreCallback: (p1Score: number) => void;
+  botScoreCallback: (p2Score: number) => void;
 
   constructor(
     ctx: CanvasRenderingContext2D,
     mapPath: string,
     skinPath: string,
-    winnerCallback: (winner: string) => void
+    winnerCallback: (winner: string) => void,
+    playerScoreCallback: (p1Score: number) => void,
+    botScoreCallback: (p2Score: number) => void
   ) {
     this.width = GAME_SETTING.GAME_WIDTH;
     this.height = GAME_SETTING.GAME_HEIGHT;
@@ -56,7 +60,8 @@ export class GameAlgo {
     this.mapPath = mapPath;
     this.skinPath = skinPath;
     this.winnerCallback = winnerCallback;
-
+    this.playerScoreCallback = playerScoreCallback;
+    this.botScoreCallback = botScoreCallback;
     /* Game General Settings */
     this.defaultColor = GAME_SETTING.DEFAULT_COLOR;
 
@@ -242,6 +247,7 @@ export class GameAlgo {
     if (this.ball!.x - this.ball!.radius < 0) {
       this.playScoreSound();
       this.computer!.score++;
+      this.botScoreCallback(this.computer!.score);
       if (this.computer!.score >= this.target) {
         this.endGame("Bot");
       }
@@ -249,6 +255,7 @@ export class GameAlgo {
     } else if (this.ball!.x + this.ball!.radius > this.width) {
       this.playScoreSound();
       this.player!.score++;
+      this.playerScoreCallback(this.player!.score);
       if (this.player!.score >= this.target) {
         this.endGame("Player");
       }
@@ -297,7 +304,7 @@ export class GameAlgo {
       ctx.fillStyle = "BLACK";
       ctx.fillRect(0, 0, this.width, this.height);
     }
-    this.drawScores(ctx);
+    // this.drawScores(ctx);
     this.drawNet(ctx);
     this.drawPlayerShadow(ctx);
     if (this.isSkinImageLoaded && this.skinImage) {
@@ -364,11 +371,13 @@ export class GameAlgo {
       this.ctx.clearRect(0, 0, this.width, this.height);
     }
     this.winnerCallback(winner);
-    // TODO: need to clean images / sounds before closing
+    this.cleanupImages();
+    this.cleanupSounds();
   }
 
   /* CleanUp Methods */
   cleanupImages() {
+    console.log("clean up happened");
     if (this.bgImage) {
       this.bgImage.src = "";
     }
@@ -377,6 +386,7 @@ export class GameAlgo {
     }
   }
   cleanupSounds() {
+    console.log("clean up happened");
     if (this.ballHitSound) {
       this.ballHitSound.pause();
       this.ballHitSound.currentTime = 0;

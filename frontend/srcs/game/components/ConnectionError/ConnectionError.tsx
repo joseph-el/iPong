@@ -22,7 +22,7 @@ export default function ErrorConnection({ reason }: ErrorConnectionProps) {
 
   return visible ? (
     <div className="errorCard">
-      <h1>Failed!</h1>
+      <h1>Error connecting to server...</h1>
       <h3>{reason}</h3>
     </div>
   ) : null;

@@ -6,12 +6,12 @@ export const GAME_SETTING = {
   GAME_WIDTH: 800,
   GAME_HEIGHT: 500,
   FRAME_PER_SECONDS: 60,
-  GAME_TARGET: 8,
+  GAME_TARGET: 5,
 
   /* Players Settings */
   PLAYERS_WIDTH_PERCENTAGE: 3,
   PLAYERS_HEIGHT_PERCENTAGE: 20,
-  FRACTION_FOR_SPEED: 0.05,
+  FRACTION_FOR_SPEED: 0.09,
 
   /* Ball Settings */
   BALL_SIZE_PERCENTAGE: 2.5,
@@ -30,4 +30,7 @@ export const GAME_SETTING = {
 
   /*Live Game Emit Freq */
   EMIT_MOVE_LIMIT: 40, //milliseconds
+
+  /* BOT ASSETS */
+  BOT_ICON: "/assets/game/icons/aiBotIcon.png",
 };

@@ -1,67 +1,56 @@
-import React from "react";
 import "./iPongGame.css";
 import { User } from "@nextui-org/user";
-
-import Versus3d from "./assets/Versus-3d.svg";
-import UserBadge from "./assets/user-badge.svg";
-import VersusBadge from "./assets/versus-badge.svg";
-
-
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { PATHS } from "../../game/constants/paths";
 import BotMode from "../../game/components/BotMode/BotMode";
-
-function UserBadgeComponent(props) {
-  return (
-    <div className="iPongGame-UserBadge">
-      <img src={UserBadge} alt="UserBadge" className="UserBadge" />
-      <div className="iPongGame-UserBadge-username">
-        <img
-          src="https://i.pravatar.cc/150?u=a04258114e29026702d"
-          alt="UserBadge"
-          className="UserBadge-img"
-        />
-        <div className="username">{props.username}</div>
-      </div>
-    </div>
-  );
-}
-
-function VersusBadgeComponent(props) {
-  return (
-    <div className="iPongGame-VersusBadge">
-      <img src={VersusBadge} alt="VersusBadge" className="VersusBadge" />
-
-      <div className="iPongGame-UserBadge-username">
-        <img
-          src="https://i.pravatar.cc/150?u=a04258114e29026702d"
-          alt="UserBadge"
-          className="UserBadge-img UserBadge-img-vr"
-        />
-        <div className="username">{props.username}</div>
-      </div>
-    </div>
-  );
-}
-
-function IPongGameNav(props) {
-  return (
-    <div className="iPongGame-frame-nav">
-      <VersusBadgeComponent username={props.opponent} />
-      <img src={Versus3d} alt="Versus3d" className="Versus3d" />
-      <UserBadgeComponent username={props.username} />
-    </div>
-  );
-}
+import MatchMaking from "../../game/components/MatchMaking/MatchMaking";
 
 export default function iPongGame() {
+  type ModeType = "practice" | "onlineBattle" | null;
+  const [mode, setMode] = useState<ModeType>(null);
+  const [urlMode, setUrlMode] = useState("default");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  /* i checked the path to extract coming from: mode */
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const modeParam = searchParams.get("mode");
+    if (modeParam === "default") {
+      setUrlMode("default");
+      setMode(null);
+    }
+  }, [location.search, urlMode]);
+
+  function vsBotHandler() {
+    setMode("practice");
+    navigate(PATHS.PRACTICE_MODE);
+  }
+
+  function vsRandomHandler() {
+    setMode("onlineBattle");
+    navigate(PATHS.ONLINE_RANDOM_MODE);
+  }
+
+  /* Check What Mode To Render */
+  if (mode && mode === "practice") {
+    return <BotMode />;
+  }
+  if (mode && mode === "onlineBattle") {
+    return <MatchMaking />;
+  }
+
   return (
-    <div className="iPongGame-frame">
-      <IPongGameNav username="Taha Naceur" opponent="youssef Naceur" />
-
-
-      <BotMode />
-
-
-
+    <div className="container">
+      <div className="container-nav">
+        <button className="button" onClick={vsBotHandler}>
+          Play vs Bot
+        </button>
+        <button className="button" onClick={vsRandomHandler}>
+          Play vs Random
+        </button>
+      </div>
     </div>
   );
 }

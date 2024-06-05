@@ -42,6 +42,9 @@ model User {
   message          Message[]
   ownedRooms       ChatRoom[]
   roomMember       ChatRoomMember[]
+
+
+  // (Game)
   player1          Game[]           @relation("player1")
   player2          Game[]           @relation("player2")
   winner           Game[]           @relation("winner")
@@ -118,16 +121,20 @@ model ChatRoom {
 }
 
 model Game {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  player1Id  String
-  player2Id  String
-  player1    User     @relation("player1", fields: [player1Id], references: [userId], onDelete: Cascade)
-  player2    User     @relation("player2", fields: [player2Id], references: [userId], onDelete: Cascade)
-  winnerId  String?
-  winner     User?    @relation("winner", fields: [winnerId], references: [userId], onDelete: SetNull)
-  
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  player1Id   String
+  player2Id   String
+  player1     User     @relation("player1", fields: [player1Id], references: [userId], onDelete: Cascade)
+  player2     User     @relation("player2", fields: [player2Id], references: [userId], onDelete: Cascade)
+  winnerId    String?
+  winner      User?    @relation("winner", fields: [winnerId], references: [userId], onDelete: SetNull)
+
+  // by abdo
+  gameStatus  GameStatus
+  minScore    Int
+  maxScore    Int
 }
 
 model Notification {
@@ -160,4 +167,9 @@ enum ChatRoomType {
   Dm
   private
   protected
+}
+
+enum GameStatus {
+  CANCELED
+  PLAYED
 }

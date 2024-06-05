@@ -44,10 +44,10 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
       );
       await this.AuthService.updateHash(UserExust.userId, tokens.refresh_token);
       res.cookie('access_token', tokens.access_token, {
-        httpOnly: true,
+        httpOnly: false,
       });
       res.cookie('refresh_token', tokens.refresh_token, {
-        httpOnly: true,
+        httpOnly: false,
         path: '/auth',
       });
       res.redirect('http://localhost:5173/ipong/profile');
@@ -67,10 +67,10 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
     );
     await this.AuthService.updateHash(newUser.userId, tokens.refresh_token);
     res.cookie('access_token', tokens.access_token, {
-      httpOnly: true,
+      httpOnly: false,
     });
     res.cookie('refresh_token', tokens.refresh_token, {
-      httpOnly: true,
+      httpOnly: false,
       path: '/auth',
     });
     res.redirect('http://localhost:5173/ipong/profile');

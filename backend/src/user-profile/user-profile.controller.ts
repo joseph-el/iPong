@@ -17,11 +17,10 @@ import {
   Res,
 } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
-import {UserProfileDto } from './dto/UserProfile.dto';
+import { UserProfileDto } from './dto/UserProfile.dto';
 import { AtGuard } from 'src/auth/Guards/access.guard';
 import { GetCurrentUser } from 'src/auth/decorators/getCurrentUser.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { use } from 'passport';
 
 @Controller('user-profile')
 export class UserProfileController {

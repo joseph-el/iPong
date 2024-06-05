@@ -7,16 +7,20 @@ import { ERROR, STATE } from "../../constants/errors";
 import { GameState } from "../../types/GameState";
 import ErrorConnection from "../ConnectionError/ConnectionError";
 import LiveMode from "../LiveMode/LiveMode";
+import FoundMatch from "../FoundMatch/FoundMatch";
 import "./MatchMaking.css";
+import LookingForMatch from "../LookingForMatch/LookingForMatch";
 
-/* TODO: Dummy token for testing */
-const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWRAZ21haWwuY29tIiwic3ViIjoiYmQyYzdlZGEtZDE5NS00M2ZkLTkyYTctMzZkMzMxZTRiNGMyIiwiaWF0IjoxNzE2OTg2MzM3LCJleHAiOjE3MTY5OTM1Mzd9.QnELYNC9RRchUxKCHrEh_YqPyEOP39pWaWv0t7XNodU";
+const accessToken = document?.cookie
+  ?.split("; ")
+  ?.find((row) => row.startsWith("access_token="))
+  ?.split("=")[1];
 
 export default function MatchMaking() {
   const socketRef = useRef<Socket | null>(null);
   const [matchMakingStatus, setMatchMakingStatus] = useState<string>("pending");
   const [opponent, setOpponent] = useState<string | null>(null);
+  const [opponentId, setOpponentId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [playerPos, setPlayerPos] = useState<number | null>(null);
@@ -26,9 +30,14 @@ export default function MatchMaking() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(accessToken);
+
+    if (!accessToken) {
+      setError("could not parse access_token from cookie");
+    }
     const socket = io(PATHS.BACKEND_GAME_PATH, {
       transports: ["websocket"],
-      auth: { token: ACCESS_TOKEN }, // TODO: change access_token
+      auth: { token: accessToken },
     });
     socketRef.current = socket;
 
@@ -125,8 +134,8 @@ export default function MatchMaking() {
       SOCKET_EVENTS.MATCH_FOUND,
       (data: { opponentUserName: string; opponentId: string }) => {
         console.log(`${STATE.MATCH_FOUND}: ${data.opponentUserName}`);
-        console.log(data.opponentId);
         setOpponent(data.opponentUserName);
+        setOpponentId(data.opponentId);
         setMatchFound(true);
       }
     );
@@ -185,11 +194,19 @@ export default function MatchMaking() {
 
   if (matchStatus === "matchCanceled") {
     if (!error) return;
-    return <ErrorConnection reason={error} />;
+    return (
+      <div className="container">
+        <ErrorConnection reason={error} />
+      </div>
+    );
   }
 
   if (error) {
-    return <ErrorConnection reason={error} />;
+    return (
+      <div className="container">
+        <ErrorConnection reason={error} />
+      </div>
+    );
   }
 
   if (matchMakingStatus === "liveGame") {
@@ -198,6 +215,7 @@ export default function MatchMaking() {
         <LiveMode
           socketRef={socketRef}
           opponent={opponent}
+          opponentId={opponentId}
           roomId={roomId}
           playerPos={playerPos}
           gameData={gameState}
@@ -218,34 +236,17 @@ export default function MatchMaking() {
     navigate(PATHS.DEFAULT_GAME_PAGE);
   };
 
+  if (matchMakingStatus === "matchFound") {
+    return (
+      <div className="container">
+        <FoundMatch opponent={opponent} opponentId={opponentId} />
+      </div>
+    );
+  }
+
   return (
     <div className="container">
-      <h1 className="header">
-        {matchFound
-          ? "Match Found"
-          : matchMakingStatus === "pending"
-          ? "Finding Random Player"
-          : "Connecting"}
-      </h1>
-      <div className="card">
-        {matchFound ? (
-          <>
-            <p className="opponentInfo">Match Found! Opponent: {opponent}</p>
-          </>
-        ) : (
-          <>
-            <p className="statusMessage">
-              {matchMakingStatus === "pending"
-                ? "Looking for a match..."
-                : "Connecting"}
-            </p>
-            <div className="spinner"></div>
-          </>
-        )}
-        <button className="button" onClick={leaveMatchMaking}>
-          Leave
-        </button>
-      </div>
+      <LookingForMatch leaveMatchMaking={leaveMatchMaking} />
     </div>
   );
 }

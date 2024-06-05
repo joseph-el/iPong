@@ -1,15 +1,18 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../constants/paths";
 import { useEffect, useRef, useState } from "react";
 import { GAME_SETTING } from "../../constants/settings";
 import { GameAlgo } from "../../algo/GameAlgo";
-import ProgressBar from "../ProgressBar/ProgressBar";
 import "./BotMode.css";
-import StatusCard from "../StatusCard/StatusCard";
+import ProgressBar from "../ProgressBar/ProgressBar";
+import IPongGameNav from "../../components/IPongGameNav/IPongGameNav";
+import Scores from "../Score/Score";
+import GameOver from "../GameOver/GameOver";
 
 /* STATIC PATHS FOR TESTING */
 const mapPath = "/assets/game/maps/15.png";
-const skinPath = "/assets/game/skins/fir3awn.png";
+const skinPath = "/assets/game/skins/hacker.png";
 
 export default function BotMode() {
   const [timerValue, setTimerValue] = useState<number>(
@@ -20,10 +23,20 @@ export default function BotMode() {
   const gameRef = useRef<GameAlgo | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [playerScore, setPlayerScore] = useState<number>(0);
+  const [botScore, setBotScore] = useState<number>(0);
+
   const navigate = useNavigate();
 
   const winnerCallback = (winner: string) => {
     setWinner(winner);
+  };
+
+  const updatePlayerScoreCallback = (p1Score: number) => {
+    setPlayerScore(p1Score);
+  };
+  const updateBotScoreCallback = (p2Score: number) => {
+    setBotScore(p2Score);
   };
 
   /* Timer */
@@ -60,7 +73,14 @@ export default function BotMode() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const game = new GameAlgo(ctx, mapPath, skinPath, winnerCallback);
+    const game = new GameAlgo(
+      ctx,
+      mapPath,
+      skinPath,
+      winnerCallback,
+      updatePlayerScoreCallback,
+      updateBotScoreCallback
+    );
     gameRef.current = game;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -87,6 +107,7 @@ export default function BotMode() {
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      game.endGame("");
     };
   }, [gameStarted]);
 
@@ -105,30 +126,36 @@ export default function BotMode() {
   };
 
   return (
-    <div className="botModeContainer">
-      {/* <h1 className="botModeHeading">Welcome! to the Practice Mode</h1> */}
-      <div className="progressContainer">
-        {!gameStarted && <ProgressBar progress={progress} />}
+    <div className="container">
+      <div className="iPongGame-frame">
+        <IPongGameNav
+          opponentName="Ai Bot"
+          opponentAvatarPath={GAME_SETTING.BOT_ICON}
+        />
+        <div className="progress-container">
+          {!gameStarted && <ProgressBar progress={progress} />}
+        </div>
+        <div className="canvas-container">
+          {gameStarted && !winner && (
+            <>
+              <Scores
+                player1Score={playerScore}
+                player2Score={botScore}
+              ></Scores>
+              <canvas
+                ref={canvasRef}
+                className="game"
+                width="800px"
+                height="500px"
+              ></canvas>
+              <button className="leaveButton" onClick={leaveBotMode}>
+                Leave Training
+              </button>
+            </>
+          )}
+          {winner && <GameOver winner={winner} />}
+        </div>
       </div>
-      <div className="canvasContainer">
-        {gameStarted && !winner && (
-          <canvas
-            ref={canvasRef}
-            className="game"
-            width="800px"
-            height="500px"
-          ></canvas>
-        )}
-        {winner && (
-          <StatusCard
-            title="Game Over!"
-            message={`Game Over! Winner: ${winner}`}
-          />
-        )}
-      </div>
-      <button className="backButton" onClick={leaveBotMode}>
-        Leave Bot
-      </button>
     </div>
   );
 }

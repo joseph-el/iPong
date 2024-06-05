@@ -35,6 +35,9 @@ export const SOCKET_EVENTS = {
   ONLY_ONE_PLAYER_LEFT: "onlyOnePlayerLeft",
   OPPONENT_DISCONNECT: "opponentDisconnected",
 
+  /* Game Play */
+  BALL_HIT_PADDLE: "ballCollisionPaddle",
+
   /* Game lifecycle events */
   STARTING_GAME: "starting",
   GAME_UPDATES: "gameStateUpdate",

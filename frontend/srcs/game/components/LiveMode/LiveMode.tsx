@@ -5,14 +5,19 @@ import { Socket } from "socket.io-client";
 import { SOCKET_EVENTS } from "../../constants/socketEvents";
 import { GAME_SETTING } from "../../constants/settings";
 import { GameState } from "../../types/GameState";
-import StatusCard from "../StatusCard/StatusCard";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import _debounce from "lodash/debounce";
 import "./LiveMode.css";
+import IPongGameNav from "../IPongGameNav/IPongGameNav";
+import Scores from "../Score/Score";
+import { BallState } from "../../types/BallState";
+import CancelledMatch from "../CancelledMatch/CancelledMatch";
+import GameOver from "../GameOver/GameOver";
 
 interface LiveGameModeProps {
   socketRef: React.MutableRefObject<Socket | null>;
   opponent: string;
+  opponentId: string | null;
   roomId: string;
   playerPos: number;
   gameData: GameState;
@@ -25,6 +30,7 @@ const skinPath = "/assets/game/skins/bomb.png";
 export default function LiveMode({
   socketRef,
   opponent,
+  opponentId,
   roomId,
   playerPos,
   gameData,
@@ -36,10 +42,19 @@ export default function LiveMode({
   const [progress, setProgress] = useState<number>(0);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [winner, setWinner] = useState<string | null>(null);
+  const [winnerId, setWinnerId] = useState<string | null>(null);
+  const [player1Score, setPlayer1Score] = useState<number>(0);
+  const [player2Score, setPlayer2Score] = useState<number>(0);
+
   const bgImageRef = useRef<HTMLImageElement | null>(null);
   const skinImageRef = useRef<HTMLImageElement | null>(null);
   const [isBgImageLoaded, setIsBgImageLoaded] = useState(false);
   const [isSkinImageLoaded, setIsSkinImageLoaded] = useState(false);
+
+  const hitSoundRef = useRef<HTMLAudioElement | null>(null);
+  const scoringSoundRef = useRef<HTMLAudioElement | null>(null);
+  const [isHitSoundLoaded, setIsHitSoundLoaded] = useState(false);
+  const [isScoringSoundLoaded, setIsScoringSoundLoaded] = useState(false);
 
   /* reduce user Spam keyboard */
   const debouncedMovePlayer = useRef(
@@ -67,31 +82,50 @@ export default function LiveMode({
 
   /* Load Assets */
   useEffect(() => {
+    // Load assets
     const bgImage = new Image();
     const skinImage = new Image();
+    const hitSound = new Audio();
+    const scoringSound = new Audio();
 
-    bgImage.onload = () => {
-      setIsBgImageLoaded(true);
-    };
+    bgImage.onload = () => setIsBgImageLoaded(true);
+    skinImage.onload = () => setIsSkinImageLoaded(true);
+    hitSound.oncanplaythrough = () => setIsHitSoundLoaded(true);
+    scoringSound.oncanplaythrough = () => setIsScoringSoundLoaded(true);
 
-    skinImage.onload = () => {
-      setIsSkinImageLoaded(true);
-    };
-
-    bgImage.onerror = () => {
-      setIsBgImageLoaded(false);
-    };
-
-    skinImage.onerror = () => {
-      setIsSkinImageLoaded(false);
-    };
+    bgImage.onerror = () => setIsBgImageLoaded(false);
+    skinImage.onerror = () => setIsSkinImageLoaded(false);
 
     bgImage.src = mapPath;
     skinImage.src = skinPath;
+    hitSound.src = GAME_SETTING.HIT_BALL_SOUND;
+    scoringSound.src = GAME_SETTING.SCORE_SOUND;
 
     bgImageRef.current = bgImage;
     skinImageRef.current = skinImage;
+    hitSoundRef.current = hitSound;
+    scoringSoundRef.current = scoringSound;
+
+    return () => {
+      bgImageRef.current = null;
+      skinImageRef.current = null;
+      hitSoundRef.current = null;
+      scoringSoundRef.current = null;
+    };
   }, []);
+
+  useEffect(() => {
+    if (
+      isScoringSoundLoaded &&
+      scoringSoundRef.current &&
+      scoringSoundRef.current.readyState === 4
+    ) {
+      scoringSoundRef.current.pause();
+      scoringSoundRef.current.currentTime = 0;
+      scoringSoundRef.current.play();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player1Score, player2Score]);
 
   /* Timer... */
   useEffect(() => {
@@ -134,6 +168,9 @@ export default function LiveMode({
     socket.current?.on(SOCKET_EVENTS.CONNECT_ERROR, (error: string) => {
       console.log("Connect error:", error);
     });
+    return () => {
+      if (timerInterval) clearInterval(timerInterval);
+    };
   }, [cancelledGame, gameStarted]);
 
   /* Live Game */
@@ -212,8 +249,6 @@ export default function LiveMode({
         player1.drawPlayer(ctx);
         player2.drawPlayer(ctx);
       }
-      player1.drawScore(ctx, canvas.width / 4, canvas.height / 5);
-      player2.drawScore(ctx, (3 * canvas.width) / 4, canvas.height / 5);
       ball.drawBall(ctx);
     }
 
@@ -228,9 +263,10 @@ export default function LiveMode({
 
     socket.current?.on(
       SOCKET_EVENTS.GAME_END,
-      (data: { winnerUserName: string }) => {
+      (data: { winnerUserName: string; winnerId: string }) => {
         if (data.winnerUserName) {
           setWinner(data.winnerUserName);
+          setWinnerId(data.winnerId);
         }
         setEndedGame(true);
       }
@@ -240,11 +276,18 @@ export default function LiveMode({
       if (isGameRunning) {
         player1.y = gameState.player1.y;
         player2.y = gameState.player2.y;
+        if (player1.score !== gameState.player1.score) {
+          setPlayer1Score(gameState.player1.score);
+        }
+        if (player2.score !== gameState.player2.score) {
+          setPlayer2Score(gameState.player2.score);
+        }
         player1.score = gameState.player1.score;
         player2.score = gameState.player2.score;
         ball.x = gameState.ball.x;
         ball.y = gameState.ball.y;
         draw();
+        drawBallTrail(ctx, gameState.ball);
       }
     });
 
@@ -279,8 +322,33 @@ export default function LiveMode({
         socket.current?.disconnect();
       }
     );
+
+    /* Collision between the ball and Paddle here */
+    socket.current?.on(SOCKET_EVENTS.BALL_HIT_PADDLE, (data) => {
+      if (data) {
+        drawFlash(ctx, data.x, data.y, data.size);
+        if (
+          isHitSoundLoaded &&
+          hitSoundRef.current &&
+          hitSoundRef.current.readyState === 4
+        ) {
+          hitSoundRef.current.pause();
+          hitSoundRef.current.currentTime = 0;
+          hitSoundRef.current.play();
+        }
+      }
+    });
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      if (hitSoundRef.current) {
+        hitSoundRef.current.pause();
+        hitSoundRef.current.currentTime = 0;
+      }
+      if (scoringSoundRef.current) {
+        scoringSoundRef.current.pause();
+        scoringSoundRef.current.currentTime = 0;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, gameData, roomId, playerPos, cancelledGame, gameStarted]);
@@ -302,6 +370,44 @@ export default function LiveMode({
     }
     ctx.fill();
   }
+
+  function drawFlash(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    ballSize: number
+  ) {
+    const hitBallSizeX = Math.floor(ballSize * 3);
+    const hitBallSizeY = Math.floor(ballSize * 2.5);
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(x, y, hitBallSizeX / 2, hitBallSizeY / 2, 0, 0, Math.PI * 2);
+    ctx.fillStyle = GAME_SETTING.HIT_COLOR;
+    ctx.globalAlpha = 0.7;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawBallTrail(ctx: CanvasRenderingContext2D, ball: BallState) {
+    const numSegments = 6;
+    const opacityStep = 0.1;
+    let opacity = 0.4;
+    const opacityDelta = opacityStep;
+    for (let i = 0; i < numSegments; i++) {
+      ctx.beginPath();
+      ctx.arc(
+        ball!.x - ball!.velocityX * i,
+        ball!.y - ball!.velocityY * i,
+        ball!.r,
+        0,
+        Math.PI * 2
+      );
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+      ctx.fill();
+      opacity -= opacityDelta;
+    }
+  }
+
   const gradualProgressUpdate = () => {
     setProgress((prevProgress) => {
       const newProgress = prevProgress + 33.33;
@@ -312,40 +418,40 @@ export default function LiveMode({
     });
   };
 
+  /* TODO: FETCH OPPONENT AVATAR PATH HERE to change: opponentAvatarPath*/
   return (
-    <div>
+    <div className="container">
       {!cancelledGame && !endedGame && (
-        <div className="liveModeContainer">
-          <h1 className="liveModeHeading">
-            Welcome to the Live Game vs {opponent}
-          </h1>
-          <div className="progressContainer">
+        <div className="iPongGame-frame">
+          <IPongGameNav
+            opponentName={opponent}
+            opponentAvatarPath=""
+          ></IPongGameNav>
+          <div className="progress-container">
             {!gameStarted && <ProgressBar progress={progress} />}
           </div>
-          <div className="canvasContainer">
+          <div className="canvas-container">
             {gameStarted && (
-              <canvas
-                ref={canvasRef}
-                className="game"
-                width="800px"
-                height="500px"
-              ></canvas>
+              <>
+                <Scores
+                  player1Score={player1Score}
+                  player2Score={player2Score}
+                ></Scores>
+                <canvas
+                  ref={canvasRef}
+                  className="game"
+                  width="800px"
+                  height="500px"
+                ></canvas>
+              </>
             )}
           </div>
         </div>
       )}
       {cancelledGame && (
-        <StatusCard
-          title="Match Cancelled"
-          message="Opponent Disconnected. The match has been cancelled."
-        />
+        <CancelledMatch WhyReason="Opponent Disconnected! The match has been cancelled." />
       )}
-      {endedGame && (
-        <StatusCard
-          title="Game Over"
-          message={`Game Over! Winner: ${winner}`}
-        />
-      )}
+      {endedGame && <GameOver winner={winner} winnerId={winnerId} />}
     </div>
   );
 }
