@@ -21,15 +21,6 @@ import api from "../../../api/posts";
 
 type Match = (typeof matches)[0];
 
-async function fetchHistory() {
-  try {
-    const response = await api.get("/game-history");
-    console.log(response);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 const TopContent = (props) => {
   return (
     <div className="flex flex-col gap-4 MatchHistoryBar">
@@ -54,15 +45,72 @@ const TopContent = (props) => {
 
 export default function App() {
   const visibleColumns = INITIAL_VISIBLE_COLUMNS;
-  const [filteredItems, setfilteredItems] = useState(matches);
+  const [filteredItems, setfilteredItems] = useState([]);
+
+  const [GameMatchHistory, setGameMatchHistory] = useState([]);
+
+  // GET the data from abdo the backend
+
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await api.get("/game-history");
+          setGameMatchHistory(response.data);
+
+        } catch (error) {
+          console.log("Error fetching data");
+        }
+      }
+      fetchData();
+  }, []);
+  console.log(GameMatchHistory);
+
+  // Now map on GameMatchHistory and set an array of matches
+  const [matches, setMatches] = useState([]);
+
+
+  useEffect(() => {
+    const test = async () => {
+      try {
+        //"
+        const response = await api.get( `/user-profile/me` );
+        // setGameMatchHistory(response.data);
+        console.log("done: ")
+        console.log(response);
+      } catch (error) {
+        console.log("Error fetching data");
+      }
+    }
+    test();
+
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const headerColumns = React.useMemo(() => {
     return columns;
   }, [visibleColumns]);
-
-  useEffect(() => {
-    fetchHistory();
-  }, []);
 
   const onSearchChanges = (event) => {
     const searchTerm = event.target.value.toLowerCase();
