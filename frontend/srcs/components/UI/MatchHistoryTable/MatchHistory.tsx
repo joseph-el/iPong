@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Table,
   TableHeader,
@@ -10,16 +10,13 @@ import {
   User,
 } from "@nextui-org/react";
 import { SearchIcon } from "./SearchIcon";
-import { columns, matches } from "./data";
+import { columns } from "./data";
 import { ScrollShadow } from "@nextui-org/react";
 import "./MatchHistory.css";
-
+import { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "V-BUCKS", "RESULTS", "DATE"];
-import { useState } from "react";
 import api from "../../../api/posts";
-
-type Match = (typeof matches)[0];
 
 const TopContent = (props) => {
   return (
@@ -43,70 +40,58 @@ const TopContent = (props) => {
   );
 };
 
-export default function App() {
+export default function App({ flag = false}) {
   const visibleColumns = INITIAL_VISIBLE_COLUMNS;
-  const [filteredItems, setfilteredItems] = useState([]);
-
+  const [matches, _setMatches] = useState([]);
+  const [filteredItems, setfilteredItems] = useState(matches);
   const [GameMatchHistory, setGameMatchHistory] = useState([]);
 
-  // GET the data from abdo the backend
-
   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await api.get("/game-history");
-          setGameMatchHistory(response.data);
-
-        } catch (error) {
-          console.log("Error fetching data");
-        }
-      }
-      fetchData();
-  }, []);
-  console.log(GameMatchHistory);
-
-  // Now map on GameMatchHistory and set an array of matches
-  const [matches, setMatches] = useState([]);
-
-
-  useEffect(() => {
-    const test = async () => {
+    const fetchData = async () => {
       try {
-        //"
-        const response = await api.get( `/user-profile/me` );
-        // setGameMatchHistory(response.data);
-        console.log("done: ")
-        console.log(response);
+        const response = await api.get("/game-history");
+        // TODO: wait for about to set it
+        setGameMatchHistory(flag ? [] : response.data);
       } catch (error) {
         console.log("Error fetching data");
       }
-    }
-    test();
-
+    };
+    fetchData();
   }, []);
+  useEffect(() => {
+    const fetchOpponentUsers = async () => {
+      const matchesPromises = GameMatchHistory.map(async (match, index) => {
+        try {
+          const response = await api.get(
+            `/user-profile/getinfoById${match.opponentId}`
+          );
 
+          return {
+            id: index,
+            date: match.createdAt,
+            result: match.status,
+            vbucks: "+220 V-BUCKS",
+            versus: response.data.firstName + " " + response.data.lastName,
+            avatar: response.data.picture,
+            username: response.data.username,
+          };
+        } catch (error) {
+          console.log("Error fetching data");
+          return null; // Handle the error case
+        }
+      });
+      const resolvedMatches = await Promise.all(matchesPromises);
+      const validMatches = resolvedMatches.filter((match) => match !== null);
+      _setMatches(validMatches);
+      setfilteredItems(validMatches);
+    };
 
+    if (GameMatchHistory.length > 0) {
+      fetchOpponentUsers();
+    }
+  }, [GameMatchHistory]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  type Match = (typeof matches)[0];
 
   const headerColumns = React.useMemo(() => {
     return columns;
@@ -192,7 +177,6 @@ export default function App() {
     }),
     []
   );
-
   return (
     <div className="match-history-frame">
       <TopContent

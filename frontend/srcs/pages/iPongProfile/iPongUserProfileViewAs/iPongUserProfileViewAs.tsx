@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./iPongUserProfileViewAs.css";
 import {
   Tabs,
@@ -19,6 +19,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
+import { useParams } from "react-router-dom";
 import BornIcon from "../assets/bornicon.svg";
 import BlockIcon from "../assets/block-icon.svg";
 import GithubIcon from "../assets/githubicon.svg";
@@ -32,6 +33,8 @@ import VerifiedBadge from "../assets/Verified-badge.svg";
 import ArchivementIcon from "../assets/archivementicon.svg";
 import AddFriendIcon from "../assets/add-friend-icon.svg";
 import MenuIcon from "../assets/profile-menu-icon.svg";
+import PenddingIcon from "../assets/penddingicon.svg";
+import AlreadyFriendIcon from "../assets/alreadyFriendIcon.svg";
 
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -41,35 +44,66 @@ import FriendsInCommon from "../../../components/UI/FriendsInCommon/FriendsInCom
 import MatchHistory from "../../../components/UI/MatchHistoryTable/MatchHistory";
 import AchievementList from "../../../components/UI/AchievementComponents/AchievementList/AchievementList";
 
-const UserDescriptions = () => {
+import { formatJoinDate } from "../../../utils/formatJoinDate";
+
+import api from "../../../api/posts";
+
+const UserDescriptions = ({ UserprofileInfo }) => {
+  const [country, setCountry] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchCountry = async (latitude, longitude) => {
+      try {
+        const response = await axios.get(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+        );
+        setCountry(response.data.countryName);
+      } catch (err) {
+        setError("Failed to fetch country name");
+      }
+    };
+    const getPosition = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            fetchCountry(latitude, longitude);
+          },
+          (err) => {
+            setError("Geolocation permission denied");
+          }
+        );
+      } else {
+        setError("Geolocation is not supported by this browser");
+      }
+    };
+    getPosition();
+  }, []);
+
   return (
     <div className="info">
-      {/* <p className="description">
-                أُحِبُّ الصَّالِحِينَ وَلَسْتُ مِنْهُمْ لَـعَـلِّـي أَنْ أَنَـالَ بِـهِـمْ شَـفَاعَة وَأَكْـرَهُ مَـنْ
-                تِـجَارَتُهُ الْمَعَاصِي وَلَـوْ كُـنَّـا سَـوَاءً فِي الْبِضَاعَة🌼
-            </p> */}
       <p className="description">
-        Unraveling the mysteries of life, from cells to ecosystems. Join the
-        journey! 🌱🔬 Science and discovery.
+        {UserprofileInfo.bio}
+        hey there! I am using iPong
       </p>
       <div className="meta-details">
         <div className="div-2">
           <img className="img" alt="Location icon" src={LocationIcon} />
-          <div className="text-wrapper-2">Maroc</div>
+          <div className="text-wrapper-2"> {error ? "Morocco" : country} </div>
         </div>
-        <div className="div-2">
-          <img className="img" alt="Calendar icon" src={BornIcon} />
-          <div className="text-wrapper-2">Born April 2, 2004</div>
-        </div>
+
         <div className="div-2">
           <img className="img" alt="Calendar icon" src={CalendarIcon} />
-          <div className="text-wrapper-2">Joined fav 2024</div>
+          <div className="text-wrapper-2">
+            {formatJoinDate(UserprofileInfo.createdAt)}
+          </div>
         </div>
       </div>
 
       <div className="follower-counts">
         <div className="following">
-          <div className="text-wrapper">95</div>
+          <div className="text-wrapper">{UserprofileInfo.FriendsCount}</div>
           <div className="div">Following</div>
         </div>
       </div>
@@ -78,6 +112,8 @@ const UserDescriptions = () => {
 };
 
 export default function UserProfileViewAs() {
+  const { userId } = useParams();
+
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [ShowZindex, setShowZindex] = React.useState(false);
   const handleCloseClick = () => {
@@ -92,6 +128,48 @@ export default function UserProfileViewAs() {
     onOpen();
   };
 
+  const [UserprofileInfo, setUserprofileInfo] = React.useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/user-profile/getinfoById${userId}`);
+        setUserprofileInfo(response.data);
+      } catch (error) {
+        console.log("Error fetching data");
+      }
+    };
+    fetchData();
+  }, []);
+
+
+
+
+
+
+
+
+
+
+  const [UserFriendStatus, setUserFriendStatus] = React.useState("Pendding");
+  const handelFriendButton = () => {};
+
+
+
+  useEffect(() => {
+    try {
+        
+    }catch (error) {
+      console.log("Error fetching data");
+    }
+
+
+  }, [UserprofileInfo]);
+
+
+
+
+
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
@@ -103,35 +181,44 @@ export default function UserProfileViewAs() {
               src={CoverImage}
             />
             <Avatar
-              src="https://scontent.fcmn1-2.fna.fbcdn.net/v/t39.30808-6/340242838_159501407041277_2734451423562002343_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFyvo2pTF2mgIKANMob3z8USQ34jUDh201JDfiNQOHbTVONa7_GVq_51GNSwIdNq3o3_3XY57rylLV5N4uofeIH&_nc_ohc=Okm3Jt5r4DoQ7kNvgFvUVUq&_nc_ht=scontent.fcmn1-2.fna&oh=00_AYBnMKq1nwB-R-wVuQCwpnEe2lySQW1DXDZZnBw3hNuViQ&oe=66610A17"
+              src={UserprofileInfo.picture}
               className="w-28 h-28 text-large avatar"
             />
             <div className="user-LevelBars">
-              <LevelBar />
+              <LevelBar level={UserprofileInfo.level} />
             </div>
           </div>
 
           <div className="User-details-and-menu">
             <div className="user-fullname-and-username">
               <div className="user-fullname-and-verification-badge">
-                <p className="user-fullname"> Taha Naceur </p>
-                <img
-                  src={VerifiedBadge}
-                  alt="verified-badge"
-                  className="user-verification-badge"
-                />
+                <p className="user-fullname">
+                  {" "}
+                  {UserprofileInfo.firstName +
+                    " " +
+                    UserprofileInfo.lastName}{" "}
+                </p>
+
+                {UserprofileInfo.isVerified ? (
+                  <img
+                    src={VerifiedBadge}
+                    alt="verified-badge"
+                    className="user-verification-badge"
+                  />
+                ) : null}
               </div>
 
               <div className="groupParent">
-                <div className="tnaceur">@tnaceur</div>
+                <div className="tnaceur">{"@" + UserprofileInfo.username}</div>
               </div>
-              <UserDescriptions />
+              <UserDescriptions UserprofileInfo={UserprofileInfo} />
             </div>
 
             <div className="menu-Buttons">
               <div className="Social-Icons">
                 <Tooltip color="primary" content="Visit Github">
                   <Image
+                    onClick={() => window.open(UserprofileInfo.githubLink)}
                     src={GithubIcon}
                     radius="none"
                     alt="Github icon"
@@ -142,6 +229,7 @@ export default function UserProfileViewAs() {
 
                 <Tooltip color="primary" content="Visit Linkdin">
                   <Image
+                    onClick={() => window.open("https://www.linkedin.com/")}
                     radius="none"
                     src={LinkedinIcon}
                     alt="Linkedin icon"
@@ -163,17 +251,27 @@ export default function UserProfileViewAs() {
 
               <Button
                 color="primary"
-                // isDisabled
+                onClick={handelFriendButton}
                 startContent={
                   <Image
                     width={"20px"}
                     radius="none"
-                    src={AddFriendIcon}
+                    src={
+                      UserFriendStatus === "Pendding"
+                        ? PenddingIcon
+                        : UserFriendStatus === "AlreadyFriend"
+                        ? AlreadyFriendIcon
+                        : AddFriendIcon
+                    }
                     alt="add-friend-icon"
                   />
                 }
               >
-                Add friend
+                {UserFriendStatus === "Pendding"
+                  ? "Pendding"
+                  : UserFriendStatus === "AlreadyFriend"
+                  ? "Already Friend"
+                  : "Add Friend"}
               </Button>
 
               <Dropdown backdrop="blur" className="menu-icon-dropdown-frame">
@@ -260,11 +358,11 @@ export default function UserProfileViewAs() {
                   key="history"
                   title={
                     <div className="flex items-center space-x-2 ">
-                      <span>Match History </span>
+                      <span> Match History </span>
                     </div>
                   }
                 >
-                  <MatchHistory />
+                  <MatchHistory flag={true} />
                 </Tab>
 
                 <Tab

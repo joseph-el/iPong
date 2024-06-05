@@ -126,8 +126,8 @@ const router = createBrowserRouter([
         element: <IPongStore />,
       },
       {
-        path: "users",
-        element: <IPongProfileViewAs />,
+        path: "users/:userId",
+        element: <IPongProfileViewAs  />,
       },
     ],
   },

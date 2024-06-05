@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import {
   Listbox,
@@ -9,11 +9,13 @@ import {
   Selection,
 } from "@nextui-org/react";
 import { ListboxWrapper } from "./ListboxWrapper";
-import { users } from "./data";
+// import { users } from "./data";
+import api from "../../../api/posts";
+import { useNavigate } from "react-router-dom";
 
-export default function SearchList({ users }) {
-  const [values, setValues] = useState<Selection>(new Set(["1"]));
-
+export default function SearchList({ users, func }) {
+  const [values, setValues] = useState<Selection>(new Set(["1"]));  
+  const navigate = useNavigate();
   const arrayValues = Array.from(values);
 
   const topContent = React.useMemo(() => {
@@ -53,7 +55,9 @@ export default function SearchList({ users }) {
               key={item.id}
               textValue={item.name}
               onClick={() => {
-                console.log("user_selected: ", item.name);
+                func();
+                navigate(`/ipong/users/${item.UserId}`);
+                console.log("user_selected: ", item.UserId);
               }}
             >
               <div className="flex gap-2 items-center">

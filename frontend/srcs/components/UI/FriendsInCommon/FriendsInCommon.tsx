@@ -17,6 +17,7 @@ import {
   User,
   Image,
 } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 import AddFriendIcon from "../../../pages/iPongProfile/assets/add-friend-icon.svg";
 import PenddingIcon from "../../../pages/iPongProfile/assets/penddingicon.svg";
@@ -48,18 +49,10 @@ const TopContent = (props) => {
 };
 
 function RenderCellComponent({ user, columnKey }) {
-  const [showFriendStatus, setShowFriendStatus] = React.useState("Add Friend");
-  const handleFriendStatus = () => {
-    console.log("Friend Status: ", showFriendStatus);
+  const navigate = useNavigate();
 
-    if (showFriendStatus == "false" || showFriendStatus == "Friend") {
-      setShowFriendStatus("Add Friend");
-    } else if (showFriendStatus == "Add Friend") {
-      console.log("Friend Request Sent");
-      setShowFriendStatus("Pending");
-    } else {
-      setShowFriendStatus("Friend");
-    }
+  const handleFriendStatus = () => {
+    navigate("/profile");
   };
 
   switch (columnKey) {
@@ -85,18 +78,12 @@ function RenderCellComponent({ user, columnKey }) {
             <Image
               width={"20px"}
               radius="none"
-              src={
-                showFriendStatus == "Pending"
-                  ? PenddingIcon
-                  : showFriendStatus == "Add Friend"
-                  ? AddFriendIcon
-                  : AlreadyFriendIcon
-              }
+              src={AddFriendIcon}
               alt="add-friend-icon"
             />
           }
         >
-          {showFriendStatus}
+          See User
         </Button>
       );
     default:

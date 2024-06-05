@@ -2,9 +2,7 @@ import React from "react";
 import "./LevelBar.css";
 import LevelImg from "./level-max.svg";
 
-const MyComponent = (props) => {
-
-  // TODO: Replace 2000 with the actual XP value
+const MyComponent = () => {
   const progressPercentage = (2000 / 2000) * 100;
 
   return (
@@ -29,7 +27,7 @@ export function LevelBar(props) {
 
         <div className="group">
           <div className="overlap-group">
-            <MyComponent level={props.level} />
+            <MyComponent />
             <p className="div">30,000 XP to LVL 3</p>
           </div>
         </div>

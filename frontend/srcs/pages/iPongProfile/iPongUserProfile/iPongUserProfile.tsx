@@ -16,7 +16,7 @@ import EditIcon from "../assets/editicon.svg";
 import CoverImage from "../assets/cover-image.jpeg";
 import LocationIcon from "../assets/LocationIcon.svg";
 import CalendarIcon from "../assets/CalendarIcon.svg";
-import SecutityIcon from "../assets/securityicon.svg";
+import SecutityIcon from "../assets/securityicon.svg"
 import MenuIcon from "../assets/profile-menu-icon.svg";
 import VerifiedBadge from "../assets/Verified-badge.svg";
 import ArchivementIcon from "../assets/archivementicon.svg";

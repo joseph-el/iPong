@@ -11,14 +11,12 @@ import { GetCurrentUser } from 'src/auth/decorators/getCurrentUser.decorator';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('search')
+  @Get('allusers')
   @UseGuards(AtGuard)
   async GetSearchedUsers(
-    @Query() query: usersSearchDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    console.log(query);
-    return this.usersService.GetSearchedUsers(query.name, userId);
+    return this.usersService.getAllUsers(userId);
   }
 
   @UseGuards(AtGuard)

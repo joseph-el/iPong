@@ -10,6 +10,7 @@ type ProfileDtoProps = Partial<User> &
 
 export class UserProfileDto {
   constructor(userData: ProfileDtoProps, is_friend: boolean) {
+    this.createdAt = userData.createdAt;
     this.id = userData.userId;
     this.firstName = userData.firstName;
     this.lastName = userData.lastName;
@@ -36,6 +37,7 @@ export class UserProfileDto {
   lastName: string;
   bio: string;
   phone: string;
+  createdAt: Date;
   picture: string;
   level: number;
   isVerified: boolean;

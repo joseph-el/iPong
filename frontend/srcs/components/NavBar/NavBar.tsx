@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import CoinsButton from "../UI/Button/CoinsButton/CoinsButton";
 import SearchInput from "../UI/Input/SearchInput/SearchInput";
 import SearchList from "../UI/SearchList/SearchList";
-import { users } from "../UI/SearchList/data";
+// import { users } from "../UI/SearchList/data";
 import { SearchIcon } from "../UI/Input/SearchInput/SearchIcon";
 import NotifactionIcon from "../UI/Button/Notifications/notificationicon.svg";
 import Logout from "../UI/Logout/Logout";
@@ -23,25 +23,44 @@ import {
 } from "@nextui-org/react";
 import { Show } from "@chakra-ui/react";
 
-
-import api from "../../api/posts"
+import api from "../../api/posts";
 import axios from "axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 
-
 export default function NavBar() {
-
-  const UserInfo = useSelector(
-    (state: RootState) => state.userState
-  );
+  const UserInfo = useSelector((state: RootState) => state.userState);
 
   const [activeSearch, setActiveSearch] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchTerm, setSearchTerm] = React.useState(true); // search bar is active
   const [LogoutButton, setLogoutButton] = React.useState(false); // logout button is active
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false); // notification bar is active
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/users/allusers");
+        console.log("response: ", response.data);
+        const _users = response.data.map((user, index) => {
+          return {
+            id: index,
+            UserId:user.userId,
+            name: user.firstName + " " + user.lastName,
+            email: user.email,
+            avatar: user.avatar,
+          };
+        });
+        setUsers(_users);
+      } catch (error) {
+        console.error("error: ", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -80,10 +99,14 @@ export default function NavBar() {
     setSearchTerm(!searchTerm);
   };
 
+  const handelCloseSearchBar = () => {
+    setActiveSearch([]);
+
+  }
+
   const handelCloseNotificationBar = () => {
     setShowNotificationBar(!ShowNotificationBar);
   };
-
 
   return (
     <div className="nav-bar">
@@ -106,7 +129,7 @@ export default function NavBar() {
           <SearchInput onChange={handleOnChange} />
           {activeSearch.length != 0 ? (
             <div className="SearchList">
-              <SearchList users={activeSearch} />
+              <SearchList users={activeSearch} func={handelCloseSearchBar} />
             </div>
           ) : null}
         </div>
@@ -129,7 +152,7 @@ export default function NavBar() {
                 src={NotifactionIcon}
                 alt="noticon"
                 className="notification-button"
-                style={{ zIndex: ShowNotificationBar ? 999999 : 0}}
+                style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
                 onClick={() => {
                   setShowNotificationBar(!ShowNotificationBar);
                 }}
@@ -149,8 +172,7 @@ export default function NavBar() {
             username={UserInfo.username}
             onClick={() => {}}
             avatar={UserInfo.picture}
-         />
-
+          />
         </div>
       ) : null}
     </div>

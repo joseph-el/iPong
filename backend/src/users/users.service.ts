@@ -24,8 +24,10 @@ export class UsersService {
       data: udateuserDto,
     });
   }
-  async getAllUsers() {
-    return this.DatabaseService.user.findMany();
+  async getAllUsers(userId: string) {
+    const allUsers = await this.DatabaseService.user.findMany();
+    const filteredUsers = allUsers.filter((user) => user.userId !== userId);
+    return filteredUsers;
   }
   // TODO: Implement this method and add frindshipId to the user
   async getUserById(userId: string, friendId?: string) {
