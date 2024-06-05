@@ -13,6 +13,43 @@ import IPongGame from "../pages/iPongGame/iPongGame";
 import IPongProfile from "../pages/iPongProfile/iPongUserProfile/iPongUserProfile";
 import IPongProfileViewAs from "../pages/iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
 
+import { Navigate } from "react-router-dom";
+import api from "../api/posts";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUserProfile } from '../state/UserInfo/UserSlice';
+import { AppDispatch } from "../state/store";
+
+const RequireAuth = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await api.get("/user-profile/me");
+
+        dispatch(setUserProfile(response.data));
+ 
+        setIsAuthenticated(true);
+      } catch (error) {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return null;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" />;
+  }
+
+  return children;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,7 +58,6 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth",
-    // element: <SignAuth  />,
     children: [
       {
         path: "/auth/",
@@ -67,7 +103,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/ipong",
-    element: <AppLayout />,
+    element: (
+      <RequireAuth>
+        <AppLayout />
+      </RequireAuth>
+    ),
     children: [
       {
         path: "home",
@@ -79,7 +119,7 @@ const router = createBrowserRouter([
       },
       {
         path: "chat",
-        element:<IPongChat />,
+        element: <IPongChat />,
       },
       {
         path: "store",
