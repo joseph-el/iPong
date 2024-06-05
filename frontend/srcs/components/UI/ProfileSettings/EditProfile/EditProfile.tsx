@@ -13,6 +13,10 @@ import {
 } from "@nextui-org/react";
 import { CameraIcon } from "./CameraIcon";
 
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../state/store";
+import {getAvatarSrc} from "../../../../utils/getAvatarSrc";
+
 const EditProfileNavbar = (props) => {
   return (
     <div className="EditProfileNavbar">
@@ -51,11 +55,6 @@ export default function EditProfile(props) {
     },
     {
       type: "text",
-      placeholder: "germany",
-      label: "Location:\f\f\f",
-    },
-    {
-      type: "text",
       placeholder: "https://www.linkedin.com/in/youssef-el-idrissi-1b1b1b1b1",
       label: "Linkedin:\f\f\f",
     },
@@ -65,6 +64,10 @@ export default function EditProfile(props) {
       label: "Github:\f\f\f\f\f\f",
     },
   ];
+
+  const UserInfo = useSelector((state: RootState) => state.userState);
+
+
   return (
     <EditProfileWrapper>
       <EditProfileNavbar closeEditProfile={props.closeEditProfile} />
@@ -75,7 +78,7 @@ export default function EditProfile(props) {
           src={CoverImage}
         />
         <Avatar
-          src="https://scontent.fcmn1-2.fna.fbcdn.net/v/t39.30808-6/340242838_159501407041277_2734451423562002343_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFyvo2pTF2mgIKANMob3z8USQ34jUDh201JDfiNQOHbTVONa7_GVq_51GNSwIdNq3o3_3XY57rylLV5N4uofeIH&_nc_ohc=Okm3Jt5r4DoQ7kNvgFvUVUq&_nc_ht=scontent.fcmn1-2.fna&oh=00_AYBnMKq1nwB-R-wVuQCwpnEe2lySQW1DXDZZnBw3hNuViQ&oe=66610A17"
+          src={getAvatarSrc(UserInfo.picture, UserInfo.username)}
           className="w-24 h-24 text-large avatar-edit-profile"
         />
         <div className="edit-avatar-edit-profile">
