@@ -19,7 +19,6 @@ export class UserProfileService {
     private friendservice: FriendshipService,
   ) {}
   async getMyProfile(userId: string) {
-    console.log('Get my profile:', userId);
     const currentuser = await this.UsersService.getUserById(userId);
     console.log('Current user:', currentuser);
     if (!currentuser) {
