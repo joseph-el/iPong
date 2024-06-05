@@ -10,7 +10,6 @@ export class profile {
     this.github = friend?.githubLink;
     this.linkedin = friend?.linkedInLink;
     this.isVerified = friend?.isVerified;
-    this.xp = friend?.xp;
     this.FriendsCount = friend?.FriendsCount;
     this.userId = friend?.userId;
 
@@ -24,7 +23,6 @@ export class profile {
   github: string;
   linkedin: string;
   isVerified: boolean;
-  xp: number;
   FriendsCount: number;
 
 }
