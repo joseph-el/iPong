@@ -44,7 +44,9 @@ export class AuthController {
       httpOnly: true,
       path: '/auth',
     });
+    res.setHeader('access_token', tokens.access_token);
   }
+
 
   @Post('checkusername')
   async isUsernameUnique(@Body() req, @Res() res: Response) {
