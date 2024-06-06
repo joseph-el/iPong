@@ -43,28 +43,27 @@ const TopContent = (props) => {
   );
 };
 
-export default function App({ flag = false}) {
+export default function App({ UserId}) {
   const visibleColumns = INITIAL_VISIBLE_COLUMNS;
   const [matches, _setMatches] = useState([]);
   const [filteredItems, setfilteredItems] = useState(matches);
   const [GameMatchHistory, setGameMatchHistory] = useState([]);
 
-  const UserInfo = useSelector((state: RootState) => state.userState);
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("UserInfo.id", UserInfo.id);
-        const response = await api.get(`/game-history/${UserInfo.id}`);
+      
+        const response = await api.get(`/game-history/${UserId}`);
         // TODO: wait for about to set it
-        setGameMatchHistory(flag ? [] : response.data);
+        setGameMatchHistory(response.data);
       } catch (error) {
         console.log("Error fetching data jjj");
       }
     };
     fetchData();
   }, []);
+
   useEffect(() => {
     const fetchOpponentUsers = async () => {
       const matchesPromises = GameMatchHistory.map(async (match, index) => {
