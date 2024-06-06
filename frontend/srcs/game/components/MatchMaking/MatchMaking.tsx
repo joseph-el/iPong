@@ -177,6 +177,7 @@ export default function MatchMaking() {
 
     return () => {
       cleanUpSocket();
+      navigate(PATHS.DEFAULT_GAME_PAGE);
     };
   }, []);
 
