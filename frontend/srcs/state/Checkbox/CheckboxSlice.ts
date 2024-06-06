@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-
-
 interface GenderState {
     UserGender:  String;
     Invalide: boolean;
