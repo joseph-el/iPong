@@ -13,8 +13,8 @@ import {
 } from "@nextui-org/react";
 import { CameraIcon } from "./CameraIcon";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../state/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../state/store";
 import {getAvatarSrc} from "../../../../utils/getAvatarSrc";
 
 const EditProfileNavbar = (props) => {
