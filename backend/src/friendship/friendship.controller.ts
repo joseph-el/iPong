@@ -40,11 +40,14 @@ export class FriendshipController {
   }
 
   @UseGuards(AtGuard)
-  @Get('isBlocked')
-  async isBlocked(@GetCurrentUser('userId') userId: string, @Param('friendId') friendId: string) {
+  @Post('isBlocked')
+  async isBlocked(
+    @GetCurrentUser('userId') userId: string,
+    @Param('friendId') friendId: string,
+  ) {
     return this.friendshipService.isBlocked(userId, friendId);
   }
-    
+
   @UseGuards(AtGuard)
   @Post('reject')
   async rejectReq(
@@ -74,11 +77,13 @@ export class FriendshipController {
   @UseGuards(AtGuard)
   @Get('')
   async friendList(@GetCurrentUser('userId') userId: string) {
-    return this.friendshipService.friendList(userId);
+  
+    return await this.friendshipService.friendList(userId);
+ 
   }
 
   @UseGuards(AtGuard)
-  @Get('friendList/:userId')
+  @Get('friendList:userId')
   async friendListById(@Param('userId') userId: string) {
     return this.friendshipService.friendList(userId);
   }
@@ -123,13 +128,13 @@ export class FriendshipController {
   }
 
   @UseGuards(AtGuard)
-  @Get('friendshipStatus:friendId') 
+  @Get('friendshipStatus:friendId')
   async friendshipStatus(
     @Param('friendId') friendId: string,
     @GetCurrentUser('userId') userId: string,
   ) {
-    console.log("------------friendId", friendId);
-    console.log("----------User: ", userId);
+    console.log('------------friendId', friendId);
+    console.log('----------User: ', userId);
     return this.friendshipService.friendshipStatus(userId, friendId);
   }
 }
