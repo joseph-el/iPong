@@ -13,8 +13,10 @@ export class UserProfileDto {
     this.createdAt = userData.createdAt;
     this.updatedAt = userData.updatedAt;
     this.id = userData.userId;
+    this.xp = userData.xp;
     this.firstName = userData.firstName;
     this.lastName = userData.lastName;
+    this.wallet = userData.wallet;
     this.bio = userData.bio;
     this.email = userData.email;
     this.picture = userData.avatar;
@@ -22,7 +24,6 @@ export class UserProfileDto {
     this.isVerified = userData.isVerified;
     this.linkedInLink = userData.linkedInLink;
     this.githubLink = userData.githubLink;
-    this.xp = userData.xp;
     this.FriendsCount = userData.FriendsCount;
     const firstFriendship = userData.firstFriendship || [];
     const secondFriendship = userData.secondFriendship || [];
@@ -35,10 +36,11 @@ export class UserProfileDto {
   createdAt: Date;
   updatedAt: Date;
   id: string;
-  xp: number;
   profileFinished: boolean;
   firstName: string;
   lastName: string;
+  xp: number;
+  wallet: number;
   bio: string;
   phone: string;
   picture: string;
