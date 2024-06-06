@@ -122,7 +122,7 @@ export class FriendshipService {
   async isBlocked(userId: string, friendId: string) {
     const blocked = await this.databaseservice.blockedUser.findFirst({
       where: {
-        OR: [
+        AND: [
           {
             blockedBy: userId,
             blocked: friendId,
@@ -133,11 +133,8 @@ export class FriendshipService {
           },
         ],
       },
-      select: {
-        blockedBy: true,
-        blocked: true,
-      },
     });
+    console.log('waaaaaaaaaaaaaaaaaaaaaaaaaa blocked', blocked);
     return blocked;
   }
 
@@ -240,6 +237,21 @@ export class FriendshipService {
         HttpStatus.FORBIDDEN,
       );
     }
+    const checkifFriend = await this.databaseservice.friendship.findFirst({
+      where: {
+        OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
+      },
+    });
+    try
+    {
+      if (checkifFriend?.status === $Enums.FriendshipStatus.ACCEPTED) {
+        throw new HttpException('You are already friends', HttpStatus.BAD_REQUEST);
+      }
+    } catch (error) {
+
+        return error;
+    }
+
     await this.databaseservice.friendship.deleteMany({
       where: {
         OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],

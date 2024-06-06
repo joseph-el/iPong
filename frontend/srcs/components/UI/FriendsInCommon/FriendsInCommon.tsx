@@ -28,7 +28,6 @@ import { columns } from "./data"; // static data
 
 const INITIAL_VISIBLE_COLUMNS = ["FRIEND NAME", "ACTIONS"];
 
-
 const TopContent = (props) => {
   return (
     <div className="flex flex-col gap-4 MatchHistoryBar">
@@ -54,11 +53,9 @@ const TopContent = (props) => {
 function RenderCellComponent({ user, columnKey }) {
   const navigate = useNavigate();
 
-  
   const handleFriendStatus = () => {
     navigate(`/ipong/users/${user.userId}`);
   };
-
 
   switch (columnKey) {
     case "friendName":
@@ -96,7 +93,7 @@ function RenderCellComponent({ user, columnKey }) {
   }
 }
 
-export default function FriendsInCommon({UserId}) {
+export default function FriendsInCommon({ UserId }) {
   const visibleColumns = INITIAL_VISIBLE_COLUMNS;
 
   const [friends, setFriends] = useState([]);
@@ -111,13 +108,13 @@ export default function FriendsInCommon({UserId}) {
     const searchTerm = event.target.value.toLowerCase();
 
     if (searchTerm === "") {
-      setfilteredItems(matches);
+      setfilteredItems(friends);
       return;
     }
-    const matchedUsers = matches
+    const matchedUsers = friends
       .filter(
         (user) =>
-          user.versus.toLowerCase().includes(searchTerm) ||
+          user.fullname.toLowerCase().includes(searchTerm) ||
           user.username.toLowerCase().includes(searchTerm)
       )
       .slice(0, 8);
@@ -132,16 +129,9 @@ export default function FriendsInCommon({UserId}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("The user id is : ", UserId);
         const response = await api.get(`/friendship/friendList${UserId}`);
-        // TODO: wait for about to set it
-        console.log("The firenss : ", response.data);
-        // setfilteredItems(response.data);
-    
-        
-        
+
         const friendsList = response.data.map((friend, index) => {
-          console.log("The friend is : ", friend);
           return {
             userId: friend.userId,
             id: index,
@@ -149,32 +139,16 @@ export default function FriendsInCommon({UserId}) {
             avatar: friend.avatar,
             username: friend.uername,
           };
-
         });
-
-
-        console.log("The friends list is : ", friendsList);
 
         setFriends(friendsList);
         setfilteredItems(friendsList);
-
-
       } catch (error) {
         console.log("error get friends list");
       }
     };
     fetchData();
-
   }, []);
-
-
-
-
-
-
-
-
-
 
   const classNames = React.useMemo(
     () => ({

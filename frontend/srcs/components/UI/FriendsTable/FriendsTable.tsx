@@ -1,6 +1,6 @@
 import React from "react";
 import "./FriendsTable.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SearchIcon } from "./SearchIcon";
 import { columns, matches } from "./data"; // static data
 import IPongAlert from "../iPongAlert/iPongAlert";
@@ -18,9 +18,9 @@ import {
   User,
   useDisclosure,
 } from "@nextui-org/react";
+import api from "../../../api/posts";
 
 const INITIAL_VISIBLE_COLUMNS = ["FRIEND NAME", "UNFRIEND", "BLOCK"];
-type Match = (typeof matches)[0];
 
 const TopContent = (props) => {
   return (
@@ -61,6 +61,8 @@ export default function FriendsTable() {
     ];
   };
 
+  const [userId, setUserId] = useState("");
+
   const [showAlert, setShowAlert] = useState(AlertProps("")[0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -74,7 +76,8 @@ export default function FriendsTable() {
   };
 
   const visibleColumns = INITIAL_VISIBLE_COLUMNS;
-  const [filteredItems, setfilteredItems] = useState(matches);
+  const [friends, setFriends] = useState([]);
+  const [filteredItems, setfilteredItems] = useState([]);
 
   const headerColumns = React.useMemo(() => {
     return columns;
@@ -99,12 +102,36 @@ export default function FriendsTable() {
   };
 
   const onSearchChangesClear = () => {
-    setfilteredItems(matches);
+    setfilteredItems(friends);
   };
 
-  const renderCell = React.useCallback((user: Match, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof Match];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/friendship/`);
 
+        const friendsList = response.data.map((friend, index) => {
+          return {
+            userId: friend.userId,
+            id: index,
+            fullname: friend.firstName + " " + friend.lastName,
+            avatar: friend.avatar,
+            username: friend.uername,
+          };
+        });
+
+        setFriends(friendsList);
+        setfilteredItems(friendsList);
+      } catch (error) {
+        console.log("error get friends list");
+      }
+    };
+    fetchData();
+  }, []);
+
+  type Friend = (typeof friends)[0];
+
+  const renderCell = React.useCallback((user: Friend, columnKey: React.Key) => {
     switch (columnKey) {
       case "friendName":
         return (
@@ -114,7 +141,7 @@ export default function FriendsTable() {
               description: "ver",
             }}
             description={"@" + user.username}
-            name={"cellValue"}
+            name={user.fullname}
           >
             {user.email}
           </User>
@@ -125,7 +152,7 @@ export default function FriendsTable() {
             size="sm"
             color="danger"
             className="Friends-button"
-            onClick={() => handelAlert(false, user.username)}
+            onClick={() => {handelAlert(false, user.username); setUserId(user.userId)}}
           >
             Block
           </Button>
@@ -135,7 +162,7 @@ export default function FriendsTable() {
           <Button
             size="sm"
             color="primary"
-            onClick={() => handelAlert(true, user.username)}
+            onClick={() => {handelAlert(true, user.username ); setUserId(user.userId)}}
           >
             Unfriend
           </Button>
@@ -160,6 +187,33 @@ export default function FriendsTable() {
     []
   );
 
+  const [removeUser, setRemoveUser] = useState("");
+
+  useEffect(() => {
+    const handelRemoveUser = async () => {
+      if (removeUser == "Unfriend") {
+        await api.post(`/friendship/unfriend`, {
+          friendId: userId,
+        });
+      }
+      if (removeUser == "Block") {
+        await api.post(`/friendship/block`, {
+          friendId: userId,
+        });
+      }
+      setUserId("");
+    };
+    handelRemoveUser();
+  }, [removeUser]);
+
+  const handelRemoveUser = (type) => {
+    if (type) {
+      setRemoveUser("Unfriend");
+    } else {
+      setRemoveUser("Block");
+    }
+  };
+
   return (
     <div className="friends-frame">
       <TopContent
@@ -170,6 +224,10 @@ export default function FriendsTable() {
       <div></div>
 
       <IPongAlert
+
+        handelRemoveUser={() =>
+          handelRemoveUser(showAlert.UserOptions === "Unfriend" ? true : false)
+        }
         isOpen={isOpen}
         onClose={onClose}
         UserAlertHeader={showAlert.UserAlertHeader}

@@ -169,6 +169,8 @@ export default function UserProfileViewAs() {
         const response = await api.post(`/friendship/isBlocked`, {
           friendId: userId,
         });
+        console.log("response: BLOCK>>>>>>>>>>>::: ", response);
+
         if (response.data.blockedBy === UserInfo.id) {
           console.log("response: BLOxxCK::: ", response);
           setUserIsBlocked("BLOCKED_BY_ME");
@@ -267,6 +269,9 @@ export default function UserProfileViewAs() {
           const response = await api.post(`/friendship/reject`, {
             friendId: userId,
           });
+          if (response.status !== 200) {
+            setButtonFriendStatus("ACCEPTED");
+          }
           // console.log("response: reject ", response);
         }
       } catch (error) {
@@ -279,7 +284,7 @@ export default function UserProfileViewAs() {
   const [isUnfriend, setIsUnfriend] = useState<Boolean | null | String>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+     const fetchData = async () => {
       try {
         console.log("isUnfriend:::::: ", isUnfriend);
         if (typeof isUnfriend === "string") {

@@ -45,6 +45,7 @@ export class FriendshipController {
     @GetCurrentUser('userId') userId: string,
     @Param('friendId') friendId: string,
   ) {
+    
     return this.friendshipService.isBlocked(userId, friendId);
   }
 
@@ -55,7 +56,7 @@ export class FriendshipController {
     @GetCurrentUser('userId') userId: string,
   ) {
     console.log('hahahaha', rejectReqDto.friendId);
-    this.friendshipService.rejectFriend(userId, rejectReqDto.friendId);
+    return this.friendshipService.rejectFriend(userId, rejectReqDto.friendId);
   }
 
   @UseGuards(AtGuard)
