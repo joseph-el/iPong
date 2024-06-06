@@ -34,38 +34,57 @@ const AchievementListNavbar = (props) => {
 };
 
 export default function AchievementList(props) {
+
   const list = [
     {
-      title: "Level 1",
-      img: Level1Svg,
-      state: "unlocked",
+        title: "Level 1",
+        img: Level1Svg,
+        unlockedDescription: "Welcome to the Bronze level. As a beginner, you are starting your journey with us. Keep going to reach the next levels!",
+        lockedDescription: "Reach 100 XP to unlock the Bronze level and start your journey with us.",
     },
     {
-      title: "Level 2",
-      img: Level2Svg,
-      state: "locked",
+        title: "Level 2",
+        img: Level2Svg,
+        unlockedDescription: "Congratulations on reaching Silver level! Your dedication is showing. Keep up the good work to hit the next milestone.",
+        lockedDescription: "Accumulate 250 XP to unlock the Silver level and show your dedication.",
     },
     {
-      title: "Level 3",
-      img: Level3Svg,
-      state: "unlocked",
+        title: "Level 3",
+        img: Level3Svg,
+        unlockedDescription: "You're now at the Gold level! Your skills and persistence are shining through. Aim higher for more rewards.",
+        lockedDescription: "Gather 500 XP to unlock the Gold level and let your skills shine.",
     },
     {
-      title: "Level 4",
-      img: Level4Svg,
-      state: "locked",
+        title: "Level 4",
+        img: Level4Svg,
+        unlockedDescription: "Fantastic! You've reached the Platinum level. Your excellence is evident. Continue pushing your limits to achieve more.",
+        lockedDescription: "Reach 1000 XP to unlock the Platinum level and showcase your excellence.",
     },
     {
-      title: "Level 5",
-      img: Level5Svg,
-      state: "unlocked",
+        title: "Level 5",
+        img: Level5Svg,
+        unlockedDescription: "Diamond level achieved! You are among the elite. Your expertise is impressive. Keep striving for the ultimate goal.",
+        lockedDescription: "Achieve 2000 XP to unlock the Diamond level and join the elite.",
     },
     {
-      title: "Level 6",
-      img: Level6Svg,
-      state: "locked",
+        title: "Level 6",
+        img: Level6Svg,
+        unlockedDescription: "Welcome to the GrandMaster level! You have reached the pinnacle of success. Your mastery is unparalleled. Maintain your status and inspire others.",
+        lockedDescription: "Accumulate more than 2000 XP to unlock the GrandMaster level and reach the pinnacle of success.",
     },
-  ];
+];
+
+  const UserAchievementList = list.map((item, index) => {
+    return {
+      title: item.title,
+      img: item.img,
+      unlockedDescription: item.unlockedDescription,
+      lockedDescription: item.lockedDescription,
+      state: index >= props.level ? "locked" : "unlocked",
+    };
+  });
+
+  console.log(UserAchievementList);
 
   return (
     <AchievementListWrapper>
@@ -92,8 +111,8 @@ export default function AchievementList(props) {
             >
               <div className="flex-arch-items">
                 <div className="gap-2 grid grid-cols-2  arch-padding-items">
-                  {list.map((item, index) => (
-                    <Popover placement="bottom-end">
+                  {UserAchievementList.map((item, index) => (
+                    <Popover  className="w-72"  backdrop={"opaque"} placement="bottom-end" showArrow>
                       <PopoverTrigger>
                         <Card shadow="md" key={index} isPressable>
                           <CardBody
@@ -120,11 +139,13 @@ export default function AchievementList(props) {
 
                       <PopoverContent>
                         <div className="px-1 py-2">
-                          <div className="text-small font-bold">
+                          <div className="text-small-ovr font-bold">
                             {"this is level " + item.state}
                           </div>
-                          <div className="text-tiny">
-                            This is the popover content
+                          <div className="text-tiny-ovr">
+                            {item.state == "locked"
+                              ? item.lockedDescription
+                              : item.unlockedDescription}
                           </div>
                         </div>
                       </PopoverContent>
