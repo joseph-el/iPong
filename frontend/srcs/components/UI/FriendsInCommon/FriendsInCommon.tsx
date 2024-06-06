@@ -1,8 +1,8 @@
 import React from "react";
 import "./FriendsInCommon.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SearchIcon } from "./SearchIcon";
-import { columns, matches } from "./data"; // static data
+
 import {
   Table,
   TableHeader,
@@ -22,9 +22,12 @@ import { useNavigate } from "react-router-dom";
 import AddFriendIcon from "../../../pages/iPongProfile/assets/add-friend-icon.svg";
 import PenddingIcon from "../../../pages/iPongProfile/assets/penddingicon.svg";
 import AlreadyFriendIcon from "../../../pages/iPongProfile/assets/alreadyFriendIcon.svg";
+import api from "../../../api/posts";
+
+import { columns } from "./data"; // static data
 
 const INITIAL_VISIBLE_COLUMNS = ["FRIEND NAME", "ACTIONS"];
-type Match = (typeof matches)[0];
+
 
 const TopContent = (props) => {
   return (
@@ -51,9 +54,11 @@ const TopContent = (props) => {
 function RenderCellComponent({ user, columnKey }) {
   const navigate = useNavigate();
 
+  
   const handleFriendStatus = () => {
-    navigate("/profile");
+    navigate(`/ipong/users/${user.userId}`);
   };
+
 
   switch (columnKey) {
     case "friendName":
@@ -64,7 +69,7 @@ function RenderCellComponent({ user, columnKey }) {
             description: "ver",
           }}
           description={"@" + user.username}
-          name={"cellValue"}
+          name={user.fullname}
         >
           {user.email}
         </User>
@@ -91,9 +96,12 @@ function RenderCellComponent({ user, columnKey }) {
   }
 }
 
-export default function FriendsInCommon() {
+export default function FriendsInCommon({UserId}) {
   const visibleColumns = INITIAL_VISIBLE_COLUMNS;
-  const [filteredItems, setfilteredItems] = useState(matches);
+
+  const [friends, setFriends] = useState([]);
+
+  const [filteredItems, setfilteredItems] = useState([]);
 
   const headerColumns = React.useMemo(() => {
     return columns;
@@ -118,8 +126,55 @@ export default function FriendsInCommon() {
   };
 
   const onSearchChangesClear = () => {
-    setfilteredItems(matches);
+    setfilteredItems(friends);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("The user id is : ", UserId);
+        const response = await api.get(`/friendship/friendList${UserId}`);
+        // TODO: wait for about to set it
+        console.log("The firenss : ", response.data);
+        // setfilteredItems(response.data);
+    
+        
+        
+        const friendsList = response.data.map((friend, index) => {
+          console.log("The friend is : ", friend);
+          return {
+            userId: friend.userId,
+            id: index,
+            fullname: friend.firstName + " " + friend.lastName,
+            avatar: friend.avatar,
+            username: friend.uername,
+          };
+
+        });
+
+
+        console.log("The friends list is : ", friendsList);
+
+        setFriends(friendsList);
+        setfilteredItems(friendsList);
+
+
+      } catch (error) {
+        console.log("error get friends list");
+      }
+    };
+    fetchData();
+
+  }, []);
+
+
+
+
+
+
+
+
+
 
   const classNames = React.useMemo(
     () => ({
