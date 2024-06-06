@@ -26,7 +26,7 @@ const initialState: UserState = {
   email: '',
   githubLink: null,
   isVerified: false,
-  wallet: 0,
+
   linkedInLink: null,
   picture: '',
   username: '',
