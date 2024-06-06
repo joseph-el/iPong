@@ -18,6 +18,9 @@ import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "V-BUCKS", "RESULTS", "DATE"];
 import api from "../../../api/posts";
 
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../state/store";
+
 const TopContent = (props) => {
   return (
     <div className="flex flex-col gap-4 MatchHistoryBar">
@@ -46,14 +49,18 @@ export default function App({ flag = false}) {
   const [filteredItems, setfilteredItems] = useState(matches);
   const [GameMatchHistory, setGameMatchHistory] = useState([]);
 
+  const UserInfo = useSelector((state: RootState) => state.userState);
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/game-history");
+        console.log("UserInfo.id", UserInfo.id);
+        const response = await api.get(`/game-history/${UserInfo.id}`);
         // TODO: wait for about to set it
         setGameMatchHistory(flag ? [] : response.data);
       } catch (error) {
-        console.log("Error fetching data");
+        console.log("Error fetching data jjj");
       }
     };
     fetchData();
@@ -65,12 +72,11 @@ export default function App({ flag = false}) {
           const response = await api.get(
             `/user-profile/getinfoById${match.opponentId}`
           );
-
           return {
             id: index,
             date: match.createdAt,
             result: match.status,
-            vbucks: "+220 V-BUCKS",
+            vbucks: ("+") + (match.status === "win" ?  match.winnerVbucks : match.loserVVbucks),
             versus: response.data.firstName + " " + response.data.lastName,
             avatar: response.data.picture,
             username: response.data.username,
@@ -82,8 +88,10 @@ export default function App({ flag = false}) {
       });
       const resolvedMatches = await Promise.all(matchesPromises);
       const validMatches = resolvedMatches.filter((match) => match !== null);
-      _setMatches(validMatches);
-      setfilteredItems(validMatches);
+      const reversedMatches = validMatches.reverse();
+
+      _setMatches(reversedMatches);
+      setfilteredItems(reversedMatches);
     };
 
     if (GameMatchHistory.length > 0) {

@@ -34,10 +34,12 @@ export default function NavBar() {
 
   const [activeSearch, setActiveSearch] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [searchTerm, setSearchTerm] = React.useState(true); // search bar is active
-  const [LogoutButton, setLogoutButton] = React.useState(false); // logout button is active
+  const [searchTerm, setSearchTerm] = React.useState(true); 
+  const [LogoutButton, setLogoutButton] = React.useState(false);
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false); // notification bar is active
 
+
+  
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -108,6 +110,7 @@ export default function NavBar() {
     setShowNotificationBar(!ShowNotificationBar);
   };
 
+
   return (
     <div className="nav-bar">
       {/* LEFT ITEMS  state: ✅*/}
@@ -138,7 +141,7 @@ export default function NavBar() {
       {/* RIGHT ITEMS  */}
       {searchTerm ? (
         <div className="right-side-menu">
-          <CoinsButton coins="9999" />
+          <CoinsButton coins={UserInfo.wallet} />
 
           <Dropdown
             className="drop-down-notifications"

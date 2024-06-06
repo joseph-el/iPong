@@ -131,7 +131,7 @@ export default function UserProfile() {
               className="w-28 h-28 text-large avatar"
             />
             <div className="user-LevelBar">
-              <LevelBar level={UserInfo.level} />
+              <LevelBar level={UserInfo.xp} />
             </div>
           </div>
 

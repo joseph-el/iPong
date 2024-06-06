@@ -116,11 +116,13 @@ export class FriendshipController {
   }
   
   @UseGuards(AtGuard)
-  @Get('friendshipStatus')
+  @Get('friendshipStatus:friendId') 
   async friendshipStatus(
-    @Body() friendId: isFriendDto,
+    @Param('friendId') friendId: string,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.friendshipService.friendshipStatus(userId, friendId.friendId);
+    console.log("------------friendId", friendId);
+    console.log("----------User: ", userId);
+    return this.friendshipService.friendshipStatus(userId, friendId);
   }
 }

@@ -33,10 +33,10 @@ export default function IPongAlert(props) {
             </ModalHeader>
             <ModalBody className="modal-body-text-color" >{props.UserAlertMessage}</ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
+              <Button color="danger" variant="light" onPress={onClose}  >
                 Close
               </Button>
-              <Button color="primary" onPress={onClose}>
+              <Button color="primary" onPress={onClose} onClick={props.handelRemoveUser}>
                 {props.UserOptions}
               </Button>
             </ModalFooter>

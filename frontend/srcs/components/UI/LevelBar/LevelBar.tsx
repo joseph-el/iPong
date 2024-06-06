@@ -22,13 +22,13 @@ export function LevelBar(props) {
         <p className="LEVEL">
           <span className="text-wrapper">LEVEL</span>
           <span className="span"> </span>
-          <span className="text-wrapper-2">{props.level}</span>
+          <span className="text-wrapper-2">{2}</span>
         </p>
 
         <div className="group">
           <div className="overlap-group">
             <MyComponent />
-            <p className="div">30,000 XP to LVL 3</p>
+            <p className="div">{props.level}XP to LVL 3</p>
           </div>
         </div>
       </div>

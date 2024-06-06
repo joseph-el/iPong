@@ -8,7 +8,8 @@ interface UserState {
   email: string;
   githubLink: string | null;
   isVerified: boolean;
-  level: number;
+  wallet: number;
+  xp: number;
   linkedInLink: string | null;
   picture: string;
   username: string;
@@ -17,13 +18,15 @@ interface UserState {
 
 const initialState: UserState = {
   id: '',
+  xp: 0,
   firstName: '',
+  wallet: 0,
   lastName: '',
   bio: null,
   email: '',
   githubLink: null,
   isVerified: false,
-  level: 0,
+  wallet: 0,
   linkedInLink: null,
   picture: '',
   username: '',
@@ -36,6 +39,9 @@ const userState = createSlice({
   reducers: {
     setId: (state, action) => {
       state.id = action.payload;
+    },
+    setXp: (state, action) => {
+      state.xp = action.payload;
     },
     setFirstName: (state, action) => {
       state.firstName = action.payload;
@@ -55,8 +61,8 @@ const userState = createSlice({
     setIsVerified: (state, action) => {
       state.isVerified = action.payload;
     },
-    setLevel: (state, action) => {
-      state.level = action.payload;
+    setWallet: (state, action) => {
+      state.wallet = action.payload;
     },
     setLinkedInLink: (state, action) => {
       state.linkedInLink = action.payload;
@@ -82,6 +88,7 @@ export const {
   setLastName,
   setBio,
   setEmail,
+  setXp,
   setGithubLink,
   setIsVerified,
   setLevel,

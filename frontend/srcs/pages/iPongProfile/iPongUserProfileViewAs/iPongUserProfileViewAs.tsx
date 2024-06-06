@@ -45,8 +45,11 @@ import MatchHistory from "../../../components/UI/MatchHistoryTable/MatchHistory"
 import AchievementList from "../../../components/UI/AchievementComponents/AchievementList/AchievementList";
 
 import { formatJoinDate } from "../../../utils/formatJoinDate";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../state/store";
 
 import api from "../../../api/posts";
+import { set } from "lodash";
 
 const UserDescriptions = ({ UserprofileInfo }) => {
   const [country, setCountry] = useState("");
@@ -120,6 +123,7 @@ export default function UserProfileViewAs() {
     setShowAchievementList(false);
   };
   const [UserOptions, setUserOptions] = React.useState("");
+  const UserInfo = useSelector((state: RootState) => state.userState);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -135,40 +139,131 @@ export default function UserProfileViewAs() {
       try {
         const response = await api.get(`/user-profile/getinfoById${userId}`);
         setUserprofileInfo(response.data);
+        // console.log("user data: ", response.data);
       } catch (error) {
         console.log("Error fetching data");
       }
     };
     fetchData();
-  }, []);
+  }, []); // USER PROFILE
 
+  
+  const [ButtonFriendStatus, setButtonFriendStatus] = useState("");
+  const [FriendshipStatus, setFriendshipStatus] = useState("");
+  const [DropdownButtonStatus, setDropdownButtonStatus] = useState([]);
 
-
-
-
-
-
-
-
-
-  const [UserFriendStatus, setUserFriendStatus] = React.useState("Pendding");
-  const handelFriendButton = () => {};
-
-
+  
 
   useEffect(() => {
-    try {
-        
-    }catch (error) {
-      console.log("Error fetching data");
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/friendship/friendshipStatus${userId}`);
+        if (!response.data) {
+          setButtonFriendStatus("ADD FRIEND");
+        } else {
+          if (response.data.status === "ACCEPTED") {
+            setButtonFriendStatus("ACCEPTED");
+            return;
+          }
+          if (response.data.from.userId === UserInfo.id) {
+            setButtonFriendStatus("CANCEL");
+          } else {
+            setButtonFriendStatus("ACCEPT");
+          }
+        }
+      } catch (error) {
+        console.log("ERROR FETCHING FRIENDS STATUS");
+      }
+    };
+    fetchData();
+  }, []);
+
+  const dropdownOptions = {
+    MAKE_FRIEND: {
+      first: "Accept Friend",
+      second: "Reject",
+    },
+    SET_CANCEL: {
+      first: "Cancel Request",
+      second: "",
+    },
+  };
+
+  const handelFriendButton = () => {
+    if (ButtonFriendStatus === "ADD FRIEND") {
+      setFriendshipStatus("SET_FRIEND");
+      setButtonFriendStatus("CANCEL");
     }
+    if (ButtonFriendStatus === "ACCEPT") {
+      setFriendshipStatus("MAKE_FRIEND");
+      setDropdownButtonStatus(dropdownOptions.MAKE_FRIEND);
+    }
+    if (ButtonFriendStatus === "CANCEL") {
+      setFriendshipStatus("SET_CANCEL");
+      setButtonFriendStatus("ADD FRIEND");
+      setDropdownButtonStatus(dropdownOptions.SET_CANCEL);
+    }
+  };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (FriendshipStatus === "SET_FRIEND") {
+          const response = await api.post(`/friendship/add`, {
+            friendId: userId,
+          });
+          // console.log("response: add ", response);
+        }
+        if (FriendshipStatus === "MAKE_FRIEND") {
+          const response = await api.post(`/friendship/accept`, {
+            friendId: userId,
+          });
+          // console.log("response: make friend ", response);
+        }
+        if (FriendshipStatus === "SET_CANCEL") {
+          const response = await api.post(`/friendship/reject`, {
+            friendId: userId,
+          });
+          // console.log("response: reject ", response);
+        }
+      } catch (error) {
+        console.log("ERROR POST FRIENDSHIP");
+      }
+    };
+    ButtonFriendStatus !== "ACCEPTED" && fetchData();
+  }, [FriendshipStatus]);
 
-  }, [UserprofileInfo]);
+  const [isUnfriend, setIsUnfriend] = useState<Boolean | null>(null);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (isUnfriend) {
+          const response = await api.post(`/friendship/unfriend`, {
+            friendId: userId,
+          });
+          console.log("response: remove ", response);
+        } else {
+          const response = await api.post(`/friendship/block`, {
+            friendId: userId,
+          });
+          console.log("response: block ", response);
+        }
+      } catch (error) {
+        console.log("ERROR POST FRIENDSHIP");
+      }
+    };
+    isUnfriend != null && fetchData();
+  }, [isUnfriend]);
 
-
-
-
+  const handelRemoveUser = (_isUnfriend) => {
+    console.log("isUnfriend: ", _isUnfriend);
+    if (_isUnfriend) {
+      setIsUnfriend(true);
+    } else {
+      setIsUnfriend(false);
+    }
+  };
 
   return (
     <NextUIProvider>
@@ -249,30 +344,78 @@ export default function UserProfileViewAs() {
                 </Tooltip>
               </div>
 
-              <Button
-                color="primary"
-                onClick={handelFriendButton}
-                startContent={
-                  <Image
-                    width={"20px"}
-                    radius="none"
-                    src={
-                      UserFriendStatus === "Pendding"
-                        ? PenddingIcon
-                        : UserFriendStatus === "AlreadyFriend"
-                        ? AlreadyFriendIcon
-                        : AddFriendIcon
-                    }
-                    alt="add-friend-icon"
-                  />
-                }
-              >
-                {UserFriendStatus === "Pendding"
-                  ? "Pendding"
-                  : UserFriendStatus === "AlreadyFriend"
-                  ? "Already Friend"
-                  : "Add Friend"}
-              </Button>
+              {ButtonFriendStatus !== "ACCEPTED" ? (
+                <Dropdown
+                  showArrow
+                  radius="sm"
+                  className="modal-header-text-color"
+                  classNames={{
+                    base: "before:bg-default-700",
+                    content: "p-0 border-small border-divider bg-background",
+                  }}
+                >
+                  <DropdownTrigger onClick={() => {}}>
+                    <Button
+                      color="primary"
+                      onClick={
+                        ButtonFriendStatus === "ADD FRIEND"
+                          ? handelFriendButton
+                          : () => {
+                              if (ButtonFriendStatus === "ACCEPT") {
+                                setDropdownButtonStatus(
+                                  dropdownOptions.MAKE_FRIEND
+                                );
+                              }
+                              if (ButtonFriendStatus === "CANCEL") {
+                                setDropdownButtonStatus(
+                                  dropdownOptions.SET_CANCEL
+                                );
+                              }
+                            }
+                      }
+                      startContent={
+                        <Image
+                          width={"20px"}
+                          radius="none"
+                          src={AddFriendIcon}
+                          alt="add-friend-icon"
+                        />
+                      }
+                    >
+                      {ButtonFriendStatus}
+                    </Button>
+                  </DropdownTrigger>
+
+                  {ButtonFriendStatus !== "ADD FRIEND" ? (
+                    <DropdownMenu aria-label="Static Actions">
+                      <DropdownItem
+                        onClick={() => {
+                         if (DropdownButtonStatus.first == "Accept Friend")
+                            setFriendshipStatus("MAKE_FRIEND");
+                          else
+                            setFriendshipStatus("SET_CANCEL");
+                        }}
+                        variant="faded"
+                      >
+                        {"--accept: " +  DropdownButtonStatus.first}
+                      </DropdownItem>
+
+                      {ButtonFriendStatus === "ACCEPT" ? (
+                        <DropdownItem
+                          onClick={() => {
+                            setFriendshipStatus("SET_CANCEL");
+                          }}
+                          variant="faded"
+                          className="text-danger"
+                          color="danger"
+                        >
+                          {"--cancel: " + DropdownButtonStatus.second}
+                        </DropdownItem>
+                      ) : null}
+                    </DropdownMenu>
+                  ) : null}
+                </Dropdown>
+              ) : null}
 
               <Dropdown backdrop="blur" className="menu-icon-dropdown-frame">
                 <DropdownTrigger onClick={() => setShowZindex(!ShowZindex)}>
@@ -398,6 +541,9 @@ export default function UserProfileViewAs() {
                 ? "Are you sure you want to block tnaceur?"
                 : null
             }
+            handelRemoveUser={() => {
+              handelRemoveUser(UserOptions === "Unfriend" ? true : false);
+            }}
             UserOptions={UserOptions === "Unfriend" ? "Unfriend" : "Block"}
           ></IPongAlert>
         </div>

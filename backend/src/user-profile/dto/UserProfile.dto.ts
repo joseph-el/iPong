@@ -13,8 +13,10 @@ export class UserProfileDto {
     this.createdAt = userData.createdAt;
     this.updatedAt = userData.updatedAt;
     this.id = userData.userId;
+    this.xp = userData.xp;
     this.firstName = userData.firstName;
     this.lastName = userData.lastName;
+    this.wallet = userData.wallet;
     this.bio = userData.bio;
     this.email = userData.email;
     this.picture = userData.avatar;
@@ -37,6 +39,8 @@ export class UserProfileDto {
   profileFinished: boolean;
   firstName: string;
   lastName: string;
+  xp: number;
+  wallet: number;
   bio: string;
   phone: string;
   picture: string;

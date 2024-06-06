@@ -23,8 +23,7 @@ export class GameHistoryService {
         const playedGame = new PlayedGamesDto();
         playedGame.gameId = game.id;
         playedGame.createdAt = game.createdAt;
-        playedGame.opponentId =
-          game.player1Id === queryId ? game.player2Id : game.player1Id;
+        playedGame.opponentId = game.player1Id === queryId ? game.player2Id : game.player1Id;
         playedGame.status = game.winnerId === queryId ? 'win' : 'loss';
         playedGame.winnerVbucks = game.winnerVbucks;
         playedGame.loserVVbucks = game.loserVbucks;
