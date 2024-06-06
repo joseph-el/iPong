@@ -238,7 +238,7 @@ export default function UserProfile() {
                     </div>
                   }
                 >
-                  <MatchHistory />
+                  <MatchHistory UserId={UserInfo.id} />
                 </Tab>
 
                 <Tab
