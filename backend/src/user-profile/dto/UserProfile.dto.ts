@@ -22,6 +22,7 @@ export class UserProfileDto {
     this.isVerified = userData.isVerified;
     this.linkedInLink = userData.linkedInLink;
     this.githubLink = userData.githubLink;
+    this.xp = userData.xp;
     this.FriendsCount = userData.FriendsCount;
     const firstFriendship = userData.firstFriendship || [];
     const secondFriendship = userData.secondFriendship || [];
@@ -34,6 +35,7 @@ export class UserProfileDto {
   createdAt: Date;
   updatedAt: Date;
   id: string;
+  xp: number;
   profileFinished: boolean;
   firstName: string;
   lastName: string;

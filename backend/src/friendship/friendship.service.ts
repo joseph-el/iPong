@@ -23,25 +23,25 @@ export class FriendshipService {
         HttpStatus.FORBIDDEN,
       );
     }
-     const user = await this.databaseservice.user.findUnique({
-       where: {
-         userId,
-       },
-     });
+    const user = await this.databaseservice.user.findUnique({
+      where: {
+        userId,
+      },
+    });
 
-     if (!user) {
-       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-     }
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
 
-     const friend = await this.databaseservice.user.findUnique({
-       where: {
-         userId: add_friendDto.friendId,
-       },
-     });
+    const friend = await this.databaseservice.user.findUnique({
+      where: {
+        userId: add_friendDto.friendId,
+      },
+    });
 
-     if (!friend) {
-       throw new HttpException('Friend not found', HttpStatus.NOT_FOUND);
-     }
+    if (!friend) {
+      throw new HttpException('Friend not found', HttpStatus.NOT_FOUND);
+    }
     const blocked = await this.databaseservice.blockedUser.findFirst({
       where: {
         OR: [
@@ -57,10 +57,7 @@ export class FriendshipService {
       },
     });
     if (blocked) {
-      throw new HttpException(
-        'This user is blocked',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('This user is blocked', HttpStatus.BAD_REQUEST);
     }
     const friendshipId = `${userId}+${add_friendDto.friendId}`;
     const friends = await this.databaseservice.friendship.upsert({
@@ -94,19 +91,54 @@ export class FriendshipService {
     return responseOfReq;
   }
 
-  async unfriend(userId: string, friendId: string) { 
+  async unfriend(userId: string, friendId: string) {
     if (userId === friendId) {
       throw new HttpException(
         'userd id is the same as firend id',
         HttpStatus.FORBIDDEN,
       );
     }
-    await this.databaseservice.friendship.deleteMany({
+    const result = await this.databaseservice.friendship.deleteMany({
       where: {
         OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
       },
     });
+    if (result) {
+      await this.databaseservice.user.updateMany({
+        where: {
+          userId: {
+            in: [userId, friendId],
+          },
+        },
+        data: {
+          FriendsCount: {
+            decrement: 1,
+          },
+        },
+      });
+    }
     return { send: 'done' };
+  }
+  async isBlocked(userId: string, friendId: string) {
+    const blocked = await this.databaseservice.blockedUser.findFirst({
+      where: {
+        OR: [
+          {
+            blockedBy: userId,
+            blocked: friendId,
+          },
+          {
+            blockedBy: friendId,
+            blocked: userId,
+          },
+        ],
+      },
+      select: {
+        blockedBy: true,
+        blocked: true,
+      },
+    });
+    return blocked;
   }
 
   async blockedUsers(userId: string) {
@@ -327,7 +359,7 @@ export class FriendshipService {
         userId,
       },
     });
-    
+
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
@@ -336,7 +368,7 @@ export class FriendshipService {
       where: {
         userId: friendId,
       },
-    }); 
+    });
 
     if (!friend) {
       throw new HttpException('Friend not found', HttpStatus.NOT_FOUND);
@@ -393,14 +425,27 @@ export class FriendshipService {
     });
     console.log('commonRoom', commonRoom);
     // Create a new block
-    await this.databaseservice.blockedUser.create({
+    const result = await this.databaseservice.blockedUser.create({
       data: {
         blocked: friendId,
         blockedBy: userId,
         dmId: commonRoom?.id,
       },
     });
-
+    if (result) {
+      await this.databaseservice.user.updateMany({
+        where: {
+          userId: {
+            in: [userId, friendId],
+          },
+        },
+        data: {
+          FriendsCount: {
+            decrement: 1,
+          },
+        },
+      });
+    }
     return { send: 'done' };
   }
 
@@ -420,6 +465,19 @@ export class FriendshipService {
     return { send: 'done' };
   }
 
+  async friendshipStatus(userId: string, friendId: string) {
+    const friendship = await this.databaseservice.friendship.findFirst({
+      where: {
+        OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
+      },
+      select: {
+        status: true,
+        from: true,
+        to: true,
+      },
+    });
+    return friendship;
+  }
   async checkIfBlocked(userId: string, friendId: string) {
     const blocked = await this.databaseservice.blockedUser.findFirst({
       where: {
@@ -436,19 +494,5 @@ export class FriendshipService {
       },
     });
     return blocked;
-  }
-
-  async friendshipStatus(userId: string, friendId: string) {
-    const friendship = await this.databaseservice.friendship.findFirst({
-      where: {
-        OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
-      },
-      select: {
-        status: true,
-        from: true,
-        to: true,
-      },
-    });
-    return friendship;
   }
 }

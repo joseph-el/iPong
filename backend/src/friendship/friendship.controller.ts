@@ -15,6 +15,7 @@ import { UpdateFriendshipDto } from './dto/update-friendship.dto';
 import { AtGuard } from 'src/auth/Guards/access.guard';
 import { GetCurrentUser } from 'src/auth/decorators/getCurrentUser.decorator';
 import { isFriendDto } from './dto/isFriend.dto';
+import { get } from 'http';
 
 @Controller('friendship')
 export class FriendshipController {
@@ -38,6 +39,12 @@ export class FriendshipController {
     this.friendshipService.acceptReq(userId, acceptReqDto.friendId);
   }
 
+  @UseGuards(AtGuard)
+  @Get('isBlocked')
+  async isBlocked(@GetCurrentUser('userId') userId: string, @Param('friendId') friendId: string) {
+    return this.friendshipService.isBlocked(userId, friendId);
+  }
+    
   @UseGuards(AtGuard)
   @Post('reject')
   async rejectReq(
@@ -114,7 +121,7 @@ export class FriendshipController {
   ) {
     return this.friendshipService.unfriend(userId, friendId.friendId);
   }
-  
+
   @UseGuards(AtGuard)
   @Get('friendshipStatus')
   async friendshipStatus(
