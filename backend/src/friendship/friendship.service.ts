@@ -250,6 +250,8 @@ export class FriendshipService {
   }
 
   async friendList(userId: string) {
+    console.log('userxvxvxvxId', userId);
+
     const friends = await this.databaseservice.friendship.findMany({
       where: {
         OR: [
@@ -294,12 +296,22 @@ export class FriendshipService {
         },
       },
     });
-    return friends.map((friend) => {
-      if (friend.from.userId === userId) {
+    
+    
+    const dd = friends.map((friend) => {
+
+      console.log('friend', friend);
+      console.log('friend.from.userId', friend.from.userId);
+      console.log('friend.to.userId', friend.to.userId);
+      if (friend.from.userId == userId) {
         return new profile(friend.to);
       }
       return new profile(friend.from);
     });
+      console.log('dd:::::::::::::::::::::::: ', dd);
+    return  dd;
+
+  
   }
 
   async pendingList(userId: string) {
