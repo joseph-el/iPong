@@ -163,19 +163,31 @@ export default function UserProfileViewAs() {
 
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
 
+
+
+// me 
+// navigate user
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const response = await api.post(`/friendship/isBlocked`, {
-          friendId: userId,
+          friendId: userId, // navigate user
         });
+
+
         console.log("response: BLOCK>>>>>>>>>>>::: ", response);
 
         if (response.data.blockedBy === UserInfo.id) {
+          
           console.log("response: BLOxxCK::: ", response);
+
           setUserIsBlocked("BLOCKED_BY_ME");
+
         } else if (response.data.blocked === UserInfo.id) {
+          
           setUserIsBlocked("BLOCKED_BY_FRIEND");
+        
         }
 
         console.log("response: BLOCK::: ", response);
@@ -186,6 +198,17 @@ export default function UserProfileViewAs() {
 
     fetchData();
   }, [userId]);
+
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
