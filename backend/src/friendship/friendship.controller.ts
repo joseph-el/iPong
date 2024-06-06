@@ -43,7 +43,7 @@ export class FriendshipController {
   @Post('isBlocked')
   async isBlocked(
     @GetCurrentUser('userId') userId: string,
-    @Param('friendId') friendId: string,
+    @Body('friendId') friendId: string,
   ) {
     
     return this.friendshipService.isBlocked(userId, friendId);
