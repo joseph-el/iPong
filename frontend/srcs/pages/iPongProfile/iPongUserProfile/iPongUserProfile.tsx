@@ -29,11 +29,10 @@ import MatchHistory from "../../../components/UI/MatchHistoryTable/MatchHistory"
 import EditProfile from "../../../components/UI/ProfileSettings/EditProfile/EditProfile";
 import EditSecurity from "../../../components/UI/ProfileSettings/EditSecurity/EditSecurity";
 import AchievementList from "../../../components/UI/AchievementComponents/AchievementList/AchievementList";
-import CongratulationsBadge from "../../../components/UI/AchievementComponents/CongratulationsBadge/CongratulationsBadge";
 import TwoFactorAuthenticationProfile from "../../../components/UI/ProfileSettings/TwoFactorAuthenticationProfile/TwoFactorAuthenticationProfile";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../state/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -116,6 +115,7 @@ export default function UserProfile() {
 
   const UserInfo = useSelector((state: RootState) => state.userState);
 
+  console.log("UserInfo:xXPPPPP ", UserInfo.xp);
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
@@ -131,7 +131,7 @@ export default function UserProfile() {
               className="w-28 h-28 text-large avatar"
             />
             <div className="user-LevelBar">
-              <LevelBar level={UserInfo.xp} />
+              <LevelBar xp={UserInfo.xp} level={getUserLevel(UserInfo.xp)} />
             </div>
           </div>
 
@@ -269,7 +269,7 @@ export default function UserProfile() {
           {showAchievementList ? (
             <div className="blur-background">
               <div className="AchievementList-place fade-in">
-                <AchievementList closeList={handleCloseClick} />
+                <AchievementList level={getUserLevel(UserInfo.xp)} closeList={handleCloseClick} />
               </div>
             </div>
           ) : null}
