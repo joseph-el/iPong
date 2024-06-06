@@ -46,12 +46,10 @@ export class FriendshipService {
       where: {
         OR: [
           {
-            blockedBy: userId,
-            blocked: add_friendDto.friendId,
+            id: `${userId}+${add_friendDto.friendId}`,
           },
           {
-            blockedBy: add_friendDto.friendId,
-            blocked: userId,
+            id: `${add_friendDto.friendId}+${userId}`,
           },
         ],
       },
@@ -120,21 +118,33 @@ export class FriendshipService {
     return { send: 'done' };
   }
   async isBlocked(userId: string, friendId: string) {
+    if (userId === friendId) {
+      throw new HttpException(
+        'userd id is the same as firend id',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    console.log('userIdhhhhhhh', userId);
+    console.log('friendbbbbbbbbbbbId', friendId);
     const blocked = await this.databaseservice.blockedUser.findFirst({
       where: {
-        AND: [
+        OR: [
           {
-            blockedBy: userId,
-            blocked: friendId,
+            id: `${userId}+${friendId}`,
           },
           {
-            blockedBy: friendId,
-            blocked: userId,
+            id: `${friendId}+${userId}`,
           },
         ],
       },
+      select: {
+        blockedBy: true,
+        blocked: true,
+      },
     });
-    console.log('waaaaaaaaaaaaaaaaaaaaaaaaaa blocked', blocked);
+
+    console.log('blocked:::::::::>', blocked );
+    
     return blocked;
   }
 
@@ -237,21 +247,6 @@ export class FriendshipService {
         HttpStatus.FORBIDDEN,
       );
     }
-    const checkifFriend = await this.databaseservice.friendship.findFirst({
-      where: {
-        OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
-      },
-    });
-    try
-    {
-      if (checkifFriend?.status === $Enums.FriendshipStatus.ACCEPTED) {
-        throw new HttpException('You are already friends', HttpStatus.BAD_REQUEST);
-      }
-    } catch (error) {
-
-        return error;
-    }
-
     await this.databaseservice.friendship.deleteMany({
       where: {
         OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
@@ -402,12 +397,10 @@ export class FriendshipService {
       where: {
         OR: [
           {
-            blockedBy: userId,
-            blocked: friendId,
+            id: `${userId}+${friendId}`,
           },
           {
-            blockedBy: friendId,
-            blocked: userId,
+            id: `${friendId}+${userId}`,
           },
         ],
       },
@@ -451,6 +444,7 @@ export class FriendshipService {
     // Create a new block
     const result = await this.databaseservice.blockedUser.create({
       data: {
+        id: `${userId}+${friendId}`,
         blocked: friendId,
         blockedBy: userId,
         dmId: commonRoom?.id,
@@ -507,12 +501,10 @@ export class FriendshipService {
       where: {
         OR: [
           {
-            blockedBy: userId,
-            blocked: friendId,
+            id: `${userId}+${friendId}`,
           },
           {
-            blockedBy: friendId,
-            blocked: userId,
+           id: `${friendId}+${userId}`,
           },
         ],
       },
