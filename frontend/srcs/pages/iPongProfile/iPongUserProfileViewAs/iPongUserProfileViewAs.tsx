@@ -17,6 +17,7 @@ import {
   ModalFooter,
   useDisclosure,
   Tooltip,
+  User,
 } from "@nextui-org/react";
 
 import { useParams } from "react-router-dom";
@@ -51,7 +52,7 @@ import { AppDispatch, RootState } from "../../../state/store";
 import api from "../../../api/posts";
 import { set } from "lodash";
 
-const UserDescriptions = ({ UserprofileInfo }) => {
+const UserDescriptions = ({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
 
@@ -90,24 +91,36 @@ const UserDescriptions = ({ UserprofileInfo }) => {
         {UserprofileInfo.bio}
         hey there! I am using iPong
       </p>
-      <div className="meta-details">
-        <div className="div-2">
-          <img className="img" alt="Location icon" src={LocationIcon} />
-          <div className="text-wrapper-2"> {error ? "Morocco" : country} </div>
-        </div>
 
-        <div className="div-2">
-          <img className="img" alt="Calendar icon" src={CalendarIcon} />
-          <div className="text-wrapper-2">
-            {formatJoinDate(UserprofileInfo.createdAt)}
+      <div>
+        <div className="meta-details">
+          <div className="div-2">
+            <img className="img" alt="Location icon" src={LocationIcon} />
+            <div className="text-wrapper-2">
+              {" "}
+              {error ? "Morocco" : country}{" "}
+            </div>
+          </div>
+
+          <div className="div-2">
+            <img className="img" alt="Calendar icon" src={CalendarIcon} />
+            <div className="text-wrapper-2">
+              {formatJoinDate(UserprofileInfo.createdAt)}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="follower-counts">
-        <div className="following">
-          <div className="text-wrapper">{UserprofileInfo.FriendsCount}</div>
-          <div className="div">Following</div>
+        <div className="follower-counts">
+          <div className="following">
+            <div className="text-wrapper">
+              {UserIsBlocked
+                ? 0
+                : UserprofileInfo.FriendsCount <= 0
+                ? 0
+                : UserprofileInfo.FriendsCount}
+            </div>
+            <div className="div">Following</div>
+          </div>
         </div>
       </div>
     </div>
@@ -115,7 +128,18 @@ const UserDescriptions = ({ UserprofileInfo }) => {
 };
 
 export default function UserProfileViewAs() {
-  const { userId } = useParams();
+  // const { userId } = useParams();
+
+  const { userId: paramUserId } = useParams();
+  const [userId, setUserId] = useState(paramUserId);
+
+
+  useEffect(() => {
+    setUserId(paramUserId);
+  }, [paramUserId]);
+
+
+
 
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [ShowZindex, setShowZindex] = React.useState(false);
@@ -124,6 +148,9 @@ export default function UserProfileViewAs() {
   };
   const [UserOptions, setUserOptions] = React.useState("");
   const UserInfo = useSelector((state: RootState) => state.userState);
+  const [ButtonFriendStatus, setButtonFriendStatus] = useState("");
+  const [FriendshipStatus, setFriendshipStatus] = useState("");
+  const [DropdownButtonStatus, setDropdownButtonStatus] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -132,27 +159,43 @@ export default function UserProfileViewAs() {
     onOpen();
   };
 
-  const [UserprofileInfo, setUserprofileInfo] = React.useState([]);
+  const [UserprofileInfo, setUserprofileInfo] = useState([]);
+
+  const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.post(`/friendship/isBlocked`, {
+          friendId: userId,
+        });
+        if (response.data.blockedBy === UserInfo.id) {
+          console.log("response: BLOxxCK::: ", response);
+          setUserIsBlocked("BLOCKED_BY_ME");
+        } else if (response.data.blocked === UserInfo.id) {
+          setUserIsBlocked("BLOCKED_BY_FRIEND");
+        }
+
+        console.log("response: BLOCK::: ", response);
+      } catch (error) {
+        console.log("ERROR POST  BOLECKKKKK FRIENDSHIP");
+      }
+    };
+
+    fetchData();
+  }, [userId]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get(`/user-profile/getinfoById${userId}`);
         setUserprofileInfo(response.data);
-        // console.log("user data: ", response.data);
       } catch (error) {
         console.log("Error fetching data");
       }
     };
     fetchData();
-  }, []); // USER PROFILE
-
-  
-  const [ButtonFriendStatus, setButtonFriendStatus] = useState("");
-  const [FriendshipStatus, setFriendshipStatus] = useState("");
-  const [DropdownButtonStatus, setDropdownButtonStatus] = useState([]);
-
-  
+  }, [userId]); // USER PROFILE
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,7 +219,7 @@ export default function UserProfileViewAs() {
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
 
   const dropdownOptions = {
     MAKE_FRIEND: {
@@ -231,13 +274,21 @@ export default function UserProfileViewAs() {
       }
     };
     ButtonFriendStatus !== "ACCEPTED" && fetchData();
-  }, [FriendshipStatus]);
+  }, [FriendshipStatus, userId]);
 
-  const [isUnfriend, setIsUnfriend] = useState<Boolean | null>(null);
-  
+  const [isUnfriend, setIsUnfriend] = useState<Boolean | null | String>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("isUnfriend:::::: ", isUnfriend);
+        if (typeof isUnfriend === "string") {
+          const response = await api.post(`/friendship/unblock`, {
+            friendId: userId,
+          });
+          console.log("response: unblock ", response);
+          return;
+        }
         if (isUnfriend) {
           const response = await api.post(`/friendship/unfriend`, {
             friendId: userId,
@@ -254,10 +305,15 @@ export default function UserProfileViewAs() {
       }
     };
     isUnfriend != null && fetchData();
-  }, [isUnfriend]);
+  }, [isUnfriend, userId]);
 
   const handelRemoveUser = (_isUnfriend) => {
     console.log("isUnfriend: ", _isUnfriend);
+
+    if (typeof _isUnfriend === "string") {
+      setIsUnfriend("unblock");
+      return;
+    }
     if (_isUnfriend) {
       setIsUnfriend(true);
     } else {
@@ -306,45 +362,54 @@ export default function UserProfileViewAs() {
               <div className="groupParent">
                 <div className="tnaceur">{"@" + UserprofileInfo.username}</div>
               </div>
-              <UserDescriptions UserprofileInfo={UserprofileInfo} />
+              <UserDescriptions
+                UserIsBlocked={UserIsBlocked}
+                UserprofileInfo={UserprofileInfo}
+              />
             </div>
 
             <div className="menu-Buttons">
-              <div className="Social-Icons">
-                <Tooltip color="primary" content="Visit Github">
-                  <Image
-                    onClick={() => window.open(UserprofileInfo.githubLink)}
-                    src={GithubIcon}
-                    radius="none"
-                    alt="Github icon"
-                    width={"31px"}
-                    className="social-icon"
-                  />
-                </Tooltip>
+              {UserIsBlocked === null ? (
+                <div className="Social-Icons">
+                  {UserprofileInfo.githubLink != null ? (
+                    <Tooltip color="primary" content="Visit Github">
+                      <Image
+                        onClick={() => window.open(UserprofileInfo.githubLink)}
+                        src={GithubIcon}
+                        radius="none"
+                        alt="Github icon"
+                        width={"31px"}
+                        className="social-icon"
+                      />
+                    </Tooltip>
+                  ) : null}
 
-                <Tooltip color="primary" content="Visit Linkdin">
-                  <Image
-                    onClick={() => window.open("https://www.linkedin.com/")}
-                    radius="none"
-                    src={LinkedinIcon}
-                    alt="Linkedin icon"
-                    width={"31px"}
-                    className="social-icon"
-                  />
-                </Tooltip>
+                  {UserprofileInfo.linkdinLink != null ? (
+                    <Tooltip color="primary" content="Visit Linkdin">
+                      <Image
+                        onClick={() => window.open("https://www.linkedin.com/")}
+                        radius="none"
+                        src={LinkedinIcon}
+                        alt="Linkedin icon"
+                        width={"31px"}
+                        className="social-icon"
+                      />
+                    </Tooltip>
+                  ) : null}
 
-                <Tooltip color="primary" content="send a message">
-                  <Image
-                    radius="none"
-                    src={SendMessageIcon}
-                    alt="Linkedin icon"
-                    width={"33px"}
-                    className="social-icon"
-                  />
-                </Tooltip>
-              </div>
+                  <Tooltip color="primary" content="send a message">
+                    <Image
+                      radius="none"
+                      src={SendMessageIcon}
+                      alt="Linkedin icon"
+                      width={"33px"}
+                      className="social-icon"
+                    />
+                  </Tooltip>
+                </div>
+              ) : null}
 
-              {ButtonFriendStatus !== "ACCEPTED" ? (
+              {ButtonFriendStatus !== "ACCEPTED" && UserIsBlocked === null ? (
                 <Dropdown
                   showArrow
                   radius="sm"
@@ -390,14 +455,13 @@ export default function UserProfileViewAs() {
                     <DropdownMenu aria-label="Static Actions">
                       <DropdownItem
                         onClick={() => {
-                         if (DropdownButtonStatus.first == "Accept Friend")
+                          if (DropdownButtonStatus.first == "Accept Friend")
                             setFriendshipStatus("MAKE_FRIEND");
-                          else
-                            setFriendshipStatus("SET_CANCEL");
+                          else setFriendshipStatus("SET_CANCEL");
                         }}
                         variant="faded"
                       >
-                        {"--accept: " +  DropdownButtonStatus.first}
+                        {"--accept: " + DropdownButtonStatus.first}
                       </DropdownItem>
 
                       {ButtonFriendStatus === "ACCEPT" ? (
@@ -417,110 +481,133 @@ export default function UserProfileViewAs() {
                 </Dropdown>
               ) : null}
 
-              <Dropdown backdrop="blur" className="menu-icon-dropdown-frame">
-                <DropdownTrigger onClick={() => setShowZindex(!ShowZindex)}>
-                  <img
-                    src={MenuIcon}
-                    alt="menu-icon"
-                    className="menu-icon"
-                    style={{ zIndex: ShowZindex ? 999999 : 0 }}
-                  />
-                </DropdownTrigger>
-
-                <DropdownMenu
+              {UserIsBlocked === "BLOCKED_BY_ME" ? (
+                <Button
                   color="primary"
-                  aria-label="Dropdown menu with icons"
+                  onClick={() => handleOpen("Unblock")}
+                  startContent={
+                    <Image
+                      width={"20px"}
+                      radius="none"
+                      src={BlockIcon}
+                      alt="block-icon"
+                    />
+                  }
                 >
-                  <DropdownItem
-                    onClick={() => setShowAchievementList(true)}
-                    className="menu-item-dropdown-font"
-                    key="new"
-                    startContent={
-                      <img
-                        src={ArchivementIcon}
-                        alt="menu-icon"
-                        className="menu-icon-dropdown"
-                      />
-                    }
-                  >
-                    Achievement
-                  </DropdownItem>
+                  Unblock
+                </Button>
+              ) : null}
 
-                  <DropdownItem
-                    onPress={() => handleOpen("Unfriend")}
-                    className="menu-item-dropdown-font"
-                    key="new"
-                    // isDisabled={true}
-                    startContent={
-                      <img
-                        src={UnfriendIcon}
-                        alt="menu-icon"
-                        className="menu-icon-dropdown"
-                      />
-                    }
-                  >
-                    Unfriend
-                  </DropdownItem>
+              {UserIsBlocked === null ? (
+                <Dropdown backdrop="blur" className="menu-icon-dropdown-frame">
+                  <DropdownTrigger onClick={() => setShowZindex(!ShowZindex)}>
+                    <img
+                      src={MenuIcon}
+                      alt="menu-icon"
+                      className="menu-icon"
+                      style={{ zIndex: ShowZindex ? 999999 : 0 }}
+                    />
+                  </DropdownTrigger>
 
-                  <DropdownItem
-                    onPress={() => handleOpen("Block")}
-                    className="menu-item-dropdown-font"
-                    key="new"
-                    color="danger"
-                    startContent={
-                      <img
-                        src={BlockIcon}
-                        alt="menu-icon"
-                        className="menu-icon-dropdown"
-                      />
-                    }
+                  <DropdownMenu
+                    color="primary"
+                    aria-label="Dropdown menu with icons"
                   >
-                    Block
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                    <DropdownItem
+                      onClick={() => setShowAchievementList(true)}
+                      className="menu-item-dropdown-font"
+                      key="new"
+                      startContent={
+                        <img
+                          src={ArchivementIcon}
+                          alt="menu-icon"
+                          className="menu-icon-dropdown"
+                        />
+                      }
+                    >
+                      Achievement
+                    </DropdownItem>
+
+                    <DropdownItem
+                      isDisabled={ButtonFriendStatus === "ADD FRIEND"}
+                      onPress={() => handleOpen("Unfriend")}
+                      className="menu-item-dropdown-font"
+                      key="new"
+                      // isDisabled={true}
+                      startContent={
+                        <img
+                          src={UnfriendIcon}
+                          alt="menu-icon"
+                          className="menu-icon-dropdown"
+                        />
+                      }
+                    >
+                      Unfriend
+                    </DropdownItem>
+
+                    <DropdownItem
+                      onPress={() => handleOpen("Block")}
+                      className="menu-item-dropdown-font"
+                      key="new"
+                      color="danger"
+                      startContent={
+                        <img
+                          src={BlockIcon}
+                          alt="menu-icon"
+                          className="menu-icon-dropdown"
+                        />
+                      }
+                    >
+                      Block
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : null}
             </div>
           </div>
 
-          <div className="users-tabs">
-            <div className="flex w-full flex-col">
-              <Tabs
-                aria-label="Options"
-                color="primary"
-                variant="underlined"
-                classNames={{
-                  tabList:
-                    "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-                  cursor: "w-full bg-[#119CF1]",
-                  tab: "max-w-fit px-0 h-12",
-                  tabContent:
-                    "group-data-[selected=true]:text-[#ECECEC] text-styled-primary",
-                }}
-              >
-                <Tab
-                  key="history"
-                  title={
-                    <div className="flex items-center space-x-2 ">
-                      <span> Match History </span>
-                    </div>
-                  }
+          {UserIsBlocked === null ? (
+            <div className="users-tabs">
+              <div className="flex w-full flex-col">
+                <Tabs
+                  aria-label="Options"
+                  color="primary"
+                  variant="underlined"
+                  classNames={{
+                    tabList:
+                      "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+                    cursor: "w-full bg-[#119CF1]",
+                    tab: "max-w-fit px-0 h-12",
+                    tabContent:
+                      "group-data-[selected=true]:text-[#ECECEC] text-styled-primary",
+                  }}
                 >
-                  <MatchHistory flag={true} />
-                </Tab>
+                  <Tab
+                    key="history"
+                    title={
+                      <div className="flex items-center space-x-2 ">
+                        <span> Match History </span>
+                      </div>
+                    }
+                  >
+                    <MatchHistory UserId={userId} />
+                  </Tab>
 
-                <Tab
-                  key="friends"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <span>Friends</span>
-                    </div>
-                  }
-                >
-                  <FriendsInCommon />
-                </Tab>
-              </Tabs>
+                  <Tab
+                  isDisabled={ButtonFriendStatus !== "ACCEPTED"}
+                    key="friends"
+                    title={
+                      <div className="flex items-center space-x-2">
+                        <span>Friends</span>
+                      </div>
+                    }
+                  >
+                    <FriendsInCommon UserId={userId} />
+                  </Tab>
+                </Tabs>
+              </div>
             </div>
-          </div>
+          ) : null}
 
           {showAchievementList ? (
             <div className="blur-background">
@@ -536,15 +623,27 @@ export default function UserProfileViewAs() {
             UserAlertHeader={UserOptions}
             UserAlertMessage={
               UserOptions === "Unfriend"
-                ? "Are you sure you want to unfriend tnaceur?"
+                ? `Are you sure you want to unfriend ${UserprofileInfo.username}?`
                 : UserOptions === "Block"
-                ? "Are you sure you want to block tnaceur?"
-                : null
+                ? `Are you sure you want to block ${UserprofileInfo.username}?`
+                : `Are you sure you want to unblock ${UserprofileInfo.username}?`
             }
             handelRemoveUser={() => {
-              handelRemoveUser(UserOptions === "Unfriend" ? true : false);
+              handelRemoveUser(
+                UserOptions === "Unfriend"
+                  ? true
+                  : UserOptions === "Unblock"
+                  ? "Unblock"
+                  : false
+              );
             }}
-            UserOptions={UserOptions === "Unfriend" ? "Unfriend" : "Block"}
+            UserOptions={
+              UserOptions === "Unfriend"
+                ? "Unfriend"
+                : UserOptions === "Unblock"
+                ? "Unblock"
+                : "Block"
+            }
           ></IPongAlert>
         </div>
       </NextThemesProvider>
