@@ -15,6 +15,10 @@ import { AppDispatch, RootState } from "../../state/store";
 
 import { getUserLevel } from "../../utils/getCurrentLevel";
 
+const userSelectedSkinPath = "/assets/game/default/default-skin.png";
+const userSelectedBoardPath = "/assets/game/default/default-board.jpg";
+const botSelectedSkinPath = "/assets/game/default/default-bot-skin.png";
+
 export default function iPongGame() {
   type ModeType = "practice" | "onlineBattle" | null;
   const [mode, setMode] = useState<ModeType>(null);
@@ -26,7 +30,9 @@ export default function iPongGame() {
     (state: RootState) => state.achievement.ShowAchievementBadge
   );
 
-  const UpdatedLevel = useSelector((state: RootState) => state.achievement.UpdatedLevel );
+  const UpdatedLevel = useSelector(
+    (state: RootState) => state.achievement.UpdatedLevel
+  );
   const UserInfo = useSelector((state: RootState) => state.userState);
 
   useEffect(() => {
@@ -49,13 +55,23 @@ export default function iPongGame() {
   }
 
   if (mode && mode === "practice") {
-    return <BotMode />;
+    return (
+      <BotMode
+        userSelectedSkin={userSelectedSkinPath}
+        userSelectedBoard={userSelectedBoardPath}
+        botSelectedSkin={botSelectedSkinPath}
+      />
+    );
   }
   if (mode && mode === "onlineBattle") {
-    
     localStorage.setItem("lastLevel", getUserLevel(UpdatedLevel!).toString());
 
-    return <MatchMaking />;
+    return (
+      <MatchMaking
+        userSelectedSkin={userSelectedSkinPath}
+        userSelectedBoard={userSelectedBoardPath}
+      />
+    );
   }
 
   const handleCloseCongratulationsBadge = () => {

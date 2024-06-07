@@ -5,7 +5,6 @@ export const GetCurrentUser = createParamDecorator(
   (data: keyof JwtPayloadWithRt | undefined, cntx: ExecutionContext) => {
     const request = cntx.switchToHttp().getRequest();
     const user = request.user;
-    console.log(user);
     return data ? user && user[data] : user;
   },
 );

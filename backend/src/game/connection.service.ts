@@ -7,6 +7,7 @@ export class ConnectionService {
   private usersSocketsMap: Map<string, Socket> = new Map();
   private usersSocketsIds: Map<string, string> = new Map();
   private usersStatus: Map<string, UserStatus> = new Map();
+  private usersSkins: Map<string, string> = new Map();
 
   addUserSocket(userId: string, socket: Socket) {
     this.usersSocketsMap.set(userId, socket);
@@ -18,6 +19,7 @@ export class ConnectionService {
     this.usersSocketsIds.delete(this.getSocketByUserId(userId).id);
     this.usersSocketsMap.delete(userId);
     this.usersStatus.delete(userId);
+    this.usersSkins.delete(userId);
   }
 
   getUserBySocketId(socketId: string) {
@@ -40,23 +42,36 @@ export class ConnectionService {
     }
   }
 
+  /* User Skin and Board Paths */
+  setUserSkin(userId: string, skinPath: string) {
+    this.usersSkins.set(userId, skinPath);
+  }
+  getUserSkin(userId: string) {
+    return this.usersSkins.get(userId);
+  }
+
   /* fot debugging propose to check live values */
   dataLogger() {
-    // console.log('-----------data Logger check------------');
-    // console.log('Users Sockets Map:');
+    console.log('-----------data Logger check------------');
+    console.log('Users Sockets Map:');
     this.usersSocketsMap.forEach((socket, userId) => {
       console.log(`UserId: ${userId}, SocketId: ${socket?.id}`);
     });
 
-    // console.log('Users Sockets IDs:');
+    console.log('Users Sockets IDs:');
     this.usersSocketsIds.forEach((userId, socketId) => {
-      // console.log(`SocketId: ${socketId}, UserId: ${userId}`);
+      console.log(`SocketId: ${socketId}, UserId: ${userId}`);
     });
 
     console.log('Users Status:');
     this.usersStatus.forEach((status, userId) => {
-      // console.log(`UserId: ${userId}, Status: ${status}`);
+      console.log(`UserId: ${userId}, Status: ${status}`);
     });
-    // console.log('--------------------------------------');
+
+    console.log('Users Skins:');
+    this.usersSkins.forEach((skin, userId) => {
+      console.log(`UserId: ${userId}, skin path: ${skin}`);
+    });
+    console.log('--------------------------------------');
   }
 }
