@@ -86,13 +86,13 @@ export default function BotMode() {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.code) {
         case "ArrowUp":
-          console.log("ArrowUp");
+          // console.log("ArrowUp");
           if (game.player) {
             game.player.movePlayer(game.height, "up");
           }
           break;
         case "ArrowDown":
-          console.log("ArrowDown");
+          // console.log("ArrowDown");
           if (game.player) {
             game.player.movePlayer(game.height, "down");
           }
