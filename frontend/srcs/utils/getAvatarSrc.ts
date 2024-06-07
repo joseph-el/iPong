@@ -10,6 +10,10 @@ export  const getAvatarSrc = (picture, username) => {
         return false;
       }
     };
+    if (!username) {
+      return DefaultMaleAvatar;
+    }
+    
     if (!picture|| !isValidUrl(picture)) {
       if (username.startsWith('F-;')) {
         return DefaultFemaleAvatar;
