@@ -22,11 +22,7 @@ model User {
   firstName        String?
   bio              String?          @default("No bio yet")
   lastName         String?
-<<<<<<< HEAD
-  cover            String?
   level            Int              @default(0)
-=======
->>>>>>> origin/BackendLayout
   isVerified       Boolean          @default(false)
   FriendsCount     Int              @default(0)
   githubLink       String?
