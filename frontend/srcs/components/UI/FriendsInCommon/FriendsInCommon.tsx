@@ -144,7 +144,7 @@ export default function FriendsInCommon({ UserId }) {
         setFriends(friendsList);
         setfilteredItems(friendsList);
       } catch (error) {
-        console.log("error get friends list");
+        // console.log("error get friends list");
       }
     };
     fetchData();

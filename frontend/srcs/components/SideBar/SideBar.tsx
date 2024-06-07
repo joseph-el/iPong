@@ -28,7 +28,7 @@ export default function SideBar() {
 
   const handleIconClick = (param, route) => {
     setActive(param);
-    console.log("route", route);
+    // console.log("route", route);
     navigate(route);
   };
 

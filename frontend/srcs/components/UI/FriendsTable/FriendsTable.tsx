@@ -123,7 +123,7 @@ export default function FriendsTable() {
         setFriends(friendsList);
         setfilteredItems(friendsList);
       } catch (error) {
-        console.log("error get friends list");
+        // console.log("error get friends list");
       }
     };
     fetchData();

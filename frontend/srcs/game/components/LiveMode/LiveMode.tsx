@@ -13,6 +13,7 @@ import Scores from "../Score/Score";
 import { BallState } from "../../types/BallState";
 import CancelledMatch from "../CancelledMatch/CancelledMatch";
 import GameOver from "../GameOver/GameOver";
+import { set } from "lodash";
 
 interface LiveGameModeProps {
   socketRef: React.MutableRefObject<Socket | null>;
@@ -42,6 +43,7 @@ export default function LiveMode({
   const [progress, setProgress] = useState<number>(0);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [winner, setWinner] = useState<string | null>(null);
+  const [winnerXp, setWinnerXp] = useState<number>(0);
   const [winnerId, setWinnerId] = useState<string | null>(null);
   const [player1Score, setPlayer1Score] = useState<number>(0);
   const [player2Score, setPlayer2Score] = useState<number>(0);
@@ -263,10 +265,11 @@ export default function LiveMode({
 
     socket.current?.on(
       SOCKET_EVENTS.GAME_END,
-      (data: { winnerUserName: string; winnerId: string }) => {
+      (data: { winnerUserName: string; winnerId: string; winner }) => {
         if (data.winnerUserName) {
           setWinner(data.winnerUserName);
           setWinnerId(data.winnerId);
+          setWinnerXp(data.w);
         }
         setEndedGame(true);
       }

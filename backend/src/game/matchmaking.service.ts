@@ -231,7 +231,7 @@ export class MatchmakingService {
         });
       }, 5000);
     } else {
-      console.log('here');
+      // console.log('here');
       this.server.to(roomId).emit(SOCKET_EVENT.NOT_ENOUGH_PLAYERS, {
         reason: SOCKET_ERROR.NOT_ENOUGH_PLAYERS_ERR,
       });

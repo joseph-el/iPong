@@ -39,14 +39,14 @@ export class ChatGateway
   }
 
   afterInit(server: Server): void {
-    console.log('WebSocket server initialized');
+    // console.log('WebSocket server initialized');
   }
 
   async handleConnection(client: Socket) {
     const token = client.handshake.headers['access_token'] as string;
 
     if (!token) {
-      console.log('No access token found in headers');
+      // console.log('No access token found in headers');
       client.disconnect(true);
       return;
     }
@@ -54,14 +54,14 @@ export class ChatGateway
     try {
       const decoded = this.jwtService.verify(token);
       client.data.user = decoded;
-      console.log(decoded)
+      // console.log(decoded)
     } catch (error) {
-      console.log('Invalid access token');
+      // console.log('Invalid access token');
       client.disconnect(true);
       return;
     }
     const userId = client.data.user.sub;
-    console.log(`User ID: ${userId}`);
+    // console.log(`User ID: ${userId}`);
     client.join(`User:${userId}`);
     const frienduserIds = await this.databaseService.friendship.findMany({
       where: {
@@ -88,14 +88,14 @@ export class ChatGateway
         (id) => this.server.sockets.adapter?.rooms?.get(`User:${id}`)?.size,
       );
 
-    console.log('friendIds', friendIds);
+    // console.log('friendIds', friendIds);
 
     client.emit('onlineFriends', friendIds);
     this.server.emit('friendOnline', userId);
   }
 
   async handleDisconnect(client: Socket): Promise<void> {
-    console.log(`Client disconnected: ${client.id}`);
+    // console.log(`Client disconnected: ${client.id}`);
     this.server.emit('friendOffline', client.data.user.sub);
   }
 

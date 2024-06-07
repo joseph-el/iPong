@@ -9,7 +9,7 @@ import SignAuth from "../pages/iPongSignAuth/iPongSignAuth";
 import AppLayout from "../pages/AppLayout/AppLayout";
 import IPongStore from "../pages/iPongStore/iPongStore";
 import IPongChat from "../pages/iPongChat/iPongChat";
-import IPongGame from "../pages/iPongGame/iPongGame";
+import Home from "../pages/iPongHome/iPongHome";
 import IPongProfile from "../pages/iPongProfile/iPongUserProfile/iPongUserProfile";
 import IPongProfileViewAs from "../pages/iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
 
@@ -111,7 +111,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "home",
-        element: <IPongGame />,
+        element: < Home/>,
       },
       {
         path: "profile",

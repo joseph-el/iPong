@@ -48,9 +48,11 @@ import AchievementList from "../../../components/UI/AchievementComponents/Achiev
 import { formatJoinDate } from "../../../utils/formatJoinDate";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
-
+import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 import api from "../../../api/posts";
 import { set } from "lodash";
+
+import { getUserLevel } from "../../../utils/getCurrentLevel";
 
 const UserDescriptions = ({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
@@ -133,13 +135,9 @@ export default function UserProfileViewAs() {
   const { userId: paramUserId } = useParams();
   const [userId, setUserId] = useState(paramUserId);
 
-
   useEffect(() => {
     setUserId(paramUserId);
   }, [paramUserId]);
-
-
-
 
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [ShowZindex, setShowZindex] = React.useState(false);
@@ -163,60 +161,36 @@ export default function UserProfileViewAs() {
 
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
 
-
-
-// me 
-// navigate user
+  // me
+  // navigate user
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const response = await api.post(`/friendship/isBlocked`, {
           friendId: userId, // navigate user
         });
 
-
-        console.log("response: BLOCK>>>>>>>>>>>::: ", response);
+        // console.log("response.data", response.data);
 
         if (response.data.blockedBy === UserInfo.id) {
-          
-          console.log("response: BLOxxCK::: ", response);
-
           setUserIsBlocked("BLOCKED_BY_ME");
-
         } else if (response.data.blocked === UserInfo.id) {
-          
           setUserIsBlocked("BLOCKED_BY_FRIEND");
-        
         }
-
-        console.log("response: BLOCK::: ", response);
-      } catch (error) {
-        console.log("ERROR POST  BOLECKKKKK FRIENDSHIP");
-      }
+      } catch (error) {}
     };
 
     fetchData();
   }, [userId]);
-
-
-
-
-
-
-
-
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get(`/user-profile/getinfoById${userId}`);
         setUserprofileInfo(response.data);
+        console.log("response.data", response.data);
       } catch (error) {
-        console.log("Error fetching data");
+        console.log("error", error);
       }
     };
     fetchData();
@@ -239,9 +213,7 @@ export default function UserProfileViewAs() {
             setButtonFriendStatus("ACCEPT");
           }
         }
-      } catch (error) {
-        console.log("ERROR FETCHING FRIENDS STATUS");
-      }
+      } catch (error) {}
     };
     fetchData();
   }, [userId]);
@@ -297,9 +269,7 @@ export default function UserProfileViewAs() {
           }
           // console.log("response: reject ", response);
         }
-      } catch (error) {
-        console.log("ERROR POST FRIENDSHIP");
-      }
+      } catch (error) {}
     };
     ButtonFriendStatus !== "ACCEPTED" && fetchData();
   }, [FriendshipStatus, userId]);
@@ -307,37 +277,29 @@ export default function UserProfileViewAs() {
   const [isUnfriend, setIsUnfriend] = useState<Boolean | null | String>(null);
 
   useEffect(() => {
-     const fetchData = async () => {
+    const fetchData = async () => {
       try {
-        console.log("isUnfriend:::::: ", isUnfriend);
         if (typeof isUnfriend === "string") {
           const response = await api.post(`/friendship/unblock`, {
             friendId: userId,
           });
-          console.log("response: unblock ", response);
           return;
         }
         if (isUnfriend) {
           const response = await api.post(`/friendship/unfriend`, {
             friendId: userId,
           });
-          console.log("response: remove ", response);
         } else {
           const response = await api.post(`/friendship/block`, {
             friendId: userId,
           });
-          console.log("response: block ", response);
         }
-      } catch (error) {
-        console.log("ERROR POST FRIENDSHIP");
-      }
+      } catch (error) {}
     };
     isUnfriend != null && fetchData();
   }, [isUnfriend, userId]);
 
   const handelRemoveUser = (_isUnfriend) => {
-    console.log("isUnfriend: ", _isUnfriend);
-
     if (typeof _isUnfriend === "string") {
       setIsUnfriend("unblock");
       return;
@@ -360,12 +322,21 @@ export default function UserProfileViewAs() {
               src={CoverImage}
             />
             <Avatar
-              src={UserprofileInfo.picture}
+              src={
+                UserIsBlocked === null
+                  ? getAvatarSrc(
+                      UserprofileInfo.picture,
+                      UserprofileInfo.username
+                    )
+                  : getAvatarSrc(null, UserprofileInfo.username)
+              }
               className="w-28 h-28 text-large avatar"
             />
-            <div className="user-LevelBars">
-              <LevelBar level={UserprofileInfo.level} />
-            </div>
+            {UserIsBlocked === null ? (
+              <div className="user-LevelBars">
+                <LevelBar xp={UserInfo.xp} level={getUserLevel(UserInfo.xp)} />
+              </div>
+            ) : null}
           </div>
 
           <div className="User-details-and-menu">
@@ -388,7 +359,11 @@ export default function UserProfileViewAs() {
               </div>
 
               <div className="groupParent">
-                <div className="tnaceur">{"@" + UserprofileInfo.username}</div>
+                <div className="tnaceur">
+                  {UserIsBlocked === null
+                    ? "@" + UserprofileInfo.username
+                    : "@iPong User"}
+                </div>
               </div>
               <UserDescriptions
                 UserIsBlocked={UserIsBlocked}
@@ -622,7 +597,7 @@ export default function UserProfileViewAs() {
                   </Tab>
 
                   <Tab
-                  isDisabled={ButtonFriendStatus !== "ACCEPTED"}
+                    isDisabled={ButtonFriendStatus !== "ACCEPTED"}
                     key="friends"
                     title={
                       <div className="flex items-center space-x-2">
@@ -640,7 +615,10 @@ export default function UserProfileViewAs() {
           {showAchievementList ? (
             <div className="blur-background">
               <div className="AchievementList-place fade-in">
-                <AchievementList closeList={handleCloseClick} />
+                <AchievementList
+                  level={getUserLevel(UserInfo.xp)}
+                  closeList={handleCloseClick}
+                />
               </div>
             </div>
           ) : null}

@@ -35,7 +35,7 @@ export const SignInPlatforme = () => {
   const navigate = useNavigate();
 
   const handleOnsubmit = async () => {
-    console.log("42intra");
+    // console.log("42intra");
 
     window.location.replace("http://localhost:3000/auth/42/");
   };

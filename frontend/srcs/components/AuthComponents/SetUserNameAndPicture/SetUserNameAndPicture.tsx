@@ -51,7 +51,7 @@ export default function SetUserNameAndPicture() {
     }
     const ret = await validateUsername(username);
     if (ret !== null) {
-      console.log(ret);
+      // console.log(ret);
       dispatch(setIsInvalid({ id: "set-user-username", isInvalid: true }));
       dispatch(setErrorMessage({ id: "set-user-username", errorMessage: ret }));
     } else {
@@ -63,7 +63,7 @@ export default function SetUserNameAndPicture() {
     // TDOD: Close the sign in component and navigate to the sign up component
     // Clear the input fields state and error messages
     navigate("/auth/set-password");
-    console.log("Close");
+    // console.log("Close");
   };
 
   const handleImageChange = (event) => {

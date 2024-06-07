@@ -16,7 +16,7 @@
   height: 55px;
   width: 450px;
   border-radius: 15px 15px 0px 0px;
-  border-bottom: 0.8px solid rgba(230, 209, 209, 0.27);
+  border-bottom: 0.9px solid rgba(230, 209, 209, 0.27);
 }
 
 .EditProfileNavbar .overlap-group {
@@ -68,10 +68,10 @@
   color: #007bfe;
   margin-top: -10px;
   text-align: right;
-  font-family: "SF Pro Text";
+  font-family: "sfprodisplay-medium", serif;
   font-size: 20px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 46.423px; /* 110% */
   letter-spacing: -0.861px;
 }
@@ -116,6 +116,7 @@
   width: 100%;
   height: 140px;
   object-fit: cover;
+  border: 1px solid #3c424d;
   border-radius: 0px 0px 30px 30px;
 }
 
@@ -163,4 +164,17 @@
   margin-bottom: 20px;
 
   /* border-bottom: 1px solid #3C424D; */
+}
+
+.profile-cover-edit-profile  
+.error-message {
+
+  font-family: Montserrat;
+  color: red;
+  font-size: 12px;
+  margin-top: -10px;
+  font-weight: 450;
+  position: inherit;
+  top: 20px;
+  left: 140px;
 }

@@ -11,10 +11,6 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
-  ParseFilePipe,
-  MaxFileSizeValidator,
-  FileTypeValidator,
-  Res,
 } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
 import { UserProfileDto } from './dto/UserProfile.dto';

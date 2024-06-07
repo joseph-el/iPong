@@ -69,7 +69,7 @@ export class ChatroomService {
           },
         },
       });
-      console.log(ifChatroomExists);
+      // console.log(ifChatroomExists);
       if (ifChatroomExists) {
         return new HttpException('Chatroom already exists', 400);
       }
@@ -157,8 +157,8 @@ export class ChatroomService {
     if (chatroom.type === ChatRoomType.private) {
       return new HttpException('the chatroom is private', 401);
     }
-    console.log('joinRoom: ', joinChatroomDto);
-    console.log('room detail: ', chatroom);
+    // console.log('joinRoom: ', joinChatroomDto);
+    // console.log('room detail: ', chatroom);
     // Check if chatroom exists
     if (!chatroom) {
       return new HttpException('Chatroom not found', 404);
@@ -305,7 +305,7 @@ export class ChatroomService {
       },
     });
 
-    console.log('the user has left the room');
+    // console.log('the user has left the room');
     return { message: 'Left the chatroom' };
   }
 
@@ -335,7 +335,7 @@ export class ChatroomService {
         id: deleteRoomDto.roomId,
       },
     });
-    console.log('the room has been deleted');
+    // console.log('the room has been deleted');
     return { message: 'Chatroom deleted' };
   }
 

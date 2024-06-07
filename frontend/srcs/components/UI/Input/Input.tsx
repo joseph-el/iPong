@@ -92,29 +92,3 @@ export default function InputComponent(props) {
   );
 }
 
-/*
-
-    const [isVisible, setIsVisible] = React.useState(false);
-  
-    const toggleVisibility = () => setIsVisible(!isVisible);
-  
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-        console.log(email);
-
-    };
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const handleLogin = () => {
-      console.log("Email:", email);
-      console.log("Password:", password);
-  };
-
-
-*/

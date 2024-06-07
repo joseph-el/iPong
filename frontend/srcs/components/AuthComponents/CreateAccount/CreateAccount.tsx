@@ -65,7 +65,7 @@ export default function CreateAccount() {
     // TDOD: Close the sign in component and navigate to the sign up component
     // Clear the input fields state and error messages
     navigate("/auth");
-    console.log("Close");
+    // console.log("Close");
   };
 
   const getValidationErrors = async () => {
@@ -92,8 +92,8 @@ export default function CreateAccount() {
       return { id: "undefined_gender", message: "User gender required!" };
     }
 
-    console.log("No errors");
-    console.log("gender", UserGender);
+    // console.log("No errors");
+    // console.log("gender", UserGender);
     return null;
   };
 
@@ -108,8 +108,8 @@ export default function CreateAccount() {
       dispatch(setDateIsInvalid({ isInvalid: true }));
       dispatch(setDateErrorMessage(message));
     } else {
-      console.log("id: ", id);
-      console.log("message: ", message);
+      // console.log("id: ", id);
+      // console.log("message: ", message);
       dispatch(setIsInvalid({ id, isInvalid: true }));
       dispatch(setErrorMessage({ id, errorMessage: message }));
     }

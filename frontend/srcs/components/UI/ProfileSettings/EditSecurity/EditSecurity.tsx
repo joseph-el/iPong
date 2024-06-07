@@ -47,7 +47,7 @@ export default function EditSecurity(props) {
   const [isVisibleConfirm, setIsVisibleConfirm] = React.useState(false);
 
   const toggleVisibility = (inputType) => {
-    console.log("inputType", inputType);
+    // console.log("inputType", inputType);
     switch (inputType) {
       case InputType.Current:
         setIsVisibleCurrent(!isVisibleCurrent);

@@ -44,7 +44,7 @@ export class MessageService {
       }
     }
     const memebr = room.members.find((m) => m.memberID === senderId);
-    console.log(memebr);
+    // console.log(memebr);
     if (!memebr) {
       throw new HttpException('You are not a member of this room', 403);
     }

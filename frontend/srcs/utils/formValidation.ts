@@ -48,7 +48,9 @@ const isDateOfBirthValid = (dateOfBirth: string): string | null => {
     if (age < 10) {
         return "Invalid date of birth: Age must be greater than 10 years.";
     }
-
+    if (age > 100) {
+        return "Invalid date of birth: Age must be less than 100 years.";
+    }
     return null;
 };
 
