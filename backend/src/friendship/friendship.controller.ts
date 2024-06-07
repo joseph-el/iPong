@@ -55,7 +55,7 @@ export class FriendshipController {
     @Body() rejectReqDto: add_friendDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    console.log('hahahaha', rejectReqDto.friendId);
+    // console.log('hahahaha', rejectReqDto.friendId);
     return this.friendshipService.rejectFriend(userId, rejectReqDto.friendId);
   }
 
@@ -71,7 +71,7 @@ export class FriendshipController {
     @Query() quer: isFriendDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    console.log(quer.friendId, ' ', userId);
+    // console.log(quer.friendId, ' ', userId);
     return this.friendshipService.isFriend(userId, quer.friendId);
   }
 
@@ -134,8 +134,8 @@ export class FriendshipController {
     @Param('friendId') friendId: string,
     @GetCurrentUser('userId') userId: string,
   ) {
-    console.log('------------friendId', friendId);
-    console.log('----------User: ', userId);
+    // console.log('------------friendId', friendId);
+    // console.log('----------User: ', userId);
     return this.friendshipService.friendshipStatus(userId, friendId);
   }
 }
