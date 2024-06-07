@@ -58,7 +58,7 @@ export default function App({ UserId}) {
         // TODO: wait for about to set it
         setGameMatchHistory(response.data);
       } catch (error) {
-        console.log("Error fetching data jjj");
+        // console.log("Error fetching data jjj");
       }
     };
     fetchData();
@@ -81,7 +81,7 @@ export default function App({ UserId}) {
             username: response.data.username,
           };
         } catch (error) {
-          console.log("Error fetching data");
+          // console.log("Error fetching data");
           return null; // Handle the error case
         }
       });
