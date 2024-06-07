@@ -124,8 +124,8 @@ export class FriendshipService {
         HttpStatus.FORBIDDEN,
       );
     }
-    console.log('userIdhhhhhhh', userId);
-    console.log('friendbbbbbbbbbbbId', friendId);
+    // console.log('userIdhhhhhhh', userId);
+    // console.log('friendbbbbbbbbbbbId', friendId);
     const blocked = await this.databaseservice.blockedUser.findFirst({
       where: {
         OR: [
@@ -143,7 +143,7 @@ export class FriendshipService {
       },
     });
 
-    console.log('blocked:::::::::>', blocked );
+    // console.log('blocked:::::::::>', blocked );
     
     return blocked;
   }
@@ -193,7 +193,7 @@ export class FriendshipService {
 
     // Check if the friendship status is already accepted
     if (request.status === $Enums.FriendshipStatus.ACCEPTED) {
-      console.log('Friend request already accepted');
+      // console.log('Friend request already accepted');
       return new res_friendship(request);
     }
 
@@ -257,7 +257,7 @@ export class FriendshipService {
   }
 
   async friendList(userId: string) {
-    console.log('userxvxvxvxId', userId);
+    // console.log('userxvxvxvxId', userId);
 
     const friends = await this.databaseservice.friendship.findMany({
       where: {
@@ -307,15 +307,15 @@ export class FriendshipService {
     
     const dd = friends.map((friend) => {
 
-      console.log('friend', friend);
-      console.log('friend.from.userId', friend.from.userId);
-      console.log('friend.to.userId', friend.to.userId);
+      // console.log('friend', friend);
+      // console.log('friend.from.userId', friend.from.userId);
+      // console.log('friend.to.userId', friend.to.userId);
       if (friend.from.userId == userId) {
         return new profile(friend.to);
       }
       return new profile(friend.from);
     });
-      console.log('dd:::::::::::::::::::::::: ', dd);
+      // console.log('dd:::::::::::::::::::::::: ', dd);
     return  dd;
 
   
@@ -364,7 +364,7 @@ export class FriendshipService {
   }
 
   async blockUser(userId: string, friendId: string) {
-    console.log(userId, ' block ', friendId);
+    // console.log(userId, ' block ', friendId);
 
     if (userId === friendId) {
       throw new HttpException(
@@ -440,7 +440,7 @@ export class FriendshipService {
         },
       },
     });
-    console.log('commonRoom', commonRoom);
+    // console.log('commonRoom', commonRoom);
     // Create a new block
     const result = await this.databaseservice.blockedUser.create({
       data: {
@@ -468,7 +468,7 @@ export class FriendshipService {
   }
 
   async unblockUser(userId: string, friendId: string) {
-    console.log(userId, ' unblock ', friendId);
+    // console.log(userId, ' unblock ', friendId);
     if (userId === friendId) {
       throw new HttpException(
         'userd id is the same as firend id',
