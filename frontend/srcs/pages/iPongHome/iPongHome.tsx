@@ -13,6 +13,8 @@ import { setAchievementBadge } from "../../state/Achievement/AchievementSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 
+import { getUserLevel } from "../../utils/getCurrentLevel";
+
 export default function iPongGame() {
   type ModeType = "practice" | "onlineBattle" | null;
   const [mode, setMode] = useState<ModeType>(null);
@@ -49,13 +51,30 @@ export default function iPongGame() {
   }
 
   const dispatch = useDispatch<AppDispatch>();
-  const UserInfo = useSelector((state: RootState) => state.userState);
+  // const UserInfo = useSelector((state: RootState) => state.userState);
 
   const Achievement = useSelector((state: RootState) => state.achievement);
 
   const handleCloseCongratulationsBadge = () => {
+    console.log("close::>");
     dispatch(setAchievementBadge(null));
   };
+
+  // const [LastUserLevel, setLastUserLevel] = useState("");
+
+  // localStorage.setItem("setLastUserLevel", LastUserLevel);
+
+  // const loadNameFromLocalStorage = () => {
+  //   const savedName = localStorage.getItem("setLastUserLevel");
+  //   if (savedName) {
+  //     setLastUserLevel(savedName);
+  //   }
+  // };
+
+  // // Use useEffect to load the name when the component mounts
+  // useEffect(() => {
+  //   loadNameFromLocalStorage();
+  // }, []);
 
   return (
     <div className="container--home">
@@ -68,16 +87,16 @@ export default function iPongGame() {
         </button>
       </div>
 
-      {/* {Achievement != null ? ( */}
+      {Achievement != null ? (
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
             <CongratulationsBadge
-              level={Achievement}
+              level={2}
               CongratulationsBadge={handleCloseCongratulationsBadge}
             />
           </div>
         </div>
-      {/* ) : null} */}
+      ) : null}
     </div>
   );
 }
