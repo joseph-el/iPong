@@ -20,10 +20,13 @@ model User {
   intraId          String?          @unique
   online           Boolean          @default(false)
   firstName        String?
-  bio              String?
+  bio              String?          @default("No bio yet")
   lastName         String?
+<<<<<<< HEAD
   cover            String?
   level            Int              @default(0)
+=======
+>>>>>>> origin/BackendLayout
   isVerified       Boolean          @default(false)
   FriendsCount     Int              @default(0)
   githubLink       String?
@@ -31,6 +34,7 @@ model User {
   password         String?
   refreshToken     String?
   avatar           String?
+  cover            String?          @default("https://res.cloudinary.com/dnc5talpg/image/upload/v1717761298/iPong/pejq82xvp3p3sxdmb6gg.jpg")
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
   recipient        Notification[]  @relation("recipient")

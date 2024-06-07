@@ -45,7 +45,6 @@ export class FriendshipController {
     @GetCurrentUser('userId') userId: string,
     @Body('friendId') friendId: string,
   ) {
-    
     return this.friendshipService.isBlocked(userId, friendId);
   }
 
@@ -78,9 +77,7 @@ export class FriendshipController {
   @UseGuards(AtGuard)
   @Get('')
   async friendList(@GetCurrentUser('userId') userId: string) {
-  
     return await this.friendshipService.friendList(userId);
- 
   }
 
   @UseGuards(AtGuard)
