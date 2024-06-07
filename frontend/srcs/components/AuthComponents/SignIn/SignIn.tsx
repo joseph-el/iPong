@@ -91,7 +91,7 @@ export default function SignIn() {
     // TDOD: Close the sign in component and navigate to the sign up component
     // Clear the input fields state and error messages
     navigate("/auth");
-    console.log("Close");
+    // console.log("Close");
   };
 
   return (
