@@ -20,7 +20,7 @@ export class UserProfileService {
   ) {}
   async getMyProfile(userId: string) {
     const currentuser = await this.UsersService.getUserById(userId);
-    console.log('Current user:', currentuser);
+    // console.log('Current user:', currentuser);
     if (!currentuser) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
@@ -32,9 +32,9 @@ export class UserProfileService {
     if (!blocked) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-    console.log('userId:', userId, 'friendId:', friendId);
+    // console.log('userId:', userId, 'friendId:', friendId);
     const friend = await this.UsersService.getUserById(userId, friendId);
-    console.log('Friend:', friend);
+    // console.log('Friend:', friend);
     if (!friend) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
@@ -45,7 +45,7 @@ export class UserProfileService {
     userId: string,
     file: Express.Multer.File,
   ): Promise<string> {
-    console.log('Upload avatar:', userId, file);
+    // console.log('Upload avatar:', userId, file);
 
     const uploadStream = (fileBuffer: Buffer): Promise<UploadApiResponse> => {
       return new Promise((resolve, reject) => {
@@ -76,11 +76,11 @@ export class UserProfileService {
     if (!res) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-    console.log('Avatar uploaded:', avatar.secure_url);
+    // console.log('Avatar uploaded:', avatar.secure_url);
     return 'Avatar uploaded successfully';
   }
   async getAvatar(userId: string) {
-    console.log('Get avatar:', userId);
+    // console.log('Get avatar:', userId);
     // return;
     return await this.UsersService.getAvatar(userId);
   }
