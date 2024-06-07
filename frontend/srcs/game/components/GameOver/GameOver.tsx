@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import api from "../../../api/posts";
+import { set } from "lodash";
 
 interface GameOverProps {
   winner: string | null;
@@ -19,36 +20,44 @@ export default function GameOver({ winner, winnerId }: GameOverProps) {
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
-  const UserInfo = useSelector((state: RootState) => state.userState);
+  const  UserInfo = useSelector((state: RootState) => state.userState);
+  const [current, setCurrent] = useState(0);
 
+  useEffect(() => {
+
+
+    const fetchUser = async () => {
+    const LevelstoredValue = localStorage.getItem("lastLevel");
+    console.log("LevelstoredValueonStore ", LevelstoredValue);
+    const lastLevel = LevelstoredValue ? parseInt(LevelstoredValue) : 0;
+
+    try {
+      const response =  await api.get("/user-profile/me");
+      console.log("response", response);
+      
+      setCurrent(response.data.xp);
+    } catch (error) {
+      console.log("error", error);
+    }
+    
+    const currentLevel = getUserLevel(current);
+
+    console.log("currentLevel", currentLevel);
+    console.log("lastLevel", lastLevel);
+
+    if (currentLevel > lastLevel) {
+      dispatch(setAchievementBadge(currentLevel));
+    }
+  }
+  fetchUser();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-      
-      const LevelstoredValue = localStorage.getItem('lastLevel');
-      const lastLevel = LevelstoredValue ? parseInt(LevelstoredValue) : 0;
 
-
-
-      try {
-          const respose = await api.get(`/me
-      } catch (error) {
-
-
-      }
-      const currentLevel = getUserLevel(UserInfo.xp);
-
-      console.log("currentLevel", currentLevel);
-      console.log("lastLevel", lastLevel);
-
-      if (currentLevel > lastLevel) {
-        dispatch(setAchievementBadge(currentLevel));
-      }
-  
       navigate(PATHS.DEFAULT_GAME_PAGE);
-
-    }, 4000);
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
