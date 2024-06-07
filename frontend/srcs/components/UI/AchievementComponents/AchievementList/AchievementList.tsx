@@ -84,7 +84,7 @@ export default function AchievementList(props) {
     };
   });
 
-  console.log(UserAchievementList);
+  // console.log(UserAchievementList);
 
   return (
     <AchievementListWrapper>
