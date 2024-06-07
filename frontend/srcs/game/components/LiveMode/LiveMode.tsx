@@ -44,6 +44,7 @@ export default function LiveMode({
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [winner, setWinner] = useState<string | null>(null);
   const [winnerXp, setWinnerXp] = useState<number>(0);
+  const [loserXp, setLoserXp] = useState<number>(0);
   const [winnerId, setWinnerId] = useState<string | null>(null);
   const [player1Score, setPlayer1Score] = useState<number>(0);
   const [player2Score, setPlayer2Score] = useState<number>(0);
@@ -265,11 +266,12 @@ export default function LiveMode({
 
     socket.current?.on(
       SOCKET_EVENTS.GAME_END,
-      (data: { winnerUserName: string; winnerId: string; winner }) => {
+      (data: { winnerUserName: string; winnerId: string; winnerXp: number; loserUserXp: number }) => {
         if (data.winnerUserName) {
           setWinner(data.winnerUserName);
           setWinnerId(data.winnerId);
-          setWinnerXp(data.w);
+          setWinnerXp(data.winnerXp);
+          setLoserXp(data.loserUserXp);
         }
         setEndedGame(true);
       }
@@ -454,7 +456,7 @@ export default function LiveMode({
       {cancelledGame && (
         <CancelledMatch WhyReason="Opponent Disconnected! The match has been cancelled." />
       )}
-      {endedGame && <GameOver winner={winner} winnerId={winnerId} />}
+      {endedGame && <GameOver winner={winner} winnerId={winnerId} winnerXp={winnerXp} loserXp={loserXp}/>}
     </div>
   );
 }

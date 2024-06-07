@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../constants/paths";
 import "./GameOver.css";
 
-import { setAchievementBadge } from "../../../state/Achievement/AchievementSlice";
+import { setAchievementBadge , setUpdatedLevel} from "../../../state/Achievement/AchievementSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
@@ -28,17 +28,33 @@ export default function GameOver({
 
   const dispatch = useDispatch<AppDispatch>();
   const UserInfo = useSelector((state: RootState) => state.userState);
-  const [UpdatedLevel, setUpdatedLevel] = useState(0);
-
+  // const [UpdatedLevel, setUpdatedLevel] = useState<number>(0);
+  const achievement = useSelector((state: RootState) => state.achievement.ShowAchievementBadge);
   
+
+  console.log("achievement: in first ", achievement);
+
   useEffect(() => {
     const LevelstoredValue = localStorage.getItem("lastLevel");
     const lastLevel = LevelstoredValue ? parseInt(LevelstoredValue) : 0;
-    setUpdatedLevel(winnerId === UserInfo.id ? winnerXp! : loserXp!);
+    if (!winnerId) return;
+    if (!winnerXp || !loserXp) return;
+    const UpdatedLevel  = getUserLevel(winnerId === UserInfo.id ? winnerXp : loserXp);
+    
+    // setUpdatedLevel();
 
-    if (getUserLevel(UpdatedLevel) > lastLevel) {
+    console.log("winnerId", UserInfo.id);
+    console.log("winnerXp", winnerXp);
+    console.log("loserXp", loserXp);
+    console.log("UpdatedLevel", UpdatedLevel);
+    console.log("lastLevel", lastLevel);
+
+
+    if (UpdatedLevel > lastLevel) {
       dispatch(setAchievementBadge(UpdatedLevel));
-      localStorage.setItem("lastLevel", getUserLevel(UpdatedLevel).toString());
+      console.log("achievement: in edit ", achievement);
+      dispatch(setUpdatedLevel(UpdatedLevel));
+      // localStorage.setItem("lastLevel", UpdatedLevel.toString());
     }
   }, []);
 
@@ -47,7 +63,7 @@ export default function GameOver({
       setVisible(false);
 
       navigate(PATHS.DEFAULT_GAME_PAGE);
-    }, 6000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
