@@ -7,14 +7,14 @@ import SelectConversationIcon from "./select-converstation-icon.svg";
 const handleLastMessageSize = (message) => {
   const comparisonLength = 71;
 
-  console.log("data: ", message.length);
+  // console.log("data: ", message.length);
   if (message.length > comparisonLength) {
     return `${message.slice(0, comparisonLength)}...`;
   } else return message;
 };
 
 const MessageLenght = (message) => {
-  console.log("margin:", message.lenght);
+  // console.log("margin:", message.lenght);
   return message.lenght;
 };
 
