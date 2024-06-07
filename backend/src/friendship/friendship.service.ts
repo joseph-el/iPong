@@ -143,8 +143,8 @@ export class FriendshipService {
       },
     });
 
-    console.log('blocked:::::::::>', blocked );
-    
+    console.log('blocked:::::::::>', blocked);
+
     return blocked;
   }
 
@@ -303,10 +303,8 @@ export class FriendshipService {
         },
       },
     });
-    
-    
-    const dd = friends.map((friend) => {
 
+    const dd = friends.map((friend) => {
       console.log('friend', friend);
       console.log('friend.from.userId', friend.from.userId);
       console.log('friend.to.userId', friend.to.userId);
@@ -315,10 +313,8 @@ export class FriendshipService {
       }
       return new profile(friend.from);
     });
-      console.log('dd:::::::::::::::::::::::: ', dd);
-    return  dd;
-
-  
+    console.log('dd:::::::::::::::::::::::: ', dd);
+    return dd;
   }
 
   async pendingList(userId: string) {
@@ -504,7 +500,7 @@ export class FriendshipService {
             id: `${userId}+${friendId}`,
           },
           {
-           id: `${friendId}+${userId}`,
+            id: `${friendId}+${userId}`,
           },
         ],
       },
