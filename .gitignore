@@ -44,8 +44,6 @@ build/Release
 # Output of 'npm pack'
 *.tgz
 
-# dotenv environment variable file
-.env
 
 # For WebStorm/PhpStorm/IntelliJ IDE files
 .idea/

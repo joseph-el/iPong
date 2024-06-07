@@ -97,6 +97,9 @@ export class MatchmakingService {
         this.connectionService.updateUserStatus(player1Id, UserStatus.MATCHED);
         this.connectionService.updateUserStatus(player2Id, UserStatus.MATCHED);
 
+        const player1Skin = this.connectionService.getUserSkin(player1Id);
+        const player2Skin = this.connectionService.getUserSkin(player2Id);
+
         player1Socket.emit(SOCKET_EVENT.UPDATING_USER_STATUS, {
           status: UserStatus.WAITING_GAME,
         });
@@ -107,10 +110,12 @@ export class MatchmakingService {
         player1Socket.emit(SOCKET_EVENT.USER_MATCHED, {
           opponentId: player2Id,
           opponentUserName: player2Data.username,
+          opponentSkinPath: player2Skin,
         });
         player2Socket.emit(SOCKET_EVENT.USER_MATCHED, {
           opponentId: player1Id,
           opponentUserName: player1Data.username,
+          opponentSkinPath: player1Skin,
         });
 
         this.connectionService.updateUserStatus(
@@ -231,7 +236,6 @@ export class MatchmakingService {
         });
       }, 5000);
     } else {
-      // console.log('here');
       this.server.to(roomId).emit(SOCKET_EVENT.NOT_ENOUGH_PLAYERS, {
         reason: SOCKET_ERROR.NOT_ENOUGH_PLAYERS_ERR,
       });

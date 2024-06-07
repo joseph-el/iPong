@@ -12,6 +12,10 @@ import { ConnectionService } from './connection.service';
 import { Logger } from '@nestjs/common';
 import { SOCKET_ERROR, SOCKET_EVENT } from './constants/socket.constants';
 
+interface JoinQueueMessage {
+  userSelectedSkin: string;
+}
+
 @WebSocketGateway({ namespace: 'pongGame' })
 export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private logger: Logger = new Logger(GameGateway.name);
@@ -74,10 +78,10 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('joinQueue')
-  async handleJoinQueue(client: Socket) {
-    this.logger.warn(`client [${client.id}] attempting to join Queue...`);
+  async handleJoinQueue(client: Socket, ...args: JoinQueueMessage[]) {
     const userId = this.connectionService.getUserBySocketId(client.id);
     if (userId && this.connectedUsers.has(userId)) {
+      this.connectionService.setUserSkin(userId, args[0].userSelectedSkin);
       await this.matchmakingService.addToQueue(client, userId);
     }
   }

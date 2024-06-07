@@ -30,12 +30,15 @@ export class GameAlgo {
   bgImage: HTMLImageElement | null;
   isBgImageLoaded: boolean = false;
   isSkinImageLoaded: boolean = false;
+  isBotSkinImageLoaded: boolean = false;
   skinImage: HTMLImageElement | null;
+  botSkinImage: HTMLImageElement | null;
   hitBallColor: string;
   hitBallSizeX: number;
   hitBallSizeY: number;
   mapPath: string;
   skinPath: string;
+  botSkinPath: string;
   winnerCallback: (winner: string) => void;
   playerScoreCallback: (p1Score: number) => void;
   botScoreCallback: (p2Score: number) => void;
@@ -44,6 +47,7 @@ export class GameAlgo {
     ctx: CanvasRenderingContext2D,
     mapPath: string,
     skinPath: string,
+    botSkinPath: string,
     winnerCallback: (winner: string) => void,
     playerScoreCallback: (p1Score: number) => void,
     botScoreCallback: (p2Score: number) => void
@@ -59,6 +63,7 @@ export class GameAlgo {
     this.ball = null;
     this.mapPath = mapPath;
     this.skinPath = skinPath;
+    this.botSkinPath = botSkinPath;
     this.winnerCallback = winnerCallback;
     this.playerScoreCallback = playerScoreCallback;
     this.botScoreCallback = botScoreCallback;
@@ -216,6 +221,7 @@ export class GameAlgo {
   preLoadImages() {
     this.bgImage = new Image();
     this.skinImage = new Image();
+    this.botSkinImage = new Image();
 
     this.bgImage.onload = () => {
       this.isBgImageLoaded = true;
@@ -223,6 +229,10 @@ export class GameAlgo {
 
     this.skinImage.onload = () => {
       this.isSkinImageLoaded = true;
+    };
+
+    this.botSkinImage.onload = () => {
+      this.isBotSkinImageLoaded = true;
     };
 
     this.bgImage.onerror = () => {
@@ -233,7 +243,12 @@ export class GameAlgo {
       this.isSkinImageLoaded = false;
     };
 
+    this.botSkinImage.onerror = () => {
+      this.isBotSkinImageLoaded = false;
+    };
+
     this.bgImage.src = this.mapPath;
+    this.botSkinImage.src = this.botSkinPath;
     this.skinImage.src = this.skinPath;
   }
 
@@ -315,15 +330,18 @@ export class GameAlgo {
         this.player!.width,
         this.player!.height
       );
+    } else {
+      this.player!.drawPlayer(ctx);
+    }
+    if (this.isBotSkinImageLoaded && this.botSkinImage) {
       ctx.drawImage(
-        this.skinImage,
+        this.botSkinImage,
         this.computer!.x,
         this.computer!.y,
         this.computer!.width,
         this.computer!.height
       );
     } else {
-      this.player!.drawPlayer(ctx);
       this.computer!.drawPlayer(ctx);
     }
     this.drawBallTrail(ctx);

@@ -22,6 +22,11 @@ model User {
   firstName        String?
   bio              String?          @default("No bio yet")
   lastName         String?
+<<<<<<< HEAD
+  cover            String?
+  level            Int              @default(0)
+=======
+>>>>>>> origin/BackendLayout
   isVerified       Boolean          @default(false)
   FriendsCount     Int              @default(0)
   githubLink       String?
@@ -42,16 +47,38 @@ model User {
   ownedRooms       ChatRoom[]
   roomMember       ChatRoomMember[]
 
-
   // (Game)
   player1          Game[]           @relation("player1")
   player2          Game[]           @relation("player2")
   winner           Game[]           @relation("winner")
 
+
   // l3alamia
-  //TODO add xp to dto
   xp               Int              @default(0)
   wallet           Int              @default(10)
+
+  // loby
+  skins            Skin[]
+  boards           Board[]
+}
+
+
+model Skin {
+  id          String    @id @default(uuid())
+  name        String
+  imageUrl    String
+  price       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  users       User[]
+}
+
+model Board {
+  id          String    @id @default(uuid())
+  name        String
+  imageUrl    String
+  price       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  users       User[]
 }
 
 model Friendship {

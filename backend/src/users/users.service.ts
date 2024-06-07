@@ -3,15 +3,25 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { DatabaseService } from 'src/database/database.service';
+import { STORE_DEFAULT } from 'src/store/constants/default-paths';
 
 @Injectable()
 export class UsersService {
   constructor(private DatabaseService: DatabaseService) {}
   async createUser(createUserDto: CreateUserDto) {
     return this.DatabaseService.user.create({
-      data: createUserDto,
+      data: {
+        ...createUserDto,
+        skins: {
+          connect: [{ id: STORE_DEFAULT.SKIN_DEFAULT_ID }],
+        },
+        boards: {
+          connect: [{ id: STORE_DEFAULT.BOARD_DEFAULT_ID }],
+        },
+      },
     });
   }
+
   async update(userId: string, udateuserDto: UpdateUserDto) {
     if (udateuserDto.password) {
       const hashPassword = await bcrypt.hash(udateuserDto.password, 10);

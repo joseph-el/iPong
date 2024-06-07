@@ -8,19 +8,28 @@ import { GameState } from "../../types/GameState";
 import ErrorConnection from "../ConnectionError/ConnectionError";
 import LiveMode from "../LiveMode/LiveMode";
 import FoundMatch from "../FoundMatch/FoundMatch";
-import "./MatchMaking.css";
 import LookingForMatch from "../LookingForMatch/LookingForMatch";
+import "./MatchMaking.css";
 
 const accessToken = document?.cookie
   ?.split("; ")
   ?.find((row) => row.startsWith("access_token="))
   ?.split("=")[1];
 
-export default function MatchMaking() {
+interface MatchMakingProps {
+  userSelectedSkin: string;
+  userSelectedBoard: string;
+}
+
+export default function MatchMaking({
+  userSelectedSkin,
+  userSelectedBoard,
+}: MatchMakingProps) {
   const socketRef = useRef<Socket | null>(null);
   const [matchMakingStatus, setMatchMakingStatus] = useState<string>("pending");
   const [opponent, setOpponent] = useState<string | null>(null);
   const [opponentId, setOpponentId] = useState<string | null>(null);
+  const [opponentSkin, setOpponentSkin] = useState<string>(userSelectedSkin);
   const [error, setError] = useState<string | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [playerPos, setPlayerPos] = useState<number | null>(null);
@@ -30,7 +39,7 @@ export default function MatchMaking() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // console.log(accessToken);
+    console.log(accessToken);
 
     if (!accessToken) {
       setError("could not parse access_token from cookie");
@@ -97,7 +106,9 @@ export default function MatchMaking() {
     });
     socket.on(SOCKET_EVENTS.CONNECTION_SETUP_COMPLETE, () => {
       console.log(STATE.CONNECTING_SUCCESS);
-      socket.emit("joinQueue");
+      socket.emit("joinQueue", {
+        userSelectedSkin,
+      });
     });
     socket.on(SOCKET_EVENTS.QUEUE_STATUS, (data: { queueStatus: string }) => {
       console.log(`${STATE.QUEUE_STATUS}: ${data.queueStatus}`);
@@ -132,10 +143,15 @@ export default function MatchMaking() {
     });
     socket.on(
       SOCKET_EVENTS.MATCH_FOUND,
-      (data: { opponentUserName: string; opponentId: string }) => {
+      (data: {
+        opponentId: string;
+        opponentUserName: string;
+        opponentSkinPath: string;
+      }) => {
         console.log(`${STATE.MATCH_FOUND}: ${data.opponentUserName}`);
-        setOpponent(data.opponentUserName);
         setOpponentId(data.opponentId);
+        setOpponent(data.opponentUserName);
+        setOpponentSkin(data.opponentSkinPath);
         setMatchFound(true);
       }
     );
@@ -177,7 +193,6 @@ export default function MatchMaking() {
 
     return () => {
       cleanUpSocket();
-      navigate(PATHS.DEFAULT_GAME_PAGE);
     };
   }, []);
 
@@ -217,6 +232,9 @@ export default function MatchMaking() {
           socketRef={socketRef}
           opponent={opponent}
           opponentId={opponentId}
+          opponentSkinPath={opponentSkin}
+          userSkinPath={userSelectedSkin}
+          selectedBoardPath={userSelectedBoard}
           roomId={roomId}
           playerPos={playerPos}
           gameData={gameState}
