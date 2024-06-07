@@ -8,7 +8,7 @@ export class NotificationsListener implements OnModuleInit{
 
   onModuleInit() {
     this.notificationsService.on('sendNotification', (payload: CreateNotificationDto) => {
-      console.log('Event received:', payload);
+      // console.log('Event received:', payload);
       this.notificationsService.create(payload);
     });
   }
