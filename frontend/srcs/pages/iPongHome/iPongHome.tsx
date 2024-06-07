@@ -52,6 +52,7 @@ export default function iPongGame() {
     return <BotMode />;
   }
   if (mode && mode === "onlineBattle") {
+    
     localStorage.setItem("lastLevel", getUserLevel(UserInfo.xp).toString());
 
     return <MatchMaking />;
