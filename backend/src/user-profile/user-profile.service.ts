@@ -84,4 +84,43 @@ export class UserProfileService {
     // return;
     return await this.UsersService.getAvatar(userId);
   }
+
+  async uploadCover(
+    userId: string,
+    file: Express.Multer.File,
+  ): Promise<string> {
+    // console.log('Upload cover:', userId, file);
+
+    const uploadStream = (fileBuffer: Buffer): Promise<UploadApiResponse> => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'iPong',
+            overwrite: true,
+            resource_type: 'image',
+            unique_filename: false,
+            filename_override: userId + "_cover",
+            use_filename: true,
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          },
+        );
+
+        stream.end(fileBuffer);
+      });
+    };
+
+    const cover: UploadApiResponse = await uploadStream(file.buffer);
+    const res = await this.UsersService.updateCover(userId, cover.secure_url);
+    if (!res) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    // console.log('Cover uploaded:', cover.secure_url);
+    return 'Cover uploaded successfully';
+  }
 }

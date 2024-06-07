@@ -25,6 +25,8 @@ export class UserProfileDto {
     this.linkedInLink = userData.linkedInLink;
     this.githubLink = userData.githubLink;
     this.FriendsCount = userData.FriendsCount;
+    this.intraId = userData.intraId;
+    this.cover = userData.cover;
     const firstFriendship = userData.firstFriendship || [];
     const secondFriendship = userData.secondFriendship || [];
     if (is_friend) {
@@ -51,5 +53,7 @@ export class UserProfileDto {
   email: string;
   username: string;
   friendship: Friendship[];
+  intraId: string;
+  cover: string;
   // wonGamesNumber: number;
 }
