@@ -46,7 +46,7 @@ export default function NavBar() {
     const fetchData = async () => {
       try {
         const response = await api.get("/users/allusers");
-        console.log("response: ", response.data);
+        // console.log("response: ", response.data);
         const _users = response.data.map((user, index) => {
           return {
             id: index,
@@ -80,7 +80,7 @@ export default function NavBar() {
     const searchTerm = e.target.value.toLowerCase();
 
     if (searchTerm === "") {
-      console.log("empty");
+      // console.log("empty");
       setActiveSearch([]);
       if (!searchTerm) setSearchTerm(true);
       return;
@@ -94,7 +94,7 @@ export default function NavBar() {
       .slice(0, 8);
 
     setActiveSearch(matchedUsers);
-    console.log(matchedUsers);
+    // console.log(matchedUsers);
   };
 
   const handleIconClick = () => {
