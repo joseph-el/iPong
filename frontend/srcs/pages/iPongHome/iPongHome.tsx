@@ -21,6 +21,11 @@ export default function iPongGame() {
   const [urlMode, setUrlMode] = useState("default");
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const Achievement = useSelector(
+    (state: RootState) => state.achievement.ShowAchievementBadge
+  );
+  const UserInfo = useSelector((state: RootState) => state.userState);
 
   /* i checked the path to extract coming from: mode */
   useEffect(() => {
@@ -47,34 +52,14 @@ export default function iPongGame() {
     return <BotMode />;
   }
   if (mode && mode === "onlineBattle") {
+    localStorage.setItem("lastLevel", getUserLevel(UserInfo.xp).toString());
+
     return <MatchMaking />;
   }
 
-  const dispatch = useDispatch<AppDispatch>();
-  // const UserInfo = useSelector((state: RootState) => state.userState);
-
-  const Achievement = useSelector((state: RootState) => state.achievement);
-
   const handleCloseCongratulationsBadge = () => {
-    console.log("close::>");
     dispatch(setAchievementBadge(null));
   };
-
-  // const [LastUserLevel, setLastUserLevel] = useState("");
-
-  // localStorage.setItem("setLastUserLevel", LastUserLevel);
-
-  // const loadNameFromLocalStorage = () => {
-  //   const savedName = localStorage.getItem("setLastUserLevel");
-  //   if (savedName) {
-  //     setLastUserLevel(savedName);
-  //   }
-  // };
-
-  // // Use useEffect to load the name when the component mounts
-  // useEffect(() => {
-  //   loadNameFromLocalStorage();
-  // }, []);
 
   return (
     <div className="container--home">
@@ -87,7 +72,7 @@ export default function iPongGame() {
         </button>
       </div>
 
-      {Achievement != null ? (
+      {Achievement !== null ? (
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
             <CongratulationsBadge
