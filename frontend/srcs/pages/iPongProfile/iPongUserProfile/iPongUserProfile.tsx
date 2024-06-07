@@ -115,7 +115,8 @@ export default function UserProfile() {
 
   const UserInfo = useSelector((state: RootState) => state.userState);
 
-  console.log("UserInfo:xXPPPPP ", UserInfo.xp);
+
+
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
