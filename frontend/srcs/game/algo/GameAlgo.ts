@@ -377,7 +377,7 @@ export class GameAlgo {
 
   /* CleanUp Methods */
   cleanupImages() {
-    console.log("clean up happened");
+    // console.log("clean up happened");
     if (this.bgImage) {
       this.bgImage.src = "";
     }
@@ -386,7 +386,7 @@ export class GameAlgo {
     }
   }
   cleanupSounds() {
-    console.log("clean up happened");
+    // console.log("clean up happened");
     if (this.ballHitSound) {
       this.ballHitSound.pause();
       this.ballHitSound.currentTime = 0;
