@@ -18,7 +18,7 @@ export default function StartFriendChat(props) {
 
   const handleStartChat = () => {
     if (value.size === 0) {
-      console.log("Please select a friend");
+      // console.log("Please select a friend");
       setIsInvalid(true);
       return;
     }
