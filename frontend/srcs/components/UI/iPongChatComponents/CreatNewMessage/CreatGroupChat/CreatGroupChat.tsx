@@ -229,11 +229,11 @@ export default function CreatGroupChat(props) {
             className="buttons-target"
             onClick={() => {
               handelPassingData();
-              console.log("Group Name: ", GroupName);
-              console.log("Group Type: ", GroupType);
-              console.log("Group Password: ", GroupPassword);
-              console.log("Group Members: ", GroupMembers);
-              console.log("eee: ", displayGroupType);
+              // console.log("Group Name: ", GroupName);
+              // console.log("Group Type: ", GroupType);
+              // console.log("Group Password: ", GroupPassword);
+              // console.log("Group Members: ", GroupMembers);
+              // console.log("eee: ", displayGroupType);
             }}
           >
             <CustomButton
