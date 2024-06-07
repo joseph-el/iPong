@@ -24,6 +24,7 @@ export class UserProfileController {
     private readonly userProfileService: UserProfileService,
     private readonly UsersService: UsersService,
     private readonly CloudinaryService: CloudinaryService,
+    private readonly userservice: UsersService,
   ) {}
 
   @UseGuards(AtGuard)
@@ -65,5 +66,21 @@ export class UserProfileController {
   @Get('avatar')
   async getAvatar(@Body() userId: string) {
     return await this.userProfileService.getAvatar(userId);
+  }
+
+  @UseGuards(AtGuard)
+  @Post('cover')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadCover(
+    @GetCurrentUser('userId') userId: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.userProfileService.uploadCover(userId, file);
+  }
+
+  @UseGuards(AtGuard)
+  @Get('cover')
+  async getCover(@Body() userId: string) {
+    return await this.userservice.getCover(userId);
   }
 }

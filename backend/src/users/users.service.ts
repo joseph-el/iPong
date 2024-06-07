@@ -227,4 +227,25 @@ export class UsersService {
       },
     });
   }
+  async updateCover(id: string, cover: string) {
+    return this.DatabaseService.user.update({
+      where: {
+        userId: id,
+      },
+      data: {
+        cover: cover,
+      },
+    });
+  }
+
+  async getCover(id: string) {
+    return this.DatabaseService.user.findUnique({
+      where: {
+        userId: id,
+      },
+      select: {
+        cover: true,
+      },
+    });
+  }
 }
