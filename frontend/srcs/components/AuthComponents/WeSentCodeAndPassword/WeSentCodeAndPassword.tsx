@@ -49,14 +49,14 @@ export default function WeSentCodeAndPassword(props) {
     } else if (props.title === "Choose a new password") {
       navigate("/auth/reset-password");
     }
-    console.log("Close");
+    // console.log("Close");
   };
   const handelonSubmit = async () => {
     if (
       props.title === "Choose a new password" ||
       props.title === "You'll need a password"
     ) {
-      console.log("user_password: ", ret);
+      // console.log("user_password: ", ret);
 
       if (typeof validatePassword(ret) === "string") {
         const errorMessage = validatePassword(ret);
