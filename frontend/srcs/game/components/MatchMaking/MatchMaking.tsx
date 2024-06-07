@@ -30,7 +30,7 @@ export default function MatchMaking() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(accessToken);
+    // console.log(accessToken);
 
     if (!accessToken) {
       setError("could not parse access_token from cookie");
