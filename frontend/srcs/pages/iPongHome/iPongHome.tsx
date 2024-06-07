@@ -25,9 +25,10 @@ export default function iPongGame() {
   const Achievement = useSelector(
     (state: RootState) => state.achievement.ShowAchievementBadge
   );
+
+  const UpdatedLevel = useSelector((state: RootState) => state.achievement.UpdatedLevel );
   const UserInfo = useSelector((state: RootState) => state.userState);
 
-  /* i checked the path to extract coming from: mode */
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const modeParam = searchParams.get("mode");
@@ -47,19 +48,19 @@ export default function iPongGame() {
     navigate(PATHS.ONLINE_RANDOM_MODE);
   }
 
-  /* Check What Mode To Render */
   if (mode && mode === "practice") {
     return <BotMode />;
   }
   if (mode && mode === "onlineBattle") {
     
-    localStorage.setItem("lastLevel", getUserLevel(UserInfo.xp).toString());
+    localStorage.setItem("lastLevel", getUserLevel(UpdatedLevel!).toString());
 
     return <MatchMaking />;
   }
 
   const handleCloseCongratulationsBadge = () => {
     dispatch(setAchievementBadge(null));
+    console.log("achievement: yes reset", Achievement);
   };
 
   return (
@@ -77,7 +78,7 @@ export default function iPongGame() {
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
             <CongratulationsBadge
-              level={2}
+              level={Achievement}
               CongratulationsBadge={handleCloseCongratulationsBadge}
             />
           </div>
