@@ -138,6 +138,7 @@ export default function BotMode({
         <IPongGameNav
           opponentName="Ai Bot"
           opponentAvatarPath={GAME_SETTING.BOT_ICON}
+          playerPos={1}
         />
         <div className="progress-container">
           {!gameStarted && <ProgressBar progress={progress} />}

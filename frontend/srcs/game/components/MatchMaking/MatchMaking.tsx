@@ -162,7 +162,6 @@ export default function MatchMaking({
         playerPos: number;
         initGameState: GameState;
       }) => {
-        console.log(data);
         setRoomId(data.roomId);
         setPlayerPos(data.playerPos);
         setGameState(data.initGameState);

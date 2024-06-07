@@ -91,12 +91,6 @@ export default function LiveMode({
 
   /* Load Assets */
   useEffect(() => {
-    console.log("-----------------------");
-    console.log("user skin path = ", userSkinPath);
-    console.log("opponent skin path = ", opponentSkinPath);
-    console.log("board: ", selectedBoardPath);
-    console.log("-----------------------");
-
     // Load assets
     const bgImage = new Image();
     bgImage.onload = () => setIsBgImageLoaded(true);
@@ -449,12 +443,12 @@ export default function LiveMode({
     });
   };
 
-  /* TODO: FETCH OPPONENT AVATAR PATH HERE to change: opponentAvatarPath*/
   return (
-    <div className="container">
+    <div className="live-mode-container">
       {!cancelledGame && !endedGame && (
         <div className="iPongGame-frame">
           <IPongGameNav
+            playerPos={playerPos}
             opponentName={opponent}
             opponentAvatarPath=""
           ></IPongGameNav>
