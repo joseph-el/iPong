@@ -42,21 +42,21 @@ export class ConnectionService {
 
   /* fot debugging propose to check live values */
   dataLogger() {
-    console.log('-----------data Logger check------------');
-    console.log('Users Sockets Map:');
+    // console.log('-----------data Logger check------------');
+    // console.log('Users Sockets Map:');
     this.usersSocketsMap.forEach((socket, userId) => {
       console.log(`UserId: ${userId}, SocketId: ${socket?.id}`);
     });
 
-    console.log('Users Sockets IDs:');
+    // console.log('Users Sockets IDs:');
     this.usersSocketsIds.forEach((userId, socketId) => {
-      console.log(`SocketId: ${socketId}, UserId: ${userId}`);
+      // console.log(`SocketId: ${socketId}, UserId: ${userId}`);
     });
 
     console.log('Users Status:');
     this.usersStatus.forEach((status, userId) => {
-      console.log(`UserId: ${userId}, Status: ${status}`);
+      // console.log(`UserId: ${userId}, Status: ${status}`);
     });
-    console.log('--------------------------------------');
+    // console.log('--------------------------------------');
   }
 }
