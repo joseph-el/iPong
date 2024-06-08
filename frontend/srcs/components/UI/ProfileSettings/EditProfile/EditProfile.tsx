@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import "./EditProfile.css";
 import { EditProfileWrapper } from "./EditProfileWrapper";
-import CoverImage from "../../../../pages/iPongProfile/assets/cover-image.jpeg";
 import {
   Avatar,
   Button,
   Input,
   cn,
   Textarea,
+  Spacer,
   Switch,
   ScrollShadow,
 } from "@nextui-org/react";
@@ -54,11 +54,15 @@ export default function EditProfile(props) {
   });
 
   const [isSelected, setIsSelected] = useState(UserInfo.isVerified);
-  const [selectedCover, setSelectedCover] = useState(CoverImage);
+  const [selectedCover, setSelectedCover] = useState(null);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [errorInput, setErrorInput] = useState([]);
   const [error, setError] = useState("");
   const [ReadyForSubmit, setReadyForSubmit] = useState(false);
+
+  const [AvatarFile, setAvatarFile] = useState(null);
+  const [CoverFile, setCoverFile] = useState(null);
+
   const InputTypes = [
     {
       type: "text",
@@ -80,8 +84,7 @@ export default function EditProfile(props) {
     },
     {
       type: "Textarea",
-      placeholder:
-        "Unraveling the mysteries of life, from cells to ecosystems. Join the journey! 🌱🔬 Science and discovery.",
+      placeholder: "set your bio here",
       label: "Bio:\f\f\f\f\f\f\f\f\f\f\f",
       name: "bio",
     },
@@ -100,29 +103,106 @@ export default function EditProfile(props) {
   ];
 
   const handleChange = (e) => {
-    if (errorInput)
-      setErrorInput([]);
-    if (error.length > 0)
-      setError("");
+    if (errorInput) setErrorInput([]);
+    if (error.length > 0) setError("");
     const { name, value } = e.target;
+    if (name === "bio" && value.length > 100) return;
+
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  
   useEffect(() => {
     const SubmitData = async () => {
+      await api.post("/users/update", {
+        firstName: formData.name.split(" ")[0],
+        lastName: formData.name.split(" ").slice(1).join(" "),
+        email: formData.email,
+        username: formData.username,
+        bio: formData.bio,
+        githubLink: formData.githubLink,
+        linkedInLink: formData.linkedInLink,
+        isVerified: isSelected,
+      });
+
+      if (AvatarFile) {
+        const formDataAvatar = new FormData();
+        formDataAvatar.append("file", AvatarFile!);
+
         try {
-            const respose = await api.put(`/users/${UserInfo.id}`, {
-                ...formData,
-                isVerified: isSelected,
-            });
+          await api.post(
+            "user-profile/avatar",
+            formDataAvatar,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+        } catch (error) {
+          console.log("error upload avatar :", error);
         }
-        catch {}
-    }
+      }
+
+      if (CoverFile) {
+        const formDataAvatar = new FormData();
+        formDataAvatar.append("file", CoverFile!);
+
+        try {
+          await api.post(
+            "user-profile/cover",
+            formDataAvatar,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+   
+        } catch (error) {
+          console.log("error upload avatar :", error);
+        }
+      }
+
+      props.closeEditProfile();
+    };
     ReadyForSubmit && SubmitData();
   }, [ReadyForSubmit]);
 
+  const handleImageChange = (event, type) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
+    if (file.size > 2 * 1024 * 1024) {
+      setError("File size should not exceed 2MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const image = new Image();
+      image.onload = () => {
+        if (type === "avatar" && (image.width < 50 || image.height < 50)) {
+          setError("Avatar image should be at least 50x50 pixels");
+        } else if (
+          type === "cover" &&
+          (image.width < 600 || image.height < 200)
+        ) {
+          setError("Cover image should be at least 500x200 pixels");
+        } else {
+          setError("");
+          if (type === "avatar") {
+            setAvatarFile(file);
+            setSelectedAvatar(reader.result);
+          } else if (type === "cover") {
+            setCoverFile(file);
+            setSelectedCover(reader.result);
+          }
+        }
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleDone = async () => {
     // console.log("formData: ", formData);
@@ -170,8 +250,7 @@ export default function EditProfile(props) {
     }
 
     if (formData.bio.length === 0) {
-      formData["bio"] =
-        "Unraveling the mysteries of life, from cells to ecosystems. Join the journey! 🌱🔬 Science and discovery.";
+      formData["bio"] = "\f\f\f\f\f\f\f\f";
     }
 
     if (formData.linkedInLink.length !== 0) {
@@ -182,57 +261,17 @@ export default function EditProfile(props) {
     }
 
     if (formData.githubLink.length !== 0) {
-      if (!isValidURL(formData.linkedInLink, "github")) {
+      if (!isValidURL(formData.githubLink, "github")) {
         setErrorInput({ type: 5, error: "Invalid Github link" });
         return;
       }
     }
 
     console.log("ALL GOOD");
-    props.closeEditProfile();
+    setReadyForSubmit(true);
     // TODO: call CloseEditProfile function from parent component
   };
 
-  const handleImageChange = (event, type) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      // 2MB
-      setError("File size should not exceed 2MB");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const image = new Image();
-      image.onload = () => {
-        // Dimension checks
-
-        console.log("type: ", type);
-        console.log(image.width);
-        console.log(image.height);
-
-        if (type === "avatar" && (image.width < 50 || image.height < 50)) {
-          setError("Avatar image should be at least 50x50 pixels");
-        } else if (
-          type === "cover" &&
-          (image.width < 600 || image.height < 200)
-        ) {
-          setError("Cover image should be at least 500x200 pixels");
-        } else {
-          setError("");
-          if (type === "avatar") {
-            setSelectedAvatar(reader.result);
-          } else if (type === "cover") {
-            setSelectedCover(reader.result);
-          }
-        }
-      };
-      image.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  };
 
   return (
     <EditProfileWrapper>
@@ -242,7 +281,7 @@ export default function EditProfile(props) {
         <img
           className="user-cover-image-edit-profile"
           alt="NextUI Fruit Image with Zoom"
-          src={selectedCover}
+          src={!selectedCover ? UserInfo.cover : selectedCover}
         />
         <Avatar
           src={getAvatarSrc(
@@ -299,10 +338,9 @@ export default function EditProfile(props) {
             input.type === "Textarea" ? (
               <Textarea
                 key={index}
-                isInvalid={errorInput.type == index}
-                errorMessage={errorInput.error}
                 labelPlacement="outside-left"
                 label={input.label}
+                defaultValue={formData[input.name]}
                 value={formData[input.name]}
                 className="input-edit-profile"
                 classNames={{
@@ -313,7 +351,7 @@ export default function EditProfile(props) {
                     "placeholder:text-default-700/50 dark:placeholder:text-white/60",
                   ],
                 }}
-                placeholder={input.placeholder}
+                placeholder="Enter your description"
                 onChange={handleChange}
                 name={input.name}
               />
@@ -321,7 +359,7 @@ export default function EditProfile(props) {
               <Input
                 errorMessage={errorInput.error}
                 isInvalid={errorInput.type == index}
-                isDisabled={input.name === "email"} // TODO: Enable email when intra id is empty
+                isDisabled={input.name === "email" && UserInfo.intraId !== ""} // TODO: Enable email when intra id is empty
                 size={"md"}
                 labelPlacement="outside-left"
                 key={index}
