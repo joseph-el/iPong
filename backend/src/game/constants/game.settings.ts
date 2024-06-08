@@ -13,5 +13,5 @@ export const GAME_SETTINGS = {
   /* Ball Settings */
   BALL_SIZE_PERCENTAGE: 2.5,
   BALL_SPEED_FACTOR: 0.015,
-  BALL_VELOCITY: 5,
+  BALL_VELOCITY: 4,
 };

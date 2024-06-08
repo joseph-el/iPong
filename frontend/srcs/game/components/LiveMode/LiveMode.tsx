@@ -121,10 +121,27 @@ export default function LiveMode({
     scoringSoundRef.current = scoringSound;
 
     return () => {
-      bgImageRef.current = null;
-      userSkinImgRef.current = null;
-      OpponentSkinImgRef.current = null;
+      if (bgImageRef.current) {
+        bgImageRef.current.src = "";
+        bgImageRef.current = null;
+      }
+      if (userSkinImgRef.current) {
+        userSkinImgRef.current.src = "";
+        userSkinImgRef.current = null;
+      }
+      if (OpponentSkinImgRef.current) {
+        OpponentSkinImgRef.current.src = "";
+        OpponentSkinImgRef.current = null;
+      }
+      if (hitSoundRef.current && !hitSoundRef.current.paused) {
+        hitSoundRef.current.pause();
+        hitSoundRef.current.currentTime = 0;
+      }
       hitSoundRef.current = null;
+      if (scoringSoundRef.current && !scoringSoundRef.current.paused) {
+        scoringSoundRef.current.pause();
+        scoringSoundRef.current.currentTime = 0;
+      }
       scoringSoundRef.current = null;
     };
   }, []);
@@ -369,10 +386,12 @@ export default function LiveMode({
       if (hitSoundRef.current) {
         hitSoundRef.current.pause();
         hitSoundRef.current.currentTime = 0;
+        hitSoundRef.current = null;
       }
       if (scoringSoundRef.current) {
         scoringSoundRef.current.pause();
         scoringSoundRef.current.currentTime = 0;
+        scoringSoundRef.current = null;
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
