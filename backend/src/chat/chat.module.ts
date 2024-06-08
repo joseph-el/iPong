@@ -7,6 +7,6 @@ import { NotificationsService } from 'src/notifications/notifications.service';
 import { DatabaseService } from 'src/database/database.service';
 
 @Module({
-    providers: [ChatGateway, JwtService, DatabaseModule, NotificationsService, DatabaseService],
+    providers: [ChatGateway],
 })
 export class ChatModule {}
