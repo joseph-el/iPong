@@ -22,6 +22,8 @@ import { useNavigate } from "react-router-dom";
 import AddFriendIcon from "../../../pages/iPongProfile/assets/add-friend-icon.svg";
 import PenddingIcon from "../../../pages/iPongProfile/assets/penddingicon.svg";
 import AlreadyFriendIcon from "../../../pages/iPongProfile/assets/alreadyFriendIcon.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../state/store";
 import api from "../../../api/posts";
 
 import { columns } from "./data"; // static data
@@ -52,8 +54,15 @@ const TopContent = (props) => {
 
 function RenderCellComponent({ user, columnKey }) {
   const navigate = useNavigate();
+  const UserInfo = useSelector((state: RootState) => state.userState);
 
+  
+  
   const handleFriendStatus = () => {
+    if (user.userId === UserInfo.id) {
+      navigate("/ipong/profile");
+      return;
+    }
     navigate(`/ipong/users/${user.userId}`);
   };
 
