@@ -2,7 +2,7 @@ import React from "react";
 import "./NavBar.css";
 
 import NavBarUser from "../UI/NavBarUser/NavBarUser";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // import NotificationButton from '../UI/Button/Notifications/Notifications';
 import CoinsButton from "../UI/Button/CoinsButton/CoinsButton";
@@ -30,12 +30,13 @@ import api from "../../api/posts";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
-import { io } from 'socket.io-client';
+
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
 
   const [activeSearch, setActiveSearch] = React.useState([]);
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchTerm, setSearchTerm] = React.useState(true);
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
@@ -44,36 +45,19 @@ export default function NavBar() {
 
 
 
-  useEffect(() => {
-    const socket = io('http://localhost:3003', {
-      transports: ['websocket'],
-    });
 
-    socket.on('connect', () => {
-      console.log('Connected to WebSocket server');
-    });
-
-    socket.on('sendNotification', (data) => {
-      console.log('Received message:', data);
-      // Handle the received message
-      // Example: set some state or trigger a notification
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Disconnected from WebSocket server');
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  // console.log("users: HELLOOOOO", users);
 
 
-
-
-
+  // useEffect(() => {
+  //   console.log("mount hello world");
+  //   return () => {
+  //     console.log("unmount hello world");
+  //   }
+  // }, []);
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const response = await api.get("/users/allusers");
@@ -180,7 +164,7 @@ export default function NavBar() {
             shouldBlockScroll={false}
           >
             <DropdownTrigger>
-              <div>
+              <div className="notificationBadge">
                 <Badge size="md" color="primary" content={"9+"} isOneChar shape="rectangle" showOutline={false}>
                   <img
                     src={NotifactionIcon}
