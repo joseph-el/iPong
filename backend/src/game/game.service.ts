@@ -254,15 +254,21 @@ export class GameService {
       this.loserScore,
       this.loserGameVBucks,
     );
-    const testUser = await this.database.user.findUnique({ where: { userId: this.winner } });
-    
+
+    const winnerUser = await this.database.user.findUnique({
+      where: { userId: this.winner },
+    });
+    const loserId = this.getLoser();
+    const loserUser = await this.database.user.findUnique({
+      where: { userId: loserId },
+    });
+
     this.server.to(this.room).emit(SOCKET_EVENT.GAME_END, {
       winnerUserName: winner.username,
       winnerId: this.winner,
-      winnerXp: testUser?.xp,
+      winnerXp: winnerUser?.xp,
+      loserUserXp: loserUser?.xp,
     });
-
-
 
     this.disconnectClients();
     this.logger.log(`Game: ${this.gameId} Ended`);

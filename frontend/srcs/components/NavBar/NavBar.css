@@ -8,6 +8,10 @@
     
   }
 
+  .text-primary-foreground {
+    color: #ffffff !important;
+    font-size: 12px !important;
+  }
   .nav-bar .text-wrapper {
     color: #ffffff;
     font-family: "Poppins", sans-serif;

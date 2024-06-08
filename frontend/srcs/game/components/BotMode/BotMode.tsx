@@ -10,11 +10,17 @@ import IPongGameNav from "../../components/IPongGameNav/IPongGameNav";
 import Scores from "../Score/Score";
 import GameOver from "../GameOver/GameOver";
 
-/* STATIC PATHS FOR TESTING */
-const mapPath = "/assets/game/maps/15.png";
-const skinPath = "/assets/game/skins/hacker.png";
+interface BotModeProps {
+  userSelectedSkin: string;
+  userSelectedBoard: string;
+  botSelectedSkin: string;
+}
 
-export default function BotMode() {
+export default function BotMode({
+  userSelectedSkin,
+  userSelectedBoard,
+  botSelectedSkin,
+}: BotModeProps) {
   const [timerValue, setTimerValue] = useState<number>(
     GAME_SETTING.TIMER_VALUE
   );
@@ -75,8 +81,9 @@ export default function BotMode() {
 
     const game = new GameAlgo(
       ctx,
-      mapPath,
-      skinPath,
+      userSelectedBoard,
+      userSelectedSkin,
+      botSelectedSkin,
       winnerCallback,
       updatePlayerScoreCallback,
       updateBotScoreCallback
@@ -131,6 +138,7 @@ export default function BotMode() {
         <IPongGameNav
           opponentName="Ai Bot"
           opponentAvatarPath={GAME_SETTING.BOT_ICON}
+          playerPos={1}
         />
         <div className="progress-container">
           {!gameStarted && <ProgressBar progress={progress} />}

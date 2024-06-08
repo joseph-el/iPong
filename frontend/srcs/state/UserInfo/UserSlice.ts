@@ -14,10 +14,18 @@ interface UserState {
   picture: string;
   username: string;
   FriendsCount: number;
+  intraId: string;
+  cover: string;
+  userSelectedSkinPath: string;
+  userSelectedBoardPath: string;
 }
 
 const initialState: UserState = {
+  cover: '',
+  userSelectedBoardPath: "/assets/game/default/default-board.png",
+  userSelectedSkinPath: "/assets/game/default/default-skin.png",
   id: '',
+  intraId: '',
   xp: 0,
   firstName: '',
   wallet: 0,
@@ -26,9 +34,9 @@ const initialState: UserState = {
   email: '',
   githubLink: null,
   isVerified: false,
-
   linkedInLink: null,
   picture: '',
+
   username: '',
   FriendsCount: 0,
 };
@@ -37,6 +45,18 @@ const userState = createSlice({
   name: 'userState',
   initialState,
   reducers: {
+    setCover: (state, action) => {
+      state.cover = action.payload;
+    },
+    setIntraId: (state, action) => {
+      state.intraId = action.payload;
+    },
+    setBoardPath: (state, action) => {
+      state.userSelectedBoardPath = action.payload;
+    },
+    setSelectedSkinPath: (state, action) => {
+      state.userSelectedSkinPath = action.payload;
+    },
     setId: (state, action) => {
       state.id = action.payload;
     },
@@ -87,14 +107,17 @@ export const {
   setFirstName,
   setLastName,
   setBio,
+  setIntraId,
   setEmail,
   setXp,
+  setBoardPath,
   setGithubLink,
   setIsVerified,
-  setLevel,
+  setSelectedSkinPath,
   setLinkedInLink,
   setPicture,
   setUsername,
+  setCover,
   setFriendsCount,
   setUserProfile,
 } = userState.actions;

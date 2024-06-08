@@ -15,7 +15,20 @@ import { AppDispatch, RootState } from "../../state/store";
 
 import { getUserLevel } from "../../utils/getCurrentLevel";
 
+
 export default function iPongGame() {
+  const UserInfo = useSelector((state: RootState) => state.userState);
+
+  let userSelectedSkinPath;
+  let botSelectedSkinPath;
+  let userSelectedBoardPath;
+
+
+    userSelectedSkinPath = UserInfo.userSelectedSkinPath;
+    userSelectedBoardPath = UserInfo.userSelectedBoardPath;
+    botSelectedSkinPath = "/assets/game/default/default-bot-skin.png";
+
+
   type ModeType = "practice" | "onlineBattle" | null;
   const [mode, setMode] = useState<ModeType>(null);
   const [urlMode, setUrlMode] = useState("default");
@@ -25,9 +38,11 @@ export default function iPongGame() {
   const Achievement = useSelector(
     (state: RootState) => state.achievement.ShowAchievementBadge
   );
-  const UserInfo = useSelector((state: RootState) => state.userState);
 
-  /* i checked the path to extract coming from: mode */
+  const UpdatedLevel = useSelector(
+    (state: RootState) => state.achievement.UpdatedLevel
+  );
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const modeParam = searchParams.get("mode");
@@ -47,19 +62,34 @@ export default function iPongGame() {
     navigate(PATHS.ONLINE_RANDOM_MODE);
   }
 
-  /* Check What Mode To Render */
   if (mode && mode === "practice") {
-    return <BotMode />;
+
+
+    return (
+      <BotMode
+        userSelectedSkin={userSelectedSkinPath}
+        userSelectedBoard={userSelectedBoardPath}
+        botSelectedSkin={botSelectedSkinPath}
+      />
+    );
   }
   if (mode && mode === "onlineBattle") {
-    
-    localStorage.setItem("lastLevel", getUserLevel(UserInfo.xp).toString());
+    localStorage.setItem("lastLevel", getUserLevel(UpdatedLevel!).toString());
+    console.log("userSelectedSkinPath", userSelectedSkinPath);
+    console.log("userSelectedBoardPath", userSelectedBoardPath);
+    console.log("botSelectedSkinPath", botSelectedSkinPath);
 
-    return <MatchMaking />;
+    return (
+      <MatchMaking
+        userSelectedSkin={userSelectedSkinPath}
+        userSelectedBoard={userSelectedBoardPath}
+      />
+    );
   }
 
   const handleCloseCongratulationsBadge = () => {
     dispatch(setAchievementBadge(null));
+    console.log("achievement: yes reset", Achievement);
   };
 
   return (
@@ -77,7 +107,7 @@ export default function iPongGame() {
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
             <CongratulationsBadge
-              level={2}
+              level={Achievement}
               CongratulationsBadge={handleCloseCongratulationsBadge}
             />
           </div>

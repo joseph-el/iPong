@@ -1,7 +1,7 @@
 
 import React from "react";
 import "./iPongStore.css";
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image, User } from "@nextui-org/react";
 
 import RetailRow from "./assets/maps/map-RetailRow.svg";
 import LootLake from "./assets/maps/map-LootLake.svg";
@@ -17,10 +17,16 @@ import SaltySprings from "./assets/maps/map-SaltySprings.svg";
 import ShiftyShafts from "./assets/maps/map-ShiftyShafts.svg";
 import TomatoTemple from "./assets/maps/map-TomatoTemple.svg";
 import ParadisePalms from "./assets/maps/map-ParadisePalms.svg";
-
 import * as PaddlesSVGs from "./assets/paddles/paddles";
 
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+
+import {setBoardPath, setSelectedSkinPath} from "../../state/UserInfo/UserSlice";
+import { useDispatch } from "react-redux";
 import { ScrollShadow } from "@nextui-org/react";
+import { AppDispatch } from "../../state/store";
+import { useState } from "react";
 
 const list = [
   {
@@ -216,7 +222,30 @@ const paddleList = [
 
 
 export default function IPongStore() {
-  const [ShowPaddlesTabel, setShowPaddlesTabel] = React.useState(false);
+
+
+
+
+
+  // TODO: Implement the iPongStore component
+    // LOCKED PRIX
+    // UNLOCKED PRIX
+    // AVAI
+  const dispatch = useDispatch<AppDispatch>();
+  const [ShowPaddlesTabel, setShowPaddlesTabel] = useState(false);
+  
+  const handelPressPaddlesTabel = (item) => {
+    console.log(item);
+    dispatch(setBoardPath(item.img));
+  }
+  
+  const handelPressPaddles = (item) => {
+    console.log(item);
+    dispatch(setSelectedSkinPath(item.img)); 
+  }
+  
+  
+  
   return (
     <div className="store-frame">
       <div className="Store-List">
@@ -239,7 +268,7 @@ export default function IPongStore() {
             key={index}
             isBlurred
             isPressable
-            onPress={() => console.log("item pressed")}
+            onPress={() => handelPressPaddlesTabel(item)}
           >
             <CardBody className="overflow-visible p-0">
               <Image
@@ -268,7 +297,7 @@ export default function IPongStore() {
                   key={index}
                   isPressable
                   
-                  onPress={() => console.log("item pressed")}
+                  onPress={() => handelPressPaddles(item)}
                 >
                   <CardBody className="overflow-visible p-0">
                     <Image

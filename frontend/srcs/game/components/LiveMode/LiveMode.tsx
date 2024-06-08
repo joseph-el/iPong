@@ -13,25 +13,26 @@ import Scores from "../Score/Score";
 import { BallState } from "../../types/BallState";
 import CancelledMatch from "../CancelledMatch/CancelledMatch";
 import GameOver from "../GameOver/GameOver";
-import { set } from "lodash";
 
 interface LiveGameModeProps {
   socketRef: React.MutableRefObject<Socket | null>;
   opponent: string;
   opponentId: string | null;
+  opponentSkinPath: string;
+  userSkinPath: string;
+  selectedBoardPath: string;
   roomId: string;
   playerPos: number;
   gameData: GameState;
 }
 
-/* STATIC PATHS FOR TESTING IMAGES */
-const mapPath = "/assets/game/maps/15.png";
-const skinPath = "/assets/game/skins/bomb.png";
-
 export default function LiveMode({
   socketRef,
   opponent,
   opponentId,
+  opponentSkinPath,
+  userSkinPath,
+  selectedBoardPath,
   roomId,
   playerPos,
   gameData,
@@ -43,19 +44,25 @@ export default function LiveMode({
   const [progress, setProgress] = useState<number>(0);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [winner, setWinner] = useState<string | null>(null);
-  const [winnerXp, setWinnerXp] = useState<number>(0);
   const [winnerId, setWinnerId] = useState<string | null>(null);
+  const [winnerXp, setWinnerXp] = useState<number>(0);
+  const [loserXp, setLoserXp] = useState<number>(0);
   const [player1Score, setPlayer1Score] = useState<number>(0);
   const [player2Score, setPlayer2Score] = useState<number>(0);
 
   const bgImageRef = useRef<HTMLImageElement | null>(null);
-  const skinImageRef = useRef<HTMLImageElement | null>(null);
   const [isBgImageLoaded, setIsBgImageLoaded] = useState(false);
-  const [isSkinImageLoaded, setIsSkinImageLoaded] = useState(false);
+
+  const userSkinImgRef = useRef<HTMLImageElement | null>(null);
+  const [isUserSkinImgLoaded, setIsUserSkinImgLoaded] = useState(false);
+
+  const OpponentSkinImgRef = useRef<HTMLImageElement | null>(null);
+  const [isOpponentSkinImgLoaded, setIsOpponentSkinImgLoaded] = useState(false);
 
   const hitSoundRef = useRef<HTMLAudioElement | null>(null);
-  const scoringSoundRef = useRef<HTMLAudioElement | null>(null);
   const [isHitSoundLoaded, setIsHitSoundLoaded] = useState(false);
+
+  const scoringSoundRef = useRef<HTMLAudioElement | null>(null);
   const [isScoringSoundLoaded, setIsScoringSoundLoaded] = useState(false);
 
   /* reduce user Spam keyboard */
@@ -86,31 +93,37 @@ export default function LiveMode({
   useEffect(() => {
     // Load assets
     const bgImage = new Image();
-    const skinImage = new Image();
-    const hitSound = new Audio();
-    const scoringSound = new Audio();
-
     bgImage.onload = () => setIsBgImageLoaded(true);
-    skinImage.onload = () => setIsSkinImageLoaded(true);
-    hitSound.oncanplaythrough = () => setIsHitSoundLoaded(true);
-    scoringSound.oncanplaythrough = () => setIsScoringSoundLoaded(true);
-
     bgImage.onerror = () => setIsBgImageLoaded(false);
-    skinImage.onerror = () => setIsSkinImageLoaded(false);
-
-    bgImage.src = mapPath;
-    skinImage.src = skinPath;
-    hitSound.src = GAME_SETTING.HIT_BALL_SOUND;
-    scoringSound.src = GAME_SETTING.SCORE_SOUND;
-
+    bgImage.src = selectedBoardPath;
     bgImageRef.current = bgImage;
-    skinImageRef.current = skinImage;
+
+    const userSkinImg = new Image();
+    userSkinImg.onload = () => setIsUserSkinImgLoaded(true);
+    userSkinImg.onerror = () => setIsUserSkinImgLoaded(false);
+    userSkinImg.src = userSkinPath;
+    userSkinImgRef.current = userSkinImg;
+
+    const opponentSkinImg = new Image();
+    opponentSkinImg.onload = () => setIsOpponentSkinImgLoaded(true);
+    opponentSkinImg.onerror = () => setIsUserSkinImgLoaded(false);
+    opponentSkinImg.src = opponentSkinPath;
+    OpponentSkinImgRef.current = opponentSkinImg;
+
+    const hitSound = new Audio();
+    hitSound.oncanplaythrough = () => setIsHitSoundLoaded(true);
+    hitSound.src = GAME_SETTING.HIT_BALL_SOUND;
     hitSoundRef.current = hitSound;
+
+    const scoringSound = new Audio();
+    scoringSound.oncanplaythrough = () => setIsScoringSoundLoaded(true);
+    scoringSound.src = GAME_SETTING.SCORE_SOUND;
     scoringSoundRef.current = scoringSound;
 
     return () => {
       bgImageRef.current = null;
-      skinImageRef.current = null;
+      userSkinImgRef.current = null;
+      OpponentSkinImgRef.current = null;
       hitSoundRef.current = null;
       scoringSoundRef.current = null;
     };
@@ -232,23 +245,26 @@ export default function LiveMode({
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
       drawNet(ctx, canvas.height, canvas.width);
-      if (isSkinImageLoaded && skinImageRef.current) {
+      if (isUserSkinImgLoaded && userSkinImgRef.current) {
         ctx.drawImage(
-          skinImageRef.current,
+          userSkinImgRef.current,
           player1!.x,
           player1!.y,
           player1!.width,
           player1!.height
         );
+      } else {
+        player1.drawPlayer(ctx);
+      }
+      if (isOpponentSkinImgLoaded && OpponentSkinImgRef.current) {
         ctx.drawImage(
-          skinImageRef.current,
+          OpponentSkinImgRef.current,
           player2!.x,
           player2!.y,
           player2!.width,
           player2!.height
         );
       } else {
-        player1.drawPlayer(ctx);
         player2.drawPlayer(ctx);
       }
       ball.drawBall(ctx);
@@ -265,11 +281,17 @@ export default function LiveMode({
 
     socket.current?.on(
       SOCKET_EVENTS.GAME_END,
-      (data: { winnerUserName: string; winnerId: string; winner }) => {
+      (data: {
+        winnerUserName: string;
+        winnerId: string;
+        winnerXp: number;
+        loserUserXp: number;
+      }) => {
         if (data.winnerUserName) {
           setWinner(data.winnerUserName);
           setWinnerId(data.winnerId);
-          setWinnerXp(data.w);
+          setWinnerXp(data.winnerXp);
+          setLoserXp(data.loserUserXp);
         }
         setEndedGame(true);
       }
@@ -421,12 +443,12 @@ export default function LiveMode({
     });
   };
 
-  /* TODO: FETCH OPPONENT AVATAR PATH HERE to change: opponentAvatarPath*/
   return (
-    <div className="container">
+    <div className="live-mode-container">
       {!cancelledGame && !endedGame && (
         <div className="iPongGame-frame">
           <IPongGameNav
+            playerPos={playerPos}
             opponentName={opponent}
             opponentAvatarPath=""
           ></IPongGameNav>
@@ -454,7 +476,14 @@ export default function LiveMode({
       {cancelledGame && (
         <CancelledMatch WhyReason="Opponent Disconnected! The match has been cancelled." />
       )}
-      {endedGame && <GameOver winner={winner} winnerId={winnerId} />}
+      {endedGame && (
+        <GameOver
+          winner={winner}
+          winnerId={winnerId}
+          winnerXp={winnerXp}
+          loserXp={loserXp}
+        />
+      )}
     </div>
   );
 }

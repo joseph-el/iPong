@@ -16,7 +16,7 @@ import EditIcon from "../assets/editicon.svg";
 import CoverImage from "../assets/cover-image.jpeg";
 import LocationIcon from "../assets/LocationIcon.svg";
 import CalendarIcon from "../assets/CalendarIcon.svg";
-import SecutityIcon from "../assets/securityicon.svg"
+import SecutityIcon from "../assets/securityicon.svg";
 import MenuIcon from "../assets/profile-menu-icon.svg";
 import VerifiedBadge from "../assets/Verified-badge.svg";
 import ArchivementIcon from "../assets/archivementicon.svg";
@@ -37,21 +37,22 @@ import { RootState } from "../../../state/store";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getAvatarSrc } from "../../../utils/getAvatarSrc";
-
-import {getUserLevel} from "../../../utils/getCurrentLevel";
-
+import { formatJoinDate } from "../../../utils/formatJoinDate";
+import { getUserLevel } from "../../../utils/getCurrentLevel";
 
 const UserDescriptions = ({ UserInfo }) => {
-  const [country, setCountry] = useState('');
-  const [error, setError] = useState('');
+  const [country, setCountry] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchCountry = async (latitude, longitude) => {
       try {
-        const response = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+        const response = await axios.get(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+        );
         setCountry(response.data.countryName);
       } catch (err) {
-        setError('Failed to fetch country name');
+        setError("Failed to fetch country name");
       }
     };
     const getPosition = () => {
@@ -62,30 +63,29 @@ const UserDescriptions = ({ UserInfo }) => {
             fetchCountry(latitude, longitude);
           },
           (err) => {
-            setError('Geolocation permission denied');
+            setError("Geolocation permission denied");
           }
         );
       } else {
-        setError('Geolocation is not supported by this browser');
+        setError("Geolocation is not supported by this browser");
       }
     };
     getPosition();
   }, []);
   return (
     <div className="info">
-      <p className="description">
-        {UserInfo.bio}
-        Unraveling the mysteries of life, from cells to ecosystems. Join the
-        journey! 🌱🔬 Science and discovery.
-      </p>
+      <p className="description">{UserInfo.bio}</p>
       <div className="meta-details">
         <div className="div-2">
           <img className="img" alt="Location icon" src={LocationIcon} />
-          <div className="text-wrapper-2"> {error ? "morocco" : country} </div>
+          <div className="text-wrapper-2"> {error ? "Morocco" : country} </div>
         </div>
         <div className="div-2">
           <img className="img" alt="Calendar icon" src={CalendarIcon} />
-          <div className="text-wrapper-2">Joined fav 2024</div>
+          <div className="text-wrapper-2">
+            {" "}
+            {formatJoinDate(UserInfo.createdAt)}
+          </div>
         </div>
       </div>
 
@@ -115,8 +115,6 @@ export default function UserProfile() {
 
   const UserInfo = useSelector((state: RootState) => state.userState);
 
-
-
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
@@ -125,7 +123,7 @@ export default function UserProfile() {
             <img
               className="user-cover-image"
               alt="cover-image"
-              src={CoverImage} // TODO: Tell mouad to set the default cover image
+              src={   UserInfo.cover  } // TODO: Tell mouad to set the default cover image
             />
             <Avatar
               src={getAvatarSrc(UserInfo.picture, UserInfo.username)}
@@ -270,7 +268,10 @@ export default function UserProfile() {
           {showAchievementList ? (
             <div className="blur-background">
               <div className="AchievementList-place fade-in">
-                <AchievementList level={getUserLevel(UserInfo.xp)} closeList={handleCloseClick} />
+                <AchievementList
+                  level={getUserLevel(UserInfo.xp)}
+                  closeList={handleCloseClick}
+                />
               </div>
             </div>
           ) : null}

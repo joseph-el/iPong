@@ -9,6 +9,8 @@ import Level5Svg from "../AchievementComponents/assets/level5.svg";
 import Level6Svg from "../AchievementComponents/assets/level6.svg";
 
 const getLevelSvg = (level) => {
+  if (!level || level === undefined)
+    return Level1Svg;
   switch (level) {
     case 1:
       return Level1Svg;

@@ -91,7 +91,7 @@ const UserDescriptions = ({ UserprofileInfo, UserIsBlocked }) => {
     <div className="info">
       <p className="description">
         {UserprofileInfo.bio}
-        hey there! I am using iPong
+
       </p>
 
       <div>
@@ -186,6 +186,7 @@ export default function UserProfileViewAs() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        
         const response = await api.get(`/user-profile/getinfoById${userId}`);
         setUserprofileInfo(response.data);
         console.log("response.data", response.data);
@@ -311,6 +312,9 @@ export default function UserProfileViewAs() {
     }
   };
 
+
+
+  console.log("GithubLink: ", UserInfo.githubLink);
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
@@ -319,7 +323,7 @@ export default function UserProfileViewAs() {
             <img
               className="user-cover-image"
               alt="NextUI Fruit Image with Zoom"
-              src={CoverImage}
+              src={ UserprofileInfo.cover }
             />
             <Avatar
               src={
@@ -334,7 +338,7 @@ export default function UserProfileViewAs() {
             />
             {UserIsBlocked === null ? (
               <div className="user-LevelBars">
-                <LevelBar xp={UserInfo.xp} level={getUserLevel(UserInfo.xp)} />
+                <LevelBar xp={UserprofileInfo.xp} level={getUserLevel(UserprofileInfo.xp)} />
               </div>
             ) : null}
           </div>
@@ -374,7 +378,7 @@ export default function UserProfileViewAs() {
             <div className="menu-Buttons">
               {UserIsBlocked === null ? (
                 <div className="Social-Icons">
-                  {UserprofileInfo.githubLink != null ? (
+                  {UserprofileInfo.githubLink != "" ? (
                     <Tooltip color="primary" content="Visit Github">
                       <Image
                         onClick={() => window.open(UserprofileInfo.githubLink)}
@@ -387,10 +391,10 @@ export default function UserProfileViewAs() {
                     </Tooltip>
                   ) : null}
 
-                  {UserprofileInfo.linkdinLink != null ? (
+                  {UserprofileInfo.linkedInLink != "" ? (
                     <Tooltip color="primary" content="Visit Linkdin">
                       <Image
-                        onClick={() => window.open("https://www.linkedin.com/")}
+                        onClick={() => window.open(UserprofileInfo.linkedInLink)}
                         radius="none"
                         src={LinkedinIcon}
                         alt="Linkedin icon"

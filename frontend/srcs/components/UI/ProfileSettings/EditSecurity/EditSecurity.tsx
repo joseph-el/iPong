@@ -1,20 +1,20 @@
 import React from "react";
 import "./EditSecurity.css";
 import { EditSecurityWrapper } from "./EditSecurityWrapper";
-import {
-  Avatar,
-  Button,
-  Input,
-  cn,
-  Accordion,
-  AccordionItem,
-  Textarea,
-  Switch,
-  ScrollShadow,
-  Link,
-} from "@nextui-org/react";
+import { Input, Accordion, AccordionItem, Link } from "@nextui-org/react";
 import { EyeFilledIcon } from "../../Input/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../../Input/EyeSlashFilledIcon";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../state/store";
+import { getAvatarSrc } from "../../../../utils/getAvatarSrc";
+import { getUserLevel } from "../../../../utils/getCurrentLevel";
+import { set } from "lodash";
+import { isValidURL } from "../../../../utils/isValidURL";
+import { validateEmail } from "../../../../utils/formValidation";
+import { isFullNameValid } from "../../../../utils/formValidation";
+import validateUsername from "../../../../utils/usernameValidation";
+import api from "../../../../api/posts";
 
 const EditProfileNavbar = (props) => {
   return (
@@ -42,12 +42,13 @@ enum InputType {
 }
 
 export default function EditSecurity(props) {
-  const [isVisibleCurrent, setIsVisibleCurrent] = React.useState(false);
-  const [isVisibleNew, setIsVisibleNew] = React.useState(false);
-  const [isVisibleConfirm, setIsVisibleConfirm] = React.useState(false);
+  const [isVisibleNew, setIsVisibleNew] = useState(false);
+  const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+  const [isVisibleCurrent, setIsVisibleCurrent] = useState(false);
+
+  const UserInfo = useSelector((state: RootState) => state.userState);
 
   const toggleVisibility = (inputType) => {
-    // console.log("inputType", inputType);
     switch (inputType) {
       case InputType.Current:
         setIsVisibleCurrent(!isVisibleCurrent);
@@ -66,6 +67,7 @@ export default function EditSecurity(props) {
   const InputSecurity = (props) => {
     return (
       <Input
+        isDisabled={props.isDisable}
         size={"md"}
         value={props.placeholder}
         label={props.label}
@@ -118,6 +120,7 @@ export default function EditSecurity(props) {
 
       <div className="security-form">
         <InputSecurity
+          isDisable={UserInfo.intraId != ""}
           isVisible={isVisibleCurrent}
           varient={InputType.Current}
           type="password"
@@ -126,6 +129,7 @@ export default function EditSecurity(props) {
         />
 
         <InputSecurity
+          isDisable={UserInfo.intraId != ""}
           isVisible={isVisibleNew}
           varient={InputType.New}
           type="password"
@@ -134,13 +138,14 @@ export default function EditSecurity(props) {
         />
 
         <InputSecurity
+          isDisable={UserInfo.intraId != ""}
           isVisible={isVisibleConfirm}
           varient={InputType.Confirm}
           type="password"
           placeholder="Unraveling the mysteries of life,"
           label="Confirm Password:"
         />
-
+        
         <div className="two-factor">
           <Accordion variant="splitted">
             <AccordionItem

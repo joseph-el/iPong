@@ -18,41 +18,40 @@ export class NotificationsService {
   }
 
   async findAll(userId: string) {
-    return this.dataservice.notification.findMany({
+    return await this.dataservice.notification.findMany({
       where: {
         receiverId: userId,
+        isRead: false,
       },
     });
   }
 
+  async getNotificationsNumber(userId: string) {
+    return await this.dataservice.notification.count({
+      where: {
+        receiverId: userId,
+        isRead: false,
+      },
+    });
+  }
   async clearAll(userId: string) {
-    return this.dataservice.notification.deleteMany({
+    return await this.dataservice.notification.deleteMany({
       where: {
         receiverId: userId,
       },
     });
   }
 
-  async createNotification(notif: CreateNotificationDto) {
-    const newNotif = await this.dataservice.notification.create({
-      data: notif,
-      include: {
-        sender: {
-          select: {
-            firstName: true,
-            lastName: true,
-            avatar: true,
-          },
-        },
-        receiver: {
-          select: {
-            firstName: true,
-            lastName: true,
-            avatar: true,
-          },
-        },
+  async readAll(userId: string) {
+    return await this.dataservice.notification.updateMany({
+      where: {
+        receiverId: userId,
+        isRead: false,
+      },
+      data: {
+        isRead: true,
       },
     });
-    return newNotif;
   }
+
 }

@@ -20,37 +20,36 @@ import {
   DropdownItem,
   Avatar,
   User,
+  Chip,
 } from "@nextui-org/react";
 import { Show } from "@chakra-ui/react";
 
-import api from "../../api/posts";
-import axios from "axios";
+import { Badge, Switch } from "@nextui-org/react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../state/store";
+import api from "../../api/posts";
+
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
 
   const [activeSearch, setActiveSearch] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [searchTerm, setSearchTerm] = React.useState(true); 
-  const [LogoutButton, setLogoutButton] = React.useState(false);
-  const [ShowNotificationBar, setShowNotificationBar] = React.useState(false); // notification bar is active
+  const [searchTerm, setSearchTerm] = React.useState(true);
+  const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
 
-
-  
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get("/users/allusers");
-        // console.log("response: ", response.data);
+
         const _users = response.data.map((user, index) => {
           return {
             id: index,
-            UserId:user.userId,
+            UserId: user.userId,
             name: user.firstName + " " + user.lastName,
             email: user.email,
             avatar: user.avatar,
@@ -103,13 +102,11 @@ export default function NavBar() {
 
   const handelCloseSearchBar = () => {
     setActiveSearch([]);
-
-  }
+  };
 
   const handelCloseNotificationBar = () => {
     setShowNotificationBar(!ShowNotificationBar);
   };
-
 
   return (
     <div className="nav-bar">
@@ -151,15 +148,19 @@ export default function NavBar() {
             shouldBlockScroll={false}
           >
             <DropdownTrigger>
-              <img
-                src={NotifactionIcon}
-                alt="noticon"
-                className="notification-button"
-                style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
-                onClick={() => {
-                  setShowNotificationBar(!ShowNotificationBar);
-                }}
-              />
+              <div>
+                <Badge size="md" color="primary" content={"9+"} isOneChar shape="rectangle" showOutline={false}>
+                  <img
+                    src={NotifactionIcon}
+                    alt="noticon"
+                    className="notification-button"
+                    style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
+                    onClick={() => {
+                      setShowNotificationBar(!ShowNotificationBar);
+                    }}
+                  />
+                </Badge>
+              </div>
             </DropdownTrigger>
 
             <DropdownMenu>

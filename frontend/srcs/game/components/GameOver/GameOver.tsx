@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../constants/paths";
 import "./GameOver.css";
 
-import { setAchievementBadge } from "../../../state/Achievement/AchievementSlice";
+import { setAchievementBadge , setUpdatedLevel} from "../../../state/Achievement/AchievementSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
@@ -13,43 +13,49 @@ import { set } from "lodash";
 interface GameOverProps {
   winner: string | null;
   winnerId?: string | null;
+  winnerXp?: number;
+  loserXp?: number;
 }
 
-export default function GameOver({ winner, winnerId }: GameOverProps) {
+export default function GameOver({
+  winner,
+  winnerId,
+  winnerXp,
+  loserXp,
+}: GameOverProps) {
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
-  const  UserInfo = useSelector((state: RootState) => state.userState);
-  const [current, setCurrent] = useState(0);
+  const UserInfo = useSelector((state: RootState) => state.userState);
+  // const [UpdatedLevel, setUpdatedLevel] = useState<number>(0);
+  const achievement = useSelector((state: RootState) => state.achievement.ShowAchievementBadge);
+  
+
+  console.log("achievement: in first ", achievement);
 
   useEffect(() => {
-
-
-    const fetchUser = async () => {
     const LevelstoredValue = localStorage.getItem("lastLevel");
-    console.log("LevelstoredValueonStore ", LevelstoredValue);
     const lastLevel = LevelstoredValue ? parseInt(LevelstoredValue) : 0;
-
-    try {
-      const response =  await api.get("/user-profile/me");
-      console.log("response", response);
-      
-      setCurrent(response.data.xp);
-    } catch (error) {
-      console.log("error", error);
-    }
+    if (!winnerId) return;
+    if (!winnerXp || !loserXp) return;
+    const UpdatedLevel  = getUserLevel(winnerId === UserInfo.id ? winnerXp : loserXp);
     
-    const currentLevel = getUserLevel(current);
+    // setUpdatedLevel();
 
-    console.log("currentLevel", currentLevel);
+    console.log("winnerId", UserInfo.id);
+    console.log("winnerXp", winnerXp);
+    console.log("loserXp", loserXp);
+    console.log("UpdatedLevel", UpdatedLevel);
     console.log("lastLevel", lastLevel);
 
-    if (currentLevel > lastLevel) {
-      dispatch(setAchievementBadge(currentLevel));
+
+    if (UpdatedLevel > lastLevel) {
+      dispatch(setAchievementBadge(UpdatedLevel));
+      console.log("achievement: in edit ", achievement);
+      dispatch(setUpdatedLevel(UpdatedLevel));
+      // localStorage.setItem("lastLevel", UpdatedLevel.toString());
     }
-  }
-  fetchUser();
   }, []);
 
   useEffect(() => {
@@ -57,7 +63,7 @@ export default function GameOver({ winner, winnerId }: GameOverProps) {
       setVisible(false);
 
       navigate(PATHS.DEFAULT_GAME_PAGE);
-    }, 6000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [navigate]);

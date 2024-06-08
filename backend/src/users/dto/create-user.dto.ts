@@ -46,7 +46,7 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  linkedinLink?: string;
+  linkedInLink?: string;
 }
 
 export class LoginUserDto {
