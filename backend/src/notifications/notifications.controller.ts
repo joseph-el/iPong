@@ -12,7 +12,7 @@ export class NotificationsController {
     return await this.notificationsService.create(createNotificationDto);
   }
 
-  @Post("readAllNotifications")
+  @Get("readAllNotifications")
   async readAll(@GetCurrentUser("userId") userId: string){
     return await this.notificationsService.readAll(userId);
   }

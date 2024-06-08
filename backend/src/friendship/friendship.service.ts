@@ -221,6 +221,13 @@ export class FriendshipService {
         },
       });
     }
+        const notification: CreateNotificationDto = {
+          receiverId: friendId,
+          senderId: userId,
+          entityId: `${userId}+${friendId}`,
+          entityType: NotificationType.FriendRequestAccepted,
+        };
+        this.eventEmitter.emit('sendNotification', notification);
     return new res_friendship(result);
   }
 

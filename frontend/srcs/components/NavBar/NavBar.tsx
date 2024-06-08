@@ -50,14 +50,12 @@ const accessToken = document?.cookie
 
 
   useEffect(() => {
-    if (!socket) {
       socket = io("http://localhost:3000/notifications", {
         transports: ["websocket"],
         auth: {
           token:accessToken
         },
       });
-    }
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
     });
