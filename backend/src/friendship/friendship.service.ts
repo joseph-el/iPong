@@ -1,3 +1,4 @@
+import { ChatGateway } from './../chat/chat.gateway';
 import { usersSearchDto } from './../users/dto/search-user.dto';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -15,6 +16,7 @@ export class FriendshipService {
     private databaseservice: DatabaseService,
     private readonly eventEmitter: EventEmitter2,
     private NotificationsService: NotificationsService,
+    private ChatGateway: ChatGateway,
   ) {}
   async addFriend(add_friendDto: add_friendDto, userId: string) {
     if (add_friendDto.friendId === userId) {
@@ -85,7 +87,7 @@ export class FriendshipService {
       entityId: friendshipId,
       entityType: NotificationType.FriendRequest,
     };
-    this.NotificationsService.emit('sendNotification', notification);
+    await this.ChatGateway.sendNotification(notification);
     return responseOfReq;
   }
 
@@ -220,6 +222,13 @@ export class FriendshipService {
         },
       });
     }
+    this.eventEmitter.emit('sendNotification', {
+      receiverId: friendId,
+      actorId: userId,
+      type: $Enums.NotificationType.FriendRequestAccepted,
+      entityId: "friendshipId",
+      entity_type: 'friend',
+    });
     return new res_friendship(result);
   }
 

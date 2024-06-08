@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { $Enums, ChatRoomType, Message, User } from '@prisma/client';
 
 export class MessageFormatDto {
@@ -26,4 +25,5 @@ export class MessageFormatDto {
   authorId: string;
   avatar: string;
   roomType: ChatRoomType;
+
 }
