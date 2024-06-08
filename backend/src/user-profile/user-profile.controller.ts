@@ -53,7 +53,7 @@ export class UserProfileController {
     return await this.userProfileService.getFriendProfile(Id, userId);
   }
   @Post('avatar')
-  // @UseGuards(AtGuard)
+  @UseGuards(AtGuard)
   @UseInterceptors(FileInterceptor('file'))
   async uploadAvatar(
     @GetCurrentUser('userId') userId: string,
