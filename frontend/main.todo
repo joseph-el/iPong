@@ -1,0 +1,46 @@
+
+: NavBar Not
+
+iPong:
+
+    Leaderboard: 1. 2. 3. 4. 5.
+        3d: View the 3d leaderboard
+        Scroll: Scroll through the leaderboard
+    
+    Home:
+        Background: Change the background
+        Leaderboard: View the leaderboard
+        Play With Ai: Play with the AI
+        Play Random Match:  Play a random match
+    
+    MatchMaking:
+        component
+
+    NavBar Title Router
+
+    Store:
+        frontend:
+            Stile: table
+            Select: desing selceted element
+            lock:   lock new design
+            Buy :   buy new design
+            Alert:  alert Wallet
+        
+        backend:
+            Get all available skins of user form api.post("getSkins")
+            Post:   post new skin to user api.post("postSkin")
+ 
+
+    Game:
+        Desing Layout
+        Flip Player pased on pos
+
+    Invite:
+        Invite a friend to play
+
+    TF2:
+         TF2 Component in Sign-in
+
+
+
+Responsive: [⏳]
