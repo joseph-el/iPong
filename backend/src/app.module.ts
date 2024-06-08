@@ -21,6 +21,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ChatModule } from './chat/chat.module';
 import { GameModule } from './game/game.module';
 import { StoreModule } from './store/store.module';
+import { CheckGateway } from './check/check.gateway';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { StoreModule } from './store/store.module';
     EventEmitterModule.forRoot(),
     ChatModule,
     GameModule,
-    StoreModule
+    CheckGateway,
+    StoreModule,
   ],
   controllers: [AppController, AuthController],
   providers: [
