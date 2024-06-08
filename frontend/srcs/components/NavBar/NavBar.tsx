@@ -41,20 +41,29 @@ export default function NavBar() {
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
 
   const [users, setUsers] = useState([]);
+  let socket;
 
+const accessToken = document?.cookie
+  ?.split("; ")
+  ?.find((row) => row.startsWith("access_token="))
+  ?.split("=")[1];
 
 
   useEffect(() => {
-    const socket = io('http://localhost:3003', {
-      transports: ['websocket'],
-    });
-
+    if (!socket) {
+      socket = io("http://localhost:3000/notifications", {
+        transports: ["websocket"],
+        auth: {
+          token:accessToken
+        },
+      });
+    }
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
     });
 
     socket.on('sendNotification', (data) => {
-      console.log('Received message:', data);
+      console.log('Received message::::::::::::::::::::', data);
       // Handle the received message
       // Example: set some state or trigger a notification
     });

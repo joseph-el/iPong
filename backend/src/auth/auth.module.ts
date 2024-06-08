@@ -11,7 +11,6 @@ import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import { UserProfileService } from 'src/user-profile/user-profile.service';
 import { FriendshipService } from 'src/friendship/friendship.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
-import { ChatGateway } from 'src/chat/chat.gateway';
 
 @Module({
   imports: [UsersModule, JwtModule.register({ secret: process.env.JWT_SECRET })],
@@ -27,7 +26,6 @@ import { ChatGateway } from 'src/chat/chat.gateway';
     UserProfileService,
     FriendshipService,
     NotificationsService,
-    ChatGateway
   ],
 })
 export class AuthModule {}

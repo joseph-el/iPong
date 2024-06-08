@@ -3,19 +3,17 @@ import { Module } from '@nestjs/common';
 import { FriendshipService } from './friendship.service';
 import { FriendshipController } from './friendship.controller';
 import { DatabaseService } from 'src/database/database.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NotificationsService } from 'src/notifications/notifications.service';
-import { ChatGateway } from 'src/chat/chat.gateway';
+import { GatewayNofifModule } from 'src/gateway-nofif/gateway-nofif.module';
+import { GatewayNofifGateway } from 'src/gateway-nofif/gateway-nofif.gateway';
 
 @Module({
   controllers: [FriendshipController],
   providers: [
     FriendshipService,
     DatabaseService,
-    EventEmitter2,
     NotificationsService,
-    ChatGateway,
-    JwtService
+    JwtService,
   ],
 })
 export class FriendshipModule {}

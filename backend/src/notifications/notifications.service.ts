@@ -1,4 +1,3 @@
-import { ChatGateway } from './../chat/chat.gateway';
 import { Injectable } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { DatabaseService } from 'src/database/database.service';
@@ -9,11 +8,9 @@ export class NotificationsService {
   constructor(private readonly dataservice: DatabaseService) {}
 
   async create(createNotificationDto: CreateNotificationDto) {
-    console.log('createNotificationDto', createNotificationDto);
     const result = await this.dataservice.notification.create({
       data: createNotificationDto,
     });
-    console.log('result', result);
     return result;
   }
 

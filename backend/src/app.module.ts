@@ -15,12 +15,12 @@ import { UserProfileModule } from './user-profile/user-profile.module';
 import { CloudinaryModule } from './imagesProvider/cloudinary.module';
 import { CloudinaryService } from './imagesProvider/cloudinary.service';
 import { NotificationsModule } from './notifications/notifications.module';
-import { EventEmitterModule } from '@nestjs/event-emitter';
-import { ChatGateway } from './chat/chat.gateway';
-import { APP_GUARD } from '@nestjs/core';
-import { ChatModule } from './chat/chat.module';
 import { GameModule } from './game/game.module';
 import { StoreModule } from './store/store.module';
+
+import { GatewayNofifModule } from './gateway-nofif/gateway-nofif.module';
+import { GatewayNofifGateway } from './gateway-nofif/gateway-nofif.gateway';
+import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -31,25 +31,17 @@ import { StoreModule } from './store/store.module';
     MessageModule,
     ChatroomModule,
     FriendshipModule,
+    EventEmitterModule.forRoot(),
+
     ConfigModule.forRoot({}),
     UserProfileModule,
     CloudinaryModule,
     NotificationsModule,
-    EventEmitterModule.forRoot(),
-    ChatModule,
     GameModule,
-    StoreModule
+    StoreModule,
+    GatewayNofifModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [
-    AppService,
-    AuthService,
-    CloudinaryService,
-    ChatGateway,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: GatewayAdapter,
-    // },
-  ],
+  providers: [AppService, AuthService, CloudinaryService],
 })
 export class AppModule {}

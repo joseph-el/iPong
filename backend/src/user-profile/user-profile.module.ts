@@ -7,11 +7,10 @@ import { UsersService } from 'src/users/users.service';
 import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import { FriendshipService } from 'src/friendship/friendship.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
-import { ChatGateway } from 'src/chat/chat.gateway';
 
 @Module({
   controllers: [UserProfileController],
-  providers: [UserProfileService, DatabaseService, UsersService, CloudinaryService, FriendshipService, ChatGateway,JwtService,
+  providers: [UserProfileService, DatabaseService, UsersService, CloudinaryService, FriendshipService,JwtService,
     NotificationsService
   ],
 })

@@ -1,4 +1,3 @@
-import { EventEmitter } from 'stream';
 import { ChatRoom } from '@prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
