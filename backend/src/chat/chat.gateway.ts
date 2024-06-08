@@ -16,6 +16,8 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { Notification, $Enums } from '@prisma/client';
 import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { MessageService } from 'src/messages/message.service';
+import { MessageFormatDto } from 'src/messages/dto/msgFormat.dto';
 
 @WebSocketGateway(3003, {
   cors: {
@@ -24,15 +26,16 @@ import { NotificationsService } from 'src/notifications/notifications.service';
   transports: ['websocket'],
 })
 export class ChatGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() private server: Server;
   private readonly jwtService: JwtService;
   private readonly databaseService: DatabaseService;
   private readonly notificationService: NotificationsService;
+  private readonly messageService: MessageService;
 
   constructor(jwtService: JwtService) {
     this.databaseService = new DatabaseService();
+    this.notificationService = new NotificationsService(this.databaseService);
     this.jwtService = new JwtService({
       secret: process.env.JWT_SECRET,
     });
@@ -98,26 +101,101 @@ export class ChatGateway
     // console.log(`Client disconnected: ${client.id}`);
     this.server.emit('friendOffline', client.data.user.sub);
   }
-
-  @OnEvent('sendNotification')
+  @SubscribeMessage('sendNotification')
   async sendNotification(
-    notification: CreateNotificationDto,
+    notif: CreateNotificationDto,
     blockedRoomMembersIds?: string[],
   ) {
+    console.log('Friend request notification');
     try {
-      switch (notification.entityType) {
+      switch (notif.entityType) {
         case $Enums.NotificationType.FriendRequestAccepted:
-        case $Enums.NotificationType.FriendRequest: {
-          const newNotif = await this.notificationService.createNotification(notification);
-          const channellname: string = `User:${newNotif.receiverId}`;
-          this.server
-            .to(channellname)
-            .emit('notification', { ...newNotif, entity: null });
+        case $Enums.NotificationType.FriendRequest:
+          await this.handleFriendNotification(notif);
           break;
-        }
       }
     } catch (error) {
       console.error('Error sending notification:', error);
     }
   }
+
+
+
+  private async handleFriendNotification(notif: CreateNotificationDto) {
+    const newNotif = await this.notificationService.create(notif);
+    const channelName: string = `User:${newNotif.receiverId}`;
+    this.server.to(channelName).emit('notification', {
+      ...newNotif,
+      entity: null,
+    });
+  }
+
+  // TODO: Implement this method
+  // private async handleMessageNotification(
+  //   notif: CreateNotificationDto,
+  //   blockedRoomMembersIds?: string[],
+  // ) {
+  //   const message = await this.databaseService.message.findUnique({
+  //     where: {
+  //       id: notif.entityId,
+  //     },
+  //     include: {
+  //       author: {
+  //         select: {
+  //           userId: true,
+  //           avatar: true,
+  //           username: true,
+  //         },
+  //       },
+  //       ChatRoom: {
+  //         select: {
+  //           id: true,
+  //           type: true,
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   let roomMembers = await this.databaseService.chatRoomMember.findMany({
+  //     where: {
+  //       id: message.ChatRoom.id,
+  //     },
+  //     select: {
+  //       memberID: true,
+  //       isBanned: true,
+  //       isMuted: true,
+  //     },
+  //   });
+
+  //   roomMembers = roomMembers.filter(
+  //     (member) =>
+  //       member.memberID !== message.authorId &&
+  //       member.memberID !== notif.senderId &&
+  //       !member.isBanned &&
+  //       !member.isMuted,
+  //   );
+  //   const clientsSockets = await this.server
+  //     .in(`Room:${message.chatRoomId}`)
+  //     .fetchSockets();
+
+  //   const nofifPromises = roomMembers.map(async (member) => {
+  //     if (blockedRoomMembersIds?.includes(member.memberID)) return;
+
+
+  //     const checkMemberConnected = roomMembers.map((member) =>
+  //       clientsSockets.some((client) => client.data.user.sub === member.memberID),
+  //     );
+  //     if (checkMemberConnected.length === 0) return;
+  //     const createNotification = await this.handleFriendNotification({
+  //       ...notif,
+  //       receiverId: member.memberID,
+  //     });
+  //     const channelName: string = `User:${member.memberID}`;
+  //     this.server.to(channelName).emit('notification', {
+  //       createNotification,
+  //       entity: new MessageFormatDto(message),
+  //     });
+  //   }
+  //   );
+  // }
 }

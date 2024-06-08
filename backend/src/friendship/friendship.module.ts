@@ -1,10 +1,11 @@
+import { JwtService } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { FriendshipService } from './friendship.service';
 import { FriendshipController } from './friendship.controller';
 import { DatabaseService } from 'src/database/database.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { NotificationsListener } from 'src/notifications/notifications.listener';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { ChatGateway } from 'src/chat/chat.gateway';
 
 @Module({
   controllers: [FriendshipController],
@@ -12,8 +13,9 @@ import { NotificationsService } from 'src/notifications/notifications.service';
     FriendshipService,
     DatabaseService,
     EventEmitter2,
-    NotificationsListener,
-    NotificationsService
+    NotificationsService,
+    ChatGateway,
+    JwtService
   ],
 })
 export class FriendshipModule {}

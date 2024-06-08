@@ -9,7 +9,8 @@ export class CreateNotificationDto {
   senderId: string;
 
   @IsBoolean()
-  @IsOptional() // Mark as optional if you want to use the default value
+  @IsOptional()// Mark as optional if you want to use the default value
+    
   isRead?: boolean;
 
   @IsString()
