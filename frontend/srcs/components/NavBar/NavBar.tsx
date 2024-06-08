@@ -30,6 +30,7 @@ import api from "../../api/posts";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
+import { io } from 'socket.io-client';
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
@@ -40,6 +41,37 @@ export default function NavBar() {
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
 
   const [users, setUsers] = useState([]);
+
+
+
+  useEffect(() => {
+    const socket = io('http://localhost:3003', {
+      transports: ['websocket'],
+    });
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+
+    socket.on('sendNotification', (data) => {
+      console.log('Received message:', data);
+      // Handle the received message
+      // Example: set some state or trigger a notification
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from WebSocket server');
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
