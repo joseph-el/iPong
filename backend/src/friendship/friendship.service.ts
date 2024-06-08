@@ -87,7 +87,7 @@ export class FriendshipService {
       entityId: friendshipId,
       entityType: NotificationType.FriendRequest,
     };
-    await this.ChatGateway.sendNotification(notification);
+    // await this.ChatGateway.sendNotification(notification);
     return responseOfReq;
   }
 
