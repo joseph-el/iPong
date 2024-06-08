@@ -25,6 +25,7 @@ import { MessageFormatDto } from 'src/messages/dto/msgFormat.dto';
   },
   transports: ['websocket'],
 })
+
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() private server: Server;

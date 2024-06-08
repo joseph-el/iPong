@@ -3,42 +3,68 @@ import { Ball } from "../entities/Ball";
 import { GAME_SETTING } from "../constants/settings";
 
 export class GameAlgo {
+  /* Game Size */
   width: number;
   height: number;
-  framePerSeconds: number;
-  loop: NodeJS.Timeout | null;
-  ctx: CanvasRenderingContext2D | null;
-  target: number;
+
+  /* Game Render */
+  private framePerSeconds: number;
+  private loop: NodeJS.Timeout | null;
+  private ctx: CanvasRenderingContext2D | null;
+
+  /* Game Settings */
+  private target: number;
+
+  /* Game Entities */
   player: Player | null;
   computer: Player | null;
-  ball: Ball | null;
-  defaultColor: string;
-  playerWidthPercentage: number;
-  playerHeightPercentage: number;
-  fractionForSpeed: number;
-  ballSizePercentage: number;
-  ballSpeedFactor: number;
-  ballSpeed: number;
-  ballVelocity: number;
-  ballSize: number;
-  netWidth: number;
-  netGap: number;
-  font: string;
-  ballHitSound: HTMLAudioElement | null;
-  scoreSound: HTMLAudioElement | null;
-  gameOverSound: HTMLAudioElement | null;
-  bgImage: HTMLImageElement | null;
-  isBgImageLoaded: boolean = false;
-  isSkinImageLoaded: boolean = false;
-  isBotSkinImageLoaded: boolean = false;
-  skinImage: HTMLImageElement | null;
-  botSkinImage: HTMLImageElement | null;
-  hitBallColor: string;
-  hitBallSizeX: number;
-  hitBallSizeY: number;
-  mapPath: string;
-  skinPath: string;
-  botSkinPath: string;
+  private ball: Ball | null;
+
+  /* Game Design */
+  private defaultColor: string;
+  private font: string;
+  private hitBallColor: string;
+  private hitBallSizeX: number;
+  private hitBallSizeY: number;
+
+  /* Game Entities Sizes */
+  private playerWidthPercentage: number;
+  private playerHeightPercentage: number;
+  private ballSizePercentage: number;
+
+  /* Game Speed */
+  private fractionForSpeed: number;
+  private ballVelocity: number;
+  private ballSpeed: number;
+  private ballSpeedFactor: number;
+
+  /* Game Entities Sizes */
+  private ballSize: number;
+
+  /* Game Net Settings */
+  private netWidth: number;
+  private netGap: number;
+
+  /* Sounds */
+  private ballHitSound: HTMLAudioElement | null;
+  private scoreSound: HTMLAudioElement | null;
+
+  /* Images */
+  private bgImage: HTMLImageElement | null;
+  private skinImage: HTMLImageElement | null;
+  private botSkinImage: HTMLImageElement | null;
+
+  /* Images Helpers */
+  private isBgImageLoaded: boolean = false;
+  private isSkinImageLoaded: boolean = false;
+  private isBotSkinImageLoaded: boolean = false;
+
+  /* images paths */
+  private mapPath: string;
+  private skinPath: string;
+  private botSkinPath: string;
+
+  /* CallBacks */
   winnerCallback: (winner: string) => void;
   playerScoreCallback: (p1Score: number) => void;
   botScoreCallback: (p2Score: number) => void;
@@ -93,7 +119,6 @@ export class GameAlgo {
     /* Sounds Settings */
     this.ballHitSound = null;
     this.scoreSound = null;
-    this.gameOverSound = null;
 
     /* Skins And Backgrounds */
     this.bgImage = null;
@@ -111,7 +136,7 @@ export class GameAlgo {
   }
 
   /* Game Init Methods */
-  initGameEntities() {
+  private initGameEntities() {
     const playersWidth = (this.width * this.playerWidthPercentage) / 100;
     const playersHeight = (this.height * this.playerHeightPercentage) / 100;
 
@@ -139,6 +164,7 @@ export class GameAlgo {
       this.ballSize,
       this.ballVelocity,
       this.ballVelocity,
+      this.ballVelocity,
       this.ballSpeed,
       this.defaultColor
     );
@@ -146,7 +172,7 @@ export class GameAlgo {
   }
 
   /* Drawing Methods */
-  drawScores(ctx: CanvasRenderingContext2D) {
+  private drawScores(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.defaultColor;
     ctx.font = this.font;
     ctx.fillText(
@@ -160,7 +186,7 @@ export class GameAlgo {
       this.height / 5
     );
   }
-  drawNet(ctx: CanvasRenderingContext2D) {
+  private drawNet(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.defaultColor; // Fix: Changed to defaultColor
     ctx.beginPath();
     for (let y = this.netGap; y < this.height; y += this.netGap * 2) {
@@ -168,7 +194,7 @@ export class GameAlgo {
     }
     ctx.fill();
   }
-  drawFlash(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  private drawFlash(ctx: CanvasRenderingContext2D, x: number, y: number) {
     ctx.save();
     ctx.beginPath();
     ctx.ellipse(
@@ -185,8 +211,7 @@ export class GameAlgo {
     ctx.fill();
     ctx.restore();
   }
-
-  drawPlayerShadow(ctx: CanvasRenderingContext2D) {
+  private drawPlayerShadow(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
     const shadowOffsetX = 3;
     const shadowOffsetY = 5;
@@ -197,7 +222,7 @@ export class GameAlgo {
       this.player!.height
     );
   }
-  drawBallTrail(ctx: CanvasRenderingContext2D) {
+  private drawBallTrail(ctx: CanvasRenderingContext2D) {
     const numSegments = 6;
     const opacityStep = 0.1;
     let opacity = 0.4;
@@ -217,8 +242,38 @@ export class GameAlgo {
     }
   }
 
+  /* On Going Game Settings */
+  private updateScores() {
+    if (this.ball!.x - this.ball!.radius < 0) {
+      this.playScoreSound();
+      this.computer!.score++;
+      this.ball!.resetBall(this.width, this.height, 1);
+      this.botScoreCallback(this.computer!.score);
+      if (this.computer!.score >= this.target) {
+        this.endGame("Bot");
+      }
+    } else if (this.ball!.x + this.ball!.radius > this.width) {
+      this.playScoreSound();
+      this.player!.score++;
+      this.ball!.resetBall(this.width, this.height, 2);
+      this.playerScoreCallback(this.player!.score);
+      if (this.player!.score >= this.target) {
+        this.endGame("Player");
+      }
+    }
+  }
+
+  /* Sounds Control */
+  private playScoreSound() {
+    if (this.scoreSound) {
+      this.scoreSound.pause();
+      this.scoreSound.currentTime = 0;
+      this.scoreSound.play();
+    }
+  }
+
   /* Loading Images/Sounds For The Game */
-  preLoadImages() {
+  private preLoadImages() {
     this.bgImage = new Image();
     this.skinImage = new Image();
     this.botSkinImage = new Image();
@@ -251,50 +306,9 @@ export class GameAlgo {
     this.botSkinImage.src = this.botSkinPath;
     this.skinImage.src = this.skinPath;
   }
-
-  preLoadSounds() {
+  private preLoadSounds() {
     this.ballHitSound = new Audio(GAME_SETTING.HIT_BALL_SOUND);
     this.scoreSound = new Audio(GAME_SETTING.SCORE_SOUND);
-  }
-
-  /* On Going Game Settings */
-  updateScores() {
-    if (this.ball!.x - this.ball!.radius < 0) {
-      this.playScoreSound();
-      this.computer!.score++;
-      this.botScoreCallback(this.computer!.score);
-      if (this.computer!.score >= this.target) {
-        this.endGame("Bot");
-      }
-      this.ball!.resetBall(this.width, this.height);
-    } else if (this.ball!.x + this.ball!.radius > this.width) {
-      this.playScoreSound();
-      this.player!.score++;
-      this.playerScoreCallback(this.player!.score);
-      if (this.player!.score >= this.target) {
-        this.endGame("Player");
-      }
-      this.ball!.resetBall(this.width, this.height);
-    }
-  }
-
-  playScoreSound() {
-    if (this.scoreSound) {
-      this.scoreSound.pause();
-      this.scoreSound.currentTime = 0;
-      this.scoreSound.play();
-    }
-  }
-
-  /* Control Bot  */
-  botControlOn() {
-    this.computer!.y +=
-      (this.ball!.y - (this.computer!.y + this.computer!.height / 2)) * 0.1;
-    if (this.computer!.y < 0) {
-      this.computer!.y = 0;
-    } else if (this.computer!.y + this.computer!.height > this.height) {
-      this.computer!.y = this.height - this.computer!.height;
-    }
   }
 
   /* Game Control */
@@ -311,7 +325,61 @@ export class GameAlgo {
     }, 1000 / this.framePerSeconds);
   }
 
-  render(ctx: CanvasRenderingContext2D) {
+  endGame(winner: string) {
+    if (this.loop) {
+      clearInterval(this.loop);
+    }
+    if (this.ctx) {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+    }
+    this.winnerCallback(winner);
+  }
+
+  clearGameData() {
+    if (this.loop) {
+      clearInterval(this.loop);
+      this.loop = null;
+    }
+    if (this.ctx) {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+    }
+
+    /* Reset game entities */
+    this.player = null;
+    this.computer = null;
+    this.ball = null;
+
+    /* Reset sounds */
+    this.stopAndResetSound(this.ballHitSound);
+    this.stopAndResetSound(this.scoreSound);
+
+    /* Reset images */
+    if (this.bgImage) {
+      this.bgImage.src = "";
+      this.bgImage = null;
+    }
+    if (this.skinImage) {
+      this.skinImage.src = "";
+      this.skinImage = null;
+    }
+    if (this.botSkinImage) {
+      this.botSkinImage.src = "";
+      this.botSkinImage = null;
+    }
+    this.isBgImageLoaded = false;
+    this.isSkinImageLoaded = false;
+    this.isBotSkinImageLoaded = false;
+  }
+
+  private stopAndResetSound(sound: HTMLAudioElement | null) {
+    if (sound && !sound.paused) {
+      sound.pause();
+      sound.currentTime = 0;
+    }
+    sound = null;
+  }
+
+  private render(ctx: CanvasRenderingContext2D) {
     ctx.clearRect(0, 0, this.width, this.height);
     if (this.isBgImageLoaded && this.bgImage) {
       ctx.drawImage(this.bgImage, 0, 0, this.width, this.height);
@@ -348,7 +416,7 @@ export class GameAlgo {
     this.ball!.drawBall(ctx);
   }
 
-  update() {
+  private update() {
     if (!this.ctx) return;
 
     this.updateScores();
@@ -381,41 +449,14 @@ export class GameAlgo {
     }
   }
 
-  endGame(winner: string) {
-    if (this.loop) {
-      clearInterval(this.loop);
-    }
-    if (this.ctx) {
-      this.ctx.clearRect(0, 0, this.width, this.height);
-    }
-    this.winnerCallback(winner);
-    this.cleanupImages();
-    this.cleanupSounds();
-  }
-
-  /* CleanUp Methods */
-  cleanupImages() {
-    // console.log("clean up happened");
-    if (this.bgImage) {
-      this.bgImage.src = "";
-    }
-    if (this.skinImage) {
-      this.skinImage.src = "";
-    }
-  }
-  cleanupSounds() {
-    // console.log("clean up happened");
-    if (this.ballHitSound) {
-      this.ballHitSound.pause();
-      this.ballHitSound.currentTime = 0;
-    }
-    if (this.scoreSound) {
-      this.scoreSound.pause();
-      this.scoreSound.currentTime = 0;
-    }
-    if (this.gameOverSound) {
-      this.gameOverSound.pause();
-      this.gameOverSound.currentTime = 0;
+  /* Control Bot  */
+  private botControlOn() {
+    this.computer!.y +=
+      (this.ball!.y - (this.computer!.y + this.computer!.height / 2)) * 0.1;
+    if (this.computer!.y < 0) {
+      this.computer!.y = 0;
+    } else if (this.computer!.y + this.computer!.height > this.height) {
+      this.computer!.y = this.height - this.computer!.height;
     }
   }
 }

@@ -8,12 +8,14 @@ export class Ball {
   velocityY: number;
   speed: number;
   initialSpeed: number;
+  initialVelocity: number;
   color: string;
 
   constructor(
     x: number,
     y: number,
     radius: number,
+    initialVelocity: number,
     velocityX: number,
     velocityY: number,
     speed: number,
@@ -22,6 +24,7 @@ export class Ball {
     this.x = x;
     this.y = y;
     this.radius = radius;
+    this.initialVelocity = initialVelocity;
     this.velocityX = velocityX;
     this.velocityY = velocityY;
     this.speed = speed;
@@ -60,11 +63,26 @@ export class Ball {
     this.y += this.velocityY;
   }
 
-  resetBall(width: number, height: number) {
+  resetBall(width: number, height: number, goalPos: number) {
     this.speed = this.initialSpeed;
     this.x = width / 2;
     this.y = height / 2;
-    this.velocityX = -this.velocityX;
+
+    if (goalPos === 1) {
+      console.log(this.velocityX);
+      console.log(this.velocityY);
+      this.velocityX = -this.initialVelocity;
+    } else {
+      this.velocityX = this.initialVelocity;
+    }
+    if (this.velocityY < 0) {
+      this.velocityY = -this.initialVelocity;
+    } else {
+      this.velocityY = this.initialVelocity;
+    }
+    console.log("velocities updates: ");
+    console.log(this.velocityX);
+    console.log(this.velocityY);
   }
 
   ballPlayerCollision(player: {

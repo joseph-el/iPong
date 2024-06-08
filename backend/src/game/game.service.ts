@@ -156,6 +156,7 @@ export class GameService {
       this.ballSize,
       this.ballVelocity,
       this.ballVelocity,
+      this.ballVelocity,
       this.ballSpeed,
     );
   }
@@ -169,18 +170,18 @@ export class GameService {
   private async updateGameScores() {
     if (this.ball.x - this.ball.radius < 0) {
       this.rightPlayer.score++;
+      this.ball.resetBall(this.width, this.height, 1);
       if (this.rightPlayer.score >= this.target) {
         this.winner = this.players[1];
         await this.endGame();
       }
-      this.ball.resetBall(this.width, this.height);
     } else if (this.ball.x + this.ball.radius > this.width) {
       this.leftPlayer.score++;
+      this.ball.resetBall(this.width, this.height, 2);
       if (this.leftPlayer.score >= this.target) {
         this.winner = this.players[0];
         await this.endGame();
       }
-      this.ball.resetBall(this.width, this.height);
     }
   }
   /* Game Control */
