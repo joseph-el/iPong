@@ -9,7 +9,8 @@ const XP_RANGES: [number, number, number][] = [
 
 
 export function getUserLevel(xp: number): number {
-
+    if (!xp || xp === undefined)
+        return 0;
     for (const [minXp, maxXp, level] of XP_RANGES) {
         if (xp >= minXp && xp <= maxXp) {
             return level;
