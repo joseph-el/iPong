@@ -8,10 +8,12 @@ import { Button } from "@nextui-org/react";
 import { ScrollShadow } from "@nextui-org/react";
 
 import ImessagesNotifications from "../iMessagesNotifications/iMessagesNotifications";
-
+import { io } from 'socket.io-client';
 import FriendNotifications from "../FriendNotifications/FriendNotifications";
 
 import users from "./data";
+import { useEffect, useRef } from "react";
+import { PATHS } from "../../../game/constants/paths";
 
 const NotificationsNavbar = (props) => {
   return (
@@ -66,6 +68,43 @@ export default function NotificationsBar(props) {
   const handelConfirmClick = (index) => {
     setNotificationsElement((prev) => prev.filter((_, i) => i !== index));
   };
+
+  const accessToken = document?.cookie
+  ?.split("; ")
+  ?.find((row) => row.startsWith("access_token="))
+  ?.split("=")[1];
+
+  const socketRef = useRef<Socket | null>(null);
+
+  const PATHHH = 'http://localhost:3000/check'
+
+
+  useEffect(() => {
+    console.log("mount hello world");
+
+    const socket = io(PATHHH, {
+      transports: ["websocket"],
+      auth: { token: accessToken },
+    });
+  
+    socketRef.current = socket;
+    socketRef.current.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+    // socketRef.current.on('onlineFriends', (data) => {
+    //   console.log('Received message:', data);
+    //   // Handle the received message
+    //   // Example: set some state or trigger a notification
+    // });
+
+    socketRef.current.on('disconnect', () => {
+      console.log('Disconnected from WebSocket server');
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socketRef]);
 
   return (
     <div className="NotificationsBar-frame">
