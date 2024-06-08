@@ -34,8 +34,15 @@ export default function AppLayout({ children }) {
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
+    
     };
+
   }, []);
+
+  
+
+
+
 
   const isWideScreen = windowWidth < 1150;
 
@@ -71,9 +78,16 @@ export default function AppLayout({ children }) {
         </GridItem>
 
         <GridItem pl="2" area={"main"} w="full" h="full">
+
+
           {children}
+          
+          
+          
 
           <Outlet />
+
+     
         </GridItem>
         {isWideScreen ? null : (
           <GridItem pl="2" bg="black" area={"livechat"}>
