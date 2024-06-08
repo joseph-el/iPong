@@ -20,13 +20,13 @@ model User {
   intraId          String?          @unique
   online           Boolean          @default(false)
   firstName        String?
-  bio              String?          @default("No bio yet")
+  bio              String?          @default("Hey there! iam using iPong")
   lastName         String?
   level            Int              @default(0)
   isVerified       Boolean          @default(false)
   FriendsCount     Int              @default(0)
-  githubLink       String?
-  linkedInLink     String?
+  githubLink       String?          @default("")
+  linkedInLink     String?          @default("")
   password         String?
   refreshToken     String?
   avatar           String?
