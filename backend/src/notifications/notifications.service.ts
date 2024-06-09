@@ -51,4 +51,30 @@ export class NotificationsService {
     });
   }
 
+  async findOne(userId: string, id: string) {
+    return await this.dataservice.notification.findUnique({
+      where: {
+        id: id,
+        receiverId: userId,
+      },
+    });
+  }
+  async remove(userId: string, id: string) {
+    return await this.dataservice.notification.delete({
+      where: {
+        id: id,
+        receiverId: userId,
+      },
+    });
+  }
+
+  async getUnreadNotifications(userId: string) {
+    return await this.dataservice.notification.findMany({
+      where: {
+        receiverId: userId,
+        isRead: false,
+      },
+    });
+  }
+
 }
