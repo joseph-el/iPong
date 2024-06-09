@@ -21,6 +21,14 @@ export class NotificationsService {
       },
     });
     if (exist) {
+      await this.dataservice.notification.update({
+        where: {
+          id: exist.id,
+        },
+        data: {
+          createdAt: new Date(),
+        },
+      });
       return;
     }
    
