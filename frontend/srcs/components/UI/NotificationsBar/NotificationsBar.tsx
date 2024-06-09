@@ -24,6 +24,7 @@ import {
   setNotification,
 } from "../../../state/Notifications/NotificationsSlice";
 import { send } from "process";
+import { filter } from "lodash";
 
 const NotificationsNavbar = (props) => {
   return (
@@ -205,7 +206,8 @@ export default function NotificationsBar(props) {
         );
         const filteredNotifications = updatedNotifications.filter(Boolean);
         filteredNotifications.reverse();
-        setUserNotifications(filteredNotifications);
+        const dd = filteredNotifications.sort((a, b) => { return new Date(b.createdAt) - new Date(a.createdAt) });
+        setUserNotifications(dd);
       } catch (error) {
         console.error("error: ", error);
       }
