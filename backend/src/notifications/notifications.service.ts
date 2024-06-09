@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { DatabaseService } from 'src/database/database.service';
+import { NotificationType } from '@prisma/client';
 
 @Injectable()
 export class NotificationsService {
@@ -8,10 +9,24 @@ export class NotificationsService {
   constructor(private readonly dataservice: DatabaseService) {}
 
   async create(createNotificationDto: CreateNotificationDto) {
-    const result = await this.dataservice.notification.create({
-      data: createNotificationDto,
+    if (createNotificationDto.receiverId === createNotificationDto.senderId) {
+      return;
+    }
+    const exist = await this.dataservice.notification.findUnique({
+      where: {
+        senderId: createNotificationDto.senderId,
+        receiverId: createNotificationDto.receiverId,
+        entityType: NotificationType.FriendRequest,
+        id: createNotificationDto.id
+      },
     });
-    return result;
+    if (exist) {
+      return;
+    }
+   
+    return await this.dataservice.notification.create({
+      data: createNotificationDto,
+    });;
   }
 
   async findAll(userId: string) {
