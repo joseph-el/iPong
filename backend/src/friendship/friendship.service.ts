@@ -82,7 +82,6 @@ export class FriendshipService {
     const notification: CreateNotificationDto = {
       receiverId: add_friendDto.friendId,
       senderId: userId,
-      entityId: friendshipId,
       entityType: NotificationType.FriendRequest,
     };
     this.eventEmitter.emit('sendNotification', notification);
@@ -224,7 +223,6 @@ export class FriendshipService {
     const notification: CreateNotificationDto = {
       receiverId: friendId,
       senderId: userId,
-      entityId: request.id+ 'accepted',
       entityType: NotificationType.FriendRequestAccepted,
     };
     this.eventEmitter.emit('sendNotification', notification);

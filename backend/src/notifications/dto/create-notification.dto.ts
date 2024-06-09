@@ -14,9 +14,5 @@ export class CreateNotificationDto {
   isRead?: boolean;
 
   @IsString()
-  @IsOptional() // Mark as optional if the field is not always required
-  entityId?: string;
-
-  @IsString()
   entityType: NotificationType;
 }
