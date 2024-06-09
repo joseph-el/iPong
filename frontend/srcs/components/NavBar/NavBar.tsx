@@ -24,40 +24,29 @@ import {
 } from "@nextui-org/react";
 import { Show } from "@chakra-ui/react";
 
-import { Badge, Switch } from "@nextui-org/react";
+import { Badge } from "@nextui-org/react";
 
 import api from "../../api/posts";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../state/store";
-
+import {addNotification} from "../../state/Notifications/NotificationsSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../state/store";
+import { io } from "socket.io-client";
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [activeSearch, setActiveSearch] = React.useState([]);
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchTerm, setSearchTerm] = React.useState(true);
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
-
+  const [NotificationCount, setNotificationCount] = React.useState(0);
   const [users, setUsers] = useState([]);
 
-
-
-
-  // console.log("users: HELLOOOOO", users);
-
-
-  // useEffect(() => {
-  //   console.log("mount hello world");
-  //   return () => {
-  //     console.log("unmount hello world");
-  //   }
-  // }, []);
-
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const response = await api.get("/users/allusers");
@@ -121,8 +110,46 @@ export default function NavBar() {
   };
 
   const handelCloseNotificationBar = () => {
+
     setShowNotificationBar(!ShowNotificationBar);
   };
+
+  let socket;
+  const accessToken = document?.cookie
+    ?.split("; ")
+    ?.find((row) => row.startsWith("access_token="))
+    ?.split("=")[1];
+
+    useEffect(() => {
+    socket = io("http://localhost:3000/notifications", {
+      transports: ["websocket"],
+      auth: {
+        token: accessToken,
+      },
+    });
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+    });
+    socket.on("sendNotification", (data) => {
+      dispatch(addNotification({senderId:data.senderId, entityType:data.entityType, createdAt:data.createdAt}))
+      setNotificationCount(NotificationCount + 1);
+    
+    });
+    socket.on("disconnect", () => {
+      console.log("Disconnected from WebSocket server");
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+
+  
+
+
+
+
+
 
   return (
     <div className="nav-bar">
@@ -165,7 +192,15 @@ export default function NavBar() {
           >
             <DropdownTrigger>
               <div className="notificationBadge">
-                <Badge size="md" color="primary" content={"9+"} isOneChar shape="rectangle" showOutline={false}>
+                <Badge
+                  isInvisible={NotificationCount === 0}
+                  size="md"
+                  color="primary"
+                  content={NotificationCount > 9 ? "9+" : NotificationCount}
+                  isOneChar
+                  shape="rectangle"
+                  showOutline={true}
+                >
                   <img
                     src={NotifactionIcon}
                     alt="noticon"

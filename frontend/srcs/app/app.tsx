@@ -18,11 +18,14 @@ import api from "../api/posts";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUserProfile } from '../state/UserInfo/UserSlice';
+import { addNotification } from "../state/Notifications/NotificationsSlice";
 import { AppDispatch } from "../state/store";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  
   const dispatch = useDispatch<AppDispatch>();
+
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -39,13 +42,33 @@ const RequireAuth = ({ children }) => {
     checkAuth();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/notifications/getAllNotifications");
+        const notifications = response.data;
+        console.log("notifications", notifications);
+        notifications.forEach((notification) => {
+          dispatch(addNotification(notification));
+        });
+
+      } catch (error) {
+        console.error("error: notitifications", error);
+      }
+    };
+    fetchData();
+
+  }, []);
+
   if (isAuthenticated === null) {
     return null;
   }
-
   if (!isAuthenticated) {
     return <Navigate to="/auth" />;
   }
+
+
+
 
   return children;
 };

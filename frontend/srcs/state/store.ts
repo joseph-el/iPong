@@ -4,6 +4,7 @@ import dateSlice from "./InputComponents/InputDateComponent/dateSlice"
 import genderSlice from './Checkbox/CheckboxSlice';
 import UserSlice from './UserInfo/UserSlice';
 import achievementSlice from './Achievement/AchievementSlice';
+import notificationSlice from "./Notifications/NotificationsSlice";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
       gender: genderSlice,
       userState: UserSlice,
       achievement: achievementSlice,
+      notification: notificationSlice,
     },
 });
 

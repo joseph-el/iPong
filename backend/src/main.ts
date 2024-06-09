@@ -16,15 +16,14 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
-  const config = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('API Documentation')
-    .setVersion('1.0')
-    .addTag('API')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  app.enableShutdownHooks();
+  // const config = new DocumentBuilder()
+  //   .setTitle('API')
+  //   .setDescription('API Documentation')
+  //   .setVersion('1.0')
+  //   .addTag('API')
+  //   .build();
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
   await app.listen(3000);
 }
 bootstrap();

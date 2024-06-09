@@ -17,7 +17,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import { getAvatarSrc } from "../../../../utils/getAvatarSrc";
 import { getUserLevel } from "../../../../utils/getCurrentLevel";
-import { set } from "lodash";
 import { isValidURL } from "../../../../utils/isValidURL";
 import { validateEmail } from "../../../../utils/formValidation";
 import { isFullNameValid } from "../../../../utils/formValidation";
@@ -54,14 +53,13 @@ export default function EditProfile(props) {
   });
 
   const [isSelected, setIsSelected] = useState(UserInfo.isVerified);
-  const [selectedCover, setSelectedCover] = useState(null);
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-  const [errorInput, setErrorInput] = useState([]);
-  const [error, setError] = useState("");
   const [ReadyForSubmit, setReadyForSubmit] = useState(false);
-
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [selectedCover, setSelectedCover] = useState(null);
   const [AvatarFile, setAvatarFile] = useState(null);
+  const [errorInput, setErrorInput] = useState([]);
   const [CoverFile, setCoverFile] = useState(null);
+  const [error, setError] = useState("");
 
   const InputTypes = [
     {

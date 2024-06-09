@@ -250,19 +250,19 @@ export default function UserProfileViewAs() {
     const fetchData = async () => {
       try {
         if (FriendshipStatus === "SET_FRIEND") {
-          const response = await api.post(`/friendship/add`, {
+           await api.post(`/friendship/add`, {
             friendId: userId,
           });
           // console.log("response: add ", response);
         }
         if (FriendshipStatus === "MAKE_FRIEND") {
-          const response = await api.post(`/friendship/accept`, {
+          await api.post(`/friendship/accept`, {
             friendId: userId,
           });
           // console.log("response: make friend ", response);
         }
         if (FriendshipStatus === "SET_CANCEL") {
-          const response = await api.post(`/friendship/reject`, {
+          await api.post(`/friendship/reject`, {
             friendId: userId,
           });
           if (response.status !== 200) {
@@ -281,17 +281,17 @@ export default function UserProfileViewAs() {
     const fetchData = async () => {
       try {
         if (typeof isUnfriend === "string") {
-          const response = await api.post(`/friendship/unblock`, {
+          await api.post(`/friendship/unblock`, {
             friendId: userId,
           });
           return;
         }
         if (isUnfriend) {
-          const response = await api.post(`/friendship/unfriend`, {
+          await api.post(`/friendship/unfriend`, {
             friendId: userId,
           });
         } else {
-          const response = await api.post(`/friendship/block`, {
+          await api.post(`/friendship/block`, {
             friendId: userId,
           });
         }

@@ -1,4 +1,4 @@
-import { ChatGateway } from './../chat/chat.gateway';
+import { GatewayNofifGateway } from './../gateway-nofif/gateway-nofif.gateway';
 import { usersSearchDto } from './../users/dto/search-user.dto';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -6,18 +6,16 @@ import { add_friendDto } from './dto/add-friendship.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { $Enums, NotificationType } from '@prisma/client';
 import { res_friendship } from './dto/res-friends.dto';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { profile } from './dto/profile.dto';
 import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
+import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 
 @Injectable()
 export class FriendshipService {
   constructor(
     private databaseservice: DatabaseService,
-    private readonly eventEmitter: EventEmitter2,
-    private NotificationsService: NotificationsService,
-    private ChatGateway: ChatGateway,
-  ) {}
+    private eventEmitter: EventEmitter2,
+  ) { }
   async addFriend(add_friendDto: add_friendDto, userId: string) {
     if (add_friendDto.friendId === userId) {
       throw new HttpException(
@@ -87,7 +85,8 @@ export class FriendshipService {
       entityId: friendshipId,
       entityType: NotificationType.FriendRequest,
     };
-    // await this.ChatGateway.sendNotification(notification);
+     this.eventEmitter.emit('sendNotification', notification);
+    // await this.GatewayNofifGateway.sendNotification(notification);
     return responseOfReq;
   }
 
@@ -222,13 +221,13 @@ export class FriendshipService {
         },
       });
     }
-    this.eventEmitter.emit('sendNotification', {
-      receiverId: friendId,
-      actorId: userId,
-      type: $Enums.NotificationType.FriendRequestAccepted,
-      entityId: "friendshipId",
-      entity_type: 'friend',
-    });
+        const notification: CreateNotificationDto = {
+          receiverId: friendId,
+          senderId: userId,
+          entityId: `${userId}+${friendId}`,
+          entityType: NotificationType.FriendRequestAccepted,
+        };
+        this.eventEmitter.emit('sendNotification', notification);
     return new res_friendship(result);
   }
 

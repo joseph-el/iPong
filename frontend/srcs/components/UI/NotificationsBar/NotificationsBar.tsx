@@ -8,12 +8,21 @@ import { Button } from "@nextui-org/react";
 import { ScrollShadow } from "@nextui-org/react";
 
 import ImessagesNotifications from "../iMessagesNotifications/iMessagesNotifications";
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 import FriendNotifications from "../FriendNotifications/FriendNotifications";
 
-import users from "./data";
-import { useEffect, useRef } from "react";
-import { PATHS } from "../../../game/constants/paths";
+// import users from "./data";
+import { useDispatch } from "react-redux";
+import { UseSelector, useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
+import { AppDispatch } from "../../../state/store";
+import { useEffect, useState } from "react";
+import api from "../../../api/posts";
+import {
+  addNotification,
+  clearNotifications,
+} from "../../../state/Notifications/NotificationsSlice";
+import { send } from "process";
 
 const NotificationsNavbar = (props) => {
   return (
@@ -32,12 +41,14 @@ const NotificationsNavbar = (props) => {
   );
 };
 
-const formatTimeDifference = (time: Date): string => {
+const formatTimeDifference = (time: string): string => {
   const now = new Date();
-  const diffInMs = now.getTime() - time.getTime();
+  const past = new Date(time);
+  const diffInMs = now.getTime() - past.getTime();
   const diffInMinutes = Math.floor(diffInMs / 60000);
 
   if (diffInMinutes < 60) {
+    if (diffInMinutes === 0) return "now";
     return `${diffInMinutes} min`;
   } else if (diffInMinutes < 1440) {
     const hours = Math.floor(diffInMinutes / 60);
@@ -55,56 +66,113 @@ const formatTimeDifference = (time: Date): string => {
 };
 
 export default function NotificationsBar(props) {
-  const [NotificationsElement, setNotificationsElement] = React.useState(users);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const _UserId = useSelector((state: RootState) => state.userState.id);
+  const NotificationsObject = useSelector(
+    (state: RootState) => state.notification.notifications
+  );
+  const [ClearAll, setClearAll] = useState(false);
+  const [FriendshipStatus, setFriendshipStatus] = useState<String | null>(null);
+  const [userNotifications, setUserNotifications] = useState([]);
 
   const handelClearClick = () => {
-    setNotificationsElement([]);
+    setClearAll(true);
+    setUserNotifications([]);
   };
 
-  const handelDeleteClick = (index) => {
-    setNotificationsElement((prev) => prev.filter((_, i) => i !== index));
+  const handelDeleteClick = (UserId) => {
+    setFriendshipStatus(`SET_CANCEL*:${UserId}`);
   };
 
-  const handelConfirmClick = (index) => {
-    setNotificationsElement((prev) => prev.filter((_, i) => i !== index));
+  const handelConfirmClick = (UserId) => {
+    console.log("UserId: handelConfirmClick:: ", UserId);
+    setFriendshipStatus(`MAKE_FRIEND*:${UserId}`);
   };
-
-  const accessToken = document?.cookie
-  ?.split("; ")
-  ?.find((row) => row.startsWith("access_token="))
-  ?.split("=")[1];
-
-  const socketRef = useRef<Socket | null>(null);
-
-  const PATHHH = 'http://localhost:3000/check'
-
 
   useEffect(() => {
-    console.log("mount hello world");
+    const fetchData = async () => {
+      try {
+        const UserId = FriendshipStatus?.split("*:")[1];
 
-    const socket = io(PATHHH, {
-      transports: ["websocket"],
-      auth: { token: accessToken },
-    });
-  
-    socketRef.current = socket;
-    socketRef.current.on('connect', () => {
-      console.log('Connected to WebSocket server');
-    });
-    // socketRef.current.on('onlineFriends', (data) => {
-    //   console.log('Received message:', data);
-    //   // Handle the received message
-    //   // Example: set some state or trigger a notification
-    // });
+        let response;
 
-    socketRef.current.on('disconnect', () => {
-      console.log('Disconnected from WebSocket server');
-    });
+        console.log("userId: sender requet:: ", UserId); 
 
-    return () => {
-      socket.disconnect();
+        if (FriendshipStatus?.includes("MAKE_FRIEND")) {
+          response = await api.post(`/friendship/accept`, {
+            friendId: UserId,
+          });
+          console.log("response: make friend ", response);
+        }
+
+        if (FriendshipStatus?.includes("SET_CANCEL")) {
+          response = await api.post(`/friendship/reject`, {
+            friendId: UserId,
+          });
+          console.log("response: reject ", response);
+        }
+      } catch (error) {}
     };
-  }, [socketRef]);
+    FriendshipStatus != null && fetchData();
+  }, [FriendshipStatus]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.delete("/notifications/deleteNotifications");
+        console.log("response.data cleared", response.data);
+        dispatch(clearNotifications()); // how ican make this object empt
+        setUserNotifications([]);
+        setClearAll(false);
+      } catch (error) {
+        console.error("error: ", error);
+      }
+    };
+    ClearAll && fetchData();
+  }, [ClearAll]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const updatedNotifications = await Promise.all(
+          NotificationsObject.map(async (notif) => {
+            const { senderId, entityType, createdAt } = notif;
+            if (senderId === _UserId) {
+              return null;
+            }
+            try {
+              const response = await api.get(
+                `/user-profile/getinfoById${senderId}`
+              );
+              const { firstName, lastName, picture, id } = response.data;
+
+              return {
+                id,
+                firstName,
+                lastName,
+                picture,
+                entityType,
+                createdAt,
+              };
+            } catch (error) {
+              console.error(
+                `Failed to fetch data for senderId: ${senderId}`,
+                error
+              );
+              return null;
+            }
+          })
+        );
+        const filteredNotifications = updatedNotifications.filter(Boolean);
+        filteredNotifications.reverse();
+        setUserNotifications(filteredNotifications);
+      } catch (error) {
+        console.error("error: ", error);
+      }
+    };
+    NotificationsObject && NotificationsObject.length > 0 && fetchData();
+  }, [NotificationsObject]);
 
   return (
     <div className="NotificationsBar-frame">
@@ -132,26 +200,26 @@ export default function NotificationsBar(props) {
               hideScrollBar
               className="w-[356px] h-[435px]"
             >
-              {NotificationsElement.map((user, index) => {
-                const formattedTime = formatTimeDifference(user.time);
+              {userNotifications.map((notif, index) => {
+                const formattedTime = formatTimeDifference(notif.createdAt);
 
-                if (user.type === "ImessagesNotifications") {
+                if (notif.entityType === "FriendRequestAccepted") {
                   return (
                     <ImessagesNotifications
                       key={index}
-                      name={user.name}
-                      avatar={user.avatar}
+                      name={notif.firstName + " " + notif.lastName}
+                      avatar={notif.picture}
                       time={formattedTime}
                     />
                   );
                 } else {
                   return (
                     <FriendNotifications
-                      deleteButton={() => handelDeleteClick(index)}
-                      confirmButton={() => handelConfirmClick(index)}
+                      deleteButton={() => handelDeleteClick(notif.id)}
+                      confirmButton={() => handelConfirmClick(notif.id)}
                       key={index}
-                      name={user.name}
-                      avatar={user.avatar}
+                      name={notif.firstName + " " + notif.lastName}
+                      avatar={notif.picture}
                       time={formattedTime}
                     />
                   );
@@ -164,3 +232,19 @@ export default function NotificationsBar(props) {
     </div>
   );
 }
+// Users //
+// useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       NotificationsObject.map((notif, index) => {
+
+//       });
+//       // const response = await api.get(`/user-profile/getinfoById${GetUserNotifications}`);
+//       // setUserNotifications(response.data);
+//       // console.log("User sender response.data ", response.data);
+//     } catch (error) {
+//       console.error("error: ", error);
+//     }
+//   };
+//   fetchData();
+// }, []);

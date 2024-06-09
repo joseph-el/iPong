@@ -10,7 +10,7 @@ export default function ImessagesNotifications(props) {
       <div className="notification-content">
         <User
           name="iMessages"
-          description={props.name + " send you a message"}
+          description={props.name + " Accepted your friend request"}
           avatarProps={{
             src: props.avatar,
           }}
