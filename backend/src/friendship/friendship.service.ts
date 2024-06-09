@@ -15,7 +15,7 @@ export class FriendshipService {
   constructor(
     private databaseservice: DatabaseService,
     private eventEmitter: EventEmitter2,
-  ) { }
+  ) {}
   async addFriend(add_friendDto: add_friendDto, userId: string) {
     if (add_friendDto.friendId === userId) {
       throw new HttpException(
@@ -85,7 +85,7 @@ export class FriendshipService {
       entityId: friendshipId,
       entityType: NotificationType.FriendRequest,
     };
-     this.eventEmitter.emit('sendNotification', notification);
+    this.eventEmitter.emit('sendNotification', notification);
     // await this.GatewayNofifGateway.sendNotification(notification);
     return responseOfReq;
   }
@@ -221,13 +221,13 @@ export class FriendshipService {
         },
       });
     }
-        const notification: CreateNotificationDto = {
-          receiverId: friendId,
-          senderId: userId,
-          entityId: `${userId}+${friendId}`,
-          entityType: NotificationType.FriendRequestAccepted,
-        };
-        this.eventEmitter.emit('sendNotification', notification);
+    const notification: CreateNotificationDto = {
+      receiverId: friendId,
+      senderId: userId,
+      entityId: request.id,
+      entityType: NotificationType.FriendRequestAccepted,
+    };
+    this.eventEmitter.emit('sendNotification', notification);
     return new res_friendship(result);
   }
 

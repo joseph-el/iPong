@@ -65,6 +65,7 @@ export class NotificationsController {
     @GetCurrentUser('userId') userId: string,
     @Param('id') id: string,
   ) {
+    console.log("delete notification", userId, id)
     return await this.notificationsService.remove(userId, id);
   }
 

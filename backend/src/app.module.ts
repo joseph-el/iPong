@@ -22,6 +22,7 @@ import { CheckGateway } from './check/check.gateway';
 import { GatewayNofifModule } from './gateway-nofif/gateway-nofif.module';
 import { GatewayNofifGateway } from './gateway-nofif/gateway-nofif.gateway';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
+import { GatewayChatGateway } from './gateway-chat/gateway-chat.gateway';
 
 @Module({
   imports: [
@@ -43,6 +44,6 @@ import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
     GatewayNofifModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService, CloudinaryService],
+  providers: [AppService, AuthService, CloudinaryService, GatewayChatGateway],
 })
 export class AppModule {}
