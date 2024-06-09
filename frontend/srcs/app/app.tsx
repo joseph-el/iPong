@@ -17,23 +17,40 @@ import { Navigate } from "react-router-dom";
 import api from "../api/posts";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUserProfile } from '../state/UserInfo/UserSlice';
-import { addNotification } from "../state/Notifications/NotificationsSlice";
+import { setUserProfile } from "../state/UserInfo/UserSlice";
+import {
+  addNotification,
+  setNotification,
+  setNotificationCount,
+} from "../state/Notifications/NotificationsSlice";
 import { AppDispatch } from "../state/store";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-  
-  const dispatch = useDispatch<AppDispatch>();
 
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const response = await api.get("/user-profile/me");
 
-        dispatch(setUserProfile(response.data));
- 
+        let user = response.data;
+
+        if (
+          user.username.startsWith("M-;") ||
+          user.username.startsWith("F-;")
+        ) {
+          user = {
+            ...user,
+            gender: user.username.startsWith("M-") ? "male" : "female",
+          };
+          
+          user.username = user.username.split(";")[1];
+          }
+          
+          
+        dispatch(setUserProfile(user));
         setIsAuthenticated(true);
       } catch (error) {
         setIsAuthenticated(false);
@@ -48,16 +65,39 @@ const RequireAuth = ({ children }) => {
         const response = await api.get("/notifications/getAllNotifications");
         const notifications = response.data;
         console.log("notifications", notifications);
-        notifications.forEach((notification) => {
-          dispatch(addNotification(notification));
+
+        const NotificationObj = notifications.map((notification) => {
+          return {
+            NotificationId: notification.id,
+            senderId: notification.senderId,
+            entityType: notification.entityType,
+            createdAt: notification.createdAt,
+          };
         });
 
+        dispatch(setNotification(NotificationObj));
+
+        // notifications.forEach((notification) => {
+        //   dispatch(addNotification(notification));
+        // });
       } catch (error) {
         console.error("error: notitifications", error);
       }
     };
-    fetchData();
 
+    const fetchUnreadNotificationsData = async () => {
+      try {
+        const response = await api.get("/notifications/unreadNotifications");
+        console.log("unread notifications", response.data);
+        dispatch(setNotificationCount(response.data.length));
+        console.log("unread notifications", response.data.length);
+      } catch (error) {
+        console.error("error: notitifications", error);
+      }
+    };
+
+    fetchData();
+    fetchUnreadNotificationsData();
   }, []);
 
   if (isAuthenticated === null) {
@@ -66,9 +106,6 @@ const RequireAuth = ({ children }) => {
   if (!isAuthenticated) {
     return <Navigate to="/auth" />;
   }
-
-
-
 
   return children;
 };
@@ -134,7 +171,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "home",
-        element: < Home/>,
+        element: <Home />,
       },
       {
         path: "profile",
@@ -150,7 +187,7 @@ const router = createBrowserRouter([
       },
       {
         path: "users/:userId",
-        element: <IPongProfileViewAs  />,
+        element: <IPongProfileViewAs />,
       },
     ],
   },

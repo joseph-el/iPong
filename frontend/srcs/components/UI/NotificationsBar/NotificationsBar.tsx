@@ -21,6 +21,7 @@ import api from "../../../api/posts";
 import {
   addNotification,
   clearNotifications,
+  setNotification,
 } from "../../../state/Notifications/NotificationsSlice";
 import { send } from "process";
 
@@ -73,48 +74,81 @@ export default function NotificationsBar(props) {
     (state: RootState) => state.notification.notifications
   );
   const [ClearAll, setClearAll] = useState(false);
-  const [FriendshipStatus, setFriendshipStatus] = useState<String | null>(null);
+  const [FriendshipStatus, setFriendshipStatus] = useState([]);
   const [userNotifications, setUserNotifications] = useState([]);
+  const [NotificationId, setNotificationId] = useState<String | null>(null);
 
   const handelClearClick = () => {
     setClearAll(true);
     setUserNotifications([]);
   };
 
-  const handelDeleteClick = (UserId) => {
-    setFriendshipStatus(`SET_CANCEL*:${UserId}`);
+  const handelDeleteClick = (UserId, NotifId) => {
+    setFriendshipStatus({
+      option: "SET_CANCEL",
+      userId: UserId,
+      notifId: NotifId,
+    });
   };
 
-  const handelConfirmClick = (UserId) => {
-    console.log("UserId: handelConfirmClick:: ", UserId);
-    setFriendshipStatus(`MAKE_FRIEND*:${UserId}`);
+  const handelConfirmClick = (UserId, NotifId) => {
+    console.log("UserId: ", UserId);
+    console.log("NotifIdssss: ", NotifId);
+    setFriendshipStatus({
+      option: "MAKE_FRIEND",
+      userId: UserId,
+      notifId: NotifId,
+    });
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const UserId = FriendshipStatus?.split("*:")[1];
+        console.log("NotificationId:in useEFfect", NotificationId);
+        const response = await api.delete(
+          `/notifications/deleteNotification/${NotificationId}`
+        );
 
+        console.log("response.data cleared", response.data);
+
+        const updatedUserNotifications = userNotifications.filter(
+          (notification) => notification.NotificationId !== NotificationId
+        );
+        dispatch(setNotification(updatedUserNotifications));
+
+        setUserNotifications(updatedUserNotifications);
+        setNotificationId(null);
+      } catch (error) {
+        console.error("error: ", error);
+      }
+    };
+    NotificationId != null && fetchData();
+  }, [NotificationId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const UserId = FriendshipStatus?.userId;
         let response;
-
-        console.log("userId: sender requet:: ", UserId); 
-
-        if (FriendshipStatus?.includes("MAKE_FRIEND")) {
+        if (FriendshipStatus?.option === "MAKE_FRIEND") {
           response = await api.post(`/friendship/accept`, {
             friendId: UserId,
           });
+
+          setNotificationId(FriendshipStatus?.notifId);
           console.log("response: make friend ", response);
         }
 
-        if (FriendshipStatus?.includes("SET_CANCEL")) {
+        if (FriendshipStatus?.option === "SET_CANCEL") {
           response = await api.post(`/friendship/reject`, {
             friendId: UserId,
           });
+          setNotificationId(FriendshipStatus.notifId);
           console.log("response: reject ", response);
         }
       } catch (error) {}
     };
-    FriendshipStatus != null && fetchData();
+    FriendshipStatus.length != 0 && fetchData();
   }, [FriendshipStatus]);
 
   useEffect(() => {
@@ -137,7 +171,10 @@ export default function NotificationsBar(props) {
       try {
         const updatedNotifications = await Promise.all(
           NotificationsObject.map(async (notif) => {
-            const { senderId, entityType, createdAt } = notif;
+            const { senderId, entityType, createdAt, NotificationId } = notif;
+
+            console.log("senderId: ", senderId);
+            console.log("notif: ", notif);
             if (senderId === _UserId) {
               return null;
             }
@@ -145,10 +182,12 @@ export default function NotificationsBar(props) {
               const response = await api.get(
                 `/user-profile/getinfoById${senderId}`
               );
+
               const { firstName, lastName, picture, id } = response.data;
 
               return {
-                id,
+                NotificationId,
+                senderId,
                 firstName,
                 lastName,
                 picture,
@@ -201,6 +240,7 @@ export default function NotificationsBar(props) {
               className="w-[356px] h-[435px]"
             >
               {userNotifications.map((notif, index) => {
+                console.log("notif: ", notif);
                 const formattedTime = formatTimeDifference(notif.createdAt);
 
                 if (notif.entityType === "FriendRequestAccepted") {
@@ -215,8 +255,12 @@ export default function NotificationsBar(props) {
                 } else {
                   return (
                     <FriendNotifications
-                      deleteButton={() => handelDeleteClick(notif.id)}
-                      confirmButton={() => handelConfirmClick(notif.id)}
+                      deleteButton={() =>
+                        handelDeleteClick(notif.senderId, notif.NotificationId)
+                      }
+                      confirmButton={() =>
+                        handelConfirmClick(notif.senderId, notif.NotificationId)
+                      }
                       key={index}
                       name={notif.firstName + " " + notif.lastName}
                       avatar={notif.picture}

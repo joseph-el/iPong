@@ -85,39 +85,6 @@ export default function SetUserNameAndPicture() {
         <div className="SetUserNameAndPicture">
           <Close func={handelonClose} ClassName={"creat-close"} />
 
-          <div className="text-wrapper-3">Pick a profile picture</div>
-
-          <div className="picture-target">
-            <Avatar
-              isBordered
-              src={!selectedImage ? GestUser : selectedImage}
-              className="w-32 h-32 text-large"
-            />
-
-            <div className="camera-icon-padding">
-              <label htmlFor="fileInput">
-                <Avatar
-                  className="camera-icon-size cursor-pointer"
-                  showFallback
-                  src="https://images.unsplash.com/broken"
-                  fallback={
-                    <CameraIcon
-                      className="animate-pulse w-[20px] h-[20px]"
-                      fill="currentColor"
-                      size={25}
-                    />
-                  }
-                />
-              </label>
-              <input
-                type="file"
-                id="fileInput"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-              />
-            </div>
-          </div>
 
           <div className="text-wrapper-4">What should we call you?</div>
 

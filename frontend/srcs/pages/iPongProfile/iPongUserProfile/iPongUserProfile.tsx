@@ -126,7 +126,7 @@ export default function UserProfile() {
               src={   UserInfo.cover  } // TODO: Tell mouad to set the default cover image
             />
             <Avatar
-              src={getAvatarSrc(UserInfo.picture, UserInfo.username)}
+              src={getAvatarSrc(UserInfo.picture, UserInfo.gender)}
               className="w-28 h-28 text-large avatar"
             />
             <div className="user-LevelBar">

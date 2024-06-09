@@ -18,21 +18,20 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Avatar,
-  User,
-  Chip,
 } from "@nextui-org/react";
-import { Show } from "@chakra-ui/react";
 
 import { Badge } from "@nextui-org/react";
-
 import api from "../../api/posts";
-
 import { useSelector } from "react-redux";
-import {addNotification} from "../../state/Notifications/NotificationsSlice";
+import { addNotification } from "../../state/Notifications/NotificationsSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { io } from "socket.io-client";
+import {
+  setNotificationCount,
+  setNotification,
+} from "../../state/Notifications/NotificationsSlice";
+import { getAvatarSrc } from "../../utils/getAvatarSrc";
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
@@ -43,8 +42,25 @@ export default function NavBar() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchTerm, setSearchTerm] = React.useState(true);
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
-  const [NotificationCount, setNotificationCount] = React.useState(0);
+  const NotificationCount = useSelector(
+    (state: RootState) => state.notification.NotificationCount
+  );
   const [users, setUsers] = useState([]);
+  const [isReadAll, setIsReadAll] = useState(false);
+  const [_NotificationCount, _setNotificationCount] =
+    useState(NotificationCount);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await api.get("/notifications/readAllNotifications");
+        dispatch(setNotificationCount(0));
+        _setNotificationCount(0);
+      } catch (error) {
+        console.error("error: ", error);
+      }
+    };
+    isReadAll && fetchData();
+  }, [isReadAll]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +69,7 @@ export default function NavBar() {
 
         const _users = response.data.map((user, index) => {
           return {
+            gender: user.username.startsWith("F-;") ? "female" : "male",
             id: index,
             UserId: user.userId,
             name: user.firstName + " " + user.lastName,
@@ -84,7 +101,6 @@ export default function NavBar() {
     const searchTerm = e.target.value.toLowerCase();
 
     if (searchTerm === "") {
-      // console.log("empty");
       setActiveSearch([]);
       if (!searchTerm) setSearchTerm(true);
       return;
@@ -110,7 +126,6 @@ export default function NavBar() {
   };
 
   const handelCloseNotificationBar = () => {
-
     setShowNotificationBar(!ShowNotificationBar);
   };
 
@@ -119,8 +134,8 @@ export default function NavBar() {
     ?.split("; ")
     ?.find((row) => row.startsWith("access_token="))
     ?.split("=")[1];
-
-    useEffect(() => {
+ 
+  useEffect(() => {
     socket = io("http://localhost:3000/notifications", {
       transports: ["websocket"],
       auth: {
@@ -130,11 +145,20 @@ export default function NavBar() {
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
+
     socket.on("sendNotification", (data) => {
-      dispatch(addNotification({senderId:data.senderId, entityType:data.entityType, createdAt:data.createdAt}))
-      setNotificationCount(NotificationCount + 1);
-    
+      dispatch(
+        addNotification({
+          NotificationId: data.id,
+          senderId: data.senderId,
+          entityType: data.entityType,
+          createdAt: data.createdAt,
+        })
+      );
+      dispatch(setNotificationCount(NotificationCount + 1));
+      _setNotificationCount(_NotificationCount + 1);
     });
+
     socket.on("disconnect", () => {
       console.log("Disconnected from WebSocket server");
     });
@@ -142,14 +166,6 @@ export default function NavBar() {
       socket.disconnect();
     };
   }, []);
-
-
-  
-
-
-
-
-
 
   return (
     <div className="nav-bar">
@@ -193,10 +209,10 @@ export default function NavBar() {
             <DropdownTrigger>
               <div className="notificationBadge">
                 <Badge
-                  isInvisible={NotificationCount === 0}
+                  isInvisible={_NotificationCount === 0}
                   size="md"
                   color="primary"
-                  content={NotificationCount > 9 ? "9+" : NotificationCount}
+                  content={_NotificationCount > 9 ? "9+" : _NotificationCount}
                   isOneChar
                   shape="rectangle"
                   showOutline={true}
@@ -207,6 +223,8 @@ export default function NavBar() {
                     className="notification-button"
                     style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
                     onClick={() => {
+                      setIsReadAll(true);
+                      _setNotificationCount(0);
                       setShowNotificationBar(!ShowNotificationBar);
                     }}
                   />
@@ -226,10 +244,11 @@ export default function NavBar() {
             email={UserInfo.email}
             username={UserInfo.username}
             onClick={() => {}}
-            avatar={UserInfo.picture}
+            avatar={ getAvatarSrc(UserInfo.picture,UserInfo.gender )}
           />
         </div>
       ) : null}
     </div>
   );
 }
+

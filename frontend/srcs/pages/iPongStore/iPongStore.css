@@ -1,63 +1,61 @@
 .store-frame {
-    width: 100%;
-    height: 100%;
-    margin-top: 1px;
-    background: url("./assets/iPongStoreBackground.jpg");
-    background-size:cover;
-  
-    opacity: 0.8;
-    border: 0.8px solid #3c424d;
+  width: 100%;
+  height: 100%;
+  margin-top: 1px;
+  background: url("./assets/iPongStoreBackground.jpg");
+  background-size: cover;
+
+  opacity: 0.8;
+  border: 0.8px solid #3c424d;
+  position: relative; 
 }
 
-
 .Store-List-nav {
-
   border-radius: 10px;
-    height: 60px;
-    width: 100%;
-    
-    background-color: rgb(255, 255, 255);
-    display: flex;
-    margin-bottom: 20px;
-    justify-content: end;
-    /* gap: 10px; */
-    
+  height: 60px;
+  width: 100%;
+
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: end;
+
 }
 
 .Store-List-nav-item {
-    padding-top: 2px;
-    margin-right: 20px;
-    margin-top: 10px;
-    font-family: "fortnite-1", Helvetica;
-    width: max-content;
-    height: 40px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 30px;
-    background-color: #0086E7;
+    border-radius: 3px;
+  padding-top: 2px;
+  margin-right: 20px;
+  margin-top: 10px;
+  font-family: "fortnite-1", Helvetica;
+  width: max-content;
+  height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 30px;
+  background-color: #0086e7;
 }
 
 .Store-List-nav-item:hover {
-    background-color: #0056b3;
-    cursor: pointer;
+  background-color: #0056b3;
+  cursor: pointer;
 }
 
 .Store-List {
-    margin-top: 250px;
-    margin-left: 20px;
-    padding: 10px;
-    max-width: 600px;
+    position: absolute;  
+    bottom: 0;           
+    left: 0;            
+    margin: 20px;        
+    padding: 10px;       
+    max-width: 600px;   
     border-radius: 10px;
-
-    background-color: #101C2E;
-}
-
-.store-frame  
-.object-coverd {
-    /* margin-left: 40px;
+    background-color: #101c2e;
+  }
+.store-frame .object-coverd {
+  /* margin-left: 40px;
     margin-top: 10px; */
 }
 
 .blur-img {
-    filter: blur(2px);
+  filter: blur(2px);
 }

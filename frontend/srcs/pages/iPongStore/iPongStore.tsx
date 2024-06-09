@@ -1,33 +1,24 @@
-
 import React from "react";
 import "./iPongStore.css";
 import { Card, CardBody, CardFooter, Image, User } from "@nextui-org/react";
 
-import RetailRow from "./assets/maps/map-RetailRow.svg";
-import LootLake from "./assets/maps/map-LootLake.svg";
-import DustyDivot from "./assets/maps/map-DustyDivot.svg";
-import LazyLinks from "./assets/maps/map-LazyLinks.svg";
-import GreasyGrove from "./assets/maps/map-GreasyGrove.svg";
-import TiltedTowers from "./assets/maps/map-TiltedTowers.svg";
-import PleasantPark from "./assets/maps/map-PleasantPark.svg";
-import FlushFactory from "./assets/maps/map-FlushFactory.svg";
-import SnobbyShores from "./assets/maps/map-SnobbyShores.svg";
-import HauntedHills from "./assets/maps/map-HauntedHills.svg";
-import SaltySprings from "./assets/maps/map-SaltySprings.svg";
-import ShiftyShafts from "./assets/maps/map-ShiftyShafts.svg";
-import TomatoTemple from "./assets/maps/map-TomatoTemple.svg";
-import ParadisePalms from "./assets/maps/map-ParadisePalms.svg";
-import * as PaddlesSVGs from "./assets/paddles/paddles";
-
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 
-import {setBoardPath, setSelectedSkinPath} from "../../state/UserInfo/UserSlice";
+import {
+  setBoardPath,
+  setSelectedSkinPath,
+} from "../../state/UserInfo/UserSlice";
 import { useDispatch } from "react-redux";
 import { ScrollShadow } from "@nextui-org/react";
 import { AppDispatch } from "../../state/store";
-import { useState } from "react";
+import { BOARDS_DB } from "./db/board.db";
+import { SKIN_DB } from "./db/skins.db";
 
+import { useEffect, useState } from "react";
+import api from "../../api/posts";
+
+/*
 const list = [
   {
     title: "Tilted Towers",
@@ -219,103 +210,164 @@ const paddleList = [
     isLocked: false,
   },
 ];
-
+*/
 
 export default function IPongStore() {
-
-
-
-
-
-  // TODO: Implement the iPongStore component
-    // LOCKED PRIX
-    // UNLOCKED PRIX
-    // AVAI
   const dispatch = useDispatch<AppDispatch>();
   const [ShowPaddlesTabel, setShowPaddlesTabel] = useState(false);
-  
+
+  const [AvailableBoards, setAvailableBoards] = useState([]);
+  const [AvailablePaddles, setAvailablePaddles] = useState([]);
+
+  useEffect(() => {
+    const fetchBoardsData = async () => {
+      try {
+        const response = await api.get("/boards/all");
+        const boardsData = response.data;
+        console.log("boardsData: ", boardsData);
+
+        const updatedBoards = BOARDS_DB.map((board) => {
+          const found = boardsData.find(
+            (item) => item.BoardName === board.name
+          );
+          if (found) {
+            return { ...board, isUnlocked: true };
+          } else {
+            return { ...board, isUnlocked: false };
+          }
+        });
+        updatedBoards.sort((a, b) =>
+          a.isUnlocked === b.isUnlocked ? 0 : a.isUnlocked ? -1 : 1
+        );
+
+        setAvailableBoards(updatedBoards);
+      } catch (error) {
+        console.error("store: ", error);
+      }
+    };
+
+    const fetchPaddlesData = async () => {
+      try {
+        const response = await api.get("/skins/all");
+        const paddlesData = response.data;
+        console.log("paddlesData: ", paddlesData);
+
+        const updatedPaddles = SKIN_DB.map((paddle) => {
+          const found = paddlesData.find(
+            (item) => item.skinName === paddle.name
+          );
+          if (found) {
+            return { ...paddle, isUnlocked: true };
+          } else {
+            return { ...paddle, isUnlocked: false };
+          }
+        });
+        updatedPaddles.sort((a, b) =>
+          a.isUnlocked === b.isUnlocked ? 0 : a.isUnlocked ? -1 : 1
+        );
+
+        setAvailablePaddles(updatedPaddles);
+      } catch (error) {
+        console.error("paddles: ", error);
+      }
+    };
+
+    fetchBoardsData();
+    fetchPaddlesData();
+  }, []);
+
+  console.log("boards: ", AvailableBoards);
+  console.log("paddles: ", AvailablePaddles);
   const handelPressPaddlesTabel = (item) => {
     console.log(item);
     dispatch(setBoardPath(item.img));
-  }
-  
+  };
+
   const handelPressPaddles = (item) => {
     console.log(item);
-    dispatch(setSelectedSkinPath(item.img)); 
-  }
-  
-  
-  
+    dispatch(setSelectedSkinPath(item.img));
+  };
+
   return (
     <div className="store-frame">
       <div className="Store-List">
         <div className="Store-List-nav">
-        <div className="Store-List-nav-item" onClick={() => {setShowPaddlesTabel(false)}}>
+          <div
+            className="Store-List-nav-item"
+            onClick={() => {
+              setShowPaddlesTabel(false);
+            }}
+          >
             <h2>TABLE</h2>
           </div>
-          <div className="Store-List-nav-item" onClick={() => {setShowPaddlesTabel(true)}}>
+          <div
+            className="Store-List-nav-item"
+            onClick={() => {
+              setShowPaddlesTabel(true);
+            }}
+          >
             <h1>PADDLES</h1>
           </div>
-
         </div>
 
         <ScrollShadow hideScrollBar className="h-[450px] w-full">
           {!ShowPaddlesTabel ? (
-        <div className="gap-2 grid grid-cols-2     sm:grid-cols-3">
-        {list.map((item, index) => (
-          <Card
-            shadow="sm"
-            key={index}
-            isBlurred
-            isPressable
-            onPress={() => handelPressPaddlesTabel(item)}
-          >
-            <CardBody className="overflow-visible p-0">
-              <Image
-                shadow="sm"
-                radius="lg"
-                width="100%"
-                isBlurred
-                alt={item.title}
-               
-                className={"w-full object-cover h-[140px] " + (item.isLocked ? "blur-img" : "")}
-                src={item.img}
-              />
-            </CardBody>
-            <CardFooter className="text-small justify-between">
-              <b>{item.title}</b>
-              <p className="text-default-500">{item.price}</p>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+            <div className="gap-2 grid grid-cols-2     sm:grid-cols-3">
+              {AvailableBoards.map((item, index) => (
+                <Card
+                  shadow="sm"
+                  key={index}
+                  isBlurred
+                  isPressable
+                  onPress={() => handelPressPaddlesTabel(item)}
+                >
+                  <CardBody className="overflow-visible p-0">
+                    <Image
+                      shadow="sm"
+                      radius="lg"
+                      width="100%"
+                      isBlurred
+                      alt={item.name}
+                      className={
+                        "w-full object-cover h-[140px] " +
+                        (!item.isUnlocked ? "blur-img" : "")
+                      }
+                      src={item.imgPath}
+                    />
+                  </CardBody>
+                  <CardFooter className="text-small justify-between">
+                    <b>{item.name}</b>
+                    <p className="text-default-500">{(item.isUnlocked) ? "" :  (item.price + " iCoins")}</p>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
           ) : (
             <div className="gap-2 grid grid-cols-2 sm:grid-cols-3">
-              {paddleList.map((item, index) => (
+              {AvailablePaddles.map((item, index) => (
                 <Card
                   shadow="sm"
                   key={index}
                   isPressable
-                  
                   onPress={() => handelPressPaddles(item)}
                 >
                   <CardBody className="overflow-visible p-0">
                     <Image
-                      
                       shadow="none"
                       radius="none"
                       width="100%"
                       isBlurred
-              
-                      alt={item.title}
-                      className={"w-full object-coverd h-[120px] "  + (item.isLocked ? "blur-img" : "")}
-                      src={item.img}
+                      alt={item.name}
+                      className={
+                        "w-full object-coverd h-[120px] " +
+                        (!item.isUnlocked ? "blur-img" : "")
+                      }
+                      src={item.imgPath}
                     />
                   </CardBody>
                   <CardFooter className="text-small justify-between">
-                    <b>{item.title}</b>
-                    <p className="text-default-500">{item.price}</p>
-
+                    <b>{item.name}</b>
+                    <p className="text-default-500">{(item.isUnlocked) ? "" : (item.price + " iCoins") }</p>
                   </CardFooter>
                 </Card>
               ))}
@@ -326,4 +378,3 @@ export default function IPongStore() {
     </div>
   );
 }
-

@@ -1,7 +1,9 @@
 import DefaultMaleAvatar from "../pages/iPongProfile/assets/default-male.jpeg";
 import DefaultFemaleAvatar from "../pages/iPongProfile/assets/default-female.jpeg";
 
-export  const getAvatarSrc = (picture, username) => {
+export  const getAvatarSrc = (picture, gender) => {
+  if (picture)
+      return picture;
     const isValidUrl = (url) => {
       try {
         new URL(url);
@@ -10,14 +12,14 @@ export  const getAvatarSrc = (picture, username) => {
         return false;
       }
     };
-    if (!username) {
+    if (!gender) {
       return DefaultMaleAvatar;
     }
     
     if (!picture|| !isValidUrl(picture)) {
-      if (username.startsWith('F-;')) {
+      if (gender == "female") {
         return DefaultFemaleAvatar;
-      } else if (username.startsWith('M-;')) {
+      } else if (gender == "male") {
         return DefaultMaleAvatar;
       } else {
         return DefaultMaleAvatar;

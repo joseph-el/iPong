@@ -18,7 +18,7 @@ export class NotificationsService {
     return await this.dataservice.notification.findMany({
       where: {
         receiverId: userId,
-        isRead: false,
+        
       },
     });
   }
