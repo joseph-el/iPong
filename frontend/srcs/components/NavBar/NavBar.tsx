@@ -134,7 +134,10 @@ export default function NavBar() {
     ?.split("; ")
     ?.find((row) => row.startsWith("access_token="))
     ?.split("=")[1];
- 
+
+  const NotificationObject = useSelector(
+    (state: RootState) => state.notification.notifications
+  );
   useEffect(() => {
     socket = io("http://localhost:3000/notifications", {
       transports: ["websocket"],
@@ -147,6 +150,20 @@ export default function NavBar() {
     });
 
     socket.on("sendNotification", (data) => {
+      // TODO: check if the notification is already exist in the store
+
+      const existingNotificationIndex = NotificationObject.findIndex(
+        (notification) =>
+          notification.entityType === data.entityType &&
+          notification.senderId === data.senderId
+      );
+
+      if (existingNotificationIndex !== -1) {
+        const updatedNotifications = [...NotificationObject];
+        updatedNotifications.splice(existingNotificationIndex, 1);
+        dispatch(setNotification(updatedNotifications));
+      }
+
       dispatch(
         addNotification({
           NotificationId: data.id,
@@ -155,6 +172,7 @@ export default function NavBar() {
           createdAt: data.createdAt,
         })
       );
+
       dispatch(setNotificationCount(NotificationCount + 1));
       _setNotificationCount(_NotificationCount + 1);
     });
@@ -244,11 +262,10 @@ export default function NavBar() {
             email={UserInfo.email}
             username={UserInfo.username}
             onClick={() => {}}
-            avatar={ getAvatarSrc(UserInfo.picture,UserInfo.gender )}
+            avatar={getAvatarSrc(UserInfo.picture, UserInfo.gender)}
           />
         </div>
       ) : null}
     </div>
   );
 }
-
