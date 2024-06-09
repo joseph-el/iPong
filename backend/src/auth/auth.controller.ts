@@ -39,9 +39,9 @@ export class AuthController {
   @Post('login')
   async login(@Res({ passthrough: true }) res: Response, @Body() dto: AuthDto) {
     const tokens: Tokens = await this.authService.login(dto);
-    res.cookie('access_token', tokens.access_token, { httpOnly: true });
+    res.cookie('access_token', tokens.access_token, { httpOnly: false });
     res.cookie('refresh_token', tokens.refresh_token, {
-      httpOnly: true,
+      httpOnly: false,
       path: '/auth',
     });
     res.setHeader('access_token', tokens.access_token);
@@ -73,9 +73,9 @@ export class AuthController {
     @Body() dto: CreateUserDto,
   ): Promise<Tokens> {
     const tokens: Tokens = await this.authService.signup(dto);
-    res.cookie('access_token', tokens.access_token, { httpOnly: true });
+    res.cookie('access_token', tokens.access_token, { httpOnly: false });
     res.cookie('refresh_token', tokens.refresh_token, {
-      httpOnly: true,
+      httpOnly: false,
       path: '/auth',
     });
     return tokens;
@@ -91,9 +91,9 @@ export class AuthController {
   ) {
     const tokens: Tokens = await this.authService.refresh(refreshToken, userId);
 
-    res.cookie('access_token', tokens.access_token, { httpOnly: true });
+    res.cookie('access_token', tokens.access_token, { httpOnly: false });
     res.cookie('refresh_token', tokens.refresh_token, {
-      httpOnly: true,
+      httpOnly: false,
       path: '/auth',
     });
 
