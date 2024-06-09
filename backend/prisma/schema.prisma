@@ -167,10 +167,9 @@ model Game {
 }
 
 model Notification {
-  id          String           @id @default(uuid())
+  id          String           @id @unique
   createdAt   DateTime         @default(now())
   entityType        NotificationType
-  entityId    String?
   isRead      Boolean          @default(false)
   receiver   User             @relation("recipient" ,fields: [receiverId], references: [userId], onDelete: Cascade)
   receiverId String
