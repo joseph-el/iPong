@@ -17,7 +17,11 @@ import { Navigate } from "react-router-dom";
 import api from "../api/posts";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUserProfile } from "../state/UserInfo/UserSlice";
+import {
+  setUserProfile,
+  setSelectedSkinPath,
+  setBoardPath,
+} from "../state/UserInfo/UserSlice";
 import {
   addNotification,
   setNotification,
@@ -29,6 +33,22 @@ const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const dispatch = useDispatch<AppDispatch>();
+
+  if (
+    localStorage.getItem("userSkin") === null ||
+    localStorage.getItem("userSkin") === undefined
+  ) {
+    localStorage.setItem("userSkin", "Joker Paddle");
+  }
+  if (
+    localStorage.getItem("userBoard") === null ||
+    localStorage.getItem("userBoard") === undefined
+  ) {
+    localStorage.setItem("userBoard", "Tilted Towers");
+  }
+
+  const UserSkin = localStorage.getItem("userSkin");
+  const UserBoard = localStorage.getItem("userBoard");
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -45,11 +65,10 @@ const RequireAuth = ({ children }) => {
             ...user,
             gender: user.username.startsWith("M-") ? "male" : "female",
           };
-          
+
           user.username = user.username.split(";")[1];
-          }
-          
-          
+        }
+
         dispatch(setUserProfile(user));
         setIsAuthenticated(true);
       } catch (error) {
@@ -64,7 +83,6 @@ const RequireAuth = ({ children }) => {
       try {
         const response = await api.get("/notifications/getAllNotifications");
         const notifications = response.data;
-        console.log("notifications", notifications);
 
         const NotificationObj = notifications.map((notification) => {
           return {
@@ -76,10 +94,6 @@ const RequireAuth = ({ children }) => {
         });
 
         dispatch(setNotification(NotificationObj));
-
-        // notifications.forEach((notification) => {
-        //   dispatch(addNotification(notification));
-        // });
       } catch (error) {
         console.error("error: notitifications", error);
       }
@@ -99,7 +113,8 @@ const RequireAuth = ({ children }) => {
     fetchData();
     fetchUnreadNotificationsData();
   }, []);
-
+  dispatch(setSelectedSkinPath(UserSkin));
+  dispatch(setBoardPath(UserBoard));
   if (isAuthenticated === null) {
     return null;
   }
