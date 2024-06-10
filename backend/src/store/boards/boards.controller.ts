@@ -20,9 +20,11 @@ export class BoardsController {
     @GetCurrentUser('userId') userId: string,
     @Body() boardInfos: CreateBoardDto,
   ) {
+
+    console.log('boardInfos backend:: ', boardInfos);
     return await this.boardService.addNewBoardToUser(
       userId,
-      boardInfos.imageUrl,
+      boardInfos.BoardName,
     );
   }
 }
