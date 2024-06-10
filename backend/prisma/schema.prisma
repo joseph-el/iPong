@@ -110,7 +110,7 @@ model Message {
   author     User     @relation(fields: [authorId], references: [userId], onDelete: Cascade)
   authorId   String
   content    String
-  ChatRoom   ChatRoom @relation(fields: [chatRoomId], references: [chatroomId], onDelete: Cascade)
+  ChatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
   chatRoomId String
 
   @@unique([createdAt]) // no dupliccate msg
@@ -127,7 +127,7 @@ model ChatRoomMember {
   muted_exp    DateTime?
   member     User     @relation(fields: [memberID], references: [userId], onDelete: Cascade)
   memberID   String
-  ChatRoom   ChatRoom @relation(fields: [chatRoomId], references: [chatroomId], onDelete: Cascade)
+  ChatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
   chatRoomId String
 
   @@unique([memberID, chatRoomId], name: "unique_member_room")
@@ -136,7 +136,7 @@ model ChatRoomMember {
 model ChatRoom {
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
-  chatroomId        String           @id @default(uuid())
+  id        String           @id @default(uuid())
   roomName  String?
   password  String?
   type      ChatRoomType     @default(public)
