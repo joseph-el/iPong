@@ -284,7 +284,7 @@ export default function EditProfile(props) {
         <Avatar
           src={getAvatarSrc(
             !selectedAvatar ? UserInfo.picture : selectedAvatar,
-            UserInfo.username
+            UserInfo.gender
           )}
           className="w-24 h-24 text-large avatar-edit-profile"
         />

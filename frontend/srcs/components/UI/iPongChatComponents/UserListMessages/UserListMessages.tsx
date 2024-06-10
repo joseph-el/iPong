@@ -376,6 +376,7 @@ export default function UserListMessages(props) {
       </GridItem>
       <GridItem pl="2" bg="black" className="kkk" area={"main"}>
         <ScrollShadow hideScrollBar className="h-full">
+
           {messages.map((message, index) => (
             <React.Fragment key={index}>
               <MessagesItems
@@ -386,6 +387,7 @@ export default function UserListMessages(props) {
               />
             </React.Fragment>
           ))}
+
         </ScrollShadow>
       </GridItem>
     </Grid>

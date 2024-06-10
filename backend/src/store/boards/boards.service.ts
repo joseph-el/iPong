@@ -52,15 +52,15 @@ export class BoardsService {
     }
   }
 
-  async addNewBoardToUser(userId: string, boardPath: string) {
-    if (!userId || !boardPath) {
+  async addNewBoardToUser(userId: string, BoardName: string) {
+    if (!userId || !BoardName) {
       return new HttpException(
         'User ID and Board data are required',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const boardRecord = this.localDbService.findSkinByPath(boardPath);
+    const boardRecord = this.localDbService.findBoardByTitle(BoardName);
     if (!boardRecord) {
       return new HttpException(
         'No Record to match with requested skin! contact the admin',
@@ -89,7 +89,7 @@ export class BoardsService {
         include: {
           boards: {
             where: {
-              imageUrl: boardPath,
+              name: BoardName,
             },
           },
         },

@@ -22,6 +22,6 @@ export class SkinsController {
     @GetCurrentUser('userId') userId: string,
     @Body() skinInfos: CreateSkinDto,
   ) {
-    return await this.skinsService.addNewSkinToUser(userId, skinInfos.imageUrl);
+    return await this.skinsService.addNewSkinToUser(userId, skinInfos.SkinName);
   }
 }

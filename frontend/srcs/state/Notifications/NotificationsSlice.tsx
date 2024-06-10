@@ -4,6 +4,8 @@ interface Notification {
   senderId: string;
   createdAt: string;
   entityType: string;
+  NotificationId?: string;
+  
 }
 
 interface NotificationState {
@@ -27,12 +29,15 @@ const notificationSlice = createSlice({
     clearNotifications: (state) => {
       state.notifications = [];
     },
-    setNotificationCount: (state, action: PayloadAction<number>) => {
+    setNotification: (state, action: PayloadAction<Notification[]>) => {
+      state.notifications = action.payload;
+    },
+    setNotificationCount: (state, action) => {
       state.NotificationCount = action.payload;
     },
   },
 });
 
-export const { addNotification, clearNotifications, setNotificationCount } =
+export const { addNotification, clearNotifications, setNotification,setNotificationCount } =
   notificationSlice.actions;
 export default notificationSlice.reducer;

@@ -83,7 +83,7 @@ export class FriendshipService {
       receiverId: add_friendDto.friendId,
       senderId: userId,
       entityType: NotificationType.FriendRequest,
-      id: [userId, add_friendDto.friendId].sort().join('+') ,
+      id: [userId, add_friendDto.friendId].sort().join('+') + 'request',
     };
     this.eventEmitter.emit('sendNotification', notification);
     // await this.GatewayNofifGateway.sendNotification(notification);
@@ -225,7 +225,7 @@ export class FriendshipService {
       receiverId: friendId,
       senderId: userId,
       entityType: NotificationType.FriendRequestAccepted,
-      id: [userId, friendId].sort().join('+'),
+      id: [userId, friendId].sort().join('+') + 'accepted',
     };
     this.eventEmitter.emit('sendNotification', notification);
     return new res_friendship(result);

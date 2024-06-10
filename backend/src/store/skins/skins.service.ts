@@ -51,15 +51,15 @@ export class SkinsService {
     }
   }
 
-  async addNewSkinToUser(userId: string, skinPath: string) {
-    if (!userId || !skinPath) {
+  async addNewSkinToUser(userId: string, SkinName: string) {
+    if (!userId || !SkinName) {
       return new HttpException(
         'User ID and skin data are required',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const skinRecord = this.localDbService.findSkinByPath(skinPath);
+    const skinRecord = this.localDbService.findSkinByPath(SkinName);
     if (!skinRecord) {
       return new HttpException(
         'No Record to match with requested skin! contact the admin',
@@ -88,7 +88,7 @@ export class SkinsService {
         include: {
           skins: {
             where: {
-              imageUrl: skinPath,
+              name: SkinName,
             },
           },
         },

@@ -12,9 +12,10 @@ import { ListboxWrapper } from "./ListboxWrapper";
 // import { users } from "./data";
 import api from "../../../api/posts";
 import { useNavigate } from "react-router-dom";
+import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 
 export default function SearchList({ users, func }) {
-  const [values, setValues] = useState<Selection>(new Set(["1"]));  
+  const [values, setValues] = useState<Selection>(new Set(["1"]));
   const navigate = useNavigate();
   const arrayValues = Array.from(values);
 
@@ -65,7 +66,7 @@ export default function SearchList({ users, func }) {
                   alt={item.name}
                   className="flex-shrink-0"
                   size="md"
-                  src={item.avatar}
+                  src={getAvatarSrc(item.avatar, item.gender)} //
                 />
                 <div className="flex flex-col">
                   <span className="text-small">{item.name}</span>

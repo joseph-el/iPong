@@ -15,6 +15,7 @@ import SignInOptions from "../../components/AuthComponents/SignInOptions/SignInO
 import WelcomeNewUser from "../../components/AuthComponents/WelcomeNewUser/WelcomeNewUser";
 import WeSentCodeAndPassword from "../../components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword";
 import SetUserNameAndPicture from "../../components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture";
+import Spline from "@splinetool/react-spline";
 
 export default function SignAuth(props) {
   const path = props.path;
@@ -86,16 +87,14 @@ export default function SignAuth(props) {
         />
       );
       break;
- 
   }
 
   return (
     <>
       <div className="SignAuth-page">
-        <div className="component-container">
-          {componentToRender}
+        <Spline scene="https://prod.spline.design/JWAicw3aLyRWTOWg/scene.splinecode" />
 
-        </div>
+        <div className="component-container">{componentToRender}</div>
       </div>
     </>
   );

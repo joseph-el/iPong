@@ -30,12 +30,25 @@ export default function WelcomeNewUser(props) {
   );
 
   const extractUserData = async () => {
-    await api.post("/auth/signup", {
-      username: _username,
+    const __username =  (_UserGender == "MALE" ? "M-;" : "F-;")  + _username ;
+
+    console.log("extractUserData", {
+      username: __username,
       email: _email,
       password: _password,
       firstName: _fullname.split(" ")[0],
-      lastName: _fullname.split(" ")[1],
+      lastName: _fullname.split(" ").slice(1).join(" "),
+      bio: "Hey there! I'm using iPong",
+      intraId: "UNKNOWN",
+      avatar: _avatar,
+    });
+    
+    await api.post("/auth/signup", {
+      username: __username,
+      email: _email,
+      password: _password,
+      firstName: _fullname.split(" ")[0],
+      lastName: _fullname.split(" ").slice(1).join(" "),
       bio: "Hey there! I'm using iPong",
       intraId: "UNKNOWN",
       avatar: _avatar,

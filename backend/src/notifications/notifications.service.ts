@@ -20,7 +20,8 @@ export class NotificationsService {
       },
     });
     if (exist) {
-      await this.dataservice.notification.update({
+      console.log('exist:::::::::::::::::::::::::::', exist);
+      return await this.dataservice.notification.update({
         where: {
           id: exist.id,
         },
@@ -28,7 +29,6 @@ export class NotificationsService {
           createdAt: new Date(),
         },
       });
-      return;
     }
 
     return await this.dataservice.notification.create({
@@ -40,7 +40,7 @@ export class NotificationsService {
     return await this.dataservice.notification.findMany({
       where: {
         receiverId: userId,
-        isRead: false,
+        
       },
     });
   }

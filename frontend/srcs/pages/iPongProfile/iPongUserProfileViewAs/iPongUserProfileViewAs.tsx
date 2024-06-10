@@ -330,9 +330,9 @@ export default function UserProfileViewAs() {
                 UserIsBlocked === null
                   ? getAvatarSrc(
                       UserprofileInfo.picture,
-                      UserprofileInfo.username
+                      UserprofileInfo.gender
                     )
-                  : getAvatarSrc(null, UserprofileInfo.username)
+                  : getAvatarSrc(null, UserprofileInfo.gender)
               }
               className="w-28 h-28 text-large avatar"
             />

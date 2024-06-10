@@ -22,8 +22,8 @@ interface UserState {
 
 const initialState: UserState = {
   cover: '',
-  userSelectedBoardPath: "/assets/game/default/default-board.png",
-  userSelectedSkinPath: "/assets/game/default/default-skin.png",
+  userSelectedBoardPath: '',
+  userSelectedSkinPath: '',
   id: '',
   intraId: '',
   xp: 0,
