@@ -137,6 +137,7 @@ model ChatRoom {
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
   id        String           @id @default(uuid())
+  icon      String?
   roomName  String?
   password  String?
   type      ChatRoomType     @default(public)

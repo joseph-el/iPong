@@ -19,9 +19,57 @@ import { map } from 'rxjs';
 import { ChangeOwnerDto } from './dto/changeOwner.dto';
 import { UpdateRoomDto } from './dto/update-chatroom.dto';
 import { RoomDataDto } from './dto/roomDetails.dto';
+import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
+import { Cloudinary } from 'src/imagesProvider/cloudinary';
+import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
+
 @Injectable()
 export class ChatroomService {
-  constructor(private databaseservice: DatabaseService) {}
+  constructor(
+    private databaseservice: DatabaseService,
+    private CloudinaryService: CloudinaryService
+  ) {}
+
+  async uploadIcon(roomId: string, file: Express.Multer.File) {
+    const uploadStream = (fileBuffer: Buffer): Promise<UploadApiResponse> => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'iPong',
+            overwrite: true,
+            resource_type: 'image',
+            unique_filename: false,
+            filename_override: roomId+ 'icon',
+            use_filename: true,
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          },
+        );
+
+        stream.end(fileBuffer);
+      });
+    };
+
+    const avatar: UploadApiResponse = await uploadStream(file.buffer);
+    const res = await this.databaseservice.chatRoom.update({
+      where: {
+        id: roomId,
+      },
+      data: {
+        icon: avatar.secure_url,
+      },
+    });
+    if (!res) {
+      throw new HttpException('Room not found', HttpStatus.NOT_FOUND);
+    }
+    // console.log('Avatar uploaded:', avatar.secure_url);
+    return 'Avatar uploaded successfully';
+  }
 
   async create(createChatroomDto: CreateChatroomDto, userOwner: string) {
     // Check if required parameters are provided
@@ -736,7 +784,7 @@ export class ChatroomService {
       },
     });
     return chatrooms.map((room) => {
-      return { id: room.id, name: room.roomName, type: room.type };
+      return { id: room.id, name: room.roomName, type: room.type, icon: room.icon};
     });
   }
 
@@ -812,4 +860,6 @@ export class ChatroomService {
     });
     return { message: 'Room updated successfully' };
   }
+
+
 }

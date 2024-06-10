@@ -10,6 +10,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ChatroomService } from './chatroom.service';
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
@@ -23,6 +25,7 @@ import { addMemberDto } from './dto/addMember.dto';
 import { SearchDto } from './dto/search.dto';
 import { ChangeOwnerDto } from './dto/changeOwner.dto';
 import { RoomDataDto } from './dto/roomDetails.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiCookieAuth('access_token')
 @Controller('chatroom')
@@ -36,6 +39,16 @@ export class ChatroomController {
     @GetCurrentUser('userId') userOwner: string,
   ) {
     return await this.chatroomService.create(createChatroomDto, userOwner);
+  }
+
+  @UseGuards(AtGuard)
+  @Post('rooomIcon')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadIcon(
+    @Body() roomId: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.chatroomService.uploadIcon(roomId, file);
   }
 
   @Post('changeOwner')
