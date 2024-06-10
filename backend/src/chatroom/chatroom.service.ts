@@ -19,18 +19,18 @@ export class ChatroomService {
   async create(
     createChatroomDto: CreateChatroomDto,
     userOwner: string,
-  ): Promise<RoomDataDto> {
+  ){
     // Check if required parameters are provided
     if (
       createChatroomDto.type === ChatRoomType.Dm &&
       !createChatroomDto.secondUser
     ) {
-      throw new HttpException('Second user is required for dm chatrooms', 400);
+      return new HttpException('Second user is required for dm chatrooms', 400);
     } else if (
       createChatroomDto.type === ChatRoomType.Dm &&
       createChatroomDto.secondUser === userOwner
     ) {
-      throw new HttpException(
+      return new HttpException(
         'You cannot create a dm chatroom with yourself',
         400,
       );
@@ -49,7 +49,7 @@ export class ChatroomService {
       },
     });
     if (!user) {
-      throw new HttpException('User not found', 404);
+      return new HttpException('User not found', 404);
     }
     if (createChatroomDto.type === ChatRoomType.Dm) {
       const secondUser = await this.databaseservice.user.findUnique({
@@ -58,7 +58,7 @@ export class ChatroomService {
         },
       });
       if (!secondUser) {
-        throw new HttpException('Second user not found', 404);
+        return new HttpException('Second user not found', 404);
       }
       const ifChatroomExists = await this.databaseservice.chatRoom.findFirst({
         where: {
@@ -74,7 +74,7 @@ export class ChatroomService {
       });
       // console.log(ifChatroomExists);
       if (ifChatroomExists) {
-        throw new HttpException('Chatroom already exists', 400);
+        return ifChatroomExists;
       }
     }
     // Check if user is trying to create a dm chatroom with themselves
@@ -82,7 +82,7 @@ export class ChatroomService {
       createChatroomDto.type === ChatRoomType.Dm &&
       userOwner == createChatroomDto.secondUser
     ) {
-      throw new HttpException(
+      return new HttpException(
         'You cannot create a dm chatroom with yourself',
         400,
       );
@@ -104,7 +104,7 @@ export class ChatroomService {
     });
 
     if (existingBlock) {
-      throw new HttpException('User is blocked', 403);
+      return new HttpException('User is blocked', 403);
     }
 
     // Create chatroom
@@ -118,7 +118,7 @@ export class ChatroomService {
       },
     });
     // Create chatroom owner
-    await this.databaseservice.chatRoomMember.create({
+    const roomdata = await this.databaseservice.chatRoomMember.create({
       data: {
         member: {
           connect: { userId: userOwner },
@@ -132,7 +132,7 @@ export class ChatroomService {
 
     // Create chatroom member for second user in case of dm chatroom
     if (createChatroomDto.type === ChatRoomType.Dm) {
-      await this.databaseservice.chatRoomMember.create({
+      const roomdata = await this.databaseservice.chatRoomMember.create({
         data: {
           member: {
             connect: { userId: createChatroomDto.secondUser },
@@ -146,7 +146,7 @@ export class ChatroomService {
     }
 
     // Return details of created chatroom
-    return new RoomDataDto(room);
+    return roomdata;
   }
 
   async join(joinChatroomDto: JoinRoomDto, userId: string) {

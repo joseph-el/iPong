@@ -34,8 +34,8 @@ export class ChatroomController {
   async create(
     @Body() createChatroomDto: CreateChatroomDto,
     @GetCurrentUser('userId') userOwner: string,
-  ) : Promise<RoomDataDto>{
-    return this.chatroomService.create(createChatroomDto, userOwner);
+  ) {
+    return await this.chatroomService.create(createChatroomDto, userOwner);
   }
 
   @Post('changeOwner')
