@@ -11,8 +11,9 @@ import StartFriendChat from "../../components/UI/iPongChatComponents/CreatNewMes
 export default function IPongChat() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [ShowCreateNewChat, setShowCreateNewChat] = React.useState(false);
-  const [ShowCreateGroupChat, setShowCreateGroupChat] = React.useState(false);
   const [ShowCreateFriendChat, setShowFriendChat] = React.useState(false);
+  const [ShowCreateGroupChat, setShowCreateGroupChat] = React.useState(false);
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -24,12 +25,13 @@ export default function IPongChat() {
   }, []);
 
   const handleCloseClick = () => {
+    setShowFriendChat(false);
     setShowCreateNewChat(false);
     setShowCreateGroupChat(false);
-    setShowFriendChat(false);
   };
 
   const isWideScreen = windowWidth <= 905;
+
   return (
     <>
       <Grid
@@ -63,10 +65,16 @@ export default function IPongChat() {
 
         <GridItem pl="2" h={"full"} area={"main"}>
           <ChatPanelLayout />
+
           {ShowCreateNewChat ? (
             <div className="blur-background">
               <div className="AchievementList-place fade-in">
-                <CreatNewMessage  onCloseComponent={handleCloseClick}  onClose={handleCloseClick} ShowCreateGroupChat={() => setShowCreateGroupChat(true)} ShowCreateFriendChat={() => setShowFriendChat(true)}  />
+                <CreatNewMessage
+                  onCloseComponent={handleCloseClick}
+                  onClose={handleCloseClick}
+                  ShowCreateGroupChat={() => setShowCreateGroupChat(true)}
+                  ShowCreateFriendChat={() => setShowFriendChat(true)}
+                />
               </div>
             </div>
           ) : null}
@@ -74,16 +82,15 @@ export default function IPongChat() {
           {ShowCreateGroupChat ? (
             <div className="blur-background">
               <div className="AchievementList-place fade-in">
-                <CreatGroupChat onCloseComponent={handleCloseClick}  />
+                <CreatGroupChat onCloseComponent={handleCloseClick} />
               </div>
             </div>
-            
           ) : null}
 
           {ShowCreateFriendChat ? (
             <div className="blur-background">
               <div className="AchievementList-place fade-in">
-                <StartFriendChat  onCloseComponent={handleCloseClick} />
+                <StartFriendChat onCloseComponent={handleCloseClick} />
               </div>
             </div>
           ) : null}
