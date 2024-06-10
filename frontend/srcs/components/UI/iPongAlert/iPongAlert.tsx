@@ -22,6 +22,7 @@ import {
 } from "@nextui-org/react";
 
 export default function IPongAlert(props) {
+  console.log("undefinded:,", props.hideCloseButton);
   return (
     <Modal backdrop={"blur"} isOpen={props.isOpen} onClose={props.onClose}>
       <ModalContent>
@@ -31,12 +32,20 @@ export default function IPongAlert(props) {
               {" "}
               {props.UserAlertHeader}{" "}
             </ModalHeader>
-            <ModalBody className="modal-body-text-color" >{props.UserAlertMessage}</ModalBody>
+            <ModalBody className="modal-body-text-color">
+              {props.UserAlertMessage}
+            </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}  >
-                Close
-              </Button>
-              <Button color="primary" onPress={onClose} onClick={props.handelRemoveUser}>
+              {props.hideCloseButton == undefined || props.hideCloseButton ? (
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+              ) : null}
+              <Button
+                color="primary"
+                onPress={onClose}
+                onClick={props.handelRemoveUser}
+              >
                 {props.UserOptions}
               </Button>
             </ModalFooter>
@@ -45,5 +54,4 @@ export default function IPongAlert(props) {
       </ModalContent>
     </Modal>
   );
-
 }
