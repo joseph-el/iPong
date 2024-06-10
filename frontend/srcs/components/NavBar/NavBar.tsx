@@ -17,6 +17,7 @@ import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
+  Spacer,
   DropdownItem,
 } from "@nextui-org/react";
 
@@ -47,14 +48,13 @@ export default function NavBar() {
   );
   const [users, setUsers] = useState([]);
   const [isReadAll, setIsReadAll] = useState(false);
-  const [_NotificationCount, _setNotificationCount] =
-    useState(NotificationCount);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         await api.get("/notifications/readAllNotifications");
         dispatch(setNotificationCount(0));
-        _setNotificationCount(0);
+
       } catch (error) {
         console.error("error: ", error);
       }
@@ -174,7 +174,7 @@ export default function NavBar() {
       );
 
       dispatch(setNotificationCount(NotificationCount + 1));
-      _setNotificationCount(_NotificationCount + 1);
+      
     });
 
     socket.on("disconnect", () => {
@@ -189,8 +189,14 @@ export default function NavBar() {
     <div className="nav-bar">
       {/* LEFT ITEMS  state: ✅*/}
       <div className="page-name-breadcrumb">
+
         {/* TODO: set the current page using store redux! */}
-        <div className="text-wrapper">Configurations</div>
+        <div className="text-wrapper">
+          
+          {"iPong" + "\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"}
+
+
+        </div>
         <div className="breadcumb">
           <div className="div">Main Page</div>
           <div className="text-wrapper-2">&gt;</div>
@@ -227,10 +233,10 @@ export default function NavBar() {
             <DropdownTrigger>
               <div className="notificationBadge">
                 <Badge
-                  isInvisible={_NotificationCount === 0}
+                  isInvisible={NotificationCount === 0}
                   size="md"
                   color="primary"
-                  content={_NotificationCount > 9 ? "9+" : _NotificationCount}
+                  content={NotificationCount > 9 ? "9+" : NotificationCount}
                   isOneChar
                   shape="rectangle"
                   showOutline={true}
@@ -242,7 +248,7 @@ export default function NavBar() {
                     style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
                     onClick={() => {
                       setIsReadAll(true);
-                      _setNotificationCount(0);
+                
                       setShowNotificationBar(!ShowNotificationBar);
                     }}
                   />
