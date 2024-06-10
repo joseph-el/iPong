@@ -3,5 +3,5 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class CreateSkinDto {
   @IsNotEmpty()
   @IsString()
-  imageUrl: string;
+  SkinName: string;
 }
