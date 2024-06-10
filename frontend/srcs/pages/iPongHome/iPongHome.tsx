@@ -12,22 +12,21 @@ import CongratulationsBadge from "../../components/UI/AchievementComponents/Cong
 import { setAchievementBadge } from "../../state/Achievement/AchievementSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
-
 import { getUserLevel } from "../../utils/getCurrentLevel";
-
+import { SKIN_DB } from "../../pages/iPongStore/db/skins.db";
+import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
 
 export default function iPongGame() {
+  
   const UserInfo = useSelector((state: RootState) => state.userState);
-
-  let userSelectedSkinPath;
-  let botSelectedSkinPath;
-  let userSelectedBoardPath;
-
-
-    userSelectedSkinPath = UserInfo.userSelectedSkinPath;
-    userSelectedBoardPath = UserInfo.userSelectedBoardPath;
-    botSelectedSkinPath = "/assets/game/default/default-bot-skin.png";
-
+  const userSelectedSkinPath = SKIN_DB.find(
+    (skin) => skin.name === UserInfo.userSelectedSkinPath
+  )?.imgPath;
+  const userSelectedBoardPath = BOARDS_DB.find(
+    (board) => board.name === UserInfo.userSelectedBoardPath
+  )?.imgPath;
+  const botSelectedSkinPath =
+    SKIN_DB[Math.floor(Math.random() * SKIN_DB.length)].imgPath;
 
   type ModeType = "practice" | "onlineBattle" | null;
   const [mode, setMode] = useState<ModeType>(null);
@@ -63,8 +62,6 @@ export default function iPongGame() {
   }
 
   if (mode && mode === "practice") {
-
-
     return (
       <BotMode
         userSelectedSkin={userSelectedSkinPath}
