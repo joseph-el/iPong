@@ -3,7 +3,6 @@ import { CreateChatroomDto } from './dto/create-chatroom.dto';
 import * as bcrypt from 'bcrypt';
 import { DatabaseService } from 'src/database/database.service';
 import { ChatRoomType } from '@prisma/client';
-import { RoomDetailsDto } from './dto/roomDetails.dto';
 import { JoinRoomDto } from './dto/JoinRoom.dto';
 import { LeaveRoomDto } from './dto/leaveRoom.dto';
 import { setAdminDto } from './dto/setAdmin.dto';
@@ -13,27 +12,31 @@ import { SearchDto } from './dto/search.dto';
 import { map } from 'rxjs';
 import { ChangeOwnerDto } from './dto/changeOwner.dto';
 import { UpdateRoomDto } from './dto/update-chatroom.dto';
+import { RoomDataDto } from './dto/roomDetails.dto';
 @Injectable()
 export class ChatroomService {
   constructor(private databaseservice: DatabaseService) {}
-  async create(createChatroomDto: CreateChatroomDto, userOwner: string) {
+  async create(
+    createChatroomDto: CreateChatroomDto,
+    userOwner: string,
+  ): Promise<RoomDataDto> {
     // Check if required parameters are provided
     if (
       createChatroomDto.type === ChatRoomType.Dm &&
       !createChatroomDto.secondUser
     ) {
-      return new HttpException('Second user is required for dm chatrooms', 400);
+      throw new HttpException('Second user is required for dm chatrooms', 400);
     } else if (
       createChatroomDto.type === ChatRoomType.Dm &&
       createChatroomDto.secondUser === userOwner
     ) {
-      return new HttpException(
+      throw new HttpException(
         'You cannot create a dm chatroom with yourself',
         400,
       );
     }
     // Check if password is provided for protected chatrooms and hash it
-    if (createChatroomDto.type === 'protected'  && createChatroomDto.password) {
+    if (createChatroomDto.type === 'protected' && createChatroomDto.password) {
       createChatroomDto.password = await bcrypt.hash(
         createChatroomDto.password,
         10,
@@ -46,7 +49,7 @@ export class ChatroomService {
       },
     });
     if (!user) {
-      return new HttpException('User not found', 404);
+      throw new HttpException('User not found', 404);
     }
     if (createChatroomDto.type === ChatRoomType.Dm) {
       const secondUser = await this.databaseservice.user.findUnique({
@@ -55,7 +58,7 @@ export class ChatroomService {
         },
       });
       if (!secondUser) {
-        return new HttpException('Second user not found', 404);
+        throw new HttpException('Second user not found', 404);
       }
       const ifChatroomExists = await this.databaseservice.chatRoom.findFirst({
         where: {
@@ -71,7 +74,7 @@ export class ChatroomService {
       });
       // console.log(ifChatroomExists);
       if (ifChatroomExists) {
-        return new HttpException('Chatroom already exists', 400);
+        throw new HttpException('Chatroom already exists', 400);
       }
     }
     // Check if user is trying to create a dm chatroom with themselves
@@ -79,7 +82,7 @@ export class ChatroomService {
       createChatroomDto.type === ChatRoomType.Dm &&
       userOwner == createChatroomDto.secondUser
     ) {
-      return new HttpException(
+      throw new HttpException(
         'You cannot create a dm chatroom with yourself',
         400,
       );
@@ -101,7 +104,7 @@ export class ChatroomService {
     });
 
     if (existingBlock) {
-      return new HttpException('User is blocked', 403);
+      throw new HttpException('User is blocked', 403);
     }
 
     // Create chatroom
@@ -114,7 +117,6 @@ export class ChatroomService {
         },
       },
     });
-
     // Create chatroom owner
     await this.databaseservice.chatRoomMember.create({
       data: {
@@ -144,7 +146,7 @@ export class ChatroomService {
     }
 
     // Return details of created chatroom
-    return { message: 'Chatroom created' };
+    return new RoomDataDto(room);
   }
 
   async join(joinChatroomDto: JoinRoomDto, userId: string) {
@@ -496,7 +498,7 @@ export class ChatroomService {
     // Mute the member
     await this.databaseservice.chatRoomMember.update({
       where: { id: member.id },
-      data: { isMuted: true , muted_exp: muteExpitation},
+      data: { isMuted: true, muted_exp: muteExpitation },
     });
     return { message: 'User has been muted' };
   }
@@ -678,9 +680,9 @@ export class ChatroomService {
         },
       },
     });
-     return chatrooms.map((room) => {
-       return { id: room.id, name: room.roomName, type: room.type };
-     });
+    return chatrooms.map((room) => {
+      return { id: room.id, name: room.roomName, type: room.type };
+    });
   }
 
   async listAllRooms(userId: string) {
@@ -715,7 +717,7 @@ export class ChatroomService {
         memberID: userId,
       },
     });
-    
+
     if (!member) {
       return new HttpException('Not a member of the chatroom', 400);
     }
@@ -732,26 +734,26 @@ export class ChatroomService {
   }
 
   async update(updateRoomDto: UpdateRoomDto, userId: string) {
-   const roomId = updateRoomDto.roomId;
+    const roomId = updateRoomDto.roomId;
 
-   // Remove roomId from roomData to avoid updating it in the database
-   delete updateRoomDto.roomId;
+    // Remove roomId from roomData to avoid updating it in the database
+    delete updateRoomDto.roomId;
 
-   // Fetch the room from the database to check its existence and ownership
-   const room = await this.databaseservice.chatRoom.findUnique({
-     where: { id: roomId },
-     select: { ownerId: true, type: true },
-   });
-   if (!room) {
-     throw new HttpException('Chatroom not found', 404);
-   }
-   // Check if the room type is 'dm' (direct message) which should not be updated
-   if (room.type === ChatRoomType.Dm) {
-     throw new HttpException(
-       'dm room can not be updated',
-       HttpStatus.BAD_REQUEST,
-     );
-   }
+    // Fetch the room from the database to check its existence and ownership
+    const room = await this.databaseservice.chatRoom.findUnique({
+      where: { id: roomId },
+      select: { ownerId: true, type: true },
+    });
+    if (!room) {
+      throw new HttpException('Chatroom not found', 404);
+    }
+    // Check if the room type is 'dm' (direct message) which should not be updated
+    if (room.type === ChatRoomType.Dm) {
+      throw new HttpException(
+        'dm room can not be updated',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     if (updateRoomDto.type == 'protected' && !updateRoomDto.password) {
       throw new HttpException(
         'missing password for protected room',
@@ -770,6 +772,4 @@ export class ChatroomService {
     });
     return { message: 'Room updated successfully' };
   }
-
-  
 }

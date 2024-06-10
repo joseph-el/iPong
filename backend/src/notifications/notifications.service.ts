@@ -5,7 +5,6 @@ import { NotificationType } from '@prisma/client';
 
 @Injectable()
 export class NotificationsService {
-
   constructor(private readonly dataservice: DatabaseService) {}
 
   async create(createNotificationDto: CreateNotificationDto) {
@@ -14,10 +13,10 @@ export class NotificationsService {
     }
     const exist = await this.dataservice.notification.findUnique({
       where: {
+        id: createNotificationDto.id,
         senderId: createNotificationDto.senderId,
         receiverId: createNotificationDto.receiverId,
         entityType: NotificationType.FriendRequest,
-        id: createNotificationDto.id
       },
     });
     if (exist) {
@@ -31,10 +30,10 @@ export class NotificationsService {
       });
       return;
     }
-   
+
     return await this.dataservice.notification.create({
       data: createNotificationDto,
-    });;
+    });
   }
 
   async findAll(userId: string) {
@@ -99,5 +98,4 @@ export class NotificationsService {
       },
     });
   }
-
 }

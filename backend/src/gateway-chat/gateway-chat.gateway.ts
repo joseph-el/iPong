@@ -1,6 +1,7 @@
+import { ChatroomService } from './../chatroom/chatroom.service';
 import { Logger } from '@nestjs/common';
 import { use } from 'passport';
-import { NotificationType } from '@prisma/client';
+import { ChatRoomType, NotificationType } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 import {
   SubscribeMessage,
@@ -15,6 +16,7 @@ import { NotificationsService } from 'src/notifications/notifications.service';
 import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
 import { OnEvent , EventEmitter2} from '@nestjs/event-emitter';
 import { JoinRoomDto } from 'src/chatroom/dto/JoinRoom.dto';
+import { CreateChatroomDto } from 'src/chatroom/dto/create-chatroom.dto';
 
 
 @WebSocketGateway({
@@ -29,12 +31,10 @@ export class GatewayChatGateway
 {
   private readonly jwtService: JwtService;
   private readonly databaseService: DatabaseService;
-  private readonly notificationService: NotificationsService;
-  private readonly eventEmitter: EventEmitter2;
+  private ChatroomService: ChatroomService;
 
   constructor(jwtService: JwtService) {
     this.databaseService = new DatabaseService();
-    this.notificationService = new NotificationsService(this.databaseService);
     this.jwtService = new JwtService({
       secret: process.env.JWT_SECRET,
     });
@@ -46,7 +46,8 @@ export class GatewayChatGateway
   }
   @WebSocketServer() server: Server;
   async handleConnection(client: Socket) {
-    const token = client.handshake.auth.token as string;
+    const token = client.handshake.headers.token as string;
+    console.log('token', token);
     if (!token) {
       client.disconnect(true);
       return;
@@ -54,6 +55,7 @@ export class GatewayChatGateway
     try {
       const decoded = this.jwtService.verify(token);
       client.data.user = decoded;
+      console.log('decoded', decoded);
     } catch (error) {
       client.disconnect(true);
       return;
@@ -93,16 +95,43 @@ export class GatewayChatGateway
   }
 
   async handleDisconnect(client: Socket) {
+
     const userId = client.data.user.userId;
     console.log('client disconnected', userId);
     this.server.emit('friendOffline', userId);
   }
 
-  @SubscribeMessage('joinRoom')
-  async handleJoinRoomEvent(
+  @SubscribeMessage('createRoom')
+  async handleCreateRoom(
     client: Socket,
-    data: JoinRoomDto,
+    data: CreateChatroomDto
   ) {
+    try {
+      // Validate the data
+      if (data.type === ChatRoomType.protected && !data.password) {
+        client.emit('error', {
+          message: 'Password is required for protected rooms',
+        });
+        return;
+      }
+
+      // Create the room
+      const newRoom = await this.ChatroomService.create(data, client.data.user.userId);
+      if (!newRoom) {
+        client.emit('error', { message: 'Error creating room' });
+        return;
+      }
+      // Add the client to the room
+      client.join(`Room:${newRoom.id}`);
+      client.emit('roomCreated', newRoom);
+    } catch (error) {
+      this.logger.error(`Error creating room: ${error.message}`);
+      client.emit('error', { message: 'Error creating room' });
+    }
+  }
+
+  @SubscribeMessage('joinRoom')
+  async handleJoinRoomEvent(client: Socket, data: JoinRoomDto) {
     try {
       const userId = client.data.user?.sub;
 

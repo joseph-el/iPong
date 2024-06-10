@@ -22,6 +22,7 @@ import { setAdminDto } from './dto/setAdmin.dto';
 import { addMemberDto } from './dto/addMember.dto';
 import { SearchDto } from './dto/search.dto';
 import { ChangeOwnerDto } from './dto/changeOwner.dto';
+import { RoomDataDto } from './dto/roomDetails.dto';
 
 @ApiCookieAuth('access_token')
 @Controller('chatroom')
@@ -33,7 +34,7 @@ export class ChatroomController {
   async create(
     @Body() createChatroomDto: CreateChatroomDto,
     @GetCurrentUser('userId') userOwner: string,
-  ) {
+  ) : Promise<RoomDataDto>{
     return this.chatroomService.create(createChatroomDto, userOwner);
   }
 

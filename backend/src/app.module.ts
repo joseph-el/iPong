@@ -17,7 +17,6 @@ import { CloudinaryService } from './imagesProvider/cloudinary.service';
 import { NotificationsModule } from './notifications/notifications.module';
 import { GameModule } from './game/game.module';
 import { StoreModule } from './store/store.module';
-import { CheckGateway } from './check/check.gateway';
 
 import { GatewayNofifModule } from './gateway-nofif/gateway-nofif.module';
 import { GatewayNofifGateway } from './gateway-nofif/gateway-nofif.gateway';

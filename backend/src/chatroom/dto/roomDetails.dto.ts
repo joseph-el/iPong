@@ -1,12 +1,13 @@
-import { ChatRoom } from "@prisma/client";
+import { ApiProperty } from '@nestjs/swagger';
+import { ChatRoom } from '@prisma/client';
 
-export class RoomDetailsDto {
-    constructor(data: ChatRoom) {
-        this.roomType = data.type;
-        this.secondUser = data.ownerId;
-        this.time = data.createdAt;
-    }
-  roomType: string;
-  secondUser: string;
-  time: Date;
+export class RoomDataDto {
+  constructor(room_dta: ChatRoom) {
+    this.id = room_dta.id;
+    this.name = room_dta.roomName;
+    this.type = room_dta.type;
+  }
+  id: string;
+  name: string;
+  type: string;
 }
