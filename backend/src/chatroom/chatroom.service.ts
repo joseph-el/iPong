@@ -1,4 +1,10 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Query,
+} from '@nestjs/common';
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
 import * as bcrypt from 'bcrypt';
 import { DatabaseService } from 'src/database/database.service';
@@ -16,10 +22,8 @@ import { RoomDataDto } from './dto/roomDetails.dto';
 @Injectable()
 export class ChatroomService {
   constructor(private databaseservice: DatabaseService) {}
-  async create(
-    createChatroomDto: CreateChatroomDto,
-    userOwner: string,
-  ){
+
+  async create(createChatroomDto: CreateChatroomDto, userOwner: string) {
     // Check if required parameters are provided
     if (
       createChatroomDto.type === ChatRoomType.Dm &&
@@ -146,7 +150,43 @@ export class ChatroomService {
     }
 
     // Return details of created chatroom
-    return roomdata;
+    return room;
+  }
+
+  async invite(joinedUserId: string, adminId: string, roomId: string) {
+    //check if adminId is admin
+    const chekAdmin = await this.databaseservice.chatRoomMember.findFirst({
+      where: {
+        chatRoomId: roomId,
+        memberID: adminId,
+        isAdmin: true,
+      },
+    });
+    if (!chekAdmin) {
+      return new HttpException('You are not an admin', 401);
+    }
+    //check if joinedUserId is a member
+    const checkMember = await this.databaseservice.chatRoomMember.findFirst({
+      where: {
+        chatRoomId: roomId,
+        memberID: joinedUserId,
+      },
+    });
+    if (checkMember) {
+      return new HttpException('User is already a member', 400);
+    }
+    //create chatroom member
+    await this.databaseservice.chatRoomMember.create({
+      data: {
+        member: {
+          connect: { userId: joinedUserId },
+        },
+        ChatRoom: {
+          connect: { id: roomId },
+        },
+      },
+    });
+    return { message: `${joinedUserId} User has been added to the chatroom` };
   }
 
   async join(joinChatroomDto: JoinRoomDto, userId: string) {
@@ -208,7 +248,7 @@ export class ChatroomService {
     });
 
     // Return details of the chatroom
-    return { message: 'Joined the chatroom' };
+    return { message: `${joinChatroomDto.userId} Joined the chatroom` };
   }
 
   async changeOwner(roomdata: ChangeOwnerDto, userId: string) {

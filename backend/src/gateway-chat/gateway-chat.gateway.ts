@@ -122,7 +122,7 @@ export class GatewayChatGateway
         return;
       }
       // Add the client to the room
-      client.join(`Room:${newRoom.id}`);
+      // client.join(`Room:${newRoom.id}`);
       client.emit('roomCreated', newRoom);
     } catch (error) {
       this.logger.error(`Error creating room: ${error.message}`);

@@ -15,7 +15,6 @@ export class CreateChatroomDto {
   @Length(5, 10)
   roomName: string;
 
-  
   @IsString()
   @IsNotEmpty()
   @IsEnum(ChatRoomType)

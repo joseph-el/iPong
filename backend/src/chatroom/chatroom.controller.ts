@@ -56,6 +56,16 @@ export class ChatroomController {
   }
 
   @UseGuards(AtGuard)
+  @Post('invite')
+  async invite(
+    @Body() joinedUserId: string,
+    @Body() roomdId: string,
+    @GetCurrentUser('userId') adminId: string,
+  ) {
+    return this.chatroomService.invite(joinedUserId, adminId, roomdId);
+  }
+
+  @UseGuards(AtGuard)
   @Post('leaveRoom')
   async leaveRoom(
     @Body() leaveRoomDto: LeaveRoomDto,
