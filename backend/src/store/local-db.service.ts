@@ -11,11 +11,12 @@ export class LocalDbService {
 
   /* check if skin available if yes return it  */
 
-  findSkinByPath(path: string): Skin | undefined {
-    return this.skins.find((skin) => skin.imgPath === path);
+  findSkinByPath(SkinName: string): Skin | undefined {
+    return this.skins.find((skin) => skin.name === SkinName);
   }
 
-  findBoardByTitle(path: string): Board | undefined {
-    return this.boards.find((board) => board.imgPath === path);
+  findBoardByTitle(BoardName: string): Board | undefined {
+    console.log('BoardName:: find ', BoardName);
+    return this.boards.find((board) => board.name === BoardName);
   }
 }
