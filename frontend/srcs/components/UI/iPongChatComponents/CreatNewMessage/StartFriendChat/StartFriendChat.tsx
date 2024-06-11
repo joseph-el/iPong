@@ -17,6 +17,7 @@ export default function StartFriendChat(props) {
   const [value, setValue] = useState("");
   const [isInvalid, setIsInvalid] = React.useState(false);
   const [users, setUsers] = useState([]);
+  const [CreatChatRoom, setCreatChatRoom] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -42,15 +43,18 @@ export default function StartFriendChat(props) {
   }, []);
 
   const handelOnChage = (item) => {
+    console.log("Item:::OnChange: ", item);
     setValue(item);
 
   };
 
-  const [CreatChatRoom, setCreatChatRoom] = useState(false);
+
 
   useEffect(() => {
     const fetchCreatChatRoom = async () => {
       try {
+
+        console.log("UserId:::", value);
         const response = await api.post(`/chatroom/create`, {
           type: "Dm",
           secondUser: value,
@@ -69,7 +73,8 @@ export default function StartFriendChat(props) {
       setIsInvalid(true);
       return;
     }
-    navigate(`/ipong/chat/${value}`);
+    setCreatChatRoom(true);
+    
   };
 
   return (
@@ -138,7 +143,7 @@ export default function StartFriendChat(props) {
             }}
           >
             {(user) => (
-              <SelectItem key={user.id} textValue={user.name} onClick={() => handelOnChage(user.id)} >
+              <SelectItem key={user.id} textValue={user.name} onClick={() => handelOnChage(user.userId)} >
                 <div className="flex gap-2 items-center">
                   <Avatar
                     alt={user.name}

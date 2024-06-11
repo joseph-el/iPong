@@ -28,6 +28,8 @@ interface iPongChatState {
 
 const initialState: iPongChatState = {
   messages: [],
+
+  
   ListMessages: [
     {
       type: "group",

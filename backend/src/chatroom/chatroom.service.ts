@@ -197,7 +197,8 @@ export class ChatroomService {
       });
     }
 
-    // Return details of created chatroom
+    // Return details of created Chatroomcon
+    console.log('room created');
     return room;
   }
 
@@ -889,21 +890,21 @@ export class ChatroomService {
         },
       },
     });
-    return dms.map((dm) => {
-      return {
-        id: dm.id,
-        type: dm.type,
-        members: dm.members.map((member) => {
-          return {
-            id: member.memberID,
-            isAdmin: member.isAdmin,
-            isBanned: member.isBanned,
-            isMuted: member.isMuted,
-            muted_exp: member.muted_exp,
-            joinedAt: member.createdAt,
-          };
-        }),
-      };
-    });
+    // return dms.map((dm) => {
+    //   return {
+    //     id: dm.id,
+    //     type: dm.type,
+    //     members: dm.members.map((member) => {
+    //       return {
+    //         id: member.memberID,
+    //         isAdmin: member.isAdmin,
+    //         isBanned: member.isBanned,
+    //         isMuted: member.isMuted,
+    //         muted_exp: member.muted_exp,
+    //         joinedAt: member.createdAt,
+    //       };
+    //     }),
+    //   };
+    // });
   }
 }

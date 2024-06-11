@@ -5,12 +5,13 @@ import { ScrollShadow } from "@nextui-org/react";
 import UserListHeader from "../UserListHeader/UserListHeader";
 import MessagesItems from "../MessagesItems/MessagesItems";
 
-
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import { setIsSelectedMessage } from "../../../../state/iPongChatState/iPongChatState";
+import api from "../../../../api/posts";
 
 export default function UserListMessages(props) {
   const UserChat = useSelector((state: RootState) => state.iPongChat);
@@ -21,6 +22,26 @@ export default function UserListMessages(props) {
     dispatch(setIsSelectedMessage(id));
     navigate(`/ipong/chat/${id}`);
   };
+
+  useEffect(() => {
+
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get(`/chatroom/myrooms`);
+
+        console.log("UserList Messages: ", response.data);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchUsers()
+
+  }, []);
+
+
+
+
 
   return (
     <Grid
