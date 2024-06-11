@@ -17,22 +17,39 @@ import {setMessages} from "../../../../state/iPongChatState/iPongChatState";
 export default function ChatPanel() {
   const scrollRef = useRef(null);
   const dispatch = useDispatch();
+
+  const selectedMessage = useSelector(
+    (state: RootState) =>
+      state.iPongChat.ListMessages.find((message) => message.isSelect) || null
+  );
   const chatBubbleProps = useSelector(
     (state: RootState) => state.iPongChat.messages
   );
-
+  const [UserIsBlocked, setUserIsBlocked] = React.useState(false);
 
   const UserId = useSelector((state: RootState) => state.userState.id);
+  
+  useEffect(() => {
+    const checkBlocked = async () => {
+      try {
+        const response = await api.get(`/friendships/isBlocked/${selectedMessage?.id}`);
+        console.log(`User is blocked: ${response.data}`);
+
+      } catch (error) {
+        console.error("Error fetching chat:", error);
+      }
+    }
+    checkBlocked();
+  }, []);
+  
+  
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [chatBubbleProps]);
 
-  const selectedMessage = useSelector(
-    (state: RootState) =>
-      state.iPongChat.ListMessages.find((message) => message.isSelect) || null
-  );
+
 
   console.log(selectedMessage);
     useEffect(() => {
