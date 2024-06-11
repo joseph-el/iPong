@@ -2,7 +2,7 @@ import DefaultMaleAvatar from "../pages/iPongProfile/assets/default-male.jpeg";
 import DefaultFemaleAvatar from "../pages/iPongProfile/assets/default-female.jpeg";
 
 export  const getAvatarSrc = (picture, gender) => {
-  console.error("iam here retuen ", picture);
+
   if (picture)
       return picture;
     const isValidUrl = (url) => {
