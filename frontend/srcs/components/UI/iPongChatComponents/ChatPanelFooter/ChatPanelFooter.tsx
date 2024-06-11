@@ -82,6 +82,25 @@ export default function ChatPanelFooter() {
     setIsReady(true);
   };
 
+
+  const [userIsBlocked, setUserIsBlocked] = useState(false);
+
+  useEffect(() => {
+    const checkBlocked = async () => {
+      try {
+        const response =  await api.post(`/friendship/isBlocked/${selectedMessage?.senderId}`);
+        console.log("blocked:  ", response.data);
+        if (response.data) {
+          console.log("User is blocked");
+          setUserIsBlocked(true);
+        }
+      } catch (error) {
+        console.error("Error fetching chat:", error);
+      }
+    }
+    checkBlocked();
+  }, []);
+
   return (
     <div className="ChatPanelFooter-frame">
       <div className="autocomplete" style={{ marginTop: style }}>
@@ -93,10 +112,10 @@ export default function ChatPanelFooter() {
       </div>
 
       <Input
-        isDisabled={true}
+        isDisabled={userIsBlocked}
         className="ChatPanelFooter-Input"
         value={inputValue}
-        placeholder="Type a message"
+        placeholder={userIsBlocked ? "You are blocked by this person!" :   "Type a message"}
         onChange={handleInputChange}
         endContent={
           <img
