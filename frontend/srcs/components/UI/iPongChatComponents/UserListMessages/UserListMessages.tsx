@@ -20,31 +20,31 @@ export default function UserListMessages(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-
-
-
-
-
   useEffect(() => {
 
     const fetchUsers = async () => {
       try {
         const response = await api.get(`/chatroom/myrooms`);
+
+
+        console.log("myrooms::> ", response.data);
           const MessageList = response.data.map((message) => {
           let memberInfo;
-          message.members.find((member) => {
-            if (member.member.userId !== UserId) {
-              memberInfo = member.member;
-            }
-          });
+
+          if (message.type === "Dm") {
+            message.members.find((member) => {
+              if (member.member.userId !== UserId) {
+                memberInfo = member.member;
+              }
+            });
+          }
           return {
             id: message.id,
             type: message.type,
-            UserId: memberInfo.userId,
-            fullname: memberInfo.firstName + " " + memberInfo.lastName,
+            senderId: (message.type === "Dm" ? memberInfo.userId : ""),
+            fullname: (message.type === "Dm" ? memberInfo.firstName + " " + memberInfo.lastName : message.name),
             time: formatTimeDifference(message.lastMessage.createdAt),
-            avatar: memberInfo.avatar,
+            avatar: (message.type === "Dm" ? memberInfo.avatar : message.icon),
             isSelect: false,
             lastMessage: message.lastMessage.content,
           };
