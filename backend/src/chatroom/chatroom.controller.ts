@@ -71,12 +71,13 @@ export class ChatroomController {
   }
 
   @UseGuards(AtGuard)
-  @Post('invite')
+  @Post('invite/:joinedUserId/:roomId')
   async invite(
-    @Body() joinedUserId: string,
-    @Body() roomdId: string,
+    @Param('joinedUserId') joinedUserId: string,
+    @Param('roomId') roomdId: string,
     @GetCurrentUser('userId') adminId: string,
   ) {
+    console.log("object:test::: ", joinedUserId, roomdId, adminId);
     return await this.chatroomService.invite(joinedUserId, adminId, roomdId);
   }
 
