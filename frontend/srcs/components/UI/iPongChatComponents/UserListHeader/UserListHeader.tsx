@@ -33,7 +33,7 @@ export default function UserListHeader(props) {
         </Chip>
         <Chip
           className="filter-List-buttons-chip"
-          onClick={() => handleFilterType("Users")}
+          onClick={() => handleFilterType("Dm")}
         >
           Users
         </Chip>
