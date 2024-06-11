@@ -10,6 +10,7 @@ interface Messages {
 }
 
 interface ListMessages {
+  senderId: string;
   id: string;
   fullname: string;
   lastMessage: string;
@@ -29,39 +30,7 @@ interface iPongChatState {
 
 const initialState: iPongChatState = {
   messages: [],
-
-  
-  ListMessages: [
-    {
-      type: "group",
-      id: "2222-z1",
-      fullname: "Youssef El-idrissi",
-      lastMessage:
-        "Nice. I don't know why people get all worked up about Hawaiian pizza. I njknjk",
-      time: "12:00",
-      avatar: "https://randomuser.me/api/portraits/men/5.jpg",
-      isSelect: false,
-    },
-    {
-      type: "Dm",
-      id: "2222-z2",
-      fullname: "El-idrissi Youssef",
-      lastMessage:
-        "Nice. I don't know why people get all worked up about Hawaiian pizza. I njknjk",
-      time: "12:00",
-      avatar: "https://randomuser.me/api/portraits/women/10.jpg",
-      isSelect: false,
-    },
-    {
-      type: "Dm",
-      id: "2222-z3",
-      fullname: "Youssef Touate",
-      lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      time: "12:00",
-      avatar: "https://randomuser.me/api/portraits/men/4.jpg",
-      isSelect: false,
-    },
-  ],
+  ListMessages: [],
   UserSetting: false,
   GroupSetting: false,
   selectedMessage: false,
