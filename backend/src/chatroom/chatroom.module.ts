@@ -6,9 +6,10 @@ import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import { UserProfileService } from 'src/user-profile/user-profile.service';
 import { UsersService } from 'src/users/users.service';
 import { FriendshipService } from 'src/friendship/friendship.service';
+import { MessageService } from 'src/messages/message.service';
 
 @Module({
   controllers: [ChatroomController],
-  providers: [ChatroomService, DatabaseService, CloudinaryService, UserProfileService, UsersService, FriendshipService],
+  providers: [ChatroomService, DatabaseService, CloudinaryService, UserProfileService, UsersService, FriendshipService, MessageService],
 })
 export class ChatroomModule {}

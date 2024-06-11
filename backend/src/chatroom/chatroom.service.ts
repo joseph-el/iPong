@@ -1,3 +1,4 @@
+import { CreateMessageDto } from './../messages/dto/create-message.dto';
 import { UsersService } from './../users/users.service';
 import { UserProfileService } from './../user-profile/user-profile.service';
 import {
@@ -24,6 +25,7 @@ import { RoomDataDto } from './dto/roomDetails.dto';
 import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import { Cloudinary } from 'src/imagesProvider/cloudinary';
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
+import { MessageService } from 'src/messages/message.service';
 
 @Injectable()
 export class ChatroomService {
@@ -32,6 +34,7 @@ export class ChatroomService {
     private CloudinaryService: CloudinaryService,
     private UserProfileService: UserProfileService,
     private usersService: UsersService,
+    private messages: MessageService,
   ) {}
 
   async uploadIcon(roomId: string, file: Express.Multer.File) {
@@ -173,6 +176,12 @@ export class ChatroomService {
         },
       },
     });
+    const pushfirstMessage = await this.messages.create(room.id, userOwner, {
+      content: 'Welcome to the chatroom',
+    });
+    if (pushfirstMessage) {
+      console.log('first message pushed');
+    }
     // Create chatroom owner
     const roomdata = await this.databaseservice.chatRoomMember.create({
       data: {
@@ -793,30 +802,34 @@ export class ChatroomService {
       },
       include: {
         members: true,
-      }
+      },
     });
-    return Promise.all(chatrooms.map(async (room) => {
-    // Check if the room type is 'DM' and map the necessary details
-    if (room.type === ChatRoomType.Dm) {
-      const memberDetails = await Promise.all(room.members.map(async (member) => ({
-        member: await this.usersService.getUserById(member.memberID),
-      })));
-      return {
-        id: room.id,
-        name: room.roomName,
-        type: room.type,
-        icon: room.icon,
-        members: memberDetails,
-      };
-    } else {
-      return {
-        id: room.id,
-        name: room.roomName,
-        type: room.type,
-        icon: room.icon,
-      };
-    }
-  }));
+    return Promise.all(
+      chatrooms.map(async (room) => {
+        // Check if the room type is 'DM' and map the necessary details
+        if (room.type === ChatRoomType.Dm) {
+          const memberDetails = await Promise.all(
+            room.members.map(async (member) => ({
+              member: await this.usersService.getUserById(member.memberID),
+            })),
+          );
+          return {
+            id: room.id,
+            name: room.roomName,
+            type: room.type,
+            icon: room.icon,
+            members: memberDetails,
+          };
+        } else {
+          return {
+            id: room.id,
+            name: room.roomName,
+            type: room.type,
+            icon: room.icon,
+          };
+        }
+      }),
+    );
   }
 
   async getMembers(roomId: string, userId: string) {
