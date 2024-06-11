@@ -809,7 +809,7 @@ export class ChatroomService {
     });
     return Promise.all(
       chatrooms.map(async (room) => {
-        // Check if the room type is 'DM' and map the necessary details
+        const lastMsg = await this.getLastMessage(room.id);
         if (room.type === ChatRoomType.Dm) {
           const memberDetails = await Promise.all(
             room.members.map(async (member) => ({
@@ -822,6 +822,7 @@ export class ChatroomService {
             type: room.type,
             icon: room.icon,
             members: memberDetails,
+            lastMessage: lastMsg,
           };
         } else {
           return {
@@ -829,6 +830,7 @@ export class ChatroomService {
             name: room.roomName,
             type: room.type,
             icon: room.icon,
+            lastMessage: lastMsg,
           };
         }
       }),
