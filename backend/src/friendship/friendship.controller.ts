@@ -40,7 +40,7 @@ export class FriendshipController {
   }
 
   @UseGuards(AtGuard)
-  @Get('isBlocked/:friendId')
+  @Post('isBlocked/:friendId')
   async isBlocked(
     @GetCurrentUser('userId') userId: string,
     @Param('friendId') friendId: string,
