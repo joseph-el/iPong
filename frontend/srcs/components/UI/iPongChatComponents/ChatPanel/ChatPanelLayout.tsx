@@ -8,16 +8,25 @@ import ChatPanelFooter from "../ChatPanelFooter/ChatPanelFooter";
 import ChatPanel from "./ChatPanel";
 import SeeGroup from "../SeeGroup/SeeGroup";
 import SeeUser from "../SeeUser/SeeUser";
+
+
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../state/store";
+import { useDispatch } from "react-redux";
+import {setUserSetting, setGroupSetting} from "../../../../state/iPongChatState/iPongChatState";
 export default function ChatPanelLayout() {
-  const [ShowGroupChatSettings, setShowGroupChat] = React.useState(false);
-  const [ShowFriendChatSetting, setShowFriendChatSetting] =
-    React.useState(false);
+  const dispatch = useDispatch();
+
+  const ShowFriendChatSetting = useSelector((state: RootState) => state.iPongChat.UserSetting);
+  const ShowGroupChatSettings = useSelector((state: RootState) => state.iPongChat.GroupSetting);
+  
 
   const handleCloseClick = () => {
     console.log("closedd");
-    setShowGroupChat(false);
-    setShowFriendChatSetting(false);
+    dispatch(setUserSetting(false));
+    dispatch(setGroupSetting(false));
   };
+
 
   return (
     <div className="ChatPanel-frame">
@@ -32,8 +41,8 @@ export default function ChatPanelLayout() {
       >
         <GridItem pl="2" area={"header"}>
           <ChatPanelHeader 
-            SetViewGroupSettings={() => setShowGroupChat(true)}
-            SetViewFriendSettings={() => setShowFriendChatSetting(true)}
+            SetViewGroupSettings={() =>{dispatch(setGroupSetting(true))} }
+            SetViewFriendSettings={() => {dispatch(setUserSetting(true))}}
           />
         </GridItem>
 
@@ -44,11 +53,9 @@ export default function ChatPanelLayout() {
 
 
         {ShowGroupChatSettings && (
-          <div className="blur-background">
-            <div className="AchievementList-place fade-in">
+
               <SeeGroup handleCloseClick={handleCloseClick}/>
-            </div>
-          </div>
+   
         )}
 
         {ShowFriendChatSetting && (
