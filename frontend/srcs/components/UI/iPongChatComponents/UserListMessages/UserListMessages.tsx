@@ -12,7 +12,7 @@ import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import { setIsSelectedMessage } from "../../../../state/iPongChatState/iPongChatState";
 import api from "../../../../api/posts";
-import {formatTimeDifference} from "../../NotificationsBar/NotificationsBar";
+import { formatTimeDifference } from "../../NotificationsBar/NotificationsBar";
 import { setListMessages } from "../../../../state/iPongChatState/iPongChatState";
 export default function UserListMessages(props) {
   const UserChat = useSelector((state: RootState) => state.iPongChat);
@@ -21,50 +21,55 @@ export default function UserListMessages(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-
     const fetchUsers = async () => {
       try {
         const response = await api.get(`/chatroom/myrooms`);
+        const MessageList = response.data
+          .sort(
+            (a, b) =>
+              new Date(b.lastMessage.createdAt) -
+              new Date(a.lastMessage.createdAt)
+          )
+          .map((message) => {
+            let memberInfo;
 
-
-        console.log("myrooms::> ", response.data);
-          const MessageList = response.data.map((message) => {
-          let memberInfo;
-
-          if (message.type === "Dm") {
-            message.members.find((member) => {
-              if (member.member.userId !== UserId) {
-                memberInfo = member.member;
-              }
-            });
-          }
-          return {
-            id: message.id,
-            type: message.type,
-            senderId: (message.type === "Dm" ? memberInfo.userId : ""),
-            fullname: (message.type === "Dm" ? memberInfo.firstName + " " + memberInfo.lastName : message.name),
-            time: formatTimeDifference(message.lastMessage.createdAt),
-            avatar: (message.type === "Dm" ? memberInfo.avatar : message.icon),
-            isSelect: false,
-            lastMessage: message.lastMessage.content,
-          };
-
-        });
+            if (message.type === "Dm") {
+              message.members.find((member) => {
+                if (member.member.userId !== UserId) {
+                  memberInfo = member.member;
+                }
+              });
+            }
+            return {
+              id: message.id,
+              type: message.type,
+              senderId: message.type === "Dm" ? memberInfo.userId : "",
+              fullname:
+                message.type === "Dm"
+                  ? memberInfo.firstName + " " + memberInfo.lastName
+                  : message.name,
+              time: formatTimeDifference(message.lastMessage.createdAt),
+              avatar: message.type === "Dm" ? memberInfo.avatar : message.icon,
+              isSelect: false,
+              lastMessage: message.lastMessage.content,
+            };
+          });
         dispatch(setListMessages(MessageList));
-
       } catch (error) {
         console.error(error);
       }
-    }
-    fetchUsers()
-
+    };
+    fetchUsers();
   }, []);
-
 
   const handelListChatItem = (id) => {
     dispatch(setIsSelectedMessage(id));
     navigate(`/ipong/chat/${id}`);
   };
+
+  const handleFilterType = useSelector(
+    (state: RootState) => state.iPongChat.filterType
+  );
 
   return (
     <Grid
@@ -83,6 +88,10 @@ export default function UserListMessages(props) {
       <GridItem pl="2" bg="black" className="kkk" area={"main"}>
         <ScrollShadow hideScrollBar className="h-full">
           {UserChat.ListMessages.map((message, index) => (
+
+            // Here render by the type of element,
+            // if all render all
+            // if 
             <React.Fragment key={index}>
               <MessagesItems
                 IsSelectes={message.isSelect}
@@ -93,6 +102,8 @@ export default function UserListMessages(props) {
                 avatar={message.avatar}
               />
             </React.Fragment>
+
+
           ))}
         </ScrollShadow>
       </GridItem>
