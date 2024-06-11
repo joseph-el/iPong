@@ -45,7 +45,7 @@ export class FriendshipController {
     @GetCurrentUser('userId') userId: string,
     @Body('friendId') friendId: string,
   ) {
-    return this.friendshipService.isBlocked(userId, friendId);
+    return await this.friendshipService.isBlocked(userId, friendId);
   }
 
   @UseGuards(AtGuard)

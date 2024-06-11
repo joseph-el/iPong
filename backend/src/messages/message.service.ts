@@ -16,7 +16,7 @@ export class MessageService {
     if (!createMessageDto.content) {
       throw new HttpException('Content is required', 400);
     }
-    if (createMessageDto.content.length > 100) {
+    if (createMessageDto.content.length > 500) {
       throw new HttpException('Client message id is invalid', 400);
     }
     const room = await this.database.chatRoom.findUnique({

@@ -144,9 +144,8 @@ export class FriendshipService {
       },
     });
 
-    // console.log('blocked:::::::::>', blocked );
-
-    return blocked;
+    //return a boolean value
+    return !!blocked;
   }
 
   async blockedUsers(userId: string) {
