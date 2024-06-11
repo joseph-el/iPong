@@ -42,12 +42,14 @@ import { EyeFilledIcon } from "../../Input/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../../Input/EyeSlashFilledIcon";
 
 import { CameraIcon } from "../../ProfileSettings/EditProfile/CameraIcon";
-
+import { Selection } from "@nextui-org/react";
 import Close from "../../Button/CloseButton/CloseButton";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import api from "../../../../api/posts";
+import { useDispatch } from "react-redux";
+import { setGroupSetting } from "../../../../state/iPongChatState/iPongChatState";
 
 const PeopleListItem = (props) => {
   return (
@@ -62,46 +64,98 @@ const PeopleListItem = (props) => {
       </div>
 
       <div className="actions">
-        {props.Action === "Request" ? (
-          <div className="request">
-            <img src={RejectIcon} alt="request-icon" className="RejectIcon" />
-            <img src={AcceptIcon} alt="request-icon" className="AcceptIcon" />
-          </div>
-        ) : (
-          <div className="options">
-            <Dropdown>
-              <DropdownTrigger>
-                <img
-                  src={OptionIcon}
-                  alt="options-icon"
-                  className="options-icon"
-                />
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Static Actions">
-                <DropdownItem className="invite-People-list-text" key="new">
-                  Remove member
-                </DropdownItem>
-                <DropdownItem className="invite-People-list-text" key="copy">
-                  Mute
-                </DropdownItem>
-                <DropdownItem className="invite-People-list-text" key="copy">
-                  View profile
-                </DropdownItem>
-                <DropdownItem className="invite-People-list-text" key="copy">
-                  Make admin
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        )}
+        <div className="options">
+          <Dropdown>
+            <DropdownTrigger>
+              <img
+                src={OptionIcon}
+                alt="options-icon"
+                className="options-icon"
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Static Actions">
+              <DropdownItem className="invite-People-list-text" key="new">
+                Remove member
+              </DropdownItem>
+              <DropdownItem className="invite-People-list-text" key="copy">
+                Mute
+              </DropdownItem>
+              <DropdownItem className="invite-People-list-text" key="copy">
+                View profile
+              </DropdownItem>
+              <DropdownItem className="invite-People-list-text" key="copy">
+                Make admin
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
     </div>
   );
 };
 
 const EditGroup = (props) => {
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    props.selectedMessage.avatar
+  );
+  const [AvatarFile, setAvatarFile] = useState(null);
+  const [error, setError] = useState("");
+
+  const [GroupName, setGroupName] = useState("");
+  const [GroupType, setGroupType] = React.useState<Selection>(new Set([]));
+  const [GroupPassword, setGroupPassword] = useState("");
+  const [IsReady, setIsReady] = useState(false);
+
+  const displayGroupType = Array.from(GroupType).join(", ");
+
+  const handelSubmitData = () => {
+    // TODO: check validation
+
+    console.log("Group Name:", GroupName);
+    console.log("Group Type:", displayGroupType);
+    console.log("Group Password:", GroupPassword);
+    // console.log("Avatar File:", AvatarFile);
+
+    // setIsReady(true);
+  };
+
+
+  // POST Group Setting  TODO:
+  useEffect(() => {
+    const PostGroupSetting = async () => {
+      try {
+      } catch (error) {}
+    };
+    IsReady && PostGroupSetting();
+  }, [IsReady]);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError("File size should not exceed 2MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const image = new Image();
+      image.onload = () => {
+        if (image.width < 50 || image.height < 50) {
+          setError("Avatar image should be at least 50x50 pixels");
+        } else {
+          setError("");
+          setAvatarFile(file);
+          setSelectedAvatar(reader.result);
+        }
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
 
   return (
     <>
@@ -109,7 +163,7 @@ const EditGroup = (props) => {
         isOpen={props.isOpen}
         onClose={props.onClose}
         onOpenChange={props.onOpenChange}
-        placement="top-center"
+        backdrop={"opaque"}
       >
         <ModalContent>
           {(onClose) => (
@@ -119,22 +173,40 @@ const EditGroup = (props) => {
               </ModalHeader>
 
               <ModalBody>
-                <div className="Edit-profile">
+                <div className="Edit-profile EditGroup-blurbackground">
                   <div className="Groups-Info">
-                    <Avatar
-                      className="User-avatar w-24 h-24"
-                      src="https://scontent.fcmn1-2.fna.fbcdn.net/v/t39.30808-6/340242838_159501407041277_2734451423562002343_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFyvo2pTF2mgIKANMob3z8USQ34jUDh201JDfiNQOHbTVONa7_GVq_51GNSwIdNq3o3_3XY57rylLV5N4uofeIH&_nc_ohc=Okm3Jt5r4DoQ7kNvgFvUVUq&_nc_ht=scontent.fcmn1-2.fna&oh=00_AYBnMKq1nwB-R-wVuQCwpnEe2lySQW1DXDZZnBw3hNuViQ&oe=66610A17"
+                    <label htmlFor="avatarInput">
+                      <div className="Edit-avatar">
+                        <Avatar
+                          isBordered
+                          className="User-avatar w-24 h-24"
+                          src={selectedAvatar}
+                        />
+                        <CameraIcon
+                          className="animate-pulse w-6 h-6 text-default-500 Edit-group-icon"
+                          fill="currentColor"
+                        />
+                      </div>
+                    </label>
+                    <input
+                      type="file"
+                      id="avatarInput"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={(event) => handleImageChange(event)}
                     />
 
-                    <CameraIcon
-                      className="animate-pulse w-6 h-6 text-default-500 Edit-group-icon"
-                      fill="currentColor"
-                    />
+                    {error != "" && (
+                      <p className="text-default-500 text-small">{error}</p>
+                    )}
 
                     <div className="edit-Group-Name">
                       <Input
                         label="Group Name"
-                        value={"Taha Naceur"}
+                        onChange={(e) => {
+                          setGroupName(e.target.value);
+                        }}
+                        defaultValue={props.selectedMessage.fullname}
                         className="max-w-xs "
                       />
                     </div>
@@ -145,9 +217,11 @@ const EditGroup = (props) => {
                       Private & Security
                     </div>
                     <Select
+                      selectedKeys={GroupType}
+                      className="max-w-xs"
+                      onSelectionChange={setGroupType}
                       label="Group Type"
                       placeholder="Select Group Type"
-                      className="max-w-xs"
                     >
                       <SelectItem className="text-small-ovrride" key={"public"}>
                         public
@@ -168,8 +242,13 @@ const EditGroup = (props) => {
 
                     <Input
                       label="Group password"
-                      value={"tnaceur123"}
-                      isDisabled
+                      defaultValue={"tnaceur123"}
+                      onChange={(e) => {
+                        setGroupPassword(e.target.value);
+                      }}
+                      isDisabled={
+                        displayGroupType == "protected" ? false : true
+                      }
                       endContent={
                         <button
                           className="focus:outline-none"
@@ -193,7 +272,7 @@ const EditGroup = (props) => {
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onClick={handelSubmitData}>
                   Done
                 </Button>
               </ModalFooter>
@@ -394,167 +473,185 @@ export default function SeeGroup(props) {
   }, []);
 
   return (
-    <NextUIProvider>
-      <NextThemesProvider attribute="class" defaultTheme="dark">
-        <SeeGroupWrapper>
-          <ScrollShadow hideScrollBar className="h-full" size={5}>
-            <div className="SeeGroup-frame">
-              <div className="User-info">
-                <Avatar
-                  isBordered
-                  className="User-avatar w-24 h-24"
-                  src={selectedMessage?.avatar}
-                />
-                <div className="info">
-                  <div className="User-name">{selectedMessage?.fullname}</div>
+    <div
+      className={
+        !EditProfileState
+          ? "z-50 bg-overlay/50 backdrop-opacity-disabled w-screen h-screen fixed inset-0"
+          : ""
+      }
+    >
+      <div className="AchievementList-place fade-in">
+        <NextUIProvider style={{ display: EditProfileState ? "none" : "" }}>
+          <NextThemesProvider attribute="class" defaultTheme="dark">
+            <SeeGroupWrapper>
+              <ScrollShadow hideScrollBar className="h-full" size={5}>
+                <div className="SeeGroup-frame">
+                  <div className="User-info">
+                    <Avatar
+                      isBordered
+                      className="User-avatar w-24 h-24"
+                      src={selectedMessage?.avatar}
+                    />
+                    <div className="info">
+                      <div className="User-name">
+                        {selectedMessage?.fullname}
+                      </div>
 
-                  <div className="ipongchar">ipongChat</div>
-                </div>
-              </div>
-
-              <img
-                src={MuteMode ? MuteIcon : UnmuteIcon}
-                alt="mute-icon"
-                className={MuteMode ? "mute-icon" : "unmute-icon"}
-                onClick={() => {
-                  setMuteMode(!MuteMode);
-                }}
-              />
-
-              <Close
-                func={() => props.handleCloseClick()}
-                ClassName={"Customize-chat-icon animate-pulse"}
-                id="close"
-              />
-
-              <div className="Customize-chat">
-                <div className="Customize-chat-title">Customize Chat</div>
-                <div className="Customize-chat-button">
-                  <div className="Customize-chat-button-text">
-                    Change Name and Photo
+                      <div className="ipongchar">ipongChat</div>
+                    </div>
                   </div>
                   <img
+                    src={MuteMode ? MuteIcon : UnmuteIcon}
+                    alt="mute-icon"
+                    className={MuteMode ? "mute-icon" : "unmute-icon"}
                     onClick={() => {
-                      setEditProfileState(!EditProfileState);
+                      setMuteMode(!MuteMode);
                     }}
-                    src={EditIcon}
-                    alt="Customize-chat-icon"
-                    className=""
                   />
-                </div>
-              </div>
 
-              <div className="People-List">
-                <div className="PeopleList-title">People</div>
+                  <Close
+                    func={() => props.handleCloseClick()}
+                    ClassName={"Customize-chat-icon animate-pulse"}
+                    id="close"
+                  />
 
-                <div className="peopleContent">
-                  <div className="invite-People">
-                    <Select
-                      items={users} // TODO: set Users by List Firends and not alearady in the group
-                      placeholder="Add People..."
-                      labelPlacement="outside"
-                      className="max-w-xs invite-People-list"
-                    >
-                      {(user) => (
-                        <SelectItem key={user.id} textValue={"Add People..."}>
-                          <div className="flex gap-2 items-center">
-                            <Avatar
-                              alt={user.name}
-                              className="flex-shrink-0"
-                              size="sm"
-                              src={user.avatar}
-                            />
-                            <div className="flex flex-col">
-                              <span className="text-small invite-People-list-text ">
-                                {user.name}
-                              </span>
+                  <div
+                    className="Customize-chat"
+                    onClick={() => {
+                      // dispatch(setGroupSetting(!ShowGroupChatSettings));
+                      setEditProfileState(true);
+                    }}
+                  >
+                    <div className="Customize-chat-title">Customize Chat</div>
+                    <div className="Customize-chat-button">
+                      <div className="Customize-chat-button-text">
+                        Change Name and Photo
+                      </div>
+                      <img
+                        src={EditIcon}
+                        alt="Customize-chat-icon"
+                        className=""
+                      />
+                    </div>
+                  </div>
 
-                              {/* <div className="flex "> */}
-                              <span className="text-tiny text-default-400">
-                                {user.email}
-                              </span>
-                              {/* <img
+                  <div className="People-List">
+                    <div className="PeopleList-title">People</div>
+
+                    <div className="peopleContent">
+                      <div className="invite-People">
+                        <Select
+                          items={users} // TODO: set Users by List Firends and not alearady in the group
+                          placeholder="Add People..."
+                          labelPlacement="outside"
+                          className="max-w-xs invite-People-list"
+                        >
+                          {(user) => (
+                            <SelectItem
+                              key={user.id}
+                              textValue={"Add People..."}
+                            >
+                              <div className="flex gap-2 items-center">
+                                <Avatar
+                                  alt={user.name}
+                                  className="flex-shrink-0"
+                                  size="sm"
+                                  src={user.avatar}
+                                />
+                                <div className="flex flex-col">
+                                  <span className="text-small invite-People-list-text ">
+                                    {user.name}
+                                  </span>
+
+                                  {/* <div className="flex "> */}
+                                  <span className="text-tiny text-default-400">
+                                    {user.email}
+                                  </span>
+                                  {/* <img
                                   src={AcceptIcon}
                                   className="w-[20px] h-[20px] gap-2"
                                   alt="AddIcon"
                                 /> */}
 
-                              {/* </div> */}
-                            </div>
-                          </div>
-                        </SelectItem>
-                      )}
-                    </Select>
+                                  {/* </div> */}
+                                </div>
+                              </div>
+                            </SelectItem>
+                          )}
+                        </Select>
+                      </div>
+
+                      <ScrollShadow hideScrollBar className="h-[300px]">
+                        {
+                          // Loop through the peopleData array to display each person
+                          peopleData.map((person, index) => (
+                            <PeopleListItem
+                              key={index}
+                              name={person.name}
+                              description={person.description}
+                              Action={person.Action}
+                              avatarLink={person.avatarLink}
+                            />
+                          ))
+                        }
+                      </ScrollShadow>
+                    </div>
                   </div>
 
-                  <ScrollShadow hideScrollBar className="h-[300px]">
-                    {
-                      // Loop through the peopleData array to display each person
-                      peopleData.map((person, index) => (
-                        <PeopleListItem
-                          key={index}
-                          name={person.name}
-                          description={person.description}
-                          Action={person.Action}
-                          avatarLink={person.avatarLink}
-                        />
-                      ))
-                    }
-                  </ScrollShadow>
+                  <div className="privacy">
+                    <div className="privacy-title"> privacy </div>
+
+                    <div className="privacy-options">
+                      {/* <div className="Private-and-Security">Private & Security</div> */}
+                      <div
+                        className="DeleteChat"
+                        onClick={() => {
+                          handleOpen("Delete Chat");
+                        }}
+                      >
+                        {" "}
+                        Delete Chat{" "}
+                      </div>
+                      <div
+                        className="Leave-this-conversation"
+                        onClick={() => {
+                          handleOpen("Leave this Group");
+                        }}
+                      >
+                        Leave this Group
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </ScrollShadow>
 
-              <div className="privacy">
-                <div className="privacy-title"> privacy </div>
+              <IPongAlert
+                isOpen={isOpen}
+                onClose={onClose}
+                UserAlertHeader={UserOptions}
+                UserAlertMessage={
+                  UserOptions === "Delete Chat"
+                    ? "Are you sure you want to Delete this chat ?"
+                    : UserOptions === "Leave this Group"
+                    ? "Are you sure you want to Leave this Group?"
+                    : null
+                }
+                UserOptions={
+                  UserOptions === "Delete Chat" ? "Delete Chat" : "Leave Group"
+                }
+              ></IPongAlert>
 
-                <div className="privacy-options">
-                  {/* <div className="Private-and-Security">Private & Security</div> */}
-                  <div
-                    className="DeleteChat"
-                    onClick={() => {
-                      handleOpen("Delete Chat");
-                    }}
-                  >
-                    {" "}
-                    Delete Chat{" "}
-                  </div>
-                  <div
-                    className="Leave-this-conversation"
-                    onClick={() => {
-                      handleOpen("Leave this Group");
-                    }}
-                  >
-                    Leave this Group
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ScrollShadow>
-
-          <IPongAlert
-            isOpen={isOpen}
-            onClose={onClose}
-            UserAlertHeader={UserOptions}
-            UserAlertMessage={
-              UserOptions === "Delete Chat"
-                ? "Are you sure you want to Delete this chat ?"
-                : UserOptions === "Leave this Group"
-                ? "Are you sure you want to Leave this Group?"
-                : null
-            }
-            UserOptions={
-              UserOptions === "Delete Chat" ? "Delete Chat" : "Leave Group"
-            }
-          ></IPongAlert>
-
-          <EditGroup
-            isOpen={EditProfileState}
-            onClose={() => {
-              setEditProfileState(!EditProfileState);
-            }}
-          />
-        </SeeGroupWrapper>
-      </NextThemesProvider>
-    </NextUIProvider>
+              <EditGroup
+                selectedMessage={selectedMessage}
+                isOpen={EditProfileState}
+                onClose={() => {
+                  setEditProfileState(!EditProfileState);
+                }}
+              />
+            </SeeGroupWrapper>
+          </NextThemesProvider>
+        </NextUIProvider>
+      </div>
+    </div>
   );
 }
