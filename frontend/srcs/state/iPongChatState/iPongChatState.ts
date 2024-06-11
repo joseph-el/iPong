@@ -7,33 +7,81 @@ interface Messages {
   user: string;
   time: string;
 }
+
 interface ListMessages {
   id: string;
   fullname: string;
   lastMessage: string;
   time: string;
+  avatar: string;
+  type?: string;
+  isSelect: Boolean;
 }
 
 interface iPongChatState {
   messages: Messages[];
   ListMessages: ListMessages[];
-  selectedUser: string;
+  selectedMessage: Boolean;
   UserSetting: Boolean;
   GroupSetting: Boolean;
 }
 
 const initialState: iPongChatState = {
   messages: [],
-  ListMessages: [],
-  selectedUser: "",
+  ListMessages: [
+    {
+      type: "group",
+      id: "2222-z1",
+      fullname: "Youssef El-idrissi",
+      lastMessage:
+        "Nice. I don't know why people get all worked up about Hawaiian pizza. I njknjk",
+      time: "12:00",
+      avatar: "https://randomuser.me/api/portraits/men/5.jpg",
+      isSelect: false,
+    },
+    {
+      type: "Dm",
+      id: "2222-z2",
+      fullname: "El-idrissi Youssef",
+      lastMessage:
+        "Nice. I don't know why people get all worked up about Hawaiian pizza. I njknjk",
+      time: "12:00",
+      avatar: "https://randomuser.me/api/portraits/women/10.jpg",
+      isSelect: false,
+    },
+    {
+      type: "Dm",
+      id: "2222-z3",
+      fullname: "Youssef Touate",
+      lastMessage: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      time: "12:00",
+      avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+      isSelect: false,
+    },
+  ],
   UserSetting: false,
   GroupSetting: false,
+  selectedMessage: false,
 };
 
-const inputSlice = createSlice({
+const iPongChatSlice = createSlice({
   name: "iPongChat",
   initialState,
   reducers: {
+    setIsSelectedMessage(state, action) {
+      state.ListMessages = state.ListMessages.map((message) => {
+        if (message.id === action.payload) {
+          return {
+            ...message,
+            isSelect: true,
+          };
+        }
+        return {
+          ...message,
+          isSelect: false,
+        };
+      });
+    },
     setListMessages(state, action) {
       state.ListMessages = action.payload;
     },
@@ -44,7 +92,7 @@ const inputSlice = createSlice({
       state.messages = action.payload;
     },
     selectUser(state, action) {
-      state.selectedUser = action.payload;
+      state.selectedMessage = action.payload;
     },
     setUserSetting(state, action) {
       state.UserSetting = action.payload;
@@ -62,5 +110,6 @@ export const {
   setUserSetting,
   setGroupSetting,
   setListMessages,
-} = inputSlice.actions;
-export default inputSlice.reducer;
+  setIsSelectedMessage,
+} = iPongChatSlice.actions;
+export default iPongChatSlice.reducer;
