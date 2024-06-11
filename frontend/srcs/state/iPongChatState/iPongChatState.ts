@@ -20,12 +20,20 @@ interface ListMessages {
   isSelect: Boolean;
 }
 
+enum FilterType {
+  All = "All",
+  Users = "Users",
+  Groups = "Groups",
+}
+
 interface iPongChatState {
   messages: Messages[];
   ListMessages: ListMessages[];
   selectedMessage: Boolean;
   UserSetting: Boolean;
   GroupSetting: Boolean;
+  filterType?: FilterType;
+
 }
 
 const initialState: iPongChatState = {
@@ -34,6 +42,7 @@ const initialState: iPongChatState = {
   UserSetting: false,
   GroupSetting: false,
   selectedMessage: false,
+  filterType: FilterType.All,
 };
 
 const iPongChatSlice = createSlice({
@@ -53,6 +62,9 @@ const iPongChatSlice = createSlice({
           isSelect: false,
         };
       });
+    },
+    setFilterType(state, action) {
+      state.filterType = action.payload;
     },
     setListMessages(state, action) {
       state.ListMessages = action.payload;
@@ -80,6 +92,7 @@ export const {
   setMessages,
   selectUser,
   setUserSetting,
+  setFilterType,
   setGroupSetting,
   setListMessages,
   setIsSelectedMessage,
