@@ -67,7 +67,7 @@ export class ChatroomController {
     @Body() joinChatroomDto: JoinRoomDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.join(joinChatroomDto, userId);
+    return await this.chatroomService.join(joinChatroomDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -77,7 +77,7 @@ export class ChatroomController {
     @Body() roomdId: string,
     @GetCurrentUser('userId') adminId: string,
   ) {
-    return this.chatroomService.invite(joinedUserId, adminId, roomdId);
+    return await this.chatroomService.invite(joinedUserId, adminId, roomdId);
   }
 
   @UseGuards(AtGuard)

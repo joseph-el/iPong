@@ -1,4 +1,5 @@
 import { CreateMessageDto } from './../messages/dto/create-message.dto';
+import {NotificationType } from '@prisma/client';
 import { UsersService } from './../users/users.service';
 import { UserProfileService } from './../user-profile/user-profile.service';
 import {
@@ -26,13 +27,14 @@ import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import { Cloudinary } from 'src/imagesProvider/cloudinary';
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import { MessageService } from 'src/messages/message.service';
+import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ChatroomService {
   constructor(
     private databaseservice: DatabaseService,
-    private CloudinaryService: CloudinaryService,
-    private UserProfileService: UserProfileService,
+    private evventEmitter: EventEmitter2,
     private usersService: UsersService,
     private messages: MessageService,
   ) {}
@@ -238,16 +240,13 @@ export class ChatroomService {
       return new HttpException('User is already a member', 400);
     }
     //create chatroom member
-    await this.databaseservice.chatRoomMember.create({
-      data: {
-        member: {
-          connect: { userId: joinedUserId },
-        },
-        ChatRoom: {
-          connect: { id: roomId },
-        },
-      },
-    });
+    const notification: CreateNotificationDto = {
+      senderId: adminId,
+      receiverId: joinedUserId,
+      entityType: NotificationType.JoinRoom,
+      id: [adminId, joinedUserId].sort().join('+')+ 'joinRoom',
+    };
+    this.evventEmitter.emit('sendNotification', notification);
     return { message: `${joinedUserId} User has been added to the chatroom` };
   }
 

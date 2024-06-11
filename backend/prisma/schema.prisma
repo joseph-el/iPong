@@ -188,6 +188,7 @@ enum FriendshipStatus {
 enum NotificationType {
   FriendRequest
   FriendRequestAccepted
+  JoinRoom
   MessageReceived
 }
 
