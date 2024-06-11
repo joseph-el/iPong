@@ -6,10 +6,9 @@ import ConversationDetailsIcon from "../MessagesItems/select-converstation-icon.
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
 const getListMessages = (state) => state.iPongChat.ListMessages;
-
 const getSelectedMessage = createSelector(
   [getListMessages],
   (listMessages) => listMessages.find((message) => message.isSelect) || null
@@ -23,17 +22,14 @@ export default function ChatPanelHeader(props) {
       <div
         className="ChatPanelHeader-title"
         onClick={() => {
-            console.log(selectedMessage);
-            console.log(selectedMessage.type);
-            console.log(selectedMessage.fullname);
-            (selectedMessage.type === "group") && props.SetViewGroupSettings();
-            (selectedMessage.type === "Dm")    && props.SetViewFriendSettings();
+          console.log(selectedMessage);
+          console.log(selectedMessage.type);
+          console.log(selectedMessage.fullname);
+          selectedMessage.type === "group" && props.SetViewGroupSettings();
+          selectedMessage.type === "Dm" && props.SetViewFriendSettings();
         }}
       >
-        <Avatar
-          src={selectedMessage?.avatar}
-          className="w-14 h-14"
-        />
+        <Avatar src={selectedMessage?.avatar} className="w-14 h-14" />
         <div className="conversation-name-and-conversation-details">
           <div className="conversation-name">{selectedMessage?.fullname}</div>
           <img
