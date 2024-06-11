@@ -11,7 +11,7 @@ import {
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
 import * as bcrypt from 'bcrypt';
 import { DatabaseService } from 'src/database/database.service';
-import { ChatRoomType, NotificationType } from '@prisma/client';
+import { ChatRoomType } from '@prisma/client';
 import { JoinRoomDto } from './dto/JoinRoom.dto';
 import { LeaveRoomDto } from './dto/leaveRoom.dto';
 import { setAdminDto } from './dto/setAdmin.dto';
@@ -26,8 +26,6 @@ import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import { Cloudinary } from 'src/imagesProvider/cloudinary';
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import { MessageService } from 'src/messages/message.service';
-import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ChatroomService {
@@ -37,7 +35,6 @@ export class ChatroomService {
     private UserProfileService: UserProfileService,
     private usersService: UsersService,
     private messages: MessageService,
-    private eventEmitter: EventEmitter2,
   ) {}
 
   async uploadIcon(roomId: string, file: Express.Multer.File) {
@@ -82,8 +79,6 @@ export class ChatroomService {
   }
 
   async create(createChatroomDto: CreateChatroomDto, userOwner: string) {
-    console.log('createChatroomDto: ', createChatroomDto);
-    console.log('userOwner: ', userOwner);
     // Check if required parameters are provided
     if (
       createChatroomDto.type === ChatRoomType.Dm &&
@@ -152,30 +147,31 @@ export class ChatroomService {
       );
     }
     // Check if user is blocked by the other user
-    const existingBlock = await this.databaseservice.blockedUser.findFirst({
-      where: {
-        OR: [
-          {
-            blockedBy: userOwner,
-            blocked: createChatroomDto.secondUser,
-          },
-          {
-            blockedBy: createChatroomDto.secondUser,
-            blocked: userOwner,
-          },
-        ],
-      },
-    });
+    // const existingBlock = await this.databaseservice.blockedUser.findFirst({
+    //   where: {
+    //     OR: [
+    //       {
+    //         blockedBy: userOwner,
+    //         blocked: createChatroomDto.secondUser,
+    //       },
+    //       {
+    //         blockedBy: createChatroomDto.secondUser,
+    //         blocked: userOwner,
+    //       },
+    //     ],
+    //   },
+    // });
 
-    if (existingBlock) {
-      return new HttpException('User is blocked', 403);
-    }
+    // if (existingBlock) {
+    //   return new HttpException('User is blocked', 403);
+    // }
 
     // Create chatroom
     const room = await this.databaseservice.chatRoom.create({
       data: {
         type: createChatroomDto.type,
         password: createChatroomDto.password,
+        roomName: createChatroomDto.roomName,
         owner: {
           connect: { userId: userOwner },
         },
@@ -207,14 +203,13 @@ export class ChatroomService {
           isAdmin: true,
         },
       });
-      const pushfirstMessage = await this.messages.create(room.id, userOwner, {
-        content: 'Welcome to the chatroom',
-      });
-      if (!pushfirstMessage) {
-        console.log('first message pushed');
-      }
     }
-
+    const pushfirstMessage = await this.messages.create(room.id, userOwner, {
+      content: 'Welcome to the chatroom',
+    });
+    if (!pushfirstMessage) {
+      console.log('first message pushed');
+    }
     // Return details of created Chatroomcon
     console.log('room created');
     return room;
@@ -242,13 +237,17 @@ export class ChatroomService {
     if (checkMember) {
       return new HttpException('User is already a member', 400);
     }
-    const notification: CreateNotificationDto = {
-      receiverId: joinedUserId,
-      senderId: adminId,
-      entityType: NotificationType.JoinRoom,
-      id: [roomId, adminId].sort().join('+') + 'join',
-    };
-    this.eventEmitter.emit('sendNotification', notification);
+    //create chatroom member
+    await this.databaseservice.chatRoomMember.create({
+      data: {
+        member: {
+          connect: { userId: joinedUserId },
+        },
+        ChatRoom: {
+          connect: { id: roomId },
+        },
+      },
+    });
     return { message: `${joinedUserId} User has been added to the chatroom` };
   }
 
@@ -801,6 +800,9 @@ export class ChatroomService {
             memberID: userId,
           },
         },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
       include: {
         members: true,
