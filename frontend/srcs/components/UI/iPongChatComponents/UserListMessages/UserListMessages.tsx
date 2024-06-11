@@ -12,9 +12,11 @@ import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import { setIsSelectedMessage } from "../../../../state/iPongChatState/iPongChatState";
 import api from "../../../../api/posts";
-
+import {formatTimeDifference} from "../../NotificationsBar/NotificationsBar";
+import { setListMessages } from "../../../../state/iPongChatState/iPongChatState";
 export default function UserListMessages(props) {
   const UserChat = useSelector((state: RootState) => state.iPongChat);
+  const UserId = useSelector((state: RootState) => state.userState.id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,12 +31,26 @@ export default function UserListMessages(props) {
     const fetchUsers = async () => {
       try {
         const response = await api.get(`/chatroom/myrooms`);
-        const MessageList = response.data.map((message) => {
-       
+          const MessageList = response.data.map((message) => {
+          let memberInfo;
+          message.members.find((member) => {
+            if (member.member.userId !== UserId) {
+              memberInfo = member.member;
+            }
+          });
+          return {
+            id: message.id,
+            type: message.type,
+            UserId: memberInfo.userId,
+            fullname: memberInfo.firstName + " " + memberInfo.lastName,
+            time: formatTimeDifference(message.lastMessage.createdAt),
+            avatar: memberInfo.avatar,
+            isSelect: false,
+            lastMessage: message.lastMessage.content,
+          };
 
         });
-        // dispatch(setListMessages(MessageList));
-        console.log("UserList Messages: ", response.data);
+        dispatch(setListMessages(MessageList));
 
       } catch (error) {
         console.error(error);
