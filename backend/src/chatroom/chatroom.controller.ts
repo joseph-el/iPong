@@ -38,7 +38,7 @@ export class ChatroomController {
     @Body() createChatroomDto: CreateChatroomDto,
     @GetCurrentUser('userId') userOwner: string,
   ) {
-    console.log("object:>> ", createChatroomDto);
+    console.log('object:>> ', createChatroomDto);
     return await this.chatroomService.create(createChatroomDto, userOwner);
   }
 
@@ -49,7 +49,7 @@ export class ChatroomController {
     @Param('roomId') roomId: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log("object:>> ", roomId);
+    console.log('object:>> ', roomId);
     return await this.chatroomService.uploadIcon(roomId, file);
   }
 
@@ -77,7 +77,7 @@ export class ChatroomController {
     @Param('roomId') roomdId: string,
     @GetCurrentUser('userId') adminId: string,
   ) {
-    console.log("object:test::: ", joinedUserId, roomdId, adminId);
+    console.log('object:test::: ', joinedUserId, roomdId, adminId);
     return await this.chatroomService.invite(joinedUserId, adminId, roomdId);
   }
 
@@ -188,9 +188,12 @@ export class ChatroomController {
   async getDms(@GetCurrentUser('userId') userId: string) {
     return await this.chatroomService.getDms(userId);
   }
- 
- 
 
+  @UseGuards(AtGuard)
+  @Get('roomDetails/:roomId')
+  async getRoomDetails(@Param('roomId') roomId: string) {
+    return await this.chatroomService.getRoomDetails(roomId);
+  } 
     
   @UseGuards(AtGuard)
   @Post('update')

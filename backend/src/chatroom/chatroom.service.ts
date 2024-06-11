@@ -315,6 +315,31 @@ export class ChatroomService {
     return { message: `${joinChatroomDto.userId} Joined the chatroom` };
   }
 
+  async getRoomDetails(roomId: string) {
+    const room = await this.databaseservice.chatRoom.findUnique({
+      where: {
+        id: roomId,
+      },
+      select: {
+        id: true,
+        roomName: true,
+        type: true,
+        icon: true,
+        
+        // members: {
+        //   select: {
+        //     memberID: true,
+        //     isAdmin: true,
+        //     isBanned: true,
+        //     isMuted: true,
+        //     muted_exp: true,
+        //   },
+        // },
+      },
+    });
+    return room;
+  }
+
   async changeOwner(roomdata: ChangeOwnerDto, userId: string) {
     const room = await this.databaseservice.chatRoom.findUnique({
       where: { id: roomdata.roomId },
