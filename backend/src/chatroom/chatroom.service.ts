@@ -1,3 +1,4 @@
+import { UsersService } from './../users/users.service';
 import { UserProfileService } from './../user-profile/user-profile.service';
 import {
   BadRequestException,
@@ -30,6 +31,7 @@ export class ChatroomService {
     private databaseservice: DatabaseService,
     private CloudinaryService: CloudinaryService,
     private UserProfileService: UserProfileService,
+    private usersService: UsersService,
   ) {}
 
   async uploadIcon(roomId: string, file: Express.Multer.File) {
@@ -794,14 +796,12 @@ export class ChatroomService {
         members: true,
       }
     });
-    return chatrooms.map((room) => {
+    return Promise.all(chatrooms.map(async (room) => {
     // Check if the room type is 'DM' and map the necessary details
     if (room.type === ChatRoomType.Dm) {
-      const memberDetails = room.members.map(member => ({
-        id: member.memberID,
-        avatar: this.UserProfileService.getAvatar(member.memberID),
-        // Add other member details if needed
-      }));
+      const memberDetails = await Promise.all(room.members.map(async (member) => ({
+        member: await this.usersService.getUserById(member.memberID),
+      })));
       return {
         id: room.id,
         name: room.roomName,
@@ -817,7 +817,7 @@ export class ChatroomService {
         icon: room.icon,
       };
     }
-  });
+  }));
   }
 
   async getMembers(roomId: string, userId: string) {
@@ -927,5 +927,17 @@ export class ChatroomService {
     //     }),
     //   };
     // });
+  }
+
+  async getLastMessage(roomId: string) {
+    const message = await this.databaseservice.message.findFirst({
+      where: {
+        chatRoomId: roomId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return message;
   }
 }
