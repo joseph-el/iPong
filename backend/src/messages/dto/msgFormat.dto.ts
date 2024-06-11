@@ -1,11 +1,19 @@
-import { $Enums, ChatRoomType, Message, User } from '@prisma/client';
+import { Message, User, ChatRoomType } from '@prisma/client';
 
 export class MessageFormatDto {
-  Username: any;
+  id: string;
+  content: string;
+  time: Date;
+  roomId: string;
+  authorId: string;
+  avatar: string;
+  roomType: ChatRoomType;
+  Username: string;
+
   constructor(
     messageData: Message & {
       author: Partial<User>;
-      ChatRoom:ChatRoomType;
+      ChatRoom: { type: ChatRoomType };
     },
   ) {
     this.id = messageData.id;
@@ -14,16 +22,7 @@ export class MessageFormatDto {
     this.roomId = messageData.chatRoomId;
     this.authorId = messageData.authorId;
     this.Username = messageData.author.username;
-    this.roomType = messageData.ChatRoom;
+    this.roomType = messageData.ChatRoom.type;
     this.avatar = messageData.author.avatar;
   }
-
-  id: string;
-  content: string;
-  time: Date;
-  roomId: string;
-  authorId: string;
-  avatar: string;
-  roomType: ChatRoomType;
-
 }

@@ -7,7 +7,7 @@ import { MessageFormatDto } from './dto/msgFormat.dto';
 
 @Injectable()
 export class MessageService {
-  constructor(private database: DatabaseService) {}
+  constructor(private database: DatabaseService) { }
   async create(
     roomId: string,
     senderId: string,
@@ -136,6 +136,7 @@ export class MessageService {
     return responseMessage;
   }
   async findAll(userId: string, roomId: string) {
+    // Fetching the room details and checking if the user is a member
     const room = await this.database.chatRoom.findUnique({
       where: { id: roomId },
       select: {
@@ -146,9 +147,11 @@ export class MessageService {
         },
       },
     });
+
     if (!room) {
       throw new HttpException('Room not found', 404);
     }
+
     const roomMember = await this.database.chatRoomMember.findFirst({
       where: {
         memberID: userId,
@@ -157,18 +160,19 @@ export class MessageService {
     });
 
     if (!roomMember) {
-      throw new HttpException(
-        'You are not in this channel',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('You are not in this channel', HttpStatus.FORBIDDEN);
     }
-    const memebr = room.members.find((m) => m.memberID === userId);
-    if (!memebr) {
+
+    const member = room.members.find((m) => m.memberID === userId);
+    if (!member) {
       throw new HttpException('You are not a member of this room', 403);
     }
-    if (memebr.isBanned) {
+  
+    if (member.isBanned) {
       throw new HttpException('You are banned', 403);
     }
+
+    // Fetching messages
     const messages = await this.database.message.findMany({
       where: {
         chatRoomId: roomId,
@@ -194,7 +198,7 @@ export class MessageService {
       },
     });
 
-    //fetching room members
+    // Fetching room members excluding the current user
     const membersIDs = await this.database.chatRoomMember.findMany({
       where: {
         chatRoomId: roomId,
@@ -209,8 +213,7 @@ export class MessageService {
       },
     });
 
-    //fetching blocked users
-
+    // Fetching blocked users
     const blockedUsers = await this.database.blockedUser.findMany({
       where: {
         OR: [{ blockedBy: userId }, { blocked: userId }],
@@ -221,7 +224,7 @@ export class MessageService {
       },
     });
 
-    //Filtering Blocked Room Members:
+    // Filtering blocked room members
     const filteredBlockedMembers = membersIDs
       .filter((member) => {
         return blockedUsers.some((blocked) => {
@@ -232,14 +235,16 @@ export class MessageService {
         });
       })
       .map((member) => member.memberID);
-    
-    // Formatting the Response Message
+
+    // Formatting the response messages
     const responseMessages = messages.map((message) => {
       return {
         ...message,
         blockedMembers: filteredBlockedMembers,
       };
     });
-    // return messages.map((message) => new MessageFormatDto(message));
+
+    // Returning the formatted messages
+    return responseMessages.map((message) => new MessageFormatDto(message));
   }
 }
