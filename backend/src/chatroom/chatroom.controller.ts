@@ -164,6 +164,13 @@ export class ChatroomController {
     return await this.chatroomService.listAllJoinedRooms(userId);
   }
 
+  //get Last message
+  @UseGuards(AtGuard)
+  @Get('lastMessage')
+  async getLastMessage(roomId: string) {
+    return await this.chatroomService.getLastMessage(roomId);
+  }
+
   @UseGuards(AtGuard)
   @Get(':id/members')
   async getMembers(
