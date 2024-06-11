@@ -108,10 +108,6 @@ export default function CreatGroupChat(props) {
           } catch (error) {
             console.log("error upload avatar :", error);
           }
-
-
-
-          
       
       } catch (error) {
 
