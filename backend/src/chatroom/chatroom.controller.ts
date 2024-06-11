@@ -150,16 +150,18 @@ export class ChatroomController {
     return this.chatroomService.addMember(addMemberDto, userId);
   }
 
+  // search for all rooms exists
   @UseGuards(AtGuard)
-  @Get('search')
+  @Get('getAllRooms')
   async getChatRooms(@Query() query: SearchDto) {
     return await this.chatroomService.getChatRooms(query);
   }
 
+  //get curent user rooms
   @UseGuards(AtGuard)
-  @Get('')
+  @Get('myrooms')
   async listAllRooms(@GetCurrentUser('userId') userId: string) {
-    return await this.chatroomService.listAllRooms(userId);
+    return await this.chatroomService.listAllJoinedRooms(userId);
   }
 
   @UseGuards(AtGuard)
@@ -171,6 +173,12 @@ export class ChatroomController {
     return await this.chatroomService.getMembers(id, userId);
   }
 
+  @UseGuards(AtGuard)
+  @Get('getDms')
+  async getDms(@GetCurrentUser('userId') userId: string) {
+    return await this.chatroomService.getDms(userId);
+  }
+    
   @UseGuards(AtGuard)
   @Post('update')
   async update(

@@ -27,7 +27,7 @@ import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 export class ChatroomService {
   constructor(
     private databaseservice: DatabaseService,
-    private CloudinaryService: CloudinaryService
+    private CloudinaryService: CloudinaryService,
   ) {}
 
   async uploadIcon(roomId: string, file: Express.Multer.File) {
@@ -39,7 +39,7 @@ export class ChatroomService {
             overwrite: true,
             resource_type: 'image',
             unique_filename: false,
-            filename_override: roomId+ 'icon',
+            filename_override: roomId + 'icon',
             use_filename: true,
           },
           (error, result) => {
@@ -769,11 +769,16 @@ export class ChatroomService {
       },
     });
     return chatrooms.map((room) => {
-      return { id: room.id, name: room.roomName, type: room.type };
+      return {
+        id: room.id,
+        name: room.roomName,
+        type: room.type,
+        icon: room.icon,
+      };
     });
   }
 
-  async listAllRooms(userId: string) {
+  async listAllJoinedRooms(userId: string) {
     const chatrooms = await this.databaseservice.chatRoom.findMany({
       where: {
         members: {
@@ -784,7 +789,12 @@ export class ChatroomService {
       },
     });
     return chatrooms.map((room) => {
-      return { id: room.id, name: room.roomName, type: room.type, icon: room.icon};
+      return {
+        id: room.id,
+        name: room.roomName,
+        type: room.type,
+        icon: room.icon,
+      };
     });
   }
 
@@ -817,7 +827,14 @@ export class ChatroomService {
     });
 
     return members.map((member) => {
-      return { id: member.memberID, isAdmin: member.isAdmin };
+      return {
+        id: member.memberID,
+        isAdmin: member.isAdmin,
+        isBanned: member.isBanned,
+        isMuted: member.isMuted,
+        muted_exp: member.muted_exp,
+        joinedAt: member.createdAt,
+      };
     });
   }
 
@@ -861,5 +878,32 @@ export class ChatroomService {
     return { message: 'Room updated successfully' };
   }
 
-
+  async getDms(userId: string) {
+    const dms = await this.databaseservice.chatRoom.findMany({
+      where: {
+        type: ChatRoomType.Dm,
+        members: {
+          some: {
+            memberID: userId,
+          },
+        },
+      },
+    });
+    return dms.map((dm) => {
+      return {
+        id: dm.id,
+        type: dm.type,
+        members: dm.members.map((member) => {
+          return {
+            id: member.memberID,
+            isAdmin: member.isAdmin,
+            isBanned: member.isBanned,
+            isMuted: member.isMuted,
+            muted_exp: member.muted_exp,
+            joinedAt: member.createdAt,
+          };
+        }),
+      };
+    });
+  }
 }
