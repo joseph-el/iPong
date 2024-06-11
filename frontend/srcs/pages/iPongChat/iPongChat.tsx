@@ -7,12 +7,26 @@ import CreatNewMessage from "../../components/UI/iPongChatComponents/CreatNewMes
 import UserListMessages from "../../components/UI/iPongChatComponents/UserListMessages/UserListMessages";
 import CreatGroupChat from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatGroupChat/CreatGroupChat";
 import StartFriendChat from "../../components/UI/iPongChatComponents/CreatNewMessage/StartFriendChat/StartFriendChat";
-
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import { setIsSelectedMessage } from "../../state/iPongChatState/iPongChatState";
 export default function IPongChat() {
+  const { chatId: paramChatId } = useParams();
+  const [chatId, setChatId] = useState(paramChatId);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setChatId(paramChatId);
+  }, [paramChatId]);
+
+  dispatch(setIsSelectedMessage(chatId));
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [ShowCreateNewChat, setShowCreateNewChat] = React.useState(false);
   const [ShowCreateFriendChat, setShowFriendChat] = React.useState(false);
   const [ShowCreateGroupChat, setShowCreateGroupChat] = React.useState(false);
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,10 +54,14 @@ export default function IPongChat() {
             ? ` "sidebar main main"
                 "sidebar main main"
                 "sidebar main main"`
-            : `
+            : chatId != undefined
+            ? `
                 "main main"
                 "main main"
                 "main main"`
+            : ` "sidebar sidebar"
+                "sidebar sidebar"
+                "sidebar sidebar"`
         }
         gridTemplateRows={"50px 1fr 35px"}
         gridTemplateColumns={` ${
@@ -52,7 +70,7 @@ export default function IPongChat() {
         h="100%"
         fontWeight="bold"
       >
-        {!isWideScreen ? (
+        {!isWideScreen || chatId == undefined ? (
           <GridItem pl="2" w={"full"} area={"sidebar"}>
             <UserListMessages
               ShowCreateNewChat={() => {
@@ -63,38 +81,40 @@ export default function IPongChat() {
           </GridItem>
         ) : null}
 
-        <GridItem pl="2" h={"full"} area={"main"}>
-          <ChatPanelLayout />
+        {chatId != undefined && (
+          <GridItem pl="2" h={"full"} area={"main"}>
+            <ChatPanelLayout />
+          </GridItem>
+        )}
 
-          {ShowCreateNewChat ? (
-            <div className="blur-background">
-              <div className="AchievementList-place fade-in">
-                <CreatNewMessage
-                  onCloseComponent={handleCloseClick}
-                  onClose={handleCloseClick}
-                  ShowCreateGroupChat={() => setShowCreateGroupChat(true)}
-                  ShowCreateFriendChat={() => setShowFriendChat(true)}
-                />
-              </div>
+        {ShowCreateNewChat ? (
+          <div className="blur-background">
+            <div className="AchievementList-place fade-in">
+              <CreatNewMessage
+                onCloseComponent={handleCloseClick}
+                onClose={handleCloseClick}
+                ShowCreateGroupChat={() => setShowCreateGroupChat(true)}
+                ShowCreateFriendChat={() => setShowFriendChat(true)}
+              />
             </div>
-          ) : null}
+          </div>
+        ) : null}
 
-          {ShowCreateGroupChat ? (
-            <div className="blur-background">
-              <div className="AchievementList-place fade-in">
-                <CreatGroupChat onCloseComponent={handleCloseClick} />
-              </div>
+        {ShowCreateGroupChat ? (
+          <div className="blur-background">
+            <div className="AchievementList-place fade-in">
+              <CreatGroupChat onCloseComponent={handleCloseClick} />
             </div>
-          ) : null}
+          </div>
+        ) : null}
 
-          {ShowCreateFriendChat ? (
-            <div className="blur-background">
-              <div className="AchievementList-place fade-in">
-                <StartFriendChat onCloseComponent={handleCloseClick} />
-              </div>
+        {ShowCreateFriendChat ? (
+          <div className="blur-background">
+            <div className="AchievementList-place fade-in">
+              <StartFriendChat onCloseComponent={handleCloseClick} />
             </div>
-          ) : null}
-        </GridItem>
+          </div>
+        ) : null}
       </Grid>
     </>
   );
