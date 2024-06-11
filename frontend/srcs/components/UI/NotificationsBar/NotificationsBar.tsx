@@ -93,8 +93,6 @@ export default function NotificationsBar(props) {
   };
 
   const handelConfirmClick = (UserId, NotifId) => {
-    console.log("UserId: ", UserId);
-    console.log("NotifIdssss: ", NotifId);
     setFriendshipStatus({
       option: "MAKE_FRIEND",
       userId: UserId,
@@ -206,7 +204,9 @@ export default function NotificationsBar(props) {
         );
         const filteredNotifications = updatedNotifications.filter(Boolean);
         filteredNotifications.reverse();
-        const dd = filteredNotifications.sort((a, b) => { return new Date(b.createdAt) - new Date(a.createdAt) });
+        const dd = filteredNotifications.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
         setUserNotifications(dd);
       } catch (error) {
         console.error("error: ", error);
@@ -214,6 +214,17 @@ export default function NotificationsBar(props) {
     };
     NotificationsObject && NotificationsObject.length > 0 && fetchData();
   }, [NotificationsObject]);
+
+
+
+  const handelDeleteJoinRoomClick = (UserId, NotifId) => {
+
+  }
+
+  const handelConfirmJoinRoomClick = (UserId, NotifId) => {
+
+  }
+
 
   return (
     <div className="NotificationsBar-frame">
@@ -254,6 +265,19 @@ export default function NotificationsBar(props) {
                       time={formattedTime}
                     />
                   );
+                } else if (notif.entityType === "JoinRoom") {
+                  <FriendNotifications
+                    deleteButton={() =>
+                      handelDeleteJoinRoomClick(notif.senderId, notif.NotificationId)
+                    }
+                    confirmButton={() =>
+                      handelConfirmJoinRoomClick(notif.senderId, notif.NotificationId)
+                    }
+                    key={index}
+                    name={notif.firstName + " " + notif.lastName}
+                    avatar={notif.picture}
+                    time={formattedTime}
+                  />;
                 } else {
                   return (
                     <FriendNotifications
