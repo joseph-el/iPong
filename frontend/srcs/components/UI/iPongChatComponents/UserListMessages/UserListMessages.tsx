@@ -18,17 +18,22 @@ export default function UserListMessages(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handelListChatItem = (id) => {
-    dispatch(setIsSelectedMessage(id));
-    navigate(`/ipong/chat/${id}`);
-  };
+
+
+
+
+
 
   useEffect(() => {
 
     const fetchUsers = async () => {
       try {
         const response = await api.get(`/chatroom/myrooms`);
+        const MessageList = response.data.map((message) => {
+          
 
+        });
+        dispatch(setListMessages(MessageList));
         console.log("UserList Messages: ", response.data);
 
       } catch (error) {
@@ -40,8 +45,10 @@ export default function UserListMessages(props) {
   }, []);
 
 
-
-
+  const handelListChatItem = (id) => {
+    dispatch(setIsSelectedMessage(id));
+    navigate(`/ipong/chat/${id}`);
+  };
 
   return (
     <Grid

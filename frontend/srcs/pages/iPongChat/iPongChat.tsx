@@ -44,7 +44,19 @@ export default function IPongChat() {
     setShowCreateGroupChat(false);
   };
 
+  
+
   const isWideScreen = windowWidth <= 905;
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
