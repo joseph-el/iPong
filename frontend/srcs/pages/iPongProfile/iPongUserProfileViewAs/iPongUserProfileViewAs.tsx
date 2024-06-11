@@ -51,7 +51,7 @@ import { AppDispatch, RootState } from "../../../state/store";
 import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 import api from "../../../api/posts";
 import { set } from "lodash";
-
+import {useNavigate} from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 
 const UserDescriptions = ({ UserprofileInfo, UserIsBlocked }) => {
@@ -156,7 +156,7 @@ export default function UserProfileViewAs() {
     setUserOptions(UserAction);
     onOpen();
   };
-
+  const navigate = useNavigate();
   const [UserprofileInfo, setUserprofileInfo] = useState([]);
 
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
@@ -312,6 +312,24 @@ export default function UserProfileViewAs() {
     }
   };
 
+  const [startChat, setStartChat] = useState(false);
+  useEffect(() => {
+    const fetchCreatChatRoom = async () => {
+      try {
+        const response = await api.post(`/chatroom/create`, {
+          type: "Dm",
+          secondUser: userId,
+        });
+        setStartChat(false);
+        console.log("response.data.id", response.data);
+        navigate(`/ipong/chat/${response.data.id}`);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    startChat && fetchCreatChatRoom();
+  }, [startChat]);
+
 
 
   console.log("GithubLink: ", UserInfo.githubLink);
@@ -406,6 +424,9 @@ export default function UserProfileViewAs() {
 
                   <Tooltip color="primary" content="send a message">
                     <Image
+                      onClick={() => {
+                        setStartChat(true);
+                      }}
                       radius="none"
                       src={SendMessageIcon}
                       alt="Linkedin icon"
