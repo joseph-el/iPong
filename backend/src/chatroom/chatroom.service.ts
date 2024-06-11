@@ -79,8 +79,6 @@ export class ChatroomService {
   }
 
   async create(createChatroomDto: CreateChatroomDto, userOwner: string) {
-    console.log('createChatroomDto: ', createChatroomDto);
-    console.log('userOwner: ', userOwner);
     // Check if required parameters are provided
     if (
       createChatroomDto.type === ChatRoomType.Dm &&
@@ -149,30 +147,31 @@ export class ChatroomService {
       );
     }
     // Check if user is blocked by the other user
-    const existingBlock = await this.databaseservice.blockedUser.findFirst({
-      where: {
-        OR: [
-          {
-            blockedBy: userOwner,
-            blocked: createChatroomDto.secondUser,
-          },
-          {
-            blockedBy: createChatroomDto.secondUser,
-            blocked: userOwner,
-          },
-        ],
-      },
-    });
+    // const existingBlock = await this.databaseservice.blockedUser.findFirst({
+    //   where: {
+    //     OR: [
+    //       {
+    //         blockedBy: userOwner,
+    //         blocked: createChatroomDto.secondUser,
+    //       },
+    //       {
+    //         blockedBy: createChatroomDto.secondUser,
+    //         blocked: userOwner,
+    //       },
+    //     ],
+    //   },
+    // });
 
-    if (existingBlock) {
-      return new HttpException('User is blocked', 403);
-    }
+    // if (existingBlock) {
+    //   return new HttpException('User is blocked', 403);
+    // }
 
     // Create chatroom
     const room = await this.databaseservice.chatRoom.create({
       data: {
         type: createChatroomDto.type,
         password: createChatroomDto.password,
+        roomName: createChatroomDto.roomName,
         owner: {
           connect: { userId: userOwner },
         },
@@ -204,14 +203,13 @@ export class ChatroomService {
           isAdmin: true,
         },
       });
+    }
     const pushfirstMessage = await this.messages.create(room.id, userOwner, {
       content: 'Welcome to the chatroom',
     });
     if (!pushfirstMessage) {
       console.log('first message pushed');
     }
-    }
-
     // Return details of created Chatroomcon
     console.log('room created');
     return room;
@@ -802,6 +800,9 @@ export class ChatroomService {
             memberID: userId,
           },
         },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
       include: {
         members: true,
