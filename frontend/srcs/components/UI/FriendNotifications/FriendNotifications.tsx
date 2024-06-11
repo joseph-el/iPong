@@ -22,14 +22,16 @@ export const Actions = (props) => {
 };
 
 export default function FriendNotifications(props) {
+  console.log(props);
+
   return (
     <div className="FriendNotifications-frame">
       <FriendNotificationsWrapper>
         <div className="wrapper-style-request">
           <div className="FriendNotifications-content">
             <User
-              name="Friend Request"
-              description={props.name + " send you a friend request"}
+              name={props.title}
+              description={props.name + " " + props.description}
               avatarProps={{
                 src: props.avatar,
               }}
