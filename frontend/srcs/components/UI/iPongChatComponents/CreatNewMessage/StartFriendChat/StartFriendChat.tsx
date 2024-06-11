@@ -1,7 +1,6 @@
 import React from "react";
 import "./StartFriendChat.css";
 
-import { users } from "../../SeeGroup/data";
 import "../CreatGroupChat/CreatGroupChat.css";
 import { Selection } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
@@ -10,19 +9,67 @@ import { Select, SelectItem, Avatar } from "@nextui-org/react";
 import { StartFriendChatWrapper } from "./StartFriendChatWrapper";
 import CustomButton from "../../../Button/SubmitButton/SubmitButton";
 
+import { useState, useEffect } from "react";
+import api from "../../../../../api/posts";
 
 export default function StartFriendChat(props) {
   const navigate = useNavigate();
-  const [value, setValue] = React.useState<Selection>(new Set([]));
+  const [value, setValue] = useState("");
   const [isInvalid, setIsInvalid] = React.useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get(`/friendship/`);
+
+        const friendsList = response.data.map((friend, index) => {
+          return {
+            userId: friend.userId,
+            id: index,
+            name: friend.firstName + " " + friend.lastName,
+            avatar: friend.avatar,
+            username: friend.uername,
+            email: friend.email,
+          };
+        });
+        setUsers(friendsList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  const handelOnChage = (item) => {
+    setValue(item);
+
+  };
+
+  const [CreatChatRoom, setCreatChatRoom] = useState(false);
+
+  useEffect(() => {
+    const fetchCreatChatRoom = async () => {
+      try {
+        const response = await api.post(`/chatroom/create`, {
+          type: "Dm",
+          secondUser: value,
+        });
+          setCreatChatRoom(false);
+          navigate(`/ipong/chat/${response.data.id}`);        
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    CreatChatRoom && fetchCreatChatRoom();
+  }, [CreatChatRoom]);
 
   const handleStartChat = () => {
-    if (value.size === 0) {
-      // console.log("Please select a friend");
+    if (value.length === 0) {
       setIsInvalid(true);
       return;
     }
-    navigate("/Chat/NewChat");
+    navigate(`/ipong/chat/${value}`);
   };
 
   return (
@@ -44,7 +91,6 @@ export default function StartFriendChat(props) {
             label="Friends"
             placeholder="Select a friend"
             className="max-w-xs"
-            onSelectionChange={setValue}
             onClick={() => setIsInvalid(false)}
             classNames={{
               label: "group-data-[filled=true]:-translate-y-5",
@@ -76,7 +122,7 @@ export default function StartFriendChat(props) {
               return items.map((item) => (
                 <div key={item.key} className="flex items-center gap-2">
                   <Avatar
-                    alt={item.data.name}
+                    alt={item.name}
                     className="flex-shrink-0"
                     size="sm"
                     src={item.data.avatar}
@@ -92,7 +138,7 @@ export default function StartFriendChat(props) {
             }}
           >
             {(user) => (
-              <SelectItem key={user.id} textValue={user.name}>
+              <SelectItem key={user.id} textValue={user.name} onClick={() => handelOnChage(user.id)} >
                 <div className="flex gap-2 items-center">
                   <Avatar
                     alt={user.name}
