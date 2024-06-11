@@ -11,8 +11,14 @@ import {
   Selection,
   SelectedItems,
 } from "@nextui-org/react";
-import { users } from "../../SeeGroup/data";
-
+// import { users } from "../../SeeGroup/data";
+import CustomButton from "../../../Button/SubmitButton/SubmitButton";
+import { EyeFilledIcon } from "../../../Input/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "../../../Input/EyeSlashFilledIcon";
+import Close from "../../../Button/CloseButton/CloseButton";
+import { useEffect, useState } from "react";
+import api from "../../../../../api/posts";
+import DefaultGroupImage from "./memoji/alta1r.svg";
 type User = {
   id: number;
   name: string;
@@ -24,28 +30,53 @@ type User = {
   email: string;
 };
 
-import CustomButton from "../../../Button/SubmitButton/SubmitButton";
-
-import { EyeFilledIcon } from "../../../Input/EyeFilledIcon";
-import { EyeSlashFilledIcon } from "../../../Input/EyeSlashFilledIcon";
-import Close from "../../../Button/CloseButton/CloseButton";
-
 export default function CreatGroupChat(props) {
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const [GroupName, setGroupName] = useState("");
+  const [GroupType, setGroupType] = useState<Selection>(new Set([]));
+  const [GroupPassword, setGroupPassword] = useState("");
+  const [GroupMembers, setGroupMembers] = useState<Selection>(new Set([]));
+  const [GroupNameIsValid, setGroupNameIsValid] = useState(false);
+  const [GroupTypeIsValid, setGroupTypeIsValid] = useState(false);
+  const [GroupPasswordIsValid, setGroupPasswordIsValid] = useState(false);
+  const [GroupMembersIsValid, setGroupMembersIsValid] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [AvatarFile, setAvatarFile] = useState(null);
+  const [error, setError] = useState("");
+  const [users, setUsers] = useState([]);
+  const [ReadyToSubmit, setReadyToSubmit] = useState(false);
+  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get(`/friendship/`);
 
-  const [GroupName, setGroupName] = React.useState("");
-  const [GroupType, setGroupType] = React.useState<Selection>(new Set([]));
-  const [GroupPassword, setGroupPassword] = React.useState("");
-  const [GroupMembers, setGroupMembers] = React.useState<Selection>(
-    new Set([])
-  );
+        const friendsList = response.data.map((friend, index) => {
+          return {
+            userId: friend.userId,
+            id: index,
+            name: friend.firstName + " " + friend.lastName,
+            avatar: friend.avatar,
+            username: friend.uername,
+            email: friend.email,
+          };
+        });
+        setUsers(friendsList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
-  const [GroupNameIsValid, setGroupNameIsValid] = React.useState(false);
-  const [GroupTypeIsValid, setGroupTypeIsValid] = React.useState(false);
-  const [GroupPasswordIsValid, setGroupPasswordIsValid] = React.useState(false);
-  const [GroupMembersIsValid, setGroupMembersIsValid] = React.useState(false);
-
+  useEffect(() => {
+    const fetchReadyToSubmit = () => {
+      try {
+      } catch (error) {}
+    };
+    ReadyToSubmit && fetchReadyToSubmit();
+  }, [ReadyToSubmit]);
   /* POST REQUEST TO CREATE A NEW GROUP
           const handleCreateGroup = () => {}
   */
@@ -85,6 +116,55 @@ export default function CreatGroupChat(props) {
     } else {
       setGroupPasswordIsValid(false);
     }
+
+    console.log("everything is valid");
+    console.log("Group Name: ", GroupName);
+    console.log("Group Type: ", GroupType);
+    console.log("Group Password: ", GroupPassword);
+    console.log("Group Members: ", GroupMembers);
+    console.log("extract type : ", displayGroupType);
+
+    const membersArray = Array.from(GroupMembers);
+    console.log(membersArray);
+
+    if (GroupMembers === "all") {
+      console.log("All members selected");
+    } else if (GroupMembers instanceof Set) {
+      GroupMembers.forEach((member) => {
+        console.log(member);
+        console.log("member: ", users[member].name);
+      });
+    }
+
+    // TODO: wait for the backend to be ready
+    // setReadyToSubmit(true);
+  };
+
+
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError("File size should not exceed 2MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const image = new Image();
+      image.onload = () => {
+        if (image.width < 50 || image.height < 50) {
+          setError("Avatar image should be at least 50x50 pixels");
+        } else {
+          setError("");
+          setAvatarFile(file);
+          setSelectedAvatar(reader.result);
+        }
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -98,17 +178,30 @@ export default function CreatGroupChat(props) {
           />
 
           <div className="Groups-Info">
-            <div className="Edit-avatar">
-              <Avatar
-                className="User-avatar w-24 h-24"
-                src="https://scontent.fcmn1-2.fna.fbcdn.net/v/t39.30808-6/340242838_159501407041277_2734451423562002343_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFyvo2pTF2mgIKANMob3z8USQ34jUDh201JDfiNQOHbTVONa7_GVq_51GNSwIdNq3o3_3XY57rylLV5N4uofeIH&_nc_ohc=Okm3Jt5r4DoQ7kNvgFvUVUq&_nc_ht=scontent.fcmn1-2.fna&oh=00_AYBnMKq1nwB-R-wVuQCwpnEe2lySQW1DXDZZnBw3hNuViQ&oe=66610A17"
-              />
+            <label htmlFor="avatarInput">
+              <div className="Edit-avatar">
+                <Avatar
+                  isBordered
+                  className="User-avatar w-24 h-24"
+                  src={selectedAvatar ? selectedAvatar : DefaultGroupImage}
+                />
+                <CameraIcon
+                  className="animate-pulse w-6 h-6 text-default-500 Edit-group-icon"
+                  fill="currentColor"
+                />
+              </div>
+            </label>
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={(event) => handleImageChange(event)}
+            />
 
-              <CameraIcon
-                className="animate-pulse w-6 h-6 text-default-500 Edit-group-icon"
-                fill="currentColor"
-              />
-            </div>
+            {error != "" && (
+              <p className="text-default-500 text-small">{error}</p>
+            )}
 
             <div className="edit-Group-Name">
               <Input
@@ -229,11 +322,6 @@ export default function CreatGroupChat(props) {
             className="buttons-target"
             onClick={() => {
               handelPassingData();
-              // console.log("Group Name: ", GroupName);
-              // console.log("Group Type: ", GroupType);
-              // console.log("Group Password: ", GroupPassword);
-              // console.log("Group Members: ", GroupMembers);
-              // console.log("eee: ", displayGroupType);
             }}
           >
             <CustomButton
