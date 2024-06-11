@@ -127,6 +127,10 @@ export default function ChatPanel() {
   return (
     <div className="ChatPanel-frame" ref={scrollRef}>
       <ScrollShadow size={10} hideScrollBar ref={scrollRef} className="ChatPanel-frame">
+      
+      
+      
+      
       {chatBubbleProps.map((chatBubble, index) => {
         return index % 2 === 0 ? (
           <RightChatBubbles
@@ -144,6 +148,9 @@ export default function ChatPanel() {
           />
         );
       })}
+
+
+      
       </ScrollShadow>
     </div>
   );
