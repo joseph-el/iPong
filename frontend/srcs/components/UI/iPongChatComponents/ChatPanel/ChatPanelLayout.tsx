@@ -36,7 +36,7 @@ export default function ChatPanelLayout() {
   const selectedMessage = useSelector(getSelectedMessage);
 
   const handleCloseClick = () => {
-    console.log("closedd");
+   
     dispatch(setUserSetting(false));
     dispatch(setGroupSetting(false));
   };
