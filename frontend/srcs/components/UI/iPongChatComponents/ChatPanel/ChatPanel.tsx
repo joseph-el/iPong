@@ -11,6 +11,7 @@ import api from "../../../../api/posts";
 import { useDispatch } from "react-redux";
 
 import {formatTimeDifference} from "../../NotificationsBar/NotificationsBar";
+import {getAvatarSrc} from "../../../../utils/getAvatarSrc";
 
 import { ScrollShadow } from "@nextui-org/react";
 import {setMessages} from "../../../../state/iPongChatState/iPongChatState";
@@ -32,11 +33,14 @@ export default function ChatPanel() {
   useEffect(() => {
     const checkBlocked = async () => {
       try {
-        const response = await api.get(`/friendships/isBlocked/${selectedMessage?.id}`);
+        console.log(`Checking if user is blocked: ${selectedMessage?.senderId}`);
+        const response = await api.post(`/friendship/isBlocked/${selectedMessage?.senderId}`);
         console.log(`User is blocked: ${response.data}`);
-
+        if (response.data) {
+          setUserIsBlocked(true);
+        }
       } catch (error) {
-        console.error("Error fetching chat:", error);
+        console.error("Error fetching block:", error);
       }
     }
     checkBlocked();
@@ -48,8 +52,6 @@ export default function ChatPanel() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [chatBubbleProps]);
-
-
 
   console.log(selectedMessage);
     useEffect(() => {
@@ -63,7 +65,7 @@ export default function ChatPanel() {
                 authorId: message.authorId,
                 message: message.content,
                 time: formatTimeDifference(message.time),
-                avatar: message.avatar,
+                avatar: getAvatarSrc(!UserIsBlocked ? message.avatar : null, null),
               };
             });
             dispatch(setMessages(MessageList));
