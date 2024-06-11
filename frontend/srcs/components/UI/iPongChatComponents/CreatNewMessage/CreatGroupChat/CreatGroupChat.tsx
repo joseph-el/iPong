@@ -46,7 +46,11 @@ export default function CreatGroupChat(props) {
   const [error, setError] = useState("");
   const [users, setUsers] = useState([]);
   const [ReadyToSubmit, setReadyToSubmit] = useState(false);
-  
+  const displayGroupType = Array.from(GroupType).join(" ");
+
+
+
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -71,9 +75,44 @@ export default function CreatGroupChat(props) {
   }, []);
 
   useEffect(() => {
-    const fetchReadyToSubmit = () => {
+    const  fetchReadyToSubmit =  async () => {
       try {
-      } catch (error) {}
+
+          let NewRoom;
+          console.log("response roomooooo : |",displayGroupType, "|");
+          console.log("response roomooooo : ",displayGroupType, GroupPassword, GroupName);
+          const response = await api.post("chatroom/create", {
+            type: displayGroupType,
+            password: GroupPassword,
+            roomName: GroupName,
+          });
+          console.log("response room : ", response.data);
+          NewRoom = response.data.id;
+
+          console.log("response room : ", NewRoom);
+
+          const formDataAvatar = new FormData();
+          formDataAvatar.append("file", AvatarFile!);
+          try {
+            const response = await api.post(
+              `chatroom/rooomIcon/${NewRoom}`,
+        
+              formDataAvatar,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+              console.log("response upload avatar :", response);
+          } catch (error) {
+            console.log("error upload avatar :", error);
+          }
+      
+      } catch (error) {
+
+
+      }
     };
     ReadyToSubmit && fetchReadyToSubmit();
   }, [ReadyToSubmit]);
@@ -81,7 +120,7 @@ export default function CreatGroupChat(props) {
           const handleCreateGroup = () => {}
   */
 
-  const displayGroupType = Array.from(GroupType).join(", ");
+  
 
   const handelPassingData = () => {
     if (GroupName === "" || GroupName.length < 3 || GroupName.length > 20) {
@@ -137,10 +176,8 @@ export default function CreatGroupChat(props) {
     }
 
     // TODO: wait for the backend to be ready
-    // setReadyToSubmit(true);
+    setReadyToSubmit(true);
   };
-
-
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];

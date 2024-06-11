@@ -53,6 +53,7 @@ import api from "../../../api/posts";
 import { set } from "lodash";
 import {useNavigate} from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
+import axios from "axios";
 
 const UserDescriptions = ({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
@@ -161,16 +162,13 @@ export default function UserProfileViewAs() {
 
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
 
-  // me
-  // navigate user
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.post(`/friendship/isBlocked`, {
-          friendId: userId, // navigate user
-        });
+        const response = await api.post(`/friendship/isBlocked/${userId}`);
 
-        // console.log("response.data", response.data);
+        console.log("response.data of Block", response.data);
 
         if (response.data.blockedBy === UserInfo.id) {
           setUserIsBlocked("BLOCKED_BY_ME");

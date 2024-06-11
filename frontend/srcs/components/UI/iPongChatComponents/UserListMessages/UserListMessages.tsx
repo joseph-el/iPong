@@ -12,29 +12,45 @@ import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import { setIsSelectedMessage } from "../../../../state/iPongChatState/iPongChatState";
 import api from "../../../../api/posts";
-
+import {formatTimeDifference} from "../../NotificationsBar/NotificationsBar";
+import { setListMessages } from "../../../../state/iPongChatState/iPongChatState";
 export default function UserListMessages(props) {
   const UserChat = useSelector((state: RootState) => state.iPongChat);
+  const UserId = useSelector((state: RootState) => state.userState.id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-
-
-
-
-
 
   useEffect(() => {
 
     const fetchUsers = async () => {
       try {
         const response = await api.get(`/chatroom/myrooms`);
-        const MessageList = response.data.map((message) => {
-       
+
+
+        console.log("myrooms::> ", response.data);
+          const MessageList = response.data.map((message) => {
+          let memberInfo;
+
+          if (message.type === "Dm") {
+            message.members.find((member) => {
+              if (member.member.userId !== UserId) {
+                memberInfo = member.member;
+              }
+            });
+          }
+          return {
+            id: message.id,
+            type: message.type,
+            senderId: (message.type === "Dm" ? memberInfo.userId : ""),
+            fullname: (message.type === "Dm" ? memberInfo.firstName + " " + memberInfo.lastName : message.name),
+            time: formatTimeDifference(message.lastMessage.createdAt),
+            avatar: (message.type === "Dm" ? memberInfo.avatar : message.icon),
+            isSelect: false,
+            lastMessage: message.lastMessage.content,
+          };
 
         });
-        // dispatch(setListMessages(MessageList));
-        console.log("UserList Messages: ", response.data);
+        dispatch(setListMessages(MessageList));
 
       } catch (error) {
         console.error(error);

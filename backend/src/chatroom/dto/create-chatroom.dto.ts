@@ -12,7 +12,6 @@ export class CreateChatroomDto {
   @ValidateIf((o) => o.type !== 'Dm')
   @IsString()
   @IsNotEmpty()
-  @Length(5, 10)
   roomName: string;
 
   @IsString()
@@ -21,8 +20,6 @@ export class CreateChatroomDto {
   type: ChatRoomType;
 
   @IsString()
-  @IsNotEmpty()
-  @Length(5, 10)
   @IsOptional()
   password: string;
 

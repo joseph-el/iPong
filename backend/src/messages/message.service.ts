@@ -181,7 +181,7 @@ export class MessageService {
         }),
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
       include: {
         author: {

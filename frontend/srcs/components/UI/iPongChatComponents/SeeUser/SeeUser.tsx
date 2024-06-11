@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import Close from "../../Button/CloseButton/CloseButton";
+
 export default function SeeUser(props) {
   const selectedMessage = useSelector(
     (state: RootState) =>
@@ -46,7 +47,7 @@ export default function SeeUser(props) {
         <div className="User-options">
           <img
             onClick={() => {
-              navigate("/ipong/profile");
+              navigate(`/ipong/users/${props.userId}`);
             }}
             src={SeeProfileIcon}
             alt="See Profile"
