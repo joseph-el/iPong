@@ -1,11 +1,12 @@
-.Home
+.container--home
 {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: rgb(255, 237, 237);
+    position: relative;
 }
 
-.container--home 
+/* .container--home 
 .container {
   width: 100%;
   height: 100%;
@@ -13,17 +14,40 @@
   background: url("/assets//game/backgrounds/game-background.jpg");
   background-size: cover;
   position: relative;
-}
-.container--home 
+} */
+/* .container--home 
 .container-nav {
   padding-top: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+ */
+
+ .container--home 
+.button1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* margin: auto; */
+  background-color: #007bff;
+  color: #000000;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 .container--home 
-.button {
-  margin: auto;
+.button2 {
+  position: absolute;
+   top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  /* margin: auto; */
   background-color: #007bff;
   color: #000000;
   padding: 10px 20px;
