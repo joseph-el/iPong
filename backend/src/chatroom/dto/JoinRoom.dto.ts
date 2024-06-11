@@ -14,4 +14,8 @@ export class JoinRoomDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
+
+  @IsString()
+  @IsOptional()
+  inviterId?: string;
 }

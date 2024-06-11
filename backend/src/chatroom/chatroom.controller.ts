@@ -65,9 +65,8 @@ export class ChatroomController {
   @Post('join')
   async join(
     @Body() joinChatroomDto: JoinRoomDto,
-    @GetCurrentUser('userId') userId: string,
   ) {
-    return await this.chatroomService.join(joinChatroomDto, userId);
+    return await this.chatroomService.join(joinChatroomDto);
   }
 
   @UseGuards(AtGuard)
