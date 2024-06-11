@@ -1,3 +1,4 @@
+import { UserProfileService } from './../user-profile/user-profile.service';
 import {
   BadRequestException,
   HttpException,
@@ -28,6 +29,7 @@ export class ChatroomService {
   constructor(
     private databaseservice: DatabaseService,
     private CloudinaryService: CloudinaryService,
+    private UserProfileService: UserProfileService,
   ) {}
 
   async uploadIcon(roomId: string, file: Express.Multer.File) {
@@ -787,15 +789,34 @@ export class ChatroomService {
           },
         },
       },
+      include: {
+        members: true,
+      }
     });
     return chatrooms.map((room) => {
+    // Check if the room type is 'DM' and map the necessary details
+    if (room.type === ChatRoomType.Dm) {
+      const memberDetails = room.members.map(member => ({
+        id: member.memberID,
+        avatar: this.UserProfileService.getAvatar(member.memberID),
+        // Add other member details if needed
+      }));
+      return {
+        id: room.id,
+        name: room.roomName,
+        type: room.type,
+        icon: room.icon,
+        members: memberDetails,
+      };
+    } else {
       return {
         id: room.id,
         name: room.roomName,
         type: room.type,
         icon: room.icon,
       };
-    });
+    }
+  });
   }
 
   async getMembers(roomId: string, userId: string) {
@@ -889,21 +910,21 @@ export class ChatroomService {
         },
       },
     });
-    return dms.map((dm) => {
-      return {
-        id: dm.id,
-        type: dm.type,
-        members: dm.members.map((member) => {
-          return {
-            id: member.memberID,
-            isAdmin: member.isAdmin,
-            isBanned: member.isBanned,
-            isMuted: member.isMuted,
-            muted_exp: member.muted_exp,
-            joinedAt: member.createdAt,
-          };
-        }),
-      };
-    });
+    // return dms.map((dm) => {
+    //   return {
+    //     id: dm.id,
+    //     type: dm.type,
+    //     members: dm.members.map((member) => {
+    //       return {
+    //         id: member.memberID,
+    //         isAdmin: member.isAdmin,
+    //         isBanned: member.isBanned,
+    //         isMuted: member.isMuted,
+    //         muted_exp: member.muted_exp,
+    //         joinedAt: member.createdAt,
+    //       };
+    //     }),
+    //   };
+    // });
   }
 }
