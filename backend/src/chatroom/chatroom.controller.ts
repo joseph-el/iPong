@@ -75,7 +75,7 @@ export class ChatroomController {
     @Body() roomdId: string,
     @GetCurrentUser('userId') adminId: string,
   ) {
-    return this.chatroomService.invite(joinedUserId, adminId, roomdId);
+    return await this.chatroomService.invite(joinedUserId, adminId, roomdId);
   }
 
   @UseGuards(AtGuard)

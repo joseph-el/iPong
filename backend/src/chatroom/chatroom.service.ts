@@ -11,7 +11,7 @@ import {
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
 import * as bcrypt from 'bcrypt';
 import { DatabaseService } from 'src/database/database.service';
-import { ChatRoomType } from '@prisma/client';
+import { ChatRoomType, NotificationType } from '@prisma/client';
 import { JoinRoomDto } from './dto/JoinRoom.dto';
 import { LeaveRoomDto } from './dto/leaveRoom.dto';
 import { setAdminDto } from './dto/setAdmin.dto';
@@ -26,6 +26,8 @@ import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import { Cloudinary } from 'src/imagesProvider/cloudinary';
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import { MessageService } from 'src/messages/message.service';
+import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ChatroomService {
@@ -35,6 +37,7 @@ export class ChatroomService {
     private UserProfileService: UserProfileService,
     private usersService: UsersService,
     private messages: MessageService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async uploadIcon(roomId: string, file: Express.Multer.File) {
@@ -204,12 +207,12 @@ export class ChatroomService {
           isAdmin: true,
         },
       });
-    const pushfirstMessage = await this.messages.create(room.id, userOwner, {
-      content: 'Welcome to the chatroom',
-    });
-    if (!pushfirstMessage) {
-      console.log('first message pushed');
-    }
+      const pushfirstMessage = await this.messages.create(room.id, userOwner, {
+        content: 'Welcome to the chatroom',
+      });
+      if (!pushfirstMessage) {
+        console.log('first message pushed');
+      }
     }
 
     // Return details of created Chatroomcon
@@ -239,17 +242,13 @@ export class ChatroomService {
     if (checkMember) {
       return new HttpException('User is already a member', 400);
     }
-    //create chatroom member
-    await this.databaseservice.chatRoomMember.create({
-      data: {
-        member: {
-          connect: { userId: joinedUserId },
-        },
-        ChatRoom: {
-          connect: { id: roomId },
-        },
-      },
-    });
+    const notification: CreateNotificationDto = {
+      receiverId: joinedUserId,
+      senderId: adminId,
+      entityType: NotificationType.JoinRoom,
+      id: [roomId, adminId].sort().join('+') + 'join',
+    };
+    this.eventEmitter.emit('sendNotification', notification);
     return { message: `${joinedUserId} User has been added to the chatroom` };
   }
 
