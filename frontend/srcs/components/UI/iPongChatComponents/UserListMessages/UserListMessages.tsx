@@ -30,10 +30,10 @@ export default function UserListMessages(props) {
       try {
         const response = await api.get(`/chatroom/myrooms`);
         const MessageList = response.data.map((message) => {
-          
+       
 
         });
-        dispatch(setListMessages(MessageList));
+        // dispatch(setListMessages(MessageList));
         console.log("UserList Messages: ", response.data);
 
       } catch (error) {
