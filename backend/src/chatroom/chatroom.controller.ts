@@ -188,6 +188,9 @@ export class ChatroomController {
   async getDms(@GetCurrentUser('userId') userId: string) {
     return await this.chatroomService.getDms(userId);
   }
+ 
+ 
+
     
   @UseGuards(AtGuard)
   @Post('update')
