@@ -86,6 +86,7 @@ export default function NotificationsBar(props) {
 
   const handelDeleteClick = (UserId, NotifId) => {
     setFriendshipStatus({
+      type: "FRIEND_REQUEST",
       option: "SET_CANCEL",
       userId: UserId,
       notifId: NotifId,
@@ -94,6 +95,7 @@ export default function NotificationsBar(props) {
 
   const handelConfirmClick = (UserId, NotifId) => {
     setFriendshipStatus({
+      type: "FRIEND_REQUEST",
       option: "MAKE_FRIEND",
       userId: UserId,
       notifId: NotifId,
@@ -130,18 +132,29 @@ export default function NotificationsBar(props) {
         const UserId = FriendshipStatus?.userId;
         let response;
         if (FriendshipStatus?.option === "MAKE_FRIEND") {
-          response = await api.post(`/friendship/accept`, {
-            friendId: UserId,
-          });
+          if (FriendshipStatus?.type === "FRIEND_REQUEST") {
+            response = await api.post(`/friendship/accept`, {
+              friendId: UserId,
+            });
+          } else {
+            // TODO:
+            response = await api.post(`/friendship/joinRoom`, {
+              friendId: UserId,
+            });
+          }
 
           setNotificationId(FriendshipStatus?.notifId);
           console.log("response: make friend ", response);
         }
 
         if (FriendshipStatus?.option === "SET_CANCEL") {
-          response = await api.post(`/friendship/reject`, {
-            friendId: UserId,
-          });
+          if (FriendshipStatus?.type === "FRIEND_REQUEST") {
+            response = await api.post(`/friendship/reject`, {
+              friendId: UserId,
+            });
+          } else {
+            //TODO:
+          }
           setNotificationId(FriendshipStatus.notifId);
           console.log("response: reject ", response);
         }
@@ -172,8 +185,6 @@ export default function NotificationsBar(props) {
           NotificationsObject.map(async (notif) => {
             const { senderId, entityType, createdAt, NotificationId } = notif;
 
-            console.log("senderId: ", senderId);
-            console.log("notif: ", notif);
             if (senderId === _UserId) {
               return null;
             }
@@ -215,16 +226,23 @@ export default function NotificationsBar(props) {
     NotificationsObject && NotificationsObject.length > 0 && fetchData();
   }, [NotificationsObject]);
 
-
-
   const handelDeleteJoinRoomClick = (UserId, NotifId) => {
-
-  }
+    setFriendshipStatus({
+      type: "JOIN_ROOM",
+      option: "SET_CANCEL",
+      userId: UserId,
+      notifId: NotifId,
+    });
+  };
 
   const handelConfirmJoinRoomClick = (UserId, NotifId) => {
-
-  }
-
+    setFriendshipStatus({
+      type: "JOIN_ROOM",
+      option: "MAKE_FRIEND",
+      userId: UserId,
+      notifId: NotifId,
+    });
+  };
 
   return (
     <div className="NotificationsBar-frame">
@@ -253,7 +271,9 @@ export default function NotificationsBar(props) {
               className="w-[356px] h-[435px]"
             >
               {userNotifications.map((notif, index) => {
-                console.log("notif: ", notif);
+                if (notif.entityType === "JoinRoom") {
+                  console.log("notif: here> ", notif);
+                }
                 const formattedTime = formatTimeDifference(notif.createdAt);
 
                 if (notif.entityType === "FriendRequestAccepted") {
@@ -265,27 +285,42 @@ export default function NotificationsBar(props) {
                       time={formattedTime}
                     />
                   );
-                } else if (notif.entityType === "JoinRoom") {
-                  <FriendNotifications
-                    deleteButton={() =>
-                      handelDeleteJoinRoomClick(notif.senderId, notif.NotificationId)
-                    }
-                    confirmButton={() =>
-                      handelConfirmJoinRoomClick(notif.senderId, notif.NotificationId)
-                    }
-                    key={index}
-                    name={notif.firstName + " " + notif.lastName}
-                    avatar={notif.picture}
-                    time={formattedTime}
-                  />;
                 } else {
                   return (
                     <FriendNotifications
-                      deleteButton={() =>
-                        handelDeleteClick(notif.senderId, notif.NotificationId)
+                      deleteButton={() => {
+                        if (notif.entityType === "JoinRoom") {
+                          handelDeleteJoinRoomClick(
+                            notif.senderId,
+                            notif.NotificationId
+                          );
+                        } else
+                          handelDeleteClick(
+                            notif.senderId,
+                            notif.NotificationId
+                          );
+                      }}
+                      confirmButton={() => {
+                        if (notif.entityType === "JoinRoom") {
+                          handelConfirmJoinRoomClick(
+                            notif.senderId,
+                            notif.NotificationId
+                          );
+                        } else
+                          handelConfirmClick(
+                            notif.senderId,
+                            notif.NotificationId
+                          );
+                      }}
+                      title={
+                        notif.entityType === "JoinRoom"
+                          ? "Join Room"
+                          : "Friend Request"
                       }
-                      confirmButton={() =>
-                        handelConfirmClick(notif.senderId, notif.NotificationId)
+                      description={
+                        notif.entityType === "JoinRoom"
+                          ? "Ask you to Join Room"
+                          : "sent you a Friend Request"
                       }
                       key={index}
                       name={notif.firstName + " " + notif.lastName}
