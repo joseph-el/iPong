@@ -15,7 +15,7 @@ import { AppDispatch, RootState } from "../../state/store";
 import { getUserLevel } from "../../utils/getCurrentLevel";
 import { SKIN_DB } from "../../pages/iPongStore/db/skins.db";
 import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
-
+import Spline from "@splinetool/react-spline";
 export default function iPongGame() {
   
   const UserInfo = useSelector((state: RootState) => state.userState);
@@ -91,11 +91,13 @@ export default function iPongGame() {
 
   return (
     <div className="container--home">
+ <Spline scene="https://prod.spline.design/C5iwd6F3Xijf2m-z/scene.splinecode" />
+
       <div className="container-nav">
-        <button className="button" onClick={vsBotHandler}>
+        <button className="button1" onClick={vsBotHandler}>
           Play vs Bot
         </button>
-        <button className="button" onClick={vsRandomHandler}>
+        <button className="button2" onClick={vsRandomHandler}>
           Play vs Random
         </button>
       </div>
