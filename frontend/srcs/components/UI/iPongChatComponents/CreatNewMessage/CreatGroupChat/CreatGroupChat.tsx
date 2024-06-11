@@ -47,8 +47,7 @@ export default function CreatGroupChat(props) {
   const [users, setUsers] = useState([]);
   const [ReadyToSubmit, setReadyToSubmit] = useState(false);
   const displayGroupType = Array.from(GroupType).join(" ");
-
-
+  const [testID, setTestID] = useState("");
 
 
   useEffect(() => {
@@ -75,52 +74,57 @@ export default function CreatGroupChat(props) {
   }, []);
 
   useEffect(() => {
-    const  fetchReadyToSubmit =  async () => {
+    const fetchReadyToSubmit = async () => {
       try {
+        let NewRoom;
+        console.log("response roomooooo : |", displayGroupType, "|");
+        console.log(
+          "response roomooooo : ",
+          displayGroupType,
+          GroupPassword,
+          GroupName
+        );
+        const response = await api.post("chatroom/create", {
+          type: displayGroupType,
+          password: GroupPassword,
+          roomName: GroupName,
+        });
+        console.log("response room : ", response.data);
+        NewRoom = response.data.id;
 
-          let NewRoom;
-          console.log("response roomooooo : |",displayGroupType, "|");
-          console.log("response roomooooo : ",displayGroupType, GroupPassword, GroupName);
-          const response = await api.post("chatroom/create", {
-            type: displayGroupType,
-            password: GroupPassword,
-            roomName: GroupName,
-          });
-          console.log("response room : ", response.data);
-          NewRoom = response.data.id;
+        console.log("response room : ", NewRoom);
 
-          console.log("response room : ", NewRoom);
+        const formDataAvatar = new FormData();
+        formDataAvatar.append("file", AvatarFile!);
+        try {
+          const response = await api.post(
+            `chatroom/rooomIcon/${NewRoom}`,
 
-          const formDataAvatar = new FormData();
-          formDataAvatar.append("file", AvatarFile!);
-          try {
-            const response = await api.post(
-              `chatroom/rooomIcon/${NewRoom}`,
-        
-              formDataAvatar,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            );
-              console.log("response upload avatar :", response);
-          } catch (error) {
-            console.log("error upload avatar :", error);
-          }
-      
-      } catch (error) {
+            formDataAvatar,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log("response upload avatar :", response);
+        } catch (error) {
+          console.log("error upload avatar :", error);
+        }
 
-
-      }
+        try {
+          const response2 = await api.post(`chatroom/invite/${testID}/${NewRoom}`);
+          console.log("invite:: ", response2.data)
+        } catch (error) {
+          console.log("error add members :", error);
+        }
+      } catch (error) {}
     };
     ReadyToSubmit && fetchReadyToSubmit();
   }, [ReadyToSubmit]);
   /* POST REQUEST TO CREATE A NEW GROUP
           const handleCreateGroup = () => {}
   */
-
-  
 
   const handelPassingData = () => {
     if (GroupName === "" || GroupName.length < 3 || GroupName.length > 20) {
@@ -171,7 +175,7 @@ export default function CreatGroupChat(props) {
     } else if (GroupMembers instanceof Set) {
       GroupMembers.forEach((member) => {
         console.log(member);
-        console.log("member: ", users[member].name);
+        setTestID(users[member].userId);
       });
     }
 
