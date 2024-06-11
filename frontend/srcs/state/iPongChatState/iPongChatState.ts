@@ -22,8 +22,8 @@ interface ListMessages {
 
 enum FilterType {
   All = "All",
-  Users = "Users",
-  Groups = "Groups",
+  Users = "Dm",
+  Groups = "Groups"
 }
 
 interface iPongChatState {
@@ -32,7 +32,7 @@ interface iPongChatState {
   selectedMessage: Boolean;
   UserSetting: Boolean;
   GroupSetting: Boolean;
-  filterType?: FilterType;
+  filterType: FilterType;
 
 }
 
