@@ -74,7 +74,7 @@ export default function ChatPanel() {
         }
       }
       fetchChat();
-    }, []);
+    }, [selectedMessage]); //  here 
 
   return (
     <div className="ChatPanel-frame" ref={scrollRef}>
