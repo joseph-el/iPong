@@ -5,7 +5,7 @@ import genderSlice from './Checkbox/CheckboxSlice';
 import UserSlice from './UserInfo/UserSlice';
 import achievementSlice from './Achievement/AchievementSlice';
 import notificationSlice from "./Notifications/NotificationsSlice";
-
+import iPongChatSlice from "./iPongChatState/iPongChatState";
 export const store = configureStore({
     reducer: {
       input: inputReducer,
@@ -14,6 +14,7 @@ export const store = configureStore({
       userState: UserSlice,
       achievement: achievementSlice,
       notification: notificationSlice,
+      iPongChat: iPongChatSlice,
     },
 });
 
