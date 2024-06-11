@@ -414,3 +414,9 @@
 .Group-Password {
     margin-top: 10px;
 }
+
+
+
+.EditGroup-blurbackground {
+  z-index: 900000 !important;
+}
