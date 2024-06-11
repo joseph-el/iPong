@@ -46,7 +46,7 @@ export default function SeeUser(props) {
         <div className="User-options">
           <img
             onClick={() => {
-              navigate("/ipong/profile");
+              navigate(`/ipong/users/${props.userId}`);
             }}
             src={SeeProfileIcon}
             alt="See Profile"
