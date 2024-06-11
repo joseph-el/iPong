@@ -29,6 +29,7 @@ import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
 import { MessageService } from 'src/messages/message.service';
 import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class ChatroomService {
@@ -226,6 +227,7 @@ export class ChatroomService {
         isAdmin: true,
       },
     });
+    console.log('admin: ', chekAdmin);
     if (!chekAdmin) {
       return new HttpException('You are not an admin', 401);
     }
@@ -244,7 +246,7 @@ export class ChatroomService {
       senderId: adminId,
       receiverId: joinedUserId,
       entityType: NotificationType.JoinRoom,
-      id: [adminId, joinedUserId].sort().join('+')+ 'joinRoom',
+      id: randomUUID(),
     };
     this.evventEmitter.emit('sendNotification', notification);
     return { message: `${joinedUserId} User has been added to the chatroom` };
@@ -257,9 +259,10 @@ export class ChatroomService {
         id: joinChatroomDto.roomId,
       },
     });
-    if (chatroom.type === ChatRoomType.private) {
-      return new HttpException('the chatroom is private', 401);
-    }
+    // TODO: check if the chatroom is private
+    // if (chatroom.type === ChatRoomType.private) {
+    //   return new HttpException('the chatroom is private', 401);
+    // }
     // console.log('joinRoom: ', joinChatroomDto);
     // console.log('room detail: ', chatroom);
     // Check if chatroom exists
