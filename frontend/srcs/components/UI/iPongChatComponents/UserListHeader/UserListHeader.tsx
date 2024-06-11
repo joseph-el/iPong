@@ -3,8 +3,14 @@ import "./UserListHeader.css";
 import WriteNewMessageIcon from "./write_button.svg";
 import SearchInput from "../../Input/SearchInput/SearchInput";
 import { Chip } from "@nextui-org/react";
-
+import { useDispatch } from "react-redux";
+import { setFilterType } from "../../../../state/iPongChatState/iPongChatState";
 export default function UserListHeader(props) {
+  const dispatch = useDispatch();
+
+  const handleFilterType = (filterType) => {
+    dispatch(setFilterType(filterType));
+  };
   return (
     <div className="UserListHeader-frame">
       <div className="write-button">
@@ -19,9 +25,24 @@ export default function UserListHeader(props) {
       <div className="ipongchat-titile">Messages</div>
 
       <div className="filter-List-buttons">
-        <Chip className="filter-List-buttons-chip">All</Chip>
-        <Chip className="filter-List-buttons-chip">Users</Chip>
-        <Chip className="filter-List-buttons-chip">Groups</Chip>
+        <Chip
+          className="filter-List-buttons-chip"
+          onClick={() => handleFilterType("All")}
+        >
+          All
+        </Chip>
+        <Chip
+          className="filter-List-buttons-chip"
+          onClick={() => handleFilterType("Users")}
+        >
+          Users
+        </Chip>
+        <Chip
+          className="filter-List-buttons-chip"
+          onClick={() => handleFilterType("Groups")}
+        >
+          Groups
+        </Chip>
       </div>
     </div>
   );
