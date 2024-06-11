@@ -67,7 +67,7 @@ export default function UserListMessages(props) {
     navigate(`/ipong/chat/${id}`);
   };
 
-  const handleFilterType = useSelector(
+  const FilterType = useSelector(
     (state: RootState) => state.iPongChat.filterType
   );
 
@@ -87,24 +87,27 @@ export default function UserListMessages(props) {
       </GridItem>
       <GridItem pl="2" bg="black" className="kkk" area={"main"}>
         <ScrollShadow hideScrollBar className="h-full">
-          {UserChat.ListMessages.map((message, index) => (
-
-            // Here render by the type of element,
-            // if all render all
-            // if 
-            <React.Fragment key={index}>
-              <MessagesItems
-                IsSelectes={message.isSelect}
-                handelCLickChat={() => handelListChatItem(message.id)}
-                name={message.fullname}
-                messageTime={message.time}
-                lastMessage={message.lastMessage}
-                avatar={message.avatar}
-              />
-            </React.Fragment>
-
-
-          ))}
+        {UserChat.ListMessages.filter((message) => {
+          if (FilterType === "All") {
+            return true;
+          } else if (FilterType === "Dm") {
+            return message.type === "Dm";
+          } else {
+            console.log("iam here");
+            return message.type !== "Dm";
+          }
+        }).map((message, index) => (
+          <React.Fragment key={index}>
+            <MessagesItems
+              IsSelectes={message.isSelect}
+              handelCLickChat={() => handelListChatItem(message.id)}
+              name={message.fullname}
+              messageTime={message.time}
+              lastMessage={message.lastMessage}
+              avatar={message.avatar}
+            />
+          </React.Fragment>
+        ))}
         </ScrollShadow>
       </GridItem>
     </Grid>
