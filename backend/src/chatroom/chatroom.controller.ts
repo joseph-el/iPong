@@ -38,16 +38,18 @@ export class ChatroomController {
     @Body() createChatroomDto: CreateChatroomDto,
     @GetCurrentUser('userId') userOwner: string,
   ) {
+    console.log("object:>> ", createChatroomDto);
     return await this.chatroomService.create(createChatroomDto, userOwner);
   }
 
   @UseGuards(AtGuard)
-  @Post('rooomIcon')
+  @Post('rooomIcon/:roomId')
   @UseInterceptors(FileInterceptor('file'))
   async uploadIcon(
-    @Body() roomId: string,
+    @Param('roomId') roomId: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log("object:>> ", roomId);
     return await this.chatroomService.uploadIcon(roomId, file);
   }
 
