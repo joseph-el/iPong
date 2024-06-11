@@ -4,8 +4,9 @@ import { set } from "lodash";
 interface Messages {
   id: string;
   message: string;
-  user: string;
+  avatar: string;
   time: string;
+  authorId:string;
 }
 
 interface ListMessages {

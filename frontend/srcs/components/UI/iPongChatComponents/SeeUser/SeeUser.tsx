@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import Close from "../../Button/CloseButton/CloseButton";
+
 export default function SeeUser(props) {
   const selectedMessage = useSelector(
     (state: RootState) =>
