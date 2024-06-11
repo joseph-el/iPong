@@ -36,6 +36,6 @@ export class MessageController {
     @Param('roomId') roomId: string,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.messageService.findAll(userId, roomId);
+    return await this.messageService.findAll(userId, roomId);
   }
 }
