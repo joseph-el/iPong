@@ -25,7 +25,10 @@ export default function ChatPanelHeader(props) {
           console.log(selectedMessage);
           console.log(selectedMessage.type);
           console.log(selectedMessage.fullname);
-          selectedMessage.type === "group" && props.SetViewGroupSettings();
+          (selectedMessage.type.includes("public") ||
+            selectedMessage.type.includes("private") ||
+            selectedMessage.type.includes("protected")) &&
+            props.SetViewGroupSettings();
           selectedMessage.type === "Dm" && props.SetViewFriendSettings();
         }}
       >
