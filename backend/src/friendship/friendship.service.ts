@@ -119,6 +119,8 @@ export class FriendshipService {
     return { send: 'done' };
   }
   async isBlocked(userId: string, friendId: string) {
+    console.log('userId', userId);
+    console.log('friendId', friendId);
     if (userId === friendId) {
       throw new HttpException(
         'userd id is the same as firend id',
@@ -145,7 +147,8 @@ export class FriendshipService {
     });
 
     //return a boolean value
-    return !!blocked;
+    console.log('blocked', blocked);
+    return blocked;
   }
 
   async blockedUsers(userId: string) {
