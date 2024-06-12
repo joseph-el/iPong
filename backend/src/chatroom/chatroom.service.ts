@@ -261,14 +261,14 @@ export class ChatroomService {
       },
     });
 
-    const isInviterIsAdmin = await this.databaseservice.chatRoomMember.findFirst({
-      where: {
-        chatRoomId: joinChatroomDto.roomId,
-        memberID: joinChatroomDto.inviterId,
-        isAdmin: true,
-      },
-    });
-    // TODO: check if the chatroom is private
+    const isInviterIsAdmin =
+      await this.databaseservice.chatRoomMember.findFirst({
+        where: {
+          chatRoomId: joinChatroomDto.roomId,
+          memberID: joinChatroomDto.inviterId,
+          isAdmin: true,
+        },
+      });
     if (chatroom.type === ChatRoomType.private && !isInviterIsAdmin) {
       return new HttpException('the chatroom is private', 401);
     }
@@ -277,8 +277,7 @@ export class ChatroomService {
       return new HttpException('Chatroom not found', 404);
     }
     // Check if chatroom is protected
-    if (chatroom.type === ChatRoomType.protected && !isInviterIsAdmin)
-    {
+    if (chatroom.type === ChatRoomType.protected && !isInviterIsAdmin) {
       // Check if password is provided
       if (!joinChatroomDto.password) {
         return new HttpException('Password is required', 400);
@@ -308,7 +307,7 @@ export class ChatroomService {
     await this.databaseservice.chatRoomMember.create({
       data: {
         member: {
-          connect: { userId: joinChatroomDto.userId},
+          connect: { userId: joinChatroomDto.userId },
         },
         ChatRoom: {
           connect: { id: chatroom.id },
@@ -802,26 +801,20 @@ export class ChatroomService {
     return { message: 'Member added to the chatroom' };
   }
 
-  async getChatRooms(query: SearchDto) {
+  async getAllUnjoinedRooms(userId: string) {
     const chatrooms = await this.databaseservice.chatRoom.findMany({
       where: {
-        roomName: {
-          contains: query.keyword,
-          mode: 'insensitive',
-        },
-        type: {
-          not: ChatRoomType.private,
+        members: {
+          none: {
+            memberID: userId,
+          },
         },
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
-    return chatrooms.map((room) => {
-      return {
-        id: room.id,
-        name: room.roomName,
-        type: room.type,
-        icon: room.icon,
-      };
-    });
+    return chatrooms;
   }
 
   async listAllJoinedRooms(userId: string) {
@@ -898,16 +891,17 @@ export class ChatroomService {
       },
     });
 
-    return members.map((member) => {
-      return {
-        id: member.memberID,
-        isAdmin: member.isAdmin,
-        isBanned: member.isBanned,
-        isMuted: member.isMuted,
-        muted_exp: member.muted_exp,
-        joinedAt: member.createdAt,
-      };
-    });
+    return Promise.all(members.map(async (member) => {
+    const userData = await this.usersService.getUserById(member.memberID);
+    return {
+      isAdmin: member.isAdmin,
+      isBanned: member.isBanned,
+      isMuted: member.isMuted,
+      muted_exp: member.muted_exp,
+      joinedAt: member.createdAt,
+      member: userData,
+    };
+  }));
   }
 
   async update(updateRoomDto: UpdateRoomDto, userId: string) {
