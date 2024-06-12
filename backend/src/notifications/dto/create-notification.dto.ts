@@ -16,5 +16,9 @@ export class CreateNotificationDto {
   entityType: NotificationType;
 
   @IsString()
+  @IsOptional()
+  roomId?: string;
+
+  @IsString()
   id: string;
 }

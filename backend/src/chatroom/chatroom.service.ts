@@ -246,6 +246,7 @@ export class ChatroomService {
       senderId: adminId,
       receiverId: joinedUserId,
       entityType: NotificationType.JoinRoom,
+      roomId: roomId,
       id: randomUUID(),
     };
 
@@ -254,31 +255,36 @@ export class ChatroomService {
     return { message: `${joinedUserId} User has been added to the chatroom` };
   }
 
-  async join(joinChatroomDto: JoinRoomDto, userId: string) {
+  async join(joinChatroomDto: JoinRoomDto) {
     // Find chatroom
     const chatroom = await this.databaseservice.chatRoom.findUnique({
       where: {
         id: joinChatroomDto.roomId,
       },
     });
+
+    const isInviterIsAdmin = await this.databaseservice.chatRoomMember.findFirst({
+      where: {
+        chatRoomId: joinChatroomDto.roomId,
+        memberID: joinChatroomDto.inviterId,
+        isAdmin: true,
+      },
+    });
     // TODO: check if the chatroom is private
-    // if (chatroom.type === ChatRoomType.private) {
-    //   return new HttpException('the chatroom is private', 401);
-    // }
-    // console.log('joinRoom: ', joinChatroomDto);
-    // console.log('room detail: ', chatroom);
+    if (chatroom.type === ChatRoomType.private && !isInviterIsAdmin) {
+      return new HttpException('the chatroom is private', 401);
+    }
     // Check if chatroom exists
     if (!chatroom) {
       return new HttpException('Chatroom not found', 404);
     }
-
     // Check if chatroom is protected
-    if (chatroom.type === ChatRoomType.protected) {
+    if (chatroom.type === ChatRoomType.protected && !isInviterIsAdmin)
+    {
       // Check if password is provided
       if (!joinChatroomDto.password) {
         return new HttpException('Password is required', 400);
       }
-
       // Compare password
       const isMatch = await bcrypt.compare(
         joinChatroomDto.password,
@@ -289,12 +295,11 @@ export class ChatroomService {
         return new HttpException('Invalid password', 401);
       }
     }
-
     // Check if user is already a member of the chatroom
     const member = await this.databaseservice.chatRoomMember.findFirst({
       where: {
         chatRoomId: chatroom.id,
-        memberID: userId,
+        memberID: joinChatroomDto.userId,
       },
     });
     if (member) {
@@ -305,7 +310,7 @@ export class ChatroomService {
     await this.databaseservice.chatRoomMember.create({
       data: {
         member: {
-          connect: { userId },
+          connect: { userId: joinChatroomDto.userId},
         },
         ChatRoom: {
           connect: { id: chatroom.id },
@@ -327,7 +332,7 @@ export class ChatroomService {
         roomName: true,
         type: true,
         icon: true,
-        
+
         // members: {
         //   select: {
         //     memberID: true,
