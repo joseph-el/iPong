@@ -131,15 +131,28 @@ export default function NotificationsBar(props) {
         const UserId = FriendshipStatus?.userId;
         let response;
         if (FriendshipStatus?.option === "MAKE_FRIEND") {
+
+
           if (FriendshipStatus?.type === "FRIEND_REQUEST") {
             response = await api.post(`/friendship/accept`, {
               friendId: UserId,
             });
           } else {
-            // TODO:
-            response = await api.post(`/friendship/joinRoom`, {
-              friendId: UserId,
+
+
+            // TODO: Join Room
+
+          console.log("the data response: join room>>>>", FriendshipStatus);
+
+            const response = await api.post(`/chatroom/join`, {
+              roomId: FriendshipStatus.RoomId,
+              userId: UserId,
+              inviterId: FriendshipStatus.senderId,
             });
+            
+            console.log("response: join room>>>>  ", response);
+            
+
           }
 
           setNotificationId(FriendshipStatus?.notifId);
@@ -147,13 +160,13 @@ export default function NotificationsBar(props) {
         }
 
         if (FriendshipStatus?.option === "SET_CANCEL") {
+
+
           if (FriendshipStatus?.type === "FRIEND_REQUEST") {
             response = await api.post(`/friendship/reject`, {
               friendId: UserId,
             });
-          } else {
-            //TODO:
-          }
+          } 
           setNotificationId(FriendshipStatus.notifId);
           console.log("response: reject ", response);
         }
@@ -182,8 +195,8 @@ export default function NotificationsBar(props) {
       try {
         const updatedNotifications = await Promise.all(
           NotificationsObject.map(async (notif) => {
-            console.log("notifObject Here: ", notif);
-            const { senderId, entityType, createdAt, NotificationId, RoomId  } = notif;
+            console.log("notif:>>>>> ", notif);
+            const { senderId, entityType, createdAt, NotificationId, RoomId, receiverId } = notif;
 
             if (senderId === _UserId) {
               return null;
@@ -196,6 +209,7 @@ export default function NotificationsBar(props) {
               const { firstName, lastName, picture, id } = response.data;
 
               return {
+                receiverId: receiverId,
                 RoomId: RoomId,
                 NotificationId,
                 senderId,
@@ -227,8 +241,10 @@ export default function NotificationsBar(props) {
     NotificationsObject && NotificationsObject.length > 0 && fetchData();
   }, [NotificationsObject]);
 
-  const handelDeleteJoinRoomClick = (UserId, NotifId) => {
+  const handelDeleteJoinRoomClick = (senderId, RoomId, UserId, NotifId) => {
     setFriendshipStatus({
+      senderId: senderId,
+      RoomId: RoomId,
       type: "JOIN_ROOM",
       option: "SET_CANCEL",
       userId: UserId,
@@ -236,8 +252,10 @@ export default function NotificationsBar(props) {
     });
   };
 
-  const handelConfirmJoinRoomClick = (UserId, NotifId) => {
+  const handelConfirmJoinRoomClick = (senderId, RoomId, UserId, NotifId) => {
     setFriendshipStatus({
+      senderId: senderId,
+      RoomId: RoomId,
       type: "JOIN_ROOM",
       option: "MAKE_FRIEND",
       userId: UserId,
@@ -283,17 +301,22 @@ export default function NotificationsBar(props) {
                     />
                   );
                 } else if (notif.entityType === "JoinRoom") {
+                  console.error("notif: LOL >>>>>> ", notif);
                   return (
                     <JoinRoomNotification
                       deleteButton={() => {
                         handelDeleteJoinRoomClick(
                           notif.senderId,
+                          notif.RoomId,
+                          notif.receiverId,
                           notif.NotificationId
                         );
                       }}
                       confirmButton={() => {
                         handelConfirmJoinRoomClick(
                           notif.senderId,
+                          notif.RoomId,
+                          notif.receiverId,
                           notif.NotificationId
                         );
                       }}

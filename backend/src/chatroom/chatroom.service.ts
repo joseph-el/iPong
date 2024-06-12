@@ -249,8 +249,6 @@ export class ChatroomService {
       roomId: roomId,
       id: randomUUID(),
     };
-
-    console.log('notification:>> ', notification);
     this.evventEmitter.emit('sendNotification', notification);
     return { message: `${joinedUserId} User has been added to the chatroom` };
   }
@@ -344,8 +342,7 @@ export class ChatroomService {
         // },
       },
     });
-
-    console.log('room details: ', room);
+    console.log("rooms:, ", room);
     return room;
   }
 

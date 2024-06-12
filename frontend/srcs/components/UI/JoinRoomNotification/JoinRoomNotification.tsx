@@ -25,13 +25,17 @@ export const Actions = (props) => {
 export default function JoinRoomNotification(props) {
   const [roomInfo, setRoomInfo] = useState([]);
 
-
   useEffect(() => {
     const GetRoomInfo = async () => {
       try {
-        console.log("RoomId:  ", props.RoomId);
+ 
+
+        console.log("RoomId: ", props.RoomId);
         const response = await api.get(`/chatroom/roomDetails/${props.RoomId}`);
+
         console.log("Room details: ", response.data);
+
+        setRoomInfo(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -45,9 +49,9 @@ export default function JoinRoomNotification(props) {
           <div className="FriendNotifications-content">
             <User
               name={props.title}
-              description={props.name + " " + props.description}
+              description={props.name + " " + props.description + " " + roomInfo.roomName}
               avatarProps={{
-                src: props.avatar,
+                src: roomInfo.icon,
               }}
             />
             <div className="FriendNotifications-time">{props.time}</div>

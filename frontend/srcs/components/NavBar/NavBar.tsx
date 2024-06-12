@@ -62,6 +62,26 @@ export default function NavBar() {
     isReadAll && fetchData();
   }, [isReadAll]);
 
+
+  // TODO: fetch all users from the server
+  
+  const [Groups, setGroups] = useState([]);
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try { 
+
+        const response = api.get("/groups/allgroups");
+
+
+      } 
+      catch (error) {
+        console.error("error Groups: ", error);
+      }
+    };
+    fetchData();
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -152,6 +172,7 @@ export default function NavBar() {
     socket.on("sendNotification", (data) => {
       // TODO: check if the notification is already exist in the store
 
+ 
       const existingNotificationIndex = NotificationObject.findIndex(
         (notification) =>
           notification.entityType === data.entityType &&
@@ -168,6 +189,8 @@ export default function NavBar() {
         addNotification({
           NotificationId: data.id,
           senderId: data.senderId,
+          receiverId: data.receiverId,
+          RoomId: data.roomId,
           entityType: data.entityType,
           createdAt: data.createdAt,
         })
@@ -192,10 +215,7 @@ export default function NavBar() {
 
         {/* TODO: set the current page using store redux! */}
         <div className="text-wrapper">
-          
           {"iPong" + "\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"}
-
-
         </div>
         <div className="breadcumb">
           <div className="div">Main Page</div>
@@ -204,19 +224,20 @@ export default function NavBar() {
         </div>
       </div>
 
-      {/* SEARCH ITEMS  */}
+
       {isWideScreen && searchTerm ? (
         <SearchIcon onClick={handleIconClick} />
       ) : (
         <div className="search-bar">
           <SearchInput onChange={handleOnChange} />
-          {activeSearch.length != 0 ? (
+          {activeSearch.length != 0 || Groups.length != 0 ? (
             <div className="SearchList">
-              <SearchList users={activeSearch} func={handelCloseSearchBar} />
+              <SearchList Groups={Groups} users={activeSearch} func={handelCloseSearchBar} />
             </div>
           ) : null}
         </div>
       )}
+      
 
       {/* RIGHT ITEMS  */}
       {searchTerm ? (
@@ -272,6 +293,9 @@ export default function NavBar() {
           />
         </div>
       ) : null}
+
+
+
     </div>
   );
 }
