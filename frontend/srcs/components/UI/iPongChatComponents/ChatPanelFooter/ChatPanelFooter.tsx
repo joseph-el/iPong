@@ -61,6 +61,7 @@ export default function ChatPanelFooter() {
   useEffect(() => {
     const fetchChat = async () => {
       try {
+        console.log("i try to send selectedMessage: ", selectedMessage);
         const response = await api.post(
           `/messages/room/${selectedMessage?.id}`,
           {
@@ -68,6 +69,7 @@ export default function ChatPanelFooter() {
           }
         );
         setInputValue("");
+        setIsReady(false);
         console.log("post :", response.data);
       } catch (error) {
         console.error("Error fetching chat:", error);

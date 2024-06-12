@@ -10,7 +10,7 @@ import { ScrollShadow } from "@nextui-org/react";
 import ImessagesNotifications from "../iMessagesNotifications/iMessagesNotifications";
 import { io } from "socket.io-client";
 import FriendNotifications from "../FriendNotifications/FriendNotifications";
-
+import JoinRoomNotification from "../JoinRoomNotification/JoinRoomNotification";
 // import users from "./data";
 import { useDispatch } from "react-redux";
 import { UseSelector, useSelector } from "react-redux";
@@ -105,7 +105,6 @@ export default function NotificationsBar(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("NotificationId:in useEFfect", NotificationId);
         const response = await api.delete(
           `/notifications/deleteNotification/${NotificationId}`
         );
@@ -183,7 +182,8 @@ export default function NotificationsBar(props) {
       try {
         const updatedNotifications = await Promise.all(
           NotificationsObject.map(async (notif) => {
-            const { senderId, entityType, createdAt, NotificationId } = notif;
+            console.log("notifObject Here: ", notif);
+            const { senderId, entityType, createdAt, NotificationId, RoomId  } = notif;
 
             if (senderId === _UserId) {
               return null;
@@ -196,6 +196,7 @@ export default function NotificationsBar(props) {
               const { firstName, lastName, picture, id } = response.data;
 
               return {
+                RoomId: RoomId,
                 NotificationId,
                 senderId,
                 firstName,
@@ -271,11 +272,7 @@ export default function NotificationsBar(props) {
               className="w-[356px] h-[435px]"
             >
               {userNotifications.map((notif, index) => {
-                if (notif.entityType === "JoinRoom") {
-                  console.log("notif: here> ", notif);
-                }
                 const formattedTime = formatTimeDifference(notif.createdAt);
-
                 if (notif.entityType === "FriendRequestAccepted") {
                   return (
                     <ImessagesNotifications
@@ -285,7 +282,64 @@ export default function NotificationsBar(props) {
                       time={formattedTime}
                     />
                   );
-                } else {
+                } else if (notif.entityType === "JoinRoom") {
+                  return (
+                    <JoinRoomNotification
+                      deleteButton={() => {
+                        handelDeleteJoinRoomClick(
+                          notif.senderId,
+                          notif.NotificationId
+                        );
+                      }}
+                      confirmButton={() => {
+                        handelConfirmJoinRoomClick(
+                          notif.senderId,
+                          notif.NotificationId
+                        );
+                      }}
+                      title={"Join Room"}
+                      description={"Ask you to Join Room"}
+                      key={index}
+                      name={notif.firstName + " " + notif.lastName}
+                      RoomId={notif.RoomId}
+                      avatar={notif.picture}
+                      time={formattedTime}
+                    />
+                  );
+
+                } else if (notif.entityType === "FriendRequest") {
+                  return (
+                    <FriendNotifications
+                      deleteButton={() => {
+                        handelDeleteClick(notif.senderId, notif.NotificationId);
+                      }}
+                      confirmButton={() => {
+                        handelConfirmClick(
+                          notif.senderId,
+                          notif.NotificationId
+                        );
+                      }}
+                      title={"Friend Request"}
+                      description={"sent you a Friend Request"}
+                      key={index}
+                      name={notif.firstName + " " + notif.lastName}
+                      avatar={notif.picture}
+                      time={formattedTime}
+                    />
+                  );
+                }
+              })}
+            </ScrollShadow>
+          </GridItem>
+        </Grid>
+      </NotificationsWrapper>
+    </div>
+  );
+}
+
+/*
+
+                else {
                   return (
                     <FriendNotifications
                       deleteButton={() => {
@@ -329,27 +383,7 @@ export default function NotificationsBar(props) {
                     />
                   );
                 }
-              })}
-            </ScrollShadow>
-          </GridItem>
-        </Grid>
-      </NotificationsWrapper>
-    </div>
-  );
-}
-// Users //
-// useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-//       NotificationsObject.map((notif, index) => {
 
-//       });
-//       // const response = await api.get(`/user-profile/getinfoById${GetUserNotifications}`);
-//       // setUserNotifications(response.data);
-//       // console.log("User sender response.data ", response.data);
-//     } catch (error) {
-//       console.error("error: ", error);
-//     }
-//   };
-//   fetchData();
-// }, []);
+
+
+*/

@@ -192,6 +192,7 @@ export class ChatroomController {
   @UseGuards(AtGuard)
   @Get('roomDetails/:roomId')
   async getRoomDetails(@Param('roomId') roomId: string) {
+    console.log('room ID:>> ', roomId);
     return await this.chatroomService.getRoomDetails(roomId);
   } 
     
