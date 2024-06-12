@@ -149,7 +149,7 @@ export default function CreatGroupChat(props) {
     }
 
     if (
-      displayGroupType === "private" &&
+      displayGroupType === "protected" &&
       (GroupPassword === "" ||
         GroupPassword.length < 5 ||
         GroupPassword.length > 20)
@@ -337,8 +337,8 @@ export default function CreatGroupChat(props) {
                 }
                 placeholder="Enter Group Password"
                 isInvalid={GroupPasswordIsValid}
-                isDisabled={displayGroupType == "private" ? false : true}
-                value={displayGroupType == "private" ? GroupPassword : ""}
+                isDisabled={displayGroupType == "protected" ? false : true}
+                value={displayGroupType == "protected" ? GroupPassword : ""}
                 onChange={(e) => setGroupPassword(e.target.value)}
                 endContent={
                   <button

@@ -39,7 +39,7 @@ export default function NavBar() {
   const dispatch = useDispatch<AppDispatch>();
 
   const [activeSearch, setActiveSearch] = React.useState([]);
-
+  const [activeGroups, setActiveGroups] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchTerm, setSearchTerm] = React.useState(true);
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
@@ -54,7 +54,6 @@ export default function NavBar() {
       try {
         await api.get("/notifications/readAllNotifications");
         dispatch(setNotificationCount(0));
-
       } catch (error) {
         console.error("error: ", error);
       }
@@ -62,26 +61,23 @@ export default function NavBar() {
     isReadAll && fetchData();
   }, [isReadAll]);
 
-
   // TODO: fetch all users from the server
-  
+
   const [Groups, setGroups] = useState([]);
-  
 
   useEffect(() => {
     const fetchData = async () => {
-      try { 
+      try {
+        const response = await api.get("/chatroom/getAllUnjoinedRooms");
 
-        const response = api.get("/groups/allgroups");
-
-
-      } 
-      catch (error) {
+        setGroups(response.data);
+      } catch (error) {
         console.error("error Groups: ", error);
       }
     };
     fetchData();
   }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -125,6 +121,13 @@ export default function NavBar() {
       if (!searchTerm) setSearchTerm(true);
       return;
     }
+    console.log("In filter >", Groups);
+
+    const matchedGroups = Groups.filter((group) =>
+      group.roomName?.toLowerCase().includes(searchTerm)
+    );
+    
+    console.log("In filter DONE >", matchedGroups)
     const matchedUsers = users
       .filter(
         (user) =>
@@ -133,6 +136,7 @@ export default function NavBar() {
       )
       .slice(0, 8);
 
+    setActiveGroups(matchedGroups);
     setActiveSearch(matchedUsers);
     // console.log(matchedUsers);
   };
@@ -172,7 +176,6 @@ export default function NavBar() {
     socket.on("sendNotification", (data) => {
       // TODO: check if the notification is already exist in the store
 
- 
       const existingNotificationIndex = NotificationObject.findIndex(
         (notification) =>
           notification.entityType === data.entityType &&
@@ -197,7 +200,6 @@ export default function NavBar() {
       );
 
       dispatch(setNotificationCount(NotificationCount + 1));
-      
     });
 
     socket.on("disconnect", () => {
@@ -212,7 +214,6 @@ export default function NavBar() {
     <div className="nav-bar">
       {/* LEFT ITEMS  state: ✅*/}
       <div className="page-name-breadcrumb">
-
         {/* TODO: set the current page using store redux! */}
         <div className="text-wrapper">
           {"iPong" + "\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"}
@@ -224,20 +225,22 @@ export default function NavBar() {
         </div>
       </div>
 
-
       {isWideScreen && searchTerm ? (
         <SearchIcon onClick={handleIconClick} />
       ) : (
         <div className="search-bar">
           <SearchInput onChange={handleOnChange} />
-          {activeSearch.length != 0 || Groups.length != 0 ? (
+          {activeSearch.length != 0 || activeGroups.length != 0 ? (
             <div className="SearchList">
-              <SearchList Groups={Groups} users={activeSearch} func={handelCloseSearchBar} />
+              <SearchList
+                Groups={activeGroups}
+                users={activeSearch}
+                func={handelCloseSearchBar}
+              />
             </div>
           ) : null}
         </div>
       )}
-      
 
       {/* RIGHT ITEMS  */}
       {searchTerm ? (
@@ -269,7 +272,7 @@ export default function NavBar() {
                     style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
                     onClick={() => {
                       setIsReadAll(true);
-                
+
                       setShowNotificationBar(!ShowNotificationBar);
                     }}
                   />
@@ -293,9 +296,6 @@ export default function NavBar() {
           />
         </div>
       ) : null}
-
-
-
     </div>
   );
 }

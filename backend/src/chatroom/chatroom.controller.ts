@@ -155,9 +155,9 @@ export class ChatroomController {
 
   // search for all rooms exists
   @UseGuards(AtGuard)
-  @Get('getAllRooms')
-  async getChatRooms(@Query() query: SearchDto) {
-    return await this.chatroomService.getChatRooms(query);
+  @Get('getAllUnjoinedRooms')
+  async getChatRooms(@GetCurrentUser('userId') userId: string){
+    return await this.chatroomService.getAllUnjoinedRooms(userId);
   }
 
   //get curent user rooms

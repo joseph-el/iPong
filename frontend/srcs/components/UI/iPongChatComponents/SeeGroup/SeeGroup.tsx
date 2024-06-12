@@ -583,7 +583,7 @@ export default function SeeGroup(props) {
 
                       <ScrollShadow hideScrollBar className="h-[300px]">
                         {
-                          // Loop through the peopleData array to display each person
+
                           peopleData.map((person, index) => (
                             <PeopleListItem
                               key={index}
