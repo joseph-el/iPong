@@ -517,241 +517,163 @@ export class ChatroomService {
     });
     return { message: 'User is now an admin' };
   }
-
-  async kickMember(kickMemberDto: kickMemberDto, userId: string) {
-    // Check if the chatroom exists and get the owner ID
-    const chatRoom = await this.databaseservice.chatRoom.findUnique({
-      where: { id: kickMemberDto.roomId },
+  async kickMember(roomData: ChangeOwnerDto, userId: string) {
+    const room = await this.databaseservice.chatRoom.findUnique({
+      where: { id: roomData.roomId },
       select: { ownerId: true },
     });
-
-    // Return 404 if the chatroom does not exist
-    if (!chatRoom) {
-      throw new HttpException('Chatroom not found', 404);
-    }
-    // Check if the user trying to kick is an admin and not banned
     const user = await this.databaseservice.chatRoomMember.findUnique({
       where: {
+        unique_member_room: { memberID: userId, chatRoomId: roomData.roomId },
+      },
+    });
+    const member = await this.databaseservice.chatRoomMember.findUnique({
+      where: {
         unique_member_room: {
-          memberID: userId,
-          chatRoomId: kickMemberDto.roomId,
+          memberID: roomData.memberId,
+          chatRoomId: roomData.roomId,
         },
       },
-      select: { isAdmin: true, isBanned: true },
     });
-    // Return 404 if the user does not exist in the chatroom
-    if (!user) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the user is not an admin or is banned
-    if (!user.isAdmin || user.isBanned) {
-      throw new HttpException('You are not an admin', 401);
-    }
-
-    // Check if the user is the owner of the chatroom
-    if (chatRoom.ownerId !== userId) {
-      throw new HttpException('Not the owner of the chatroom', 401);
-    }
-    // Find the member to be kicked
-    const member = await this.databaseservice.chatRoomMember.findFirst({
+    if (!room) throw new HttpException('room not found', HttpStatus.NOT_FOUND);
+    if (!member)
+      throw new HttpException('member not found', HttpStatus.NOT_FOUND);
+    if (!user.isAdmin || user.isBanned)
+      throw new BadRequestException('You are not admin of this room');
+    if (member.memberID === room.ownerId)
+      throw new BadRequestException('You can not kick the owner of this room');
+    if (member.memberID === userId)
+      throw new BadRequestException('You can not kick yourself');
+    return await this.databaseservice.chatRoomMember.delete({
       where: {
-        chatRoomId: kickMemberDto.roomId,
-        memberID: kickMemberDto.memberId,
+        unique_member_room: {
+          memberID: roomData.memberId,
+          chatRoomId: roomData.roomId,
+        },
       },
-      select: { id: true, isAdmin: true, memberID: true },
     });
-    // Return 404 if the member does not exist in the chatroom
-    if (!member) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the member is the owner of the chatroom
-    if (chatRoom.ownerId === member.memberID) {
-      throw new HttpException('You cannot kick the owner', 400);
-    }
-    // Check if the member is an admin
-    if (member.isAdmin) {
-      throw new HttpException('You cannot kick an admin', 400);
-    }
-    // Remove the member from the chatroom
-    await this.databaseservice.chatRoomMember.delete({
-      where: { id: member.id },
-    });
-    return { message: 'User has been kicked' };
   }
 
-  async muteMember(muteMemberDto: kickMemberDto, userId: string) {
-    // Check if the chatroom exists and get the owner ID
-    const chatRoom = await this.databaseservice.chatRoom.findUnique({
-      where: { id: muteMemberDto.roomId },
-      select: { ownerId: true },
-    });
-
-    // Return 404 if the chatroom does not exist
-    if (!chatRoom) {
-      throw new HttpException('Chatroom not found', 404);
-    }
-    // Check if the user trying to kick is an admin and not banned
-    const user = await this.databaseservice.chatRoomMember.findUnique({
-      where: {
-        unique_member_room: {
-          memberID: userId,
-          chatRoomId: muteMemberDto.roomId,
+  async muteMember(roomData: ChangeOwnerDto, userId: string) {
+    const room = await this.databaseservice.chatRoom.findUnique({
+      where: { id: roomData.roomId },
+      select: {
+        ownerId: true,
+        members: {
+          where: {
+            OR: [
+              {
+                memberID: roomData.memberId,
+              },
+              {
+                memberID: userId,
+              },
+            ],
+          },
         },
       },
-      select: { isAdmin: true, isBanned: true },
     });
-    // Return 404 if the user does not exist in the chatroom
-    if (!user) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the user is not an admin or is banned
-    if (!user.isAdmin || user.isBanned) {
-      throw new HttpException('You are not an admin', 401);
-    }
-
-    // Check if the user is the owner of the chatroom
-    if (chatRoom.ownerId !== userId) {
-      throw new HttpException('Not the owner of the chatroom', 401);
-    }
-    // Find the member to be muted
-    const member = await this.databaseservice.chatRoomMember.findFirst({
+    //NOTE: check members content
+    const user = await this.databaseservice.chatRoomMember.findUnique({
+      where: { unique_member_room: { memberID: userId, chatRoomId: roomData.roomId } },
+    });
+    const member = await this.databaseservice.chatRoomMember.findUnique({
       where: {
-        chatRoomId: muteMemberDto.roomId,
-        memberID: muteMemberDto.memberId,
+        unique_member_room: {
+          memberID: roomData.memberId,
+          chatRoomId: roomData.roomId,
+        },
       },
-      select: { id: true, isMuted: true },
+      select: {
+        chatRoomId: true,
+        isMuted: true,
+        memberID: true,
+      },
     });
-    // Return 404 if the member does not exist in the chatroom
-    if (!member) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the member is already muted
-    if (member.isMuted) {
-      throw new HttpException('User is already muted', 400);
-    }
-    const muteExpitation = new Date(Date.now() + 5 * 60 * 1000);
-    // Mute the member
+    if (!room) throw new HttpException('room not found', HttpStatus.NOT_FOUND);
+    if (!member)
+      throw new HttpException('member not found', HttpStatus.NOT_FOUND);
+    if (!user.isAdmin || user.isBanned)
+      throw new BadRequestException('You are not admin of this room');
+    if (member.isMuted)
+      throw new BadRequestException('Member is already muted');
+    if (room.ownerId === roomData.memberId)
+      throw new BadRequestException('You cannot mute the owner');
+    if (member.memberID === userId)
+      throw new BadRequestException('You can not mute yourself');
+    const afterFiveMin = new Date(Date.now() + 5 * 60 * 1000);
     await this.databaseservice.chatRoomMember.update({
-      where: { id: member.id },
-      data: { isMuted: true, muted_exp: muteExpitation },
+      where: {
+        unique_member_room: {
+          memberID: roomData.memberId,
+          chatRoomId: roomData.roomId,
+        },
+      },
+      data: { isMuted: true, muted_exp: afterFiveMin },
     });
-    return { message: 'User has been muted' };
   }
-
-  async banMember(banMemberDto: kickMemberDto, userId: string) {
-    // Check if the chatroom exists and get the owner ID
-    const chatRoom = await this.databaseservice.chatRoom.findUnique({
-      where: { id: banMemberDto.roomId },
-      select: { ownerId: true },
-    });
-
-    // Return 404 if the chatroom does not exist
-    if (!chatRoom) {
-      throw new HttpException('Chatroom not found', 404);
-    }
-    // Check if the user trying to kick is an admin and not banned
+  async banMember(memberData: ChangeOwnerDto, userId: string) {
     const user = await this.databaseservice.chatRoomMember.findUnique({
       where: {
+        unique_member_room: { memberID: userId, chatRoomId: memberData.roomId },
+      },
+    });
+    const { ownerId } = await this.databaseservice.chatRoom.findUnique({
+      where: { id: memberData.roomId },
+    });
+
+    if (!user || !user.isAdmin || user.isBanned)
+      throw new BadRequestException('You are not the admin of this Room');
+    if (userId == memberData.memberId)
+      throw new BadRequestException('You cannot ban yourself');
+    if (ownerId == memberData.memberId)
+      throw new BadRequestException('You cannot ban the Owner of this Room');
+    await this.databaseservice.chatRoomMember.update({
+      where: {
         unique_member_room: {
-          memberID: userId,
-          chatRoomId: banMemberDto.roomId,
+          memberID: memberData.memberId,
+          chatRoomId: memberData.roomId,
         },
       },
-      select: { isAdmin: true, isBanned: true },
-    });
-    // Return 404 if the user does not exist in the chatroom
-    if (!user) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the user is not an admin or is banned
-    if (!user.isAdmin || user.isBanned) {
-      throw new HttpException('You are not an admin', 401);
-    }
-
-    // Check if the user is the owner of the chatroom
-    if (chatRoom.ownerId !== userId) {
-      throw new HttpException('Not the owner of the chatroom', 401);
-    }
-    // Find the member to be banned
-    const member = await this.databaseservice.chatRoomMember.findFirst({
-      where: {
-        chatRoomId: banMemberDto.roomId,
-        memberID: banMemberDto.memberId,
+      data: {
+        isBanned: true,
+        bannedAt: new Date(Date.now()),
       },
-      select: { id: true, isBanned: true },
     });
-    // Return 404 if the member does not exist in the chatroom
-    if (!member) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the member is already banned
-    if (member.isBanned) {
-      throw new HttpException('User is already banned', 400);
-    }
-    // Ban the member
-    await this.databaseservice.chatRoomMember.update({
-      where: { id: member.id },
-      data: { isBanned: true },
-    });
-    return { message: 'User has been banned' };
+    return { message: 'member banned successfully' };
   }
-
-  async unbanMember(banMemberDto: kickMemberDto, userId: string) {
-    // Check if the chatroom exists and get the owner ID
-    const chatRoom = await this.databaseservice.chatRoom.findUnique({
-      where: { id: banMemberDto.roomId },
-      select: { ownerId: true },
-    });
-
-    // Return 404 if the chatroom does not exist
-    if (!chatRoom) {
-      throw new HttpException('Chatroom not found', 404);
-    }
-    // Check if the user trying to kick is an admin and not banned
+  async unbanMember(memberData: ChangeOwnerDto, userId: string) {
     const user = await this.databaseservice.chatRoomMember.findUnique({
       where: {
+        unique_member_room: { memberID: userId, chatRoomId: memberData.roomId },
+      },
+    });
+    const member = await this.databaseservice.chatRoomMember.findUnique({
+      where: {
         unique_member_room: {
-          memberID: userId,
-          chatRoomId: banMemberDto.roomId,
+          memberID: memberData.memberId,
+          chatRoomId: memberData.roomId,
         },
       },
-      select: { isAdmin: true, isBanned: true },
     });
-    // Return 404 if the user does not exist in the chatroom
-    if (!user) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the user is not an admin or is banned
-    if (!user.isAdmin || user.isBanned) {
-      throw new HttpException('You are not an admin', 401);
-    }
-
-    // Check if the user is the owner of the chatroom
-    if (chatRoom.ownerId !== userId) {
-      throw new HttpException('Not the owner of the chatroom', 401);
-    }
-    // Find the member to be banned
-    const member = await this.databaseservice.chatRoomMember.findFirst({
-      where: {
-        chatRoomId: banMemberDto.roomId,
-        memberID: banMemberDto.memberId,
-      },
-      select: { id: true, isBanned: true },
-    });
-    // Return 404 if the member does not exist in the chatroom
-    if (!member) {
-      throw new HttpException('User not found', 404);
-    }
-    // Check if the member is already banned
-    if (!member.isBanned) {
-      throw new HttpException('User is not banned', 400);
-    }
-    // Ban the member
+    if (!member)
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    if (!member.isBanned)
+      throw new HttpException('member is not banned', HttpStatus.BAD_REQUEST);
+    if (!user.isAdmin)
+      throw new BadRequestException('You are not admin of this room');
     await this.databaseservice.chatRoomMember.update({
-      where: { id: member.id },
-      data: { isBanned: false },
+      where: {
+        unique_member_room: {
+          memberID: memberData.memberId,
+          chatRoomId: memberData.roomId,
+        },
+      },
+      data: {
+        isBanned: false,
+      },
     });
-    return { message: 'User has been unbanned' };
+    return { message: 'member unbanned successfully' };
   }
 
   async addMember(addMemberDto: addMemberDto, userId: string) {

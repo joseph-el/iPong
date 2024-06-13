@@ -14,10 +14,10 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
-import { OnEvent , EventEmitter2} from '@nestjs/event-emitter';
+import { OnEvent, EventEmitter2 } from '@nestjs/event-emitter';
 import { JoinRoomDto } from 'src/chatroom/dto/JoinRoom.dto';
 import { CreateChatroomDto } from 'src/chatroom/dto/create-chatroom.dto';
-
+import { MessageFormatDto } from 'src/messages/dto/msgFormat.dto';
 
 @WebSocketGateway({
   cors: {
@@ -41,6 +41,7 @@ export class GatewayChatGateway
   }
 
   private logger: Logger = new Logger('RoomGateway');
+
   afterInit(server: Server) {
     this.logger.log('Init');
   }
@@ -95,17 +96,13 @@ export class GatewayChatGateway
   }
 
   async handleDisconnect(client: Socket) {
-
     const userId = client.data.user.userId;
     console.log('client disconnected', userId);
     this.server.emit('friendOffline', userId);
   }
 
   @SubscribeMessage('createRoom')
-  async handleCreateRoom(
-    client: Socket,
-    data: CreateChatroomDto
-  ) {
+  async handleCreateRoom(client: Socket, data: CreateChatroomDto) {
     try {
       // Validate the data
       if (data.type === ChatRoomType.protected && !data.password) {
@@ -116,7 +113,10 @@ export class GatewayChatGateway
       }
 
       // Create the room
-      const newRoom = await this.ChatroomService.create(data, client.data.user.userId);
+      const newRoom = await this.ChatroomService.create(
+        data,
+        client.data.user.userId,
+      );
       if (!newRoom) {
         client.emit('error', { message: 'Error creating room' });
         return;
@@ -131,36 +131,40 @@ export class GatewayChatGateway
   }
 
   @SubscribeMessage('joinRoom')
-  async handleJoinRoomEvent(client: Socket, data: JoinRoomDto) {
-    try {
-      const userId = client.data.user?.sub;
+  async handleJoinRoomEvent(client: Socket, data: any) {
+    const userId = client.data.user.sub;
+    const member = await this.databaseService.chatRoomMember.findFirst({
+      where: {
+        memberID: data.memberId,
+        chatRoomId: data.roomId,
+      },
+    });
+    if (member && !member.isBanned && userId === data.memberId) {
+      client.join(`Room:${data.roomId}`);
+      console.log('joined room', data.roomId);
+    }
+  }
 
-      if (!userId) {
-        this.logger.error('User ID not found in client data');
-        client.emit('error', { message: 'User ID not found' });
-        return;
+  @OnEvent('sendMessages')
+  async sendMessage(
+    message: MessageFormatDto,
+    blockedRoomMembersIds?: string[],
+  ) {
+    const chanellname: string = `Room:${message.roomId}`;
+    if (!blockedRoomMembersIds) {
+      this.server.to(chanellname).emit('message', message);
+    } else {
+      const sockets = await this.server.in(chanellname).fetchSockets();
+      for await (const socket of sockets) {
+        if (!blockedRoomMembersIds.includes(socket.data.user.sub)) {
+          socket.emit('message', message);
+        } else {
+          socket.emit('message', {
+            ...message,
+            content: '[REDACTED]',
+          });
+        }
       }
-
-      const member = await this.databaseService.chatRoomMember.findFirst({
-        where: {
-          memberID: data.userId,
-          chatRoomId: data.roomId,
-        },
-      });
-
-      if (member && !member.isBanned && userId === data.userId) {
-        client.join(`Room:${data.roomId}`);
-        client.emit('joinedRoom', { roomId: data.roomId });
-        this.logger.log(`User ${userId} joined room ${data.roomId}`);
-      } else {
-        client.emit('error', { message: 'Not authorized to join the room' });
-        this.logger.warn(
-          `User ${userId} not authorized to join room ${data.roomId}`,
-        );
-      }
-    } catch (error) {
-      this.logger.error(`Error joining room: ${error.message}`);
-      client.emit('error', { message: 'Error joining room' });
     }
   }
 }
