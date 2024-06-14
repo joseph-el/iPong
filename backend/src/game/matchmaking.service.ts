@@ -131,7 +131,7 @@ export class MatchmakingService {
           if (this.matchedPlayersIds) {
             this.matchPlayers();
           }
-        }, 2000);
+        }, 9000);
       } else {
         throw new WsException(ERROR.SOCKET_NOT_FOUND);
       }
@@ -234,7 +234,7 @@ export class MatchmakingService {
         room.players.map((playerId) => {
           this.connectionService.updateUserStatus(playerId, UserStatus.IN_GAME);
         });
-      }, 5000);
+      }, 5500);
     } else {
       this.server.to(roomId).emit(SOCKET_EVENT.NOT_ENOUGH_PLAYERS, {
         reason: SOCKET_ERROR.NOT_ENOUGH_PLAYERS_ERR,
