@@ -36,7 +36,7 @@ export function LookingForMatch({ leaveMatchMaking, OpponentId}) {
         <Close ClassName="close-button" func={leaveMatchMaking} id="close" />
 
         <div className="User-Avatar">
-          <Avatar  isFocusable src={UserInfo.picture} alt="Avatar" className="avatar" />
+          <Avatar   isFocusable src={UserInfo.picture} alt="Avatar" className="avatar" />
           <div className="User-Name">{UserInfo.username}</div>
         </div>
 
