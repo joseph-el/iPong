@@ -33,6 +33,7 @@ import {
   setNotification,
 } from "../../state/Notifications/NotificationsSlice";
 import { getAvatarSrc } from "../../utils/getAvatarSrc";
+import { useSocket } from "../../context/SocketContext";
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
@@ -48,6 +49,7 @@ export default function NavBar() {
   );
   const [users, setUsers] = useState([]);
   const [isReadAll, setIsReadAll] = useState(false);
+  const { socket } = useSocket();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,8 +128,8 @@ export default function NavBar() {
     const matchedGroups = Groups.filter((group) =>
       group.roomName?.toLowerCase().includes(searchTerm)
     );
-    
-    console.log("In filter DONE >", matchedGroups)
+
+    console.log("In filter DONE >", matchedGroups);
     const matchedUsers = users
       .filter(
         (user) =>
@@ -153,62 +155,46 @@ export default function NavBar() {
     setShowNotificationBar(!ShowNotificationBar);
   };
 
-  let socket;
-  const accessToken = document?.cookie
-    ?.split("; ")
-    ?.find((row) => row.startsWith("access_token="))
-    ?.split("=")[1];
-
   const NotificationObject = useSelector(
     (state: RootState) => state.notification.notifications
   );
+
   useEffect(() => {
-    socket = io("http://localhost:3000/notifications", {
-      transports: ["websocket"],
-      auth: {
-        token: accessToken,
-      },
-    });
-    socket.on("connect", () => {
-      console.log("Connected to WebSocket server");
-    });
+    if (socket) {
+      socket.on("sendNotification", (data) => {
+        // TODO: check if the notification is already exist in the store
 
-    socket.on("sendNotification", (data) => {
-      // TODO: check if the notification is already exist in the store
+        const existingNotificationIndex = NotificationObject.findIndex(
+          (notification) =>
+            notification.entityType === data.entityType &&
+            notification.senderId === data.senderId
+        );
 
-      const existingNotificationIndex = NotificationObject.findIndex(
-        (notification) =>
-          notification.entityType === data.entityType &&
-          notification.senderId === data.senderId
-      );
+        if (existingNotificationIndex !== -1) {
+          const updatedNotifications = [...NotificationObject];
+          updatedNotifications.splice(existingNotificationIndex, 1);
+          dispatch(setNotification(updatedNotifications));
+        }
 
-      if (existingNotificationIndex !== -1) {
-        const updatedNotifications = [...NotificationObject];
-        updatedNotifications.splice(existingNotificationIndex, 1);
-        dispatch(setNotification(updatedNotifications));
-      }
+        dispatch(
+          addNotification({
+            NotificationId: data.id,
+            senderId: data.senderId,
+            receiverId: data.receiverId,
+            RoomId: data.roomId,
+            entityType: data.entityType,
+            createdAt: data.createdAt,
+          })
+        );
 
-      dispatch(
-        addNotification({
-          NotificationId: data.id,
-          senderId: data.senderId,
-          receiverId: data.receiverId,
-          RoomId: data.roomId,
-          entityType: data.entityType,
-          createdAt: data.createdAt,
-        })
-      );
+        dispatch(setNotificationCount(NotificationCount + 1));
+      });
+    }
 
-      dispatch(setNotificationCount(NotificationCount + 1));
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Disconnected from WebSocket server");
-    });
     return () => {
-      socket.disconnect();
+      socket?.off("notification");
     };
-  }, []);
+  }, [socket]);
 
   return (
     <div className="nav-bar">

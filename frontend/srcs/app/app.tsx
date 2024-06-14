@@ -28,6 +28,7 @@ import {
   setNotificationCount,
 } from "../state/Notifications/NotificationsSlice";
 import { AppDispatch } from "../state/store";
+import { SocketProvider } from "../context/SocketContext";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -199,7 +200,7 @@ const router = createBrowserRouter([
       },
       {
         path: "chat",
-        element: <IPongChat />,  // Component to render when no chatId is provided
+        element: <IPongChat />, // Component to render when no chatId is provided
       },
       {
         path: "chat/:chatId",
@@ -221,7 +222,9 @@ export default function App() {
   return (
     <>
       <ChakraProvider>
-        <RouterProvider router={router} />
+        <SocketProvider>
+          <RouterProvider router={router} />
+        </SocketProvider>
       </ChakraProvider>
     </>
   );

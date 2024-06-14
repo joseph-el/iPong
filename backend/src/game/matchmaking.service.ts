@@ -10,6 +10,7 @@ import { UserStatus } from './enums/user-status.enum';
 import { SOCKET_ERROR, SOCKET_EVENT } from './constants/socket.constants';
 import { ERROR } from './constants/errors.messages';
 import { RewardsUserService } from './rewards.service';
+import { InvitationService } from 'src/gateway-nofif/invitations.service';
 
 interface RoomData {
   players: string[];
@@ -23,12 +24,14 @@ export class MatchmakingService {
   private waitingPlayers: string[] = [];
   private runningRooms: Map<string, RoomData> = new Map();
   private matchedPlayersIds: string[] | null = [];
+  private invitedPlayersIds: string[] | null = [];
 
   constructor(
     private readonly connectionService: ConnectionService,
     private readonly database: DatabaseService,
     private readonly moduleRef: ModuleRef,
     private readonly rewardUserService: RewardsUserService,
+    private readonly invitationsService: InvitationService,
   ) {}
 
   setServer(server: Server) {
@@ -37,7 +40,6 @@ export class MatchmakingService {
 
   async addToQueue(player: Socket, playerId: string) {
     player.emit(SOCKET_EVENT.VERIFYING_STATUS);
-
     const playerStatus = this.connectionService.getUserStatus(playerId);
     if (playerStatus === undefined) {
       this.logger.error(`failed to get [${player.id}] status`);
@@ -129,9 +131,9 @@ export class MatchmakingService {
 
         setTimeout(() => {
           if (this.matchedPlayersIds) {
-            this.matchPlayers();
+            this.matchPlayers(false);
           }
-        }, 9000);
+        }, 10000);
       } else {
         throw new WsException(ERROR.SOCKET_NOT_FOUND);
       }
@@ -212,6 +214,83 @@ export class MatchmakingService {
     }
   }
 
+  /* Invitation Games */
+  async invitedGame(player: Socket, playerId: string, inviteId: string) {
+    this.connectionService.updateUserStatus(playerId, UserStatus.MATCHED);
+    player.emit(SOCKET_EVENT.UPDATING_USER_STATUS, {
+      status: UserStatus.MATCHED,
+    });
+    this.invitedPlayersIds.push(playerId);
+    if (this.invitedPlayersIds.length >= 2) {
+      const invitedPlayers = this.invitationsService.getInvite(inviteId);
+      this.invitationsService.removeInvite(inviteId);
+      const [player1Id, player2Id] = invitedPlayers;
+
+      const player1Socket = this.connectionService.getSocketByUserId(player1Id);
+      const player2Socket = this.connectionService.getSocketByUserId(player2Id);
+
+      const player1Data = await this.database.user.findUnique({
+        where: {
+          userId: player1Id,
+        },
+        select: {
+          username: true,
+          firstName: true,
+          lastName: true,
+        },
+      });
+
+      const player2Data = await this.database.user.findUnique({
+        where: {
+          userId: player2Id,
+        },
+        select: {
+          username: true,
+          firstName: true,
+          lastName: true,
+        },
+      });
+
+      if (player1Socket && player2Socket) {
+        const player1Skin = this.connectionService.getUserSkin(player1Id);
+        const player2Skin = this.connectionService.getUserSkin(player2Id);
+
+        player1Socket.emit(SOCKET_EVENT.UPDATING_USER_STATUS, {
+          status: UserStatus.WAITING_GAME,
+        });
+        player2Socket.emit(SOCKET_EVENT.UPDATING_USER_STATUS, {
+          status: UserStatus.WAITING_GAME,
+        });
+
+        player1Socket.emit(SOCKET_EVENT.USER_MATCHED, {
+          opponentId: player2Id,
+          opponentUserName: player2Data.username,
+          opponentSkinPath: player2Skin,
+        });
+        player2Socket.emit(SOCKET_EVENT.USER_MATCHED, {
+          opponentId: player1Id,
+          opponentUserName: player1Data.username,
+          opponentSkinPath: player1Skin,
+        });
+
+        this.connectionService.updateUserStatus(
+          player1Id,
+          UserStatus.WAITING_GAME,
+        );
+
+        this.connectionService.updateUserStatus(
+          player2Id,
+          UserStatus.WAITING_GAME,
+        );
+        this.matchPlayers(true);
+      } else {
+        throw new WsException(ERROR.SOCKET_NOT_FOUND);
+      }
+    } else {
+      this.logger.log(`${this.invitedPlayersIds.length} player(s) invited`);
+    }
+  }
+
   /* Private helper Methods */
   private emitErrorMessage(client: Socket, event: string, msg: string) {
     client.emit(event, { message: msg });
@@ -234,7 +313,7 @@ export class MatchmakingService {
         room.players.map((playerId) => {
           this.connectionService.updateUserStatus(playerId, UserStatus.IN_GAME);
         });
-      }, 5500);
+      }, 5000);
     } else {
       this.server.to(roomId).emit(SOCKET_EVENT.NOT_ENOUGH_PLAYERS, {
         reason: SOCKET_ERROR.NOT_ENOUGH_PLAYERS_ERR,
@@ -243,10 +322,15 @@ export class MatchmakingService {
     }
   }
 
-  private async matchPlayers() {
+  private async matchPlayers(isInvited: boolean) {
     let allPlayersConnected = true;
-    const players = this.matchedPlayersIds;
-
+    let players: string[];
+    if (isInvited) {
+      players = this.invitedPlayersIds;
+      this.invitedPlayersIds = [];
+    } else {
+      players = this.matchedPlayersIds;
+    }
     if (players && players.length >= 2) {
       const roomId = uuid();
       const game = await this.moduleRef.create(GameService);
@@ -318,6 +402,7 @@ export class MatchmakingService {
 
   private handleGameFinish(userId: string) {
     this.matchedPlayersIds = null;
+    this.invitedPlayersIds = [];
     const roomId = this.findRoomByPlayerId(userId);
     if (roomId) {
       this.runningRooms.delete(roomId);
@@ -358,6 +443,7 @@ export class MatchmakingService {
         }
         this.connectionService.updateUserStatus(userId, UserStatus.ONLINE);
         this.matchedPlayersIds = null;
+        this.invitedPlayersIds = [];
         this.runningRooms.delete(roomId);
         return;
       }
@@ -383,6 +469,7 @@ export class MatchmakingService {
         });
       }
       this.matchedPlayersIds = null;
+      this.invitedPlayersIds = [];
     }
   }
 
