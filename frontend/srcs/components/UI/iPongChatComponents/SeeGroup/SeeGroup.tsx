@@ -51,15 +51,21 @@ import api from "../../../../api/posts";
 import { useDispatch } from "react-redux";
 import { setGroupSetting } from "../../../../state/iPongChatState/iPongChatState";
 
-const PeopleListItem = (props) => {
+const PeopleListItem = ({ Members, MyId }) => {
+  console.log("Members: |", Members, "|");
+  console.log("MyId: |", MyId, "|");
+  if (Members.UserId === MyId)
+     return null;
   return (
     <div className="PeopleListItem-frame">
       <div className="User-info-details">
-        <img src={props.avatarLink} alt="user-avatar" className="User-avatar" />
+        <img src={Members.Avatar} alt="user-avatar" className="User-avatar" />
 
         <div className="User-infos">
-          <div className="User-fullname">{props.name}</div>
-          <div className="User-description">{props.description}</div>
+          <div className="User-fullname">{Members.Name}</div>
+          <div className="User-description">
+            {Members.IsAdmin ? "Admin" : "Member"}
+          </div>
         </div>
       </div>
 
@@ -73,20 +79,33 @@ const PeopleListItem = (props) => {
                 className="options-icon"
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Static Actions">
-              <DropdownItem className="invite-People-list-text" key="new">
-                Remove member
-              </DropdownItem>
-              <DropdownItem className="invite-People-list-text" key="copy">
-                Mute
-              </DropdownItem>
-              <DropdownItem className="invite-People-list-text" key="copy">
-                View profile
-              </DropdownItem>
-              <DropdownItem className="invite-People-list-text" key="copy">
-                Make admin
-              </DropdownItem>
-            </DropdownMenu>
+            {Members.IsAdmin === true && (
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem className="invite-People-list-text" key="new">
+                  Remove member
+                </DropdownItem>
+                <DropdownItem className="invite-People-list-text" key="copy">
+                  Mute member
+                </DropdownItem>
+                <DropdownItem className="invite-People-list-text" key="copy">
+                  Make admin
+                </DropdownItem>
+                <DropdownItem className="invite-People-list-text" key="copy">
+                  Ban member
+                </DropdownItem>
+
+                <DropdownItem className="invite-People-list-text" key="copy">
+                  View profile
+                </DropdownItem>
+              </DropdownMenu>
+            )}
+            {Members.IsAdmin === false && (
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem className="invite-People-list-text" key="copy">
+                  View profile
+                </DropdownItem>
+              </DropdownMenu>
+            )}
           </Dropdown>
         </div>
       </div>
@@ -121,7 +140,6 @@ const EditGroup = (props) => {
 
     // setIsReady(true);
   };
-
 
   // POST Group Setting  TODO:
   useEffect(() => {
@@ -293,183 +311,63 @@ export default function SeeGroup(props) {
     (state: RootState) =>
       state.iPongChat.ListMessages.find((message) => message.isSelect) || null
   );
+  const UserId = useSelector((state: RootState) => state.userState.id);
 
   const handleOpen = (UserAction) => {
     setUserOptions(UserAction);
     onOpen();
   };
 
-  const peopleData = [
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    {
-      name: "Mohamed Tnaceur",
-      description: "Group Creator",
-      Action: "Admin",
-      avatarLink:
-        "https://scontent.fcmn1-4.fna.fbcdn.net/v/t39.30808-1/339611735_167510069527361_5070464427509086504_n.jpg?stp=cp6_dst-jpg_p480x480&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFKAeXcjtV0nxSVEASLoDtqpAuQvVafDmykC5C9Vp8ObEwMjo1-lo9yOFWCMCkXLEhBBrWAQonf79ewK7IccXMw&_nc_ohc=rbjyJsDHv14Q7kNvgHWhwr6&_nc_ht=scontent.fcmn1-4.fna&oh=00_AYAFBFgZ4i72WErMAAKqJR97MHvWIQBbWUvqYGzpC1Qhqw&oe=666DFD2E",
-    },
-    // Add more objects here if you want different data for each person
-  ];
-
   // TODO: Get Friends List from the server And List Group Members and filter the friends that are not in the group
   const [filteredUsers, setFilteredUsers] = useState([]);
-  useEffect(() => {
-    const fetchUsers = async () => {};
 
-    // fetchUsers();
+  /*
+isAdmin
+: 
+true
+isBanned
+: 
+false
+isMuted
+: 
+false
+joinedAt
+: 
+"2024-06-12T14:08:13.192Z"
+member
+: 
+{userId: '66a1feef-4fce-48cf-99da-475a7dfaa6f7', email: 'mmounaji@student.1337.ma', username: 'mmounaji', intraId: '115443', online: false, …}
+muted_exp
+: 
+null
+  */
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get(
+          `/chatroom/${selectedMessage?.id}/members`
+        );
+        console.log("Room members:> ", response.data);
+        const Members = response.data.map((member) => {
+          return {
+            IsAdmin: member.isAdmin,
+            IsMuted: member.isMuted,
+            IsBanned: member.isBanned,
+            Email: member.member.email,
+            Name: member.member.firstName + " " + member.member.lastName,
+            Avatar: member.member.avatar,
+            UserId: member.member.userId,
+            Username: member.member.username,
+          };
+        });
+        console.log("Members:>>>>>> ", Members);
+        setFilteredUsers(Members);
+      } catch (err) {
+        console.error("can`t get members> ", err);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   return (
@@ -582,18 +480,9 @@ export default function SeeGroup(props) {
                       </div>
 
                       <ScrollShadow hideScrollBar className="h-[300px]">
-                        {
-
-                          peopleData.map((person, index) => (
-                            <PeopleListItem
-                              key={index}
-                              name={person.name}
-                              description={person.description}
-                              Action={person.Action}
-                              avatarLink={person.avatarLink}
-                            />
-                          ))
-                        }
+                        {filteredUsers.map((person, index) => (
+                          <PeopleListItem Members={person} MyId={UserId} />
+                        ))}
                       </ScrollShadow>
                     </div>
                   </div>
