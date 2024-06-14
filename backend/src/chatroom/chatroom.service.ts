@@ -1,5 +1,5 @@
 import { CreateMessageDto } from './../messages/dto/create-message.dto';
-import {NotificationType } from '@prisma/client';
+import { NotificationType } from '@prisma/client';
 import { UsersService } from './../users/users.service';
 import { UserProfileService } from './../user-profile/user-profile.service';
 import {
@@ -254,73 +254,71 @@ export class ChatroomService {
   }
 
   async join(joinChatroomDto: JoinRoomDto) {
-    // Find chatroom
-    console.log('object:TnFROM xwcqscqscqscqsc FRONT END>> ', joinChatroomDto.inviterId);
-    const chatroom = await this.databaseservice.chatRoom.findUnique({
-      where: {
-        id: joinChatroomDto.roomId,
-      },
-    });
+    try {
+      const chatroom = await this.databaseservice.chatRoom.findUnique({
+        where: { id: joinChatroomDto.roomId },
+      });
 
-    const isInviterIsAdmin =
-      await this.databaseservice.chatRoomMember.findFirst({
+      if (!chatroom) {
+        throw new HttpException('Chatroom not found', 404);
+      }
+
+      if (joinChatroomDto.inviterId) {
+        const isInviterIsAdmin =
+          await this.databaseservice.chatRoomMember.findFirst({
+            where: {
+              chatRoomId: joinChatroomDto.roomId,
+              memberID: joinChatroomDto.inviterId,
+              isAdmin: true,
+            },
+          });
+
+        if (!isInviterIsAdmin) {
+          throw new HttpException(
+            'Inviter is not an admin of the chatroom',
+            401,
+          );
+        }
+      } else {
+        if (
+          chatroom.type === ChatRoomType.protected &&
+          !joinChatroomDto.password
+        ) {
+          throw new HttpException('Password is required to join', 400);
+        }
+
+        if (chatroom.type === ChatRoomType.protected) {
+          const isMatch = await bcrypt.compare(
+            joinChatroomDto.password,
+            chatroom.password,
+          );
+          if (!isMatch) {
+            throw new HttpException('Invalid password', 401);
+          }
+        }
+      }
+
+      const member = await this.databaseservice.chatRoomMember.findFirst({
         where: {
-          chatRoomId: joinChatroomDto.roomId,
-          memberID: joinChatroomDto.inviterId,
-          isAdmin: true,
+          chatRoomId: chatroom.id,
+          memberID: joinChatroomDto.userId,
+        },
+      });
+      if (member) {
+        throw new HttpException('Already a member of the chatroom', 400);
+      }
+
+      await this.databaseservice.chatRoomMember.create({
+        data: {
+          member: { connect: { userId: joinChatroomDto.userId } },
+          ChatRoom: { connect: { id: chatroom.id } },
         },
       });
 
-      console.log('isInviterIsAdmin: ', isInviterIsAdmin);
-    if (chatroom.type === ChatRoomType.private && !isInviterIsAdmin) {
-      return new HttpException('the chatroom is private', 401);
+      return { message: `${joinChatroomDto.userId} joined the chatroom` };
+    } catch (error) {
+      throw error;
     }
-    // Check if chatroom exists
-    if (!chatroom) {
-      return new HttpException('Chatroom not found', 404);
-    }
-    
-    // Check if chatroom is protected
-    if (chatroom.type === ChatRoomType.protected && joinChatroomDto.inviterId == undefined) {
-      // Check if password is provided
-      if (!joinChatroomDto.password) {
-        return new HttpException('Password is required', 400);
-      }
-      // Compare password
-      const isMatch = await bcrypt.compare(
-        joinChatroomDto.password,
-        chatroom.password,
-      );
-
-      if (!isMatch) {
-        return new HttpException('Invalid password', 401);
-      }
-    }
-    // Check if user is already a member of the chatroom
-    const member = await this.databaseservice.chatRoomMember.findFirst({
-      where: {
-        chatRoomId: chatroom.id,
-        memberID: joinChatroomDto.userId,
-      },
-    });
-    if (member) {
-      return new HttpException('Already a member of the chatroom', 400);
-    }
-
-    // Create chatroom member
-    await this.databaseservice.chatRoomMember.create({
-      data: {
-        member: {
-          connect: { userId: joinChatroomDto.userId },
-        },
-        ChatRoom: {
-          connect: { id: chatroom.id },
-        },
-      },
-    });
-
-    // Return details of the chatroom
-    return { message: `${joinChatroomDto.userId} Joined the chatroom` };
   }
 
   async getRoomDetails(roomId: string) {
@@ -899,17 +897,19 @@ export class ChatroomService {
       },
     });
 
-    return Promise.all(members.map(async (member) => {
-    const userData = await this.usersService.getUserById(member.memberID);
-    return {
-      isAdmin: member.isAdmin,
-      isBanned: member.isBanned,
-      isMuted: member.isMuted,
-      muted_exp: member.muted_exp,
-      joinedAt: member.createdAt,
-      member: userData,
-    };
-  }));
+    return Promise.all(
+      members.map(async (member) => {
+        const userData = await this.usersService.getUserById(member.memberID);
+        return {
+          isAdmin: member.isAdmin,
+          isBanned: member.isBanned,
+          isMuted: member.isMuted,
+          muted_exp: member.muted_exp,
+          joinedAt: member.createdAt,
+          member: userData,
+        };
+      }),
+    );
   }
 
   async update(updateRoomDto: UpdateRoomDto, userId: string) {
