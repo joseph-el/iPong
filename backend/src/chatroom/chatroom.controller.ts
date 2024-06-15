@@ -105,6 +105,8 @@ export class ChatroomController {
     @Body() kickMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
+
+    console.log('object: kickMemberDto >> ', kickMemberDto);
     return this.chatroomService.kickMember(kickMemberDto, userId);
   }
 
@@ -201,6 +203,8 @@ export class ChatroomController {
     @Body() updateChatroomDto: UpdateRoomDto,
     @GetCurrentUser('userId') userId: string,
   ) {
+
+    console.log('object updateChatroomDto :>> ', updateChatroomDto);
     return this.chatroomService.update(updateChatroomDto, userId);
   }
 }
