@@ -50,12 +50,37 @@ import { RootState } from "../../../../state/store";
 import api from "../../../../api/posts";
 import { useDispatch } from "react-redux";
 import { setGroupSetting } from "../../../../state/iPongChatState/iPongChatState";
+import { useNavigate } from "react-router-dom";
+import { set } from "lodash";
 
-const PeopleListItem = ({ Members, MyId }) => {
-  console.log("Members: |", Members, "|");
-  console.log("MyId: |", MyId, "|");
-  if (Members.UserId === MyId)
-     return null;
+const PeopleListItem = ({ Members, MyId, RoomId }) => {
+  const navigate = useNavigate();
+
+  if (Members.UserId === MyId) return null;
+
+  const [ActionType, setActionType] = useState<String | null>(null);
+
+  useEffect(() => {
+    const PostActions = async () => {
+      try {
+
+        console.log("ActionType: ", ActionType);
+        console.log("Members.UserId: ", Members.UserId);
+        console.log("RoomId: ", RoomId);
+        const response = await api.post(`/chatroom/kickMember`, {
+          memberId: Members.UserId,
+          roomId: RoomId,
+        });
+
+        console.log("response in PostActions: ", response);
+      } catch (error) {
+        console.log("error in PostActions: ", error);
+      }
+      setActionType(null);
+    };
+    ActionType != null && PostActions();
+  }, [ActionType]);
+
   return (
     <div className="PeopleListItem-frame">
       <div className="User-info-details">
@@ -79,9 +104,14 @@ const PeopleListItem = ({ Members, MyId }) => {
                 className="options-icon"
               />
             </DropdownTrigger>
+
             {Members.IsAdmin === true && (
               <DropdownMenu aria-label="Static Actions">
-                <DropdownItem className="invite-People-list-text" key="new">
+                <DropdownItem
+                  className="invite-People-list-text"
+                  key="new"
+                  onClick={() => setActionType("kickMember")}
+                >
                   Remove member
                 </DropdownItem>
                 <DropdownItem className="invite-People-list-text" key="copy">
@@ -94,7 +124,11 @@ const PeopleListItem = ({ Members, MyId }) => {
                   Ban member
                 </DropdownItem>
 
-                <DropdownItem className="invite-People-list-text" key="copy">
+                <DropdownItem
+                  className="invite-People-list-text"
+                  key="copy"
+                  onClick={() => navigate(`/ipong/users/${Members.UserId}`)}
+                >
                   View profile
                 </DropdownItem>
               </DropdownMenu>
@@ -120,31 +154,90 @@ const EditGroup = (props) => {
   const [selectedAvatar, setSelectedAvatar] = useState(
     props.selectedMessage.avatar
   );
+
   const [AvatarFile, setAvatarFile] = useState(null);
   const [error, setError] = useState("");
+  const [AvatarRrror, setAvatarError] = useState("");
 
-  const [GroupName, setGroupName] = useState("");
-  const [GroupType, setGroupType] = React.useState<Selection>(new Set([]));
+  const [GroupName, setGroupName] = useState(props.selectedMessage.fullname);
+  const [GroupType, setGroupType] = React.useState<Selection>(
+    new Set([props.selectedMessage.type])
+  );
+
   const [GroupPassword, setGroupPassword] = useState("");
   const [IsReady, setIsReady] = useState(false);
+
+  const [GroupNameIsInvalid, setGroupNameIsInvalid] = useState(false);
+  const [GroupTypeIsInvalid, setGroupTypeIsInvalid] = useState(false);
+  const [GroupPasswordIsInvalid, setGroupPasswordIsInvalid] = useState(false);
 
   const displayGroupType = Array.from(GroupType).join(", ");
 
   const handelSubmitData = () => {
-    // TODO: check validation
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    setAvatarError("");
 
-    console.log("Group Name:", GroupName);
-    console.log("Group Type:", displayGroupType);
-    console.log("Group Password:", GroupPassword);
-    // console.log("Avatar File:", AvatarFile);
+    if (GroupName === "") {
+      setError("Group Name is required");
+      setGroupNameIsInvalid(true);
+      return;
+    }
+    if (nameRegex.test(GroupName) === false || GroupName.length < 3) {
+      setError(
+        GroupName.length < 3 ? "Group Name is too short" : "Invalid Group Name"
+      );
+      setGroupNameIsInvalid(true);
+      return;
+    }
 
-    // setIsReady(true);
+    if (GroupType.size === 0) {
+      setError("Group Type is required");
+      setGroupTypeIsInvalid(true);
+      return;
+    }
+    if (GroupPassword === "" && displayGroupType === "protected") {
+      setError("Group Password is required");
+      setGroupPasswordIsInvalid(true);
+      return;
+    }
+    if (GroupPassword.length < 6 && displayGroupType === "protected") {
+      setError("Group Password is too short");
+      setGroupPasswordIsInvalid(true);
+      return;
+    }
+
+    setIsReady(true);
   };
 
-  // POST Group Setting  TODO:
   useEffect(() => {
     const PostGroupSetting = async () => {
       try {
+        if (AvatarFile !== null) {
+          const formDataAvatar = new FormData();
+          formDataAvatar.append("file", AvatarFile!);
+          try {
+            const response = await api.post(
+              `chatroom/rooomIcon/${props.selectedMessage.id}`,
+
+              formDataAvatar,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+            console.log("response upload avatar :", response);
+          } catch (error) {
+            console.log("error upload avatar :", error);
+          }
+        }
+        const response = await api.post("/chatroom/update", {
+          roomName: GroupName,
+          type: displayGroupType,
+          roomId: props.selectedMessage.id,
+          password: GroupPassword,
+        });
+        props.onClose();
       } catch (error) {}
     };
     IsReady && PostGroupSetting();
@@ -155,7 +248,7 @@ const EditGroup = (props) => {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      setError("File size should not exceed 2MB");
+      setAvatarError("File size should not exceed 2MB");
       return;
     }
     const reader = new FileReader();
@@ -163,9 +256,9 @@ const EditGroup = (props) => {
       const image = new Image();
       image.onload = () => {
         if (image.width < 50 || image.height < 50) {
-          setError("Avatar image should be at least 50x50 pixels");
+          setAvatarError("Avatar image should be at least 50x50 pixels");
         } else {
-          setError("");
+          setAvatarError("");
           setAvatarFile(file);
           setSelectedAvatar(reader.result);
         }
@@ -214,14 +307,22 @@ const EditGroup = (props) => {
                       onChange={(event) => handleImageChange(event)}
                     />
 
-                    {error != "" && (
+                    {AvatarRrror != "" && (
                       <p className="text-default-500 text-small">{error}</p>
                     )}
 
                     <div className="edit-Group-Name">
                       <Input
+                        isInvalid={GroupNameIsInvalid}
+                        placeholder="Enter Group Name"
+                        errorMessage={error}
                         label="Group Name"
                         onChange={(e) => {
+                          if (GroupNameIsInvalid) {
+                            setGroupNameIsInvalid(false);
+                            setGroupTypeIsInvalid(false);
+                            setGroupPasswordIsInvalid(false);
+                          }
                           setGroupName(e.target.value);
                         }}
                         defaultValue={props.selectedMessage.fullname}
@@ -235,8 +336,17 @@ const EditGroup = (props) => {
                       Private & Security
                     </div>
                     <Select
+                      isInvalid={GroupTypeIsInvalid}
+                      errorMessage={error}
                       selectedKeys={GroupType}
                       className="max-w-xs"
+                      onClick={() => {
+                        if (GroupTypeIsInvalid) {
+                          setGroupNameIsInvalid(false);
+                          setGroupTypeIsInvalid(false);
+                          setGroupPasswordIsInvalid(false);
+                        }
+                      }}
                       onSelectionChange={setGroupType}
                       label="Group Type"
                       placeholder="Select Group Type"
@@ -260,8 +370,16 @@ const EditGroup = (props) => {
 
                     <Input
                       label="Group password"
-                      defaultValue={"tnaceur123"}
+                      isInvalid={GroupPasswordIsInvalid}
+                      errorMessage={error}
+                      defaultValue={GroupPassword}
+                      placeholder="Enter Group Password"
                       onChange={(e) => {
+                        if (GroupPasswordIsInvalid) {
+                          setGroupNameIsInvalid(false);
+                          setGroupTypeIsInvalid(false);
+                          setGroupPasswordIsInvalid(false);
+                        }
                         setGroupPassword(e.target.value);
                       }}
                       isDisabled={
@@ -318,29 +436,7 @@ export default function SeeGroup(props) {
     onOpen();
   };
 
-  // TODO: Get Friends List from the server And List Group Members and filter the friends that are not in the group
   const [filteredUsers, setFilteredUsers] = useState([]);
-
-  /*
-isAdmin
-: 
-true
-isBanned
-: 
-false
-isMuted
-: 
-false
-joinedAt
-: 
-"2024-06-12T14:08:13.192Z"
-member
-: 
-{userId: '66a1feef-4fce-48cf-99da-475a7dfaa6f7', email: 'mmounaji@student.1337.ma', username: 'mmounaji', intraId: '115443', online: false, …}
-muted_exp
-: 
-null
-  */
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -480,8 +576,8 @@ null
                       </div>
 
                       <ScrollShadow hideScrollBar className="h-[300px]">
-                        {filteredUsers.map((person, index) => (
-                          <PeopleListItem Members={person} MyId={UserId} />
+                        {filteredUsers.map((person) => (
+                          <PeopleListItem Members={person} MyId={UserId} RoomId={selectedMessage?.id} />
                         ))}
                       </ScrollShadow>
                     </div>
