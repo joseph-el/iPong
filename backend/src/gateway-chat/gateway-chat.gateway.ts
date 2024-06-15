@@ -131,31 +131,6 @@ export class GatewayChatGateway
   @SubscribeMessage('joinRoom')
   async handleJoinRoomEvent(client: Socket, data: any) {
     const userId = client.data.user.sub;
-    const isMuted = await this.databaseService.chatRoomMember.findFirst({
-      where: {
-        memberID: data.memberId,
-        chatRoomId: data.roomId,
-        isMuted: true,
-      },
-    });
-    if (isMuted) {
-      const now = new Date();
-      if (isMuted.muted_exp < now) {
-        return;
-      }
-      await this.databaseService.chatRoomMember.update({
-        where: {
-          unique_member_room: {
-            chatRoomId: data.roomId,
-            memberID: data.memberId,
-          },
-        },
-        data: {
-          muted_exp: null,
-          isMuted: false,
-        },
-      });
-    }
     const member = await this.databaseService.chatRoomMember.findFirst({
       where: {
         memberID: data.memberId,
@@ -173,31 +148,6 @@ export class GatewayChatGateway
     message: MessageFormatDto,
     blockedRoomMembersIds?: string[],
   ) {
-    const isMuted = await this.databaseService.chatRoomMember.findFirst({
-      where: {
-        memberID: message.authorId,
-        chatRoomId: message.roomId,
-        isMuted: true,
-      },
-    });
-    if (isMuted) {
-      const now = new Date();
-      if (isMuted.muted_exp < now) {
-        return;
-      }
-      await this.databaseService.chatRoomMember.update({
-        where: {
-          unique_member_room: {
-            chatRoomId: message.roomId,
-            memberID: message.authorId,
-          },
-        },
-        data: {
-          muted_exp: null,
-          isMuted: false,
-        },
-      });
-    }
     const chanellname: string = `Room:${message.roomId}`;
     if (!blockedRoomMembersIds) {
       this.server.to(chanellname).emit('message', message);
