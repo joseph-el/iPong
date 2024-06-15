@@ -112,12 +112,20 @@ export default function CreatGroupChat(props) {
           console.log("error upload avatar :", error);
         }
 
-        try {
-          const response2 = await api.post(`chatroom/invite/${testID}/${NewRoom}`);
-          console.log("invite:: ", response2.data)
-        } catch (error) {
-          console.log("error add members :", error);
-        }
+
+
+
+        GroupMembers.forEach(async (member) => {
+
+          try {
+            const response2 = await api.post(`chatroom/invite/${testID}/${NewRoom}`);
+            console.log("invite:: ", response2.data)
+          } catch (error) {
+            console.log("error add members :", error);
+          }
+
+
+        });
       } catch (error) {}
     };
     ReadyToSubmit && fetchReadyToSubmit();
