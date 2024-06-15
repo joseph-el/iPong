@@ -63,9 +63,7 @@ export class ChatroomController {
   }
   @UseGuards(AtGuard)
   @Post('join')
-  async join(
-    @Body() joinChatroomDto: JoinRoomDto,
-  ) {
+  async join(@Body() joinChatroomDto: JoinRoomDto) {
     console.log('object:TnFROM FRONT END>> ', joinChatroomDto);
     return await this.chatroomService.join(joinChatroomDto);
   }
@@ -125,7 +123,23 @@ export class ChatroomController {
   ) {
     return await this.chatroomService.muteMember(muteMemberDto, userId);
   }
-
+  @UseGuards(AtGuard)
+  @Get('isMuted/:roomId/:memberId')
+  async isMuted(
+    @Param('roomId') roomId: string,
+    @Param('memberId') memberId: string,
+  ) {
+    return await this.chatroomService.isMuted(roomId, memberId);
+  }
+  @UseGuards(AtGuard)
+  @Patch('unmuteMember')
+  async unmuteMember(
+    @Body() muteMemberDto: kickMemberDto,
+    @GetCurrentUser('userId') userId: string,
+  ) {
+    return await this.chatroomService.unmuteMember(muteMemberDto, userId);
+  }
+    
   @UseGuards(AtGuard)
   @Post('banMember')
   async banMember(
@@ -156,7 +170,7 @@ export class ChatroomController {
   // search for all rooms exists
   @UseGuards(AtGuard)
   @Get('getAllUnjoinedRooms')
-  async getChatRooms(@GetCurrentUser('userId') userId: string){
+  async getChatRooms(@GetCurrentUser('userId') userId: string) {
     return await this.chatroomService.getAllUnjoinedRooms(userId);
   }
 
@@ -193,8 +207,8 @@ export class ChatroomController {
   @Get('roomDetails/:roomId')
   async getRoomDetails(@Param('roomId') roomId: string) {
     return await this.chatroomService.getRoomDetails(roomId);
-  } 
-    
+  }
+
   @UseGuards(AtGuard)
   @Post('update')
   async update(
