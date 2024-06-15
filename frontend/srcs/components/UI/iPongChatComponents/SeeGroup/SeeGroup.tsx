@@ -53,7 +53,7 @@ import { setGroupSetting } from "../../../../state/iPongChatState/iPongChatState
 import { useNavigate } from "react-router-dom";
 import { set } from "lodash";
 
-const PeopleListItem = ({ Members, MyId, RoomId }) => {
+const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
   const navigate = useNavigate();
 
   if (Members.UserId === MyId) return null;
@@ -63,11 +63,11 @@ const PeopleListItem = ({ Members, MyId, RoomId }) => {
   useEffect(() => {
     const PostActions = async () => {
       try {
-
         console.log("ActionType: ", ActionType);
         console.log("Members.UserId: ", Members.UserId);
         console.log("RoomId: ", RoomId);
-        const response = await api.post(`/chatroom/kickMember`, {
+
+        const response = await api.post(`/chatroom/${ActionType}`, {
           memberId: Members.UserId,
           roomId: RoomId,
         });
@@ -105,7 +105,7 @@ const PeopleListItem = ({ Members, MyId, RoomId }) => {
               />
             </DropdownTrigger>
 
-            {Members.IsAdmin === true && (
+            {IsAdmin && (
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem
                   className="invite-People-list-text"
@@ -133,7 +133,7 @@ const PeopleListItem = ({ Members, MyId, RoomId }) => {
                 </DropdownItem>
               </DropdownMenu>
             )}
-            {Members.IsAdmin === false && (
+            {!IsAdmin && (
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem className="invite-People-list-text" key="copy">
                   View profile
@@ -437,6 +437,7 @@ export default function SeeGroup(props) {
   };
 
   const [filteredUsers, setFilteredUsers] = useState([]);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -465,6 +466,10 @@ export default function SeeGroup(props) {
 
     fetchUsers();
   }, []);
+
+  const IsAdmin = filteredUsers.find((member) => {
+    return member.UserId === UserId && member.IsAdmin === true;
+  });
 
   return (
     <div
@@ -509,25 +514,27 @@ export default function SeeGroup(props) {
                     id="close"
                   />
 
-                  <div
-                    className="Customize-chat"
-                    onClick={() => {
-                      // dispatch(setGroupSetting(!ShowGroupChatSettings));
-                      setEditProfileState(true);
-                    }}
-                  >
-                    <div className="Customize-chat-title">Customize Chat</div>
-                    <div className="Customize-chat-button">
-                      <div className="Customize-chat-button-text">
-                        Change Name and Photo
+                  {IsAdmin && (
+                    <div
+                      className="Customize-chat"
+                      onClick={() => {
+                        // dispatch(setGroupSetting(!ShowGroupChatSettings));
+                        setEditProfileState(true);
+                      }}
+                    >
+                      <div className="Customize-chat-title">Customize Chat</div>
+                      <div className="Customize-chat-button">
+                        <div className="Customize-chat-button-text">
+                          Change Name and Photo
+                        </div>
+                        <img
+                          src={EditIcon}
+                          alt="Customize-chat-icon"
+                          className=""
+                        />
                       </div>
-                      <img
-                        src={EditIcon}
-                        alt="Customize-chat-icon"
-                        className=""
-                      />
                     </div>
-                  </div>
+                  )}
 
                   <div className="People-List">
                     <div className="PeopleList-title">People</div>
@@ -577,7 +584,12 @@ export default function SeeGroup(props) {
 
                       <ScrollShadow hideScrollBar className="h-[300px]">
                         {filteredUsers.map((person) => (
-                          <PeopleListItem Members={person} MyId={UserId} RoomId={selectedMessage?.id} />
+                          <PeopleListItem
+                            Members={person}
+                            MyId={UserId}
+                            RoomId={selectedMessage?.id}
+                            IsAdmin={IsAdmin}
+                          />
                         ))}
                       </ScrollShadow>
                     </div>
