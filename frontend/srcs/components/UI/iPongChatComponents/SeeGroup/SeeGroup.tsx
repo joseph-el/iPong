@@ -471,6 +471,41 @@ export default function SeeGroup(props) {
     return member.UserId === UserId && member.IsAdmin === true;
   });
 
+
+  const [FriendsList, setFriendsList] = useState([]);
+
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get(`/friendship/`);
+
+        const friendsList = response.data.map((friend, index) => {
+          return {
+            userId: friend.userId,
+            id: index,
+            name: friend.firstName + " " + friend.lastName,
+            avatar: friend.avatar,
+            username: friend.uername,
+            email: friend.email,
+          };
+        });
+        setFriendsList(friendsList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+
+
+  const FriendsNotInRoom = FriendsList.filter((friend) => {
+    return !filteredUsers.find((member) => member.UserId === friend.userId);
+  });
+
+
+
   return (
     <div
       className={
@@ -542,7 +577,7 @@ export default function SeeGroup(props) {
                     <div className="peopleContent">
                       <div className="invite-People">
                         <Select
-                          items={users} // TODO: set Users by List Firends and not alearady in the group
+                          items={FriendsNotInRoom} // TODO: set Users by List Firends and not alearady in the group
                           placeholder="Add People..."
                           labelPlacement="outside"
                           className="max-w-xs invite-People-list"
@@ -552,7 +587,10 @@ export default function SeeGroup(props) {
                               key={user.id}
                               textValue={"Add People..."}
                             >
-                              <div className="flex gap-2 items-center">
+                              <div className="flex gap-2 items-center"
+                              
+                              
+                              >
                                 <Avatar
                                   alt={user.name}
                                   className="flex-shrink-0"
