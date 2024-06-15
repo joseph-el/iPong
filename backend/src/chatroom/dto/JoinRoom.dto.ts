@@ -7,8 +7,6 @@ export class JoinRoomDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  @Length(8, 32)
   password?: string;
 
   @IsString()

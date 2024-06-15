@@ -33,13 +33,14 @@ import {
   setNotification,
 } from "../../state/Notifications/NotificationsSlice";
 import { getAvatarSrc } from "../../utils/getAvatarSrc";
+import { useSocket } from "../../context/SocketContext";
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
 
   const [activeSearch, setActiveSearch] = React.useState([]);
-
+  const [activeGroups, setActiveGroups] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchTerm, setSearchTerm] = React.useState(true);
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
@@ -48,19 +49,36 @@ export default function NavBar() {
   );
   const [users, setUsers] = useState([]);
   const [isReadAll, setIsReadAll] = useState(false);
+  const { socket } = useSocket();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         await api.get("/notifications/readAllNotifications");
         dispatch(setNotificationCount(0));
-
       } catch (error) {
         console.error("error: ", error);
       }
     };
     isReadAll && fetchData();
   }, [isReadAll]);
+
+  // TODO: fetch all users from the server
+
+  const [Groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/chatroom/getAllUnjoinedRooms");
+
+        setGroups(response.data);
+      } catch (error) {
+        console.error("error Groups: ", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,6 +123,13 @@ export default function NavBar() {
       if (!searchTerm) setSearchTerm(true);
       return;
     }
+    console.log("In filter >", Groups);
+
+    const matchedGroups = Groups.filter((group) =>
+      group.roomName?.toLowerCase().includes(searchTerm)
+    );
+
+    console.log("In filter DONE >", matchedGroups);
     const matchedUsers = users
       .filter(
         (user) =>
@@ -113,6 +138,7 @@ export default function NavBar() {
       )
       .slice(0, 8);
 
+    setActiveGroups(matchedGroups);
     setActiveSearch(matchedUsers);
     // console.log(matchedUsers);
   };
@@ -129,73 +155,54 @@ export default function NavBar() {
     setShowNotificationBar(!ShowNotificationBar);
   };
 
-  let socket;
-  const accessToken = document?.cookie
-    ?.split("; ")
-    ?.find((row) => row.startsWith("access_token="))
-    ?.split("=")[1];
-
   const NotificationObject = useSelector(
     (state: RootState) => state.notification.notifications
   );
+
   useEffect(() => {
-    socket = io("http://localhost:3000/notifications", {
-      transports: ["websocket"],
-      auth: {
-        token: accessToken,
-      },
-    });
-    socket.on("connect", () => {
-      console.log("Connected to WebSocket server");
-    });
+    if (socket) {
+      socket.on("sendNotification", (data) => {
+        // TODO: check if the notification is already exist in the store
 
-    socket.on("sendNotification", (data) => {
-      // TODO: check if the notification is already exist in the store
+        const existingNotificationIndex = NotificationObject.findIndex(
+          (notification) =>
+            notification.entityType === data.entityType &&
+            notification.senderId === data.senderId
+        );
 
-      const existingNotificationIndex = NotificationObject.findIndex(
-        (notification) =>
-          notification.entityType === data.entityType &&
-          notification.senderId === data.senderId
-      );
+        if (existingNotificationIndex !== -1) {
+          const updatedNotifications = [...NotificationObject];
+          updatedNotifications.splice(existingNotificationIndex, 1);
+          dispatch(setNotification(updatedNotifications));
+        }
 
-      if (existingNotificationIndex !== -1) {
-        const updatedNotifications = [...NotificationObject];
-        updatedNotifications.splice(existingNotificationIndex, 1);
-        dispatch(setNotification(updatedNotifications));
-      }
+        dispatch(
+          addNotification({
+            NotificationId: data.id,
+            senderId: data.senderId,
+            receiverId: data.receiverId,
+            RoomId: data.roomId,
+            entityType: data.entityType,
+            createdAt: data.createdAt,
+          })
+        );
 
-      dispatch(
-        addNotification({
-          NotificationId: data.id,
-          senderId: data.senderId,
-          entityType: data.entityType,
-          createdAt: data.createdAt,
-        })
-      );
+        dispatch(setNotificationCount(NotificationCount + 1));
+      });
+    }
 
-      dispatch(setNotificationCount(NotificationCount + 1));
-      
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Disconnected from WebSocket server");
-    });
     return () => {
-      socket.disconnect();
+      socket?.off("notification");
     };
-  }, []);
+  }, [socket]);
 
   return (
     <div className="nav-bar">
       {/* LEFT ITEMS  state: ✅*/}
       <div className="page-name-breadcrumb">
-
         {/* TODO: set the current page using store redux! */}
         <div className="text-wrapper">
-          
           {"iPong" + "\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"}
-
-
         </div>
         <div className="breadcumb">
           <div className="div">Main Page</div>
@@ -204,15 +211,18 @@ export default function NavBar() {
         </div>
       </div>
 
-      {/* SEARCH ITEMS  */}
       {isWideScreen && searchTerm ? (
         <SearchIcon onClick={handleIconClick} />
       ) : (
         <div className="search-bar">
           <SearchInput onChange={handleOnChange} />
-          {activeSearch.length != 0 ? (
+          {activeSearch.length != 0 || activeGroups.length != 0 ? (
             <div className="SearchList">
-              <SearchList users={activeSearch} func={handelCloseSearchBar} />
+              <SearchList
+                Groups={activeGroups}
+                users={activeSearch}
+                func={handelCloseSearchBar}
+              />
             </div>
           ) : null}
         </div>
@@ -248,7 +258,7 @@ export default function NavBar() {
                     style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
                     onClick={() => {
                       setIsReadAll(true);
-                
+
                       setShowNotificationBar(!ShowNotificationBar);
                     }}
                   />

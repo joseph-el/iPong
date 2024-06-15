@@ -47,8 +47,8 @@ export class GatewayChatGateway
   }
   @WebSocketServer() server: Server;
   async handleConnection(client: Socket) {
-    const token = client.handshake.headers.token as string;
-    console.log('token', token);
+
+    const token = client.handshake.auth.token as string;
     if (!token) {
       client.disconnect(true);
       return;
@@ -56,13 +56,12 @@ export class GatewayChatGateway
     try {
       const decoded = this.jwtService.verify(token);
       client.data.user = decoded;
-      console.log('decoded', decoded);
     } catch (error) {
       client.disconnect(true);
       return;
     }
     const userId = client.data.user.userId;
-    console.log('client connected', userId);
+    console.log('client connected:::::::::::::::::::', userId);
     client.join(`User:${userId}`);
     const frienduserIds = await this.databaseService.friendship.findMany({
       where: {
@@ -132,6 +131,7 @@ export class GatewayChatGateway
 
   @SubscribeMessage('joinRoom')
   async handleJoinRoomEvent(client: Socket, data: any) {
+    console.log("joinRoom event , data: ", data)
     const userId = client.data.user.sub;
     const member = await this.databaseService.chatRoomMember.findFirst({
       where: {
@@ -150,6 +150,7 @@ export class GatewayChatGateway
     message: MessageFormatDto,
     blockedRoomMembersIds?: string[],
   ) {
+    console.log('sendMessages event', message);
     const chanellname: string = `Room:${message.roomId}`;
     if (!blockedRoomMembersIds) {
       this.server.to(chanellname).emit('message', message);

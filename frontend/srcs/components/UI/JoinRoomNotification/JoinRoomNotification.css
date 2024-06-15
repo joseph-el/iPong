@@ -1,0 +1,201 @@
+:root {
+  --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
+  --1-themes-label-primary: rgba(0, 0, 0, 1);
+  --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
+  --1-themes-system-green: rgba(49, 200, 89, 1);
+  --1-themes-system-grey: rgba(142, 142, 147, 1);
+  --1-themes-system-grey3: rgba(199, 199, 204, 1);
+  --1-themes-system-grey4: rgba(210, 210, 215, 1);
+  --1-themes-system-orange: rgba(255, 150, 0, 1);
+  --1-themes-system-red: rgba(255, 56, 43, 1);
+  --1-themes-system-white: rgba(255, 255, 255, 1);
+  --1-themes-system-yellow: rgba(255, 205, 0, 1);
+  --body-bold-font-family: "SF Pro Text", Helvetica;
+  --body-bold-font-size: 17px;
+  --body-bold-font-style: normal;
+  --body-bold-font-weight: 400;
+  --body-bold-letter-spacing: -0.40799999237060547px;
+  --body-bold-line-height: 22px;
+  --body-regular-font-family: "SF Pro Text", Helvetica;
+  --body-regular-font-size: 17px;
+  --body-regular-font-style: normal;
+  --body-regular-font-weight: 400;
+  --body-regular-letter-spacing: -0.40799999237060547px;
+  --body-regular-line-height: 22px;
+  --primitives-color-purple-5f21cc: rgba(95, 33, 204, 1);
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-1-themes-mode="light">
+        <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-1-themes-mode="light"] {
+  --1-themes-fill-tertiary: rgba(118, 118, 128, 0.12);
+  --1-themes-label-primary: rgba(0, 0, 0, 1);
+  --1-themes-label-secondary: rgba(60, 60, 67, 0.6);
+  --1-themes-system-green: rgba(49, 200, 89, 1);
+  --1-themes-system-grey3: rgba(199, 199, 204, 1);
+  --1-themes-system-grey4: rgba(210, 210, 215, 1);
+  --1-themes-system-orange: rgba(255, 150, 0, 1);
+  --1-themes-system-red: rgba(255, 56, 43, 1);
+  --1-themes-system-yellow: rgba(255, 205, 0, 1);
+}
+
+[data-1-themes-mode="dark"] {
+  --1-themes-fill-tertiary: rgba(118, 118, 128, 0.24);
+  --1-themes-label-primary: rgba(255, 255, 255, 1);
+  --1-themes-label-secondary: rgba(235, 235, 245, 0.6);
+  --1-themes-system-green: rgba(45, 210, 87, 1);
+  --1-themes-system-grey3: rgba(70, 70, 73, 1);
+  --1-themes-system-grey4: rgba(55, 55, 57, 1);
+  --1-themes-system-orange: rgba(255, 159, 3, 1);
+  --1-themes-system-red: rgba(254, 67, 54, 1);
+  --1-themes-system-yellow: rgba(254, 215, 2, 1);
+}
+
+.FriendNotifications-frame .wrapper-stylek {
+  background-color: rgba(49, 49, 49, 0.7) !important;
+  border: #beb8b836 solid 0.5px !important;
+  border-radius: 20px !important;
+  max-width: 347px;
+  margin: 0px 0px 5px 9px;
+}
+
+.FriendNotifications-frame .wrapper-style-request {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
+
+.FriendNotifications-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.FriendNotifications-time {
+  color: rgba(234, 234, 234, 1);
+
+  font-family: "sfprodisplay-regular", sans-serif;
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: -0.6px;
+  line-height: 26.6px;
+  opacity: 0.5;
+}
+
+.imessage-icon {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  margin-left: 25px;
+  margin-top: 25px;
+}
+
+.FriendNotifications-content .text-small {
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 450;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.FriendNotifications-content .text-tiny {
+  color: #ffffff !important;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 450;
+  letter-spacing: 0;
+  line-height: normal;
+  opacity: 0.7;
+  max-width: 217.34px;
+}
+
+.actions {
+  align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  padding: 0px 7px 20px 0px;
+
+  /* padding: 48.28px 0px 0px; */
+  position: relative;
+}
+
+.actions .alert-item {
+  align-items: center;
+  border-color: #e6d1d145;
+  border-right-style: solid;
+  border-right-width: 1.48px;
+  display: flex;
+  gap: 1px;
+  height: 2px;
+  justify-content: center;
+  padding: 15px 10px;
+  position: relative;
+  width: 75px;
+}
+
+.actions .action {
+  color: #ff0000;
+  flex: 1;
+  font-family: var(--body-regular-font-family);
+  font-size: var(--body-regular-font-size);
+  font-style: var(--body-regular-font-style);
+  font-weight: var(--body-regular-font-weight);
+  letter-spacing: var(--body-regular-letter-spacing);
+  line-height: var(--body-regular-line-height);
+  margin-top: -1.62px;
+  position: relative;
+  text-align: center;
+  padding-right: 10px;
+  padding-top: 7px;
+}
+
+.actions .action:hover {
+  color: #ff0000e0;
+  cursor: pointer;
+}
+
+.actions .action-wrapper {
+  align-items: center;
+  display: flex;
+  gap: 1px;
+  height: 2px;
+  justify-content: center;
+  padding: 15px 10px;
+  position: relative;
+  width: 75px;
+}
+
+.actions .text-wrapper {
+  color: #007aff;
+  flex: 1;
+  font-family: var(--body-bold-font-family);
+  font-size: var(--body-bold-font-size);
+  font-style: var(--body-bold-font-style);
+  font-weight: var(--body-bold-font-weight);
+  letter-spacing: var(--body-bold-letter-spacing);
+  line-height: var(--body-bold-line-height);
+  margin-top: -1px;
+  position: relative;
+  text-align: center;
+  padding-left: 13px;
+  padding-top: 7px;
+}
+
+.actions .text-wrapper:hover {
+  color: #007bffd4;
+  cursor: pointer;
+}

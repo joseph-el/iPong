@@ -9,9 +9,11 @@ import { ConnectionService } from './connection.service';
 import { GameHistoryController } from './game-history/game-history.controller';
 import { GameHistoryService } from './game-history/game-history.service';
 import { RewardsUserService } from './rewards.service';
+import { GatewayNofifModule } from 'src/gateway-nofif/gateway-nofif.module';
 
 @Module({
   imports: [
+    GatewayNofifModule,
     DatabaseModule,
     JwtModule.register({ secret: process.env.JWT_SECRET }),
   ],
@@ -25,5 +27,6 @@ import { RewardsUserService } from './rewards.service';
     RewardsUserService,
   ],
   controllers: [GameHistoryController],
+  exports: [ConnectionService],
 })
 export class GameModule {}

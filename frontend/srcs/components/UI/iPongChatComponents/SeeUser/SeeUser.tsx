@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import Close from "../../Button/CloseButton/CloseButton";
+import { useSocket } from "../../../../context/SocketContext";
 
 export default function SeeUser(props) {
   const selectedMessage = useSelector(
@@ -17,9 +18,35 @@ export default function SeeUser(props) {
       state.iPongChat.ListMessages.find((message) => message.isSelect) || null
   );
   const navigate = useNavigate();
+  const { socket } = useSocket();
+  const [isInviteDisabled, setIsInviteDisabled] = useState(false);
 
+  // TODO: Change UserId and opponentId values
   const handelInviteMatch = () => {
-    // TODO: Implement invite match
+    const getOpponentId = selectedMessage?.senderId;
+    if (!getOpponentId) return;
+
+    if (socket) {
+      socket.emit("InviteToGame", { opponentId: getOpponentId });
+
+      socket.on("userStatusError", () => {
+        console.log("you can't invite while playing or matchmaking");
+      });
+
+      socket.on("opponentOfflineNow", () => {
+        console.log("look like opponent is offline");
+      });
+
+      socket.on("opponentBusyNow", () => {
+        console.log("opponent have another matchmaking/game going");
+      });
+    }
+
+    /* Disabled the invite button until the invite Accepted or Destroyed */
+    setIsInviteDisabled(true);
+    setTimeout(() => {
+      setIsInviteDisabled(false);
+    }, 5000);
   };
 
   return (
@@ -54,12 +81,12 @@ export default function SeeUser(props) {
             className="User-options-See-Profile-img"
           />
           <img
-            onClick={() => {
-              handelInviteMatch;
-            }}
+            onClick={handelInviteMatch}
             src={InviteMatchIcon}
             alt="Invite Match"
-            className="User-options-Invite-Match-img"
+            className={`User-options-Invite-Match-img ${
+              isInviteDisabled ? "disabled" : ""
+            }`}
           />
         </div>
 

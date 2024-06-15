@@ -66,6 +66,7 @@ export class ChatroomController {
   async join(
     @Body() joinChatroomDto: JoinRoomDto,
   ) {
+    console.log('object:TnFROM FRONT END>> ', joinChatroomDto);
     return await this.chatroomService.join(joinChatroomDto);
   }
 
@@ -95,7 +96,7 @@ export class ChatroomController {
     @Body() deleteRoomDto: LeaveRoomDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.deleteRoom(deleteRoomDto, userId);
+    return await this.chatroomService.deleteRoom(deleteRoomDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -104,7 +105,7 @@ export class ChatroomController {
     @Body() kickMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.kickMember(kickMemberDto, userId);
+    return await this.chatroomService.kickMember(kickMemberDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -122,7 +123,7 @@ export class ChatroomController {
     @Body() muteMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.muteMember(muteMemberDto, userId);
+    return await this.chatroomService.muteMember(muteMemberDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -131,7 +132,7 @@ export class ChatroomController {
     @Body() banMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.banMember(banMemberDto, userId);
+    return await this.chatroomService.banMember(banMemberDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -140,7 +141,7 @@ export class ChatroomController {
     @Body() unbanMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.unbanMember(unbanMemberDto, userId);
+    return await this.chatroomService.unbanMember(unbanMemberDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -149,7 +150,7 @@ export class ChatroomController {
     @Body() addMemberDto: addMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.addMember(addMemberDto, userId);
+    return await this.chatroomService.addMember(addMemberDto, userId);
   }
 
   // search for all rooms exists
@@ -200,6 +201,6 @@ export class ChatroomController {
     @Body() updateChatroomDto: UpdateRoomDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.update(updateChatroomDto, userId);
+    return await this.chatroomService.update(updateChatroomDto, userId);
   }
 }

@@ -256,15 +256,19 @@ export default function MatchMaking({
 
   if (matchMakingStatus === "matchFound") {
     return (
-      <div className="container">
-        <FoundMatch opponent={opponent} opponentId={opponentId} />
+      <div className="blur-background">
+        <div className="AchievementList-place fade-in">
+          <FoundMatch opponent={opponent} opponentId={opponentId} />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container">
-      <LookingForMatch leaveMatchMaking={leaveMatchMaking} />
+    <div className="blur-background">
+      <div className="AchievementList-place fade-in">
+        <LookingForMatch leaveMatchMaking={leaveMatchMaking} />
+      </div>
     </div>
   );
 }

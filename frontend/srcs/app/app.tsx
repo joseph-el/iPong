@@ -28,6 +28,7 @@ import {
   setNotificationCount,
 } from "../state/Notifications/NotificationsSlice";
 import { AppDispatch } from "../state/store";
+import { SocketProvider } from "../context/SocketContext";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -84,8 +85,12 @@ const RequireAuth = ({ children }) => {
         const response = await api.get("/notifications/getAllNotifications");
         const notifications = response.data;
 
+        console.log("notifications>>>>> ", notifications);
         const NotificationObj = notifications.map((notification) => {
+          console.error("notification !!!!!>", notification);
           return {
+            receiverId: notification.receiverId,
+            RoomId: notification.roomId,
             NotificationId: notification.id,
             senderId: notification.senderId,
             entityType: notification.entityType,
@@ -93,6 +98,7 @@ const RequireAuth = ({ children }) => {
           };
         });
 
+        console.log("NotificationObj>> ", NotificationObj);
         dispatch(setNotification(NotificationObj));
       } catch (error) {
         console.error("error: notitifications", error);
@@ -194,7 +200,7 @@ const router = createBrowserRouter([
       },
       {
         path: "chat",
-        element: <IPongChat />,  // Component to render when no chatId is provided
+        element: <IPongChat />, // Component to render when no chatId is provided
       },
       {
         path: "chat/:chatId",
@@ -216,7 +222,9 @@ export default function App() {
   return (
     <>
       <ChakraProvider>
-        <RouterProvider router={router} />
+        <SocketProvider>
+          <RouterProvider router={router} />
+        </SocketProvider>
       </ChakraProvider>
     </>
   );

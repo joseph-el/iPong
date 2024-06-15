@@ -171,7 +171,7 @@ model Notification {
   id          String           @id @unique
   createdAt   DateTime         @default(now())
   entityType        NotificationType
-  roomId      String
+  roomId      String?
   isRead      Boolean          @default(false)
   receiver   User             @relation("recipient" ,fields: [receiverId], references: [userId], onDelete: Cascade)
   receiverId String

@@ -343,6 +343,7 @@ export class ChatroomService {
         // },
       },
     });
+    console.log('rooms:, ', room);
     return room;
   }
 
@@ -575,7 +576,9 @@ export class ChatroomService {
     });
     //NOTE: check members content
     const user = await this.databaseservice.chatRoomMember.findUnique({
-      where: { unique_member_room: { memberID: userId, chatRoomId: roomData.roomId } },
+      where: {
+        unique_member_room: { memberID: userId, chatRoomId: roomData.roomId },
+      },
     });
     const member = await this.databaseservice.chatRoomMember.findUnique({
       where: {
@@ -732,6 +735,9 @@ export class ChatroomService {
           none: {
             memberID: userId,
           },
+        },
+        type: {
+          notIn: [ChatRoomType.Dm, ChatRoomType.private],
         },
       },
       orderBy: {

@@ -12,8 +12,10 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
-import { OnEvent , EventEmitter2} from '@nestjs/event-emitter';
-
+import { OnEvent, EventEmitter2 } from '@nestjs/event-emitter';
+import { Logger } from '@nestjs/common';
+import { ConnectedUsersService } from './connected-users.service';
+import { InviteFriendService } from './invite-friend.service';
 
 @WebSocketGateway({
   cors: {
@@ -29,8 +31,13 @@ export class GatewayNofifGateway
   private readonly databaseService: DatabaseService;
   private readonly notificationService: NotificationsService;
   private readonly eventEmitter: EventEmitter2;
+  private logger: Logger = new Logger(GatewayNofifGateway.name);
 
-  constructor(jwtService: JwtService) {
+  constructor(
+    jwtService: JwtService,
+    private readonly inviteFriendService: InviteFriendService,
+    private readonly connectedUsers: ConnectedUsersService,
+  ) {
     this.databaseService = new DatabaseService();
     this.notificationService = new NotificationsService(this.databaseService);
     this.jwtService = new JwtService({
@@ -53,7 +60,10 @@ export class GatewayNofifGateway
       return;
     }
     const userId = client.data.user.userId;
-    console.log('client connected', userId);
+    this.logger.log(
+      `client socketId: ${client.id}, UserId: ${userId} connected`,
+    );
+    this.connectedUsers.addUserSocket(userId, client);
     client.join(`User:${userId}`);
     const frienduserIds = await this.databaseService.friendship.findMany({
       where: {
@@ -85,8 +95,13 @@ export class GatewayNofifGateway
     client.emit('onlineFriends', friendIds);
     this.server.emit('friendOnline', userId);
   }
+
   async handleDisconnect(client: any) {
-    console.log('client disconnected', client.id);
+    this.logger.log(`client ${client.id} disconnected`);
+    const userId = this.connectedUsers.getUserBySocketId(client.id);
+    if (userId) {
+      this.connectedUsers.removeUserSocket(userId);
+    }
   }
 
   @OnEvent('sendNotification')
@@ -101,5 +116,33 @@ export class GatewayNofifGateway
       ...newNotif,
       entity: null,
     });
+  }
+
+  @SubscribeMessage('InviteToGame')
+  handleInviteToGame(client: Socket, { opponentId }) {
+    this.logger.log(`client ${client.id} want to invite someone for a game`);
+    const userId = this.connectedUsers.getUserBySocketId(client.id);
+    if (!userId) {
+      console.log('userId Not found');
+      return;
+    }
+    return this.inviteFriendService.handleInviteToGame(
+      client,
+      userId,
+      opponentId,
+    );
+  }
+
+  @SubscribeMessage('iAcceptTheInvitation')
+  handleInviteAcceptation(client: Socket, { inviteId }) {
+    this.logger.log(`accepting...${inviteId} `);
+    this.inviteFriendService.setServer(this.server);
+    return this.inviteFriendService.handleInviteAcceptation(client, inviteId);
+  }
+
+  @SubscribeMessage('destroyGameInvite')
+  handleDestroyGameInvite(client: Socket, { inviteId }) {
+    this.logger.log(`deleting invite: ${inviteId}...`);
+    return this.inviteFriendService.handleDestroyInvite(client, inviteId);
   }
 }

@@ -2,8 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Notification {
   senderId: string;
+  receiverId: string;
   createdAt: string;
   entityType: string;
+  RoomId: string;
   NotificationId?: string;
   
 }

@@ -23,9 +23,63 @@ import SeeGroup from "../../components/UI/iPongChatComponents/SeeGroup/SeeGroup"
 import CreatNewMessage from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatNewMessage";
 import CreatGroupChat from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatGroupChat/CreatGroupChat";
 import StartFriendChat from "../../components/UI/iPongChatComponents/CreatNewMessage/StartFriendChat/StartFriendChat";
+import { useSocket } from "../../context/SocketContext";
+import InviteGameModal from "../../game/components/InviteGameModal/InviteGameModal";
+import InitInvitedPlayers from "../../game/components/InitInvitedPlayers/InitInvitedPlayers";
 
 export default function AppLayout({ children }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  /* Invitation States */
+  const [fromInvite, setFromInvite] = useState(null);
+  const [isInvited, setIsInvited] = useState(false);
+  const [isInviteAccepted, setIsInviteAccepted] = useState(false);
+  const [inviteId, setInviteId] = useState(null);
+  const { socket, connect, disconnect } = useSocket();
+
+  /* Socket Connection Init here  */
+  useEffect(() => {
+    connect();
+
+    return () => {
+      disconnect();
+    };
+  }, [connect, disconnect]);
+
+  /* user received an invite */
+  useEffect(() => {
+    if (socket) {
+      socket.on("inviteFromFriend", (data) => {
+        setFromInvite(data.challengedBy);
+        setIsInvited(true);
+        setInviteId(data.inviteId);
+      });
+
+      socket.on("cancelledInvite", () => {
+        console.log(
+          "Sorry! your opponent disconnected directly after your acceptation."
+        );
+        setIsInviteAccepted(false);
+      });
+
+      socket.on("opponentJoinedAnotherMatch", () => {
+        console.log(
+          "Sorry! your opponent joined another matchmaking/game after your acceptation"
+        );
+        setIsInviteAccepted(false);
+      });
+
+      socket.on("launchingInvitationGame", (data) => {
+        setInviteId(data.inviteId);
+        setIsInviteAccepted(true);
+      });
+    }
+  }, [socket]);
+
+  /* User Invitation Actions */
+  const closeInvitation = () => {
+    setIsInvited(false);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,20 +88,20 @@ export default function AppLayout({ children }) {
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
-    
     };
-
   }, []);
-
-  
-
-
-
 
   const isWideScreen = windowWidth < 1150;
 
   return (
     <>
+      {isInvited && (
+        <InviteGameModal
+          onClose={closeInvitation}
+          OpponentId={fromInvite}
+          inviteId={inviteId}
+        />
+      )}
       <Grid
         templateAreas={
           isWideScreen
@@ -78,17 +132,16 @@ export default function AppLayout({ children }) {
         </GridItem>
 
         <GridItem pl="2" area={"main"} w="full" h="full">
-
-
-          {children}
-          
-          
-          
-
-          <Outlet />
-
-     
+          {isInviteAccepted ? (
+            <InitInvitedPlayers inviteId={inviteId} />
+          ) : (
+            <>
+              {children}
+              <Outlet />
+            </>
+          )}
         </GridItem>
+
         {isWideScreen ? null : (
           <GridItem pl="2" bg="black" area={"livechat"}>
             <LiveChat />

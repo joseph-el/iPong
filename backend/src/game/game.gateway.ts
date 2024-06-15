@@ -11,9 +11,14 @@ import { MatchmakingService } from './matchmaking.service';
 import { ConnectionService } from './connection.service';
 import { Logger } from '@nestjs/common';
 import { SOCKET_ERROR, SOCKET_EVENT } from './constants/socket.constants';
+import { InvitationService } from 'src/gateway-nofif/invitations.service';
 
 interface JoinQueueMessage {
   userSelectedSkin: string;
+}
+interface ComingInviteMessage {
+  userSelectedSkinPath: string;
+  inviteId: string | null;
 }
 
 @WebSocketGateway({ namespace: 'pongGame' })
@@ -27,6 +32,7 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly connectionService: ConnectionService,
     private readonly clientService: ClientService,
     private readonly matchmakingService: MatchmakingService,
+    private readonly invitationService: InvitationService,
   ) {}
 
   async handleConnection(client: Socket) {
@@ -110,6 +116,35 @@ export class GameGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.emit(SOCKET_EVENT.UN_INIT_CONNECTION, {
         message: SOCKET_ERROR.UN_INIT_CONNECTION_ERR,
       });
+    }
+  }
+
+  @SubscribeMessage('comingFromInvite')
+  async handlePlayersComingFromInvite(
+    client: Socket,
+    ...args: ComingInviteMessage[]
+  ) {
+    const userId = this.connectionService.getUserBySocketId(client.id);
+    const players = this.invitationService.getInvite(args[0].inviteId);
+    if (!players || players.length !== 2) {
+      client.emit('InvalidInviteId');
+      return;
+    }
+
+    if (userId && this.connectedUsers.has(userId)) {
+      if (players.includes(userId)) {
+        this.connectionService.setUserSkin(
+          userId,
+          args[0].userSelectedSkinPath,
+        );
+        await this.matchmakingService.invitedGame(
+          client,
+          userId,
+          args[0].inviteId,
+        );
+      } else {
+        client.emit('YouAreNotInvited');
+      }
     }
   }
 }
