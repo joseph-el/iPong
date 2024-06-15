@@ -49,7 +49,6 @@ export default function CreatGroupChat(props) {
   const displayGroupType = Array.from(GroupType).join(" ");
   const [testID, setTestID] = useState("");
 
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -94,37 +93,34 @@ export default function CreatGroupChat(props) {
 
         console.log("response room : ", NewRoom);
 
-        const formDataAvatar = new FormData();
-        formDataAvatar.append("file", AvatarFile!);
-        try {
-          const response = await api.post(
-            `chatroom/rooomIcon/${NewRoom}`,
-
-            formDataAvatar,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log("response upload avatar :", response);
-        } catch (error) {
-          console.log("error upload avatar :", error);
-        }
-
-
-
-
-        GroupMembers.forEach(async (member) => {
-
+        if (AvatarFile) {
+          const formDataAvatar = new FormData();
+          formDataAvatar.append("file", AvatarFile!);
           try {
-            const response2 = await api.post(`chatroom/invite/${testID}/${NewRoom}`);
-            console.log("invite:: ", response2.data)
+            const response = await api.post(
+              `chatroom/rooomIcon/${NewRoom}`,
+
+              formDataAvatar,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+            console.log("response upload avatar :", response);
+          } catch (error) {
+            console.log("error upload avatar :", error);
+          }
+        }
+        GroupMembers.forEach(async (member) => {
+          try {
+            const response2 = await api.post(
+              `chatroom/invite/${users[member].userId}/${NewRoom}`
+            );
+            console.log("invite:: ", response2.data);
           } catch (error) {
             console.log("error add members :", error);
           }
-
-
         });
       } catch (error) {}
     };
