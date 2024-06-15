@@ -7,7 +7,7 @@ import { MessageFormatDto } from './dto/msgFormat.dto';
 
 @Injectable()
 export class MessageService {
-  constructor(private database: DatabaseService) { }
+  constructor(private database: DatabaseService) {}
   async create(
     roomId: string,
     senderId: string,
@@ -160,14 +160,17 @@ export class MessageService {
     });
 
     if (!roomMember) {
-      throw new HttpException('You are not in this channel', HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        'You are not in this channel',
+        HttpStatus.FORBIDDEN,
+      );
     }
 
     const member = room.members.find((m) => m.memberID === userId);
     if (!member) {
       throw new HttpException('You are not a member of this room', 403);
     }
-  
+
     if (member.isBanned) {
       throw new HttpException('You are banned', 403);
     }
