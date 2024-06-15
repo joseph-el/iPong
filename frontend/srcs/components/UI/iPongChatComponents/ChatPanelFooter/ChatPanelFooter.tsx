@@ -12,7 +12,18 @@ import { useState, useEffect } from "react";
 import api from "../../../../api/posts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
+
+
 export default function ChatPanelFooter() {
+  const [IsReady, setIsReady] = useState(false);
+  const selectedMessage = useSelector(
+    (state: RootState) =>
+      state.iPongChat.ListMessages.find((message) => message.isSelect) || null
+  );
+  if (!selectedMessage) {
+    return null;
+  }
+
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [style, setStyle] = useState("30px");
@@ -53,11 +64,9 @@ export default function ChatPanelFooter() {
     setSuggestions([]);
     setStyle("20px");
   };
-  const [IsReady, setIsReady] = useState(false);
-  const selectedMessage = useSelector(
-    (state: RootState) =>
-      state.iPongChat.ListMessages.find((message) => message.isSelect) || null
-  );
+
+
+  
   useEffect(() => {
     const fetchChat = async () => {
       try {
