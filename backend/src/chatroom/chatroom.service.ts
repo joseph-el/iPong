@@ -536,6 +536,12 @@ export class ChatroomService {
         },
       },
     });
+
+    console.log('roomData: ', roomData);
+    console.log('room: ', room);
+    console.log('user: ', user);
+    console.log('member: ', member);
+    console.log("------------------");
     if (!room) throw new HttpException('room not found', HttpStatus.NOT_FOUND);
     if (!member)
       throw new HttpException('member not found', HttpStatus.NOT_FOUND);
@@ -835,6 +841,8 @@ export class ChatroomService {
   }
 
   async update(updateRoomDto: UpdateRoomDto, userId: string) {
+
+    console.log("updateRoomDto>> ", updateRoomDto)
     const roomId = updateRoomDto.roomId;
 
     // Remove roomId from roomData to avoid updating it in the database
