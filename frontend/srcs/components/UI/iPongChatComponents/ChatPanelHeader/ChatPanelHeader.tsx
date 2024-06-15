@@ -17,6 +17,9 @@ const getSelectedMessage = createSelector(
 export default function ChatPanelHeader(props) {
   const selectedMessage = useSelector(getSelectedMessage);
 
+  if (!selectedMessage) {
+    return null;
+  }
   return (
     <div className="ChatPanelHeader-frame">
       <div
