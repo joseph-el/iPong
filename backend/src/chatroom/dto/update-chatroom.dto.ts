@@ -6,7 +6,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateRoomDto extends PartialType(CreateChatroomDto) {
   @IsOptional()
-  name?: string;
+  roomName?: string;
 
   @IsOptional()
   type?: ChatRoomType;
