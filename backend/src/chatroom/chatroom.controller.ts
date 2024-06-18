@@ -63,9 +63,7 @@ export class ChatroomController {
   }
   @UseGuards(AtGuard)
   @Post('join')
-  async join(
-    @Body() joinChatroomDto: JoinRoomDto,
-  ) {
+  async join(@Body() joinChatroomDto: JoinRoomDto) {
     console.log('object:TnFROM FRONT END>> ', joinChatroomDto);
     return await this.chatroomService.join(joinChatroomDto);
   }
@@ -96,7 +94,7 @@ export class ChatroomController {
     @Body() deleteRoomDto: LeaveRoomDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.deleteRoom(deleteRoomDto, userId);
+    return await this.chatroomService.deleteRoom(deleteRoomDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -105,9 +103,13 @@ export class ChatroomController {
     @Body() kickMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
+<<<<<<< HEAD
 
     console.log('object: kickMemberDto >> ', kickMemberDto);
     return this.chatroomService.kickMember(kickMemberDto, userId);
+=======
+    return await this.chatroomService.kickMember(kickMemberDto, userId);
+>>>>>>> origin/BackendLayout
   }
 
   @UseGuards(AtGuard)
@@ -125,16 +127,32 @@ export class ChatroomController {
     @Body() muteMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.muteMember(muteMemberDto, userId);
+    return await this.chatroomService.muteMember(muteMemberDto, userId);
   }
-
+  @UseGuards(AtGuard)
+  @Get('isMuted/:roomId/:memberId')
+  async isMuted(
+    @Param('roomId') roomId: string,
+    @Param('memberId') memberId: string,
+  ) {
+    return await this.chatroomService.isMuted(roomId, memberId);
+  }
+  @UseGuards(AtGuard)
+  @Patch('unmuteMember')
+  async unmuteMember(
+    @Body() muteMemberDto: kickMemberDto,
+    @GetCurrentUser('userId') userId: string,
+  ) {
+    return await this.chatroomService.unmuteMember(muteMemberDto, userId);
+  }
+    
   @UseGuards(AtGuard)
   @Post('banMember')
   async banMember(
     @Body() banMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.banMember(banMemberDto, userId);
+    return await this.chatroomService.banMember(banMemberDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -143,7 +161,7 @@ export class ChatroomController {
     @Body() unbanMemberDto: kickMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.unbanMember(unbanMemberDto, userId);
+    return await this.chatroomService.unbanMember(unbanMemberDto, userId);
   }
 
   @UseGuards(AtGuard)
@@ -152,13 +170,13 @@ export class ChatroomController {
     @Body() addMemberDto: addMemberDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.addMember(addMemberDto, userId);
+    return await this.chatroomService.addMember(addMemberDto, userId);
   }
 
   // search for all rooms exists
   @UseGuards(AtGuard)
   @Get('getAllUnjoinedRooms')
-  async getChatRooms(@GetCurrentUser('userId') userId: string){
+  async getChatRooms(@GetCurrentUser('userId') userId: string) {
     return await this.chatroomService.getAllUnjoinedRooms(userId);
   }
 
@@ -195,16 +213,20 @@ export class ChatroomController {
   @Get('roomDetails/:roomId')
   async getRoomDetails(@Param('roomId') roomId: string) {
     return await this.chatroomService.getRoomDetails(roomId);
-  } 
-    
+  }
+
   @UseGuards(AtGuard)
   @Post('update')
   async update(
     @Body() updateChatroomDto: UpdateRoomDto,
     @GetCurrentUser('userId') userId: string,
   ) {
+<<<<<<< HEAD
 
     console.log('object updateChatroomDto :>> ', updateChatroomDto);
     return this.chatroomService.update(updateChatroomDto, userId);
+=======
+    return await this.chatroomService.update(updateChatroomDto, userId);
+>>>>>>> origin/BackendLayout
   }
 }

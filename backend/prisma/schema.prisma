@@ -202,5 +202,6 @@ enum ChatRoomType {
 
 enum GameStatus {
   CANCELED
+  ONGOING
   PLAYED
 }

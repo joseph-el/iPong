@@ -4,7 +4,6 @@ import "./SeeGroup.css";
 import { SeeGroupWrapper } from "./SeeGroupWrapper";
 import { Avatar } from "@nextui-org/avatar";
 
-import { Grid, GridItem } from "@chakra-ui/react";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import {
   Dropdown,

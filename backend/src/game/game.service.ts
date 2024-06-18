@@ -63,7 +63,7 @@ export class GameService {
     const gameData: CreateGameDto = {
       player1: { connect: { userId: this.players[0] } },
       player2: { connect: { userId: this.players[1] } },
-      gameStatus: GameStatus.CANCELED,
+      gameStatus: GameStatus.ONGOING,
       minScore: 0,
       maxScore: 0,
     };

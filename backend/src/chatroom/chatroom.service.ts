@@ -343,7 +343,7 @@ export class ChatroomService {
         // },
       },
     });
-    console.log("rooms:, ", room);
+    console.log('rooms:, ', room);
     return room;
   }
 
@@ -582,7 +582,9 @@ export class ChatroomService {
     });
     //NOTE: check members content
     const user = await this.databaseservice.chatRoomMember.findUnique({
-      where: { unique_member_room: { memberID: userId, chatRoomId: roomData.roomId } },
+      where: {
+        unique_member_room: { memberID: userId, chatRoomId: roomData.roomId },
+      },
     });
     const member = await this.databaseservice.chatRoomMember.findUnique({
       where: {
@@ -618,6 +620,81 @@ export class ChatroomService {
       },
       data: { isMuted: true, muted_exp: afterFiveMin },
     });
+  }
+
+  async unmuteMember(roomData: kickMemberDto, userId: string) {
+    const room = await this.databaseservice.chatRoom.findUnique({
+      where: { id: roomData.roomId },
+      select: {
+        ownerId: true,
+        members: {
+          where: {
+            OR: [
+              {
+                memberID: roomData.memberId,
+              },
+              {
+                memberID: userId,
+              },
+            ],
+          },
+        },
+      },
+    });
+    const user = await this.databaseservice.chatRoomMember.findUnique({
+      where: {
+        unique_member_room: { memberID: userId, chatRoomId: roomData.roomId },
+      },
+    });
+    const member = await this.databaseservice.chatRoomMember.findUnique({
+      where: {
+        unique_member_room: {
+          memberID: roomData.memberId,
+          chatRoomId: roomData.roomId,
+        },
+      },
+      select: {
+        chatRoomId: true,
+        isMuted: true,
+        memberID: true,
+      },
+    });
+    if (!room) throw new HttpException('room not found', HttpStatus.NOT_FOUND);
+    if (!member)
+      throw new HttpException('member not found', HttpStatus.NOT_FOUND);
+    if (!user.isAdmin || user.isBanned)
+      throw new BadRequestException('You are not admin of this room');
+    if (!member.isMuted)
+      throw new BadRequestException('Member is not muted');
+    if (member.memberID === userId)
+      throw new BadRequestException('You can not unmute yourself');
+    await this.databaseservice.chatRoomMember.update({
+      where: {
+        unique_member_room: {
+          memberID: roomData.memberId,
+          chatRoomId: roomData.roomId,
+        },
+      },
+      data: { isMuted: false, muted_exp: null },
+    });
+  }
+
+  async isMuted(roomId: string, memberId: string) {
+    const isMuted = await this.databaseservice.chatRoomMember.findFirst({
+      where: {
+        memberID: memberId,
+        chatRoomId: roomId,
+        isMuted: true,
+      },
+    });
+    if (isMuted) {
+      const now = new Date();
+      if (isMuted.muted_exp < now) {
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
   async banMember(memberData: ChangeOwnerDto, userId: string) {
     const user = await this.databaseservice.chatRoomMember.findUnique({
