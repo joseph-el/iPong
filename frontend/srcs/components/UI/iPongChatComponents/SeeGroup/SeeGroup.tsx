@@ -114,14 +114,27 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                 >
                   Remove member
                 </DropdownItem>
-                <DropdownItem className="invite-People-list-text" key="copy">
-                  Mute member
-                </DropdownItem>
-                <DropdownItem className="invite-People-list-text" key="copy">
-                  Make admin
-                </DropdownItem>
-                <DropdownItem className="invite-People-list-text" key="copy">
-                  Ban member
+
+                {!Members.IsAdmin && (
+                  <DropdownItem
+                    className="invite-People-list-text"
+                    key="copy"
+                    onClick={() => setActionType("setAdmin")}
+                  >
+                    Make admin
+                  </DropdownItem>
+                )}
+
+                <DropdownItem
+                  className="invite-People-list-text"
+                  key="copy"
+                  onClick={() =>
+                    setActionType(
+                      Members.IsBanned ? "unbanMember" : "banMember"
+                    )
+                  }
+                >
+                  {Members.IsBanned ? "Unban Member" : "Ban Member"}
                 </DropdownItem>
 
                 <DropdownItem
@@ -133,6 +146,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                 </DropdownItem>
               </DropdownMenu>
             )}
+
             {!IsAdmin && (
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem className="invite-People-list-text" key="copy">
@@ -471,9 +485,7 @@ export default function SeeGroup(props) {
     return member.UserId === UserId && member.IsAdmin === true;
   });
 
-
   const [FriendsList, setFriendsList] = useState([]);
-
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -498,12 +510,45 @@ export default function SeeGroup(props) {
     fetchUsers();
   }, []);
 
-
-
   const FriendsNotInRoom = FriendsList.filter((friend) => {
     return !filteredUsers.find((member) => member.UserId === friend.userId);
   });
 
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  useEffect(() => {
+    const InviteUser = async () => {
+      try {
+        const response2 = await api.post(
+          `chatroom/invite/${selectedUser}/${selectedMessage?.id}`
+        );
+        console.log("response in invite user: ", response2);
+      } catch (error) {
+        console.log("error in invite user: ", error);
+      }
+      setSelectedUser(null);
+    };
+    selectedUser != null && InviteUser();
+  }, [selectedUser]);
+
+
+  const [MutCHat, setMuteChat] = useState(false);
+
+  useEffect(() => {
+    const MuteChat = async () => {
+
+      try {
+        const response = await api.post(
+          `chatroom/muteChat/${selectedMessage?.id}`
+        );
+        console.log("response in mute chat: ", response);
+      } catch (error) {
+        console.log("error in mute chat: ", error);
+      }
+      setMuteChat(false);
+    }
+    MutCHat && MuteChat();
+  }, [MutCHat]);
 
 
   return (
@@ -539,6 +584,7 @@ export default function SeeGroup(props) {
                     alt="mute-icon"
                     className={MuteMode ? "mute-icon" : "unmute-icon"}
                     onClick={() => {
+
                       setMuteMode(!MuteMode);
                     }}
                   />
@@ -577,7 +623,7 @@ export default function SeeGroup(props) {
                     <div className="peopleContent">
                       <div className="invite-People">
                         <Select
-                          items={FriendsNotInRoom} // TODO: set Users by List Firends and not alearady in the group
+                          items={FriendsNotInRoom}
                           placeholder="Add People..."
                           labelPlacement="outside"
                           className="max-w-xs invite-People-list"
@@ -587,9 +633,11 @@ export default function SeeGroup(props) {
                               key={user.id}
                               textValue={"Add People..."}
                             >
-                              <div className="flex gap-2 items-center"
-                              
-                              
+                              <div
+                                className="flex gap-2 items-center"
+                                onClick={() => {
+                                  setSelectedUser(user.userId);
+                                }}
                               >
                                 <Avatar
                                   alt={user.name}
