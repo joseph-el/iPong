@@ -12,6 +12,9 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import { setIsSelectedMessage } from "../../state/iPongChatState/iPongChatState";
+import { io } from "socket.io-client";
+import { useSocket } from "../../context/SocketContext";
+
 export default function IPongChat() {
   const { chatId: paramChatId } = useParams();
   const [chatId, setChatId] = useState(paramChatId);
@@ -19,14 +22,10 @@ export default function IPongChat() {
   useEffect(() => {
     setChatId(paramChatId);
   }, [paramChatId]);
-
-  dispatch(setIsSelectedMessage(chatId));
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [ShowCreateNewChat, setShowCreateNewChat] = React.useState(false);
   const [ShowCreateFriendChat, setShowFriendChat] = React.useState(false);
   const [ShowCreateGroupChat, setShowCreateGroupChat] = React.useState(false);
-  
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,15 +36,96 @@ export default function IPongChat() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
   const handleCloseClick = () => {
     setShowFriendChat(false);
     setShowCreateNewChat(false);
     setShowCreateGroupChat(false);
   };
-
-
   const isWideScreen = windowWidth <= 905;
+
+  dispatch(setIsSelectedMessage(chatId));
+
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+    socket?.on("connect", () => {
+      console.log("connected:::>");
+    });
+
+    socket?.on("onlineFriends", (friendIds) => {
+      console.log("onlineFriends:::>", friendIds);
+    });
+
+    socket?.on("joinRoom", (userId) => {
+      console.log("joinRoom:::>", userId);
+    });
+
+    socket?.on("friendOffline", (userId) => {
+      console.log("friendOffline:::>", userId);
+    });
+
+    socket?.on("roomCreated", (room) => {
+      console.log("roomCreated:::>", room);
+    });
+
+    socket?.on("message", (message) => {
+      console.log("message:::>", message);
+    });
+
+    socket?.on("error", (error) => {
+      console.log("error:::>", error);
+    });
+
+  }, [socket]);
+
+
+  const accessToken = document?.cookie
+    ?.split("; ")
+    ?.find((row) => row.startsWith("access_token="))
+    ?.split("=")[1];
+
+  useEffect(() => {
+    const socket = io("http://localhost:3000/chat", {
+      transports: ["websocket"],
+      auth: {
+        token: accessToken,
+      },
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+    });
+
+    socket.on("connect", () => {
+      console.log("connected:::>");
+    });
+
+    socket.on("onlineFriends", (friendIds) => {
+      console.log("onlineFriends:::>", friendIds);
+    });
+
+    socket.on("joinRoom", (userId) => {
+      console.log("joinRoom:::>", userId);
+    });
+
+    socket.on("friendOffline", (userId) => {
+      console.log("friendOffline:::>", userId);
+    });
+
+    socket.on("roomCreated", (room) => {
+      console.log("roomCreated:::>", room);
+    });
+
+    socket.on("message", (message) => {
+      console.log("message:::>", message);
+    });
+
+    socket.on("error", (error) => {
+      console.log("error:::>", error);
+    });
+  }, []);
+
 
   return (
     <>
