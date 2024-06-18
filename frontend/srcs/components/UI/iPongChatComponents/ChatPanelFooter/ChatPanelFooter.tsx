@@ -12,9 +12,12 @@ import { useState, useEffect } from "react";
 import api from "../../../../api/posts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
+import UserSlice from "../../../../state/UserInfo/UserSlice";
 
 
 export default function ChatPanelFooter() {
+
+  const UserId = useSelector((state: RootState) => state.userState.id);
   const [IsReady, setIsReady] = useState(false);
   const selectedMessage = useSelector(
     (state: RootState) =>
@@ -23,7 +26,7 @@ export default function ChatPanelFooter() {
   if (!selectedMessage) {
     return null;
   }
-
+  const [IsMuted, setIsMuted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [style, setStyle] = useState("30px");
@@ -65,8 +68,6 @@ export default function ChatPanelFooter() {
     setStyle("20px");
   };
 
-
-  
   useEffect(() => {
     const fetchChat = async () => {
       try {
@@ -87,6 +88,22 @@ export default function ChatPanelFooter() {
 
     IsReady && fetchChat();
   }, [IsReady]);
+
+
+  useEffect(() => {
+    const IsMuted = async () => {
+      try {
+        const response = await api.get(`/chatroom/isMuted/${selectedMessage?.id}/${UserId}`);
+        setIsMuted(response.data);
+      
+      } catch (error) {
+        console.log("Ismuted:> ", error);
+      }
+    }
+
+    IsMuted();
+  })
+
 
   const handelSendMessage = () => {
     console.log("Message sent: ", inputValue);
@@ -123,7 +140,7 @@ export default function ChatPanelFooter() {
       </div>
 
       <Input
-        isDisabled={userIsBlocked}
+        isDisabled={userIsBlocked || IsMuted}
         className="ChatPanelFooter-Input"
         value={inputValue}
         placeholder={userIsBlocked ? "You are blocked by this person!" :   "Type a message"}
