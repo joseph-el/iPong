@@ -123,13 +123,11 @@ export default function NavBar() {
       if (!searchTerm) setSearchTerm(true);
       return;
     }
-    console.log("In filter >", Groups);
 
     const matchedGroups = Groups.filter((group) =>
       group.roomName?.toLowerCase().includes(searchTerm)
     );
 
-    console.log("In filter DONE >", matchedGroups);
     const matchedUsers = users
       .filter(
         (user) =>
