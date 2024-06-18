@@ -24,6 +24,8 @@ export default function UserListMessages(props) {
     const fetchUsers = async () => {
       try {
         const response = await api.get(`/chatroom/myrooms`);
+
+        console.log("Rooms::> ", response.data);
         const MessageList = response.data
           .sort(
             (a, b) =>
