@@ -129,6 +129,18 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                   key="copy"
                   onClick={() =>
                     setActionType(
+                      Members.IsMuted ? "unmuteMember" : "muteMember"
+                    )
+                  }
+                >
+                  {Members.IsMuted ? "Unmute Member" : "Mute Member"}
+                </DropdownItem>
+
+                <DropdownItem
+                  className="invite-People-list-text"
+                  key="copy"
+                  onClick={() =>
+                    setActionType(
                       Members.IsBanned ? "unbanMember" : "banMember"
                     )
                   }
@@ -530,12 +542,10 @@ export default function SeeGroup(props) {
     selectedUser != null && InviteUser();
   }, [selectedUser]);
 
-
   const [MutCHat, setMuteChat] = useState(false);
 
   useEffect(() => {
     const MuteChat = async () => {
-
       try {
         const response = await api.post(
           `chatroom/muteChat/${selectedMessage?.id}`
@@ -545,10 +555,9 @@ export default function SeeGroup(props) {
         console.log("error in mute chat: ", error);
       }
       setMuteChat(false);
-    }
+    };
     MutCHat && MuteChat();
   }, [MutCHat]);
-
 
   return (
     <div
@@ -583,7 +592,6 @@ export default function SeeGroup(props) {
                     alt="mute-icon"
                     className={MuteMode ? "mute-icon" : "unmute-icon"}
                     onClick={() => {
-
                       setMuteMode(!MuteMode);
                     }}
                   />
