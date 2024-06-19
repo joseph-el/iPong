@@ -1,3 +1,4 @@
+import { TfaDto } from './dto/tfa.dto';
 import { CloudinaryService } from 'src/imagesProvider/cloudinary.service';
 import {
   ForbiddenException,
@@ -13,6 +14,9 @@ import { Tokens } from './types';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { env } from 'process';
+import * as speakeasy from 'speakeasy';
+import * as qrcode from 'qrcode';
+
 
 @Injectable()
 export class AuthService {
@@ -20,8 +24,7 @@ export class AuthService {
     private userservice: UsersService,
     private dataservice: DatabaseService,
     private jwt: JwtService,
-    private CloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
   async getTokens(email: string, userId: string): Promise<Tokens> {
     const [access_token, refresh_token] = await Promise.all([
       this.jwt.signAsync(
@@ -102,5 +105,95 @@ export class AuthService {
     await this.updateHash(user.userId, tokens.refresh_token);
 
     return tokens;
+  }
+
+  async generateTwoFactorAuthSecret(email: string) {
+    const secret = speakeasy.generateSecret({
+      name: `YourAppName (${email})`,
+      length: 20,
+    });
+
+    const otpAuthUrl = speakeasy.otpauthURL({
+      secret: secret.base32,
+      label: `YourAppName (${email})`,
+      encoding: 'base32',
+    });
+
+    const qrCode = await qrcode.toDataURL(otpAuthUrl);
+
+    const tfaToken = this.generateUniqueToken();
+    const tfaTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes expiry
+
+    await this.dataservice.user.update({
+      where: { email },
+      data: { tfaSecret: secret.base32, tfaToken, tfaTokenExpiry },
+    });
+
+    return { qrCode, tfaToken };
+  }
+
+  private generateUniqueToken() {
+    return require('crypto').randomBytes(32).toString('hex');
+  }
+
+  async checkToken(tfaToken: string) {
+    const user = await this.dataservice.user.findUnique({
+      where: { tfaToken },
+      select: {
+        tfaToken: true,
+        tfaTokenExpiry: true,
+      },
+    });
+    if (!user) return false;
+    if (new Date() > new Date(user.tfaTokenExpiry)) {
+      await this.dataservice.user.update({
+        where: { tfaToken },
+        data: { tfaToken: null, tfaTokenExpiry: null },
+      });
+      return false;
+    }
+    return true;
+  }
+
+  async validateTwoFactorAuth(token: string, tfaToken: string) {
+    const user = await this.dataservice.user.findUnique({
+      where: { tfaToken },
+      select: {
+        tfaSecret: true,
+        userId: true,
+        tfaEnabled: true,
+        email: true,
+        tfaTokenExpiry: true,
+      },
+    });
+
+    if (!user) {
+      throw new HttpException('Invalid token', HttpStatus.BAD_REQUEST);
+    }
+
+    if (new Date() > new Date(user.tfaTokenExpiry)) {
+      throw new HttpException('Token expired', HttpStatus.BAD_REQUEST);
+    }
+
+    if (!user.tfaEnabled) {
+      throw new HttpException('Two-factor authentication is not enabled', HttpStatus.BAD_REQUEST);
+    }
+
+    const isValid = speakeasy.totp.verify({
+      secret: user.tfaSecret,
+      encoding: 'base32',
+      token,
+    });
+
+    if (isValid) {
+      await this.dataservice.user.update({
+        where: { userId: user.userId },
+        data: { tfaToken: null, tfaTokenExpiry: null },
+      });
+      const tokens = await this.getTokens(user.email, user.userId);
+      await this.updateHash(user.userId, tokens.refresh_token);
+      return { isValid, tokens };
+    }
+    return { isValid };
   }
 }
