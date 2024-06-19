@@ -9,14 +9,14 @@ import { Response } from 'express';
 import VerifiedCallback from 'passport-42';
 import { env } from 'process';
 import { UserProfileService } from 'src/user-profile/user-profile.service';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
   constructor(
     private readonly User: UsersService,
     private readonly AuthService: AuthService,
-    private readonly CloudinaryService: CloudinaryService,
-    private readonly userProfileService: UserProfileService,
+    private readonly database: DatabaseService,
   ) {
     super({
       clientID: env.FT_CLIENT_ID,
@@ -39,10 +39,17 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
     );
     if (UserExust) {
       if (UserExust.tfaEnabled) {
-        // const tfaToken = crypto.randomBytes(20).toString('hex');
-        // await this.usersService.updateUser(user.userId, { tfaToken });
-        // res.redirect(process.env.FRONT_URL + '/2fa/validate/' + tfaToken);
-        // return cb(null, profile);
+        const tfaToken = require('crypto').randomBytes(32).toString('hex');
+        await this.database.user.update({
+          where: {
+            userId: UserExust.userId,
+          },
+          data: {
+            tfaToken: tfaToken,
+          },
+        });
+        // res.redirect(); redirect to tfa page
+        return cb(null, profile);
       }
       const tokens = await this.AuthService.getTokens(
         UserExust.email,

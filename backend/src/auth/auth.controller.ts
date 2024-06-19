@@ -127,8 +127,8 @@ export class AuthController {
       return;
     }
     const tokens = data.tokens;
-    res.cookie('X-Access-Token', tokens.access_token, { httpOnly: true });
-    res.cookie('X-Refresh-Token', tokens.refresh_token, { httpOnly: true, path: '/auth' });
+    res.cookie('access_token', tokens.access_token, { httpOnly: false });
+    res.cookie('refresh_token', tokens.refresh_token, { httpOnly: false, path: '/auth' });
   }
 
   @Get('validateToken/:token')
