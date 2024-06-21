@@ -30,13 +30,17 @@ const navigate = useNavigate();
           otp: code,
           tfaToken: tfa_token,
         });
-        if (response.status === 201) {
+
+        console.log("Submit:> ", response);
+        if (response.data === 201) {
           navigate("/ipong/home");
-        }
+        } else
+            throw new Error("Invalid Code");
       } catch (error) {
         setIsInvalid(true);
         setErrorMessage("Invalid Code");
       }
+      setIsReady(false);
     };
 
     IsReadt && checkAuth();
