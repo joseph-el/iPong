@@ -13,9 +13,11 @@ import api from "../../../../api/posts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import UserSlice from "../../../../state/UserInfo/UserSlice";
-
+import { useSocket } from "../../../../context/SocketContext";
 
 export default function ChatPanelFooter() {
+
+  const { socket } = useSocket();
 
   const UserId = useSelector((state: RootState) => state.userState.id);
   const [IsReady, setIsReady] = useState(false);
@@ -39,7 +41,6 @@ export default function ChatPanelFooter() {
 
     if (!newValue) {
       setStyle("20px");
-
       setSuggestions([]);
       setInputValue(newValue);
       return;
@@ -78,6 +79,11 @@ export default function ChatPanelFooter() {
             content: inputValue,
           }
         );
+        socket?.emit("sendMessages", {
+          roomId: selectedMessage?.id,
+          content: inputValue,
+          senderId: UserId,
+        });
         setInputValue("");
         setIsReady(false);
         console.log("post :", response.data);
