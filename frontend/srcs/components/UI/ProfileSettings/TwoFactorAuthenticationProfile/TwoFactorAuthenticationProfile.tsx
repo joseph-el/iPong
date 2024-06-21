@@ -91,6 +91,8 @@ export default function TwoFactorAuthenticationProfile(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("tfaToken", tfaToken);
+        console.log("inputValue", inputValue);
         const response = await api.post(`/auth/validate2fa`, {
           otp: inputValue,
           tfaToken: tfaToken,
@@ -98,9 +100,7 @@ export default function TwoFactorAuthenticationProfile(props) {
 
         console.log("Submit:> ", response.data);
 
-
-        
-        setIsTurnedOn(true);
+        // setIsTurnedOn(true);
         setIsSelected(false);
       } catch (error) {
         setIsInvalid(true);
@@ -127,31 +127,23 @@ export default function TwoFactorAuthenticationProfile(props) {
     }
   }, [GenerateCodeTime]);
 
-  enum EnableDisableType {
-    Enable = "Enable",
-    Disable = "Disable",
-    UNK = "UNK",
-  }
-
-  const [EnableDisable, setEnableDisable] = useState<EnableDisableType>(
-    EnableDisableType.UNK
-  );
+  const [DisableTfa, setDisableTfa] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.post(`/users/update`, {
-          tfaEnabled: EnableDisable === EnableDisableType.Enable,
+          tfaEnabled: false,
         });
         console.log("EnableDisable:> ", response.data);
       } catch (error) {
         console.log("error tfa enable:> ", error);
       }
-      setEnableDisable(EnableDisableType.UNK);
+      setDisableTfa(false);
     };
 
-    EnableDisable != EnableDisableType.UNK && fetchData();
-  }, [EnableDisable]);
+    DisableTfa && fetchData();
+  }, [DisableTfa]);
 
   return (
     <TwoFactorAuthenticationProfileWrapper>
@@ -164,9 +156,7 @@ export default function TwoFactorAuthenticationProfile(props) {
           isSelected={isSelected}
           onValueChange={() => {
             if (AuthenticationisTurnedOn)
-              setEnableDisable(EnableDisableType.Disable);
-            else
-              setEnableDisable(EnableDisableType.Enable);
+              setDisableTfa(true);
 
             setIsSelected(!isSelected);
           }}
@@ -226,7 +216,7 @@ export default function TwoFactorAuthenticationProfile(props) {
               type="code"
               label="Verification Code"
               placeholder="Enter Code"
-              className="max-w-xs"
+              className="max-w-xsk"
             />
             <CustomButton
               classNames="sign-in-competent-sign-in"
