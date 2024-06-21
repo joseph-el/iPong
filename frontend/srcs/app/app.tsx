@@ -64,7 +64,7 @@ const RequireAuth = ({ children }) => {
         const response = await api.get("/user-profile/me");
 
         let user = response.data;
-
+        console.log("user>>>>> ", user);
         if (
           user.username.startsWith("M-;") ||
           user.username.startsWith("F-;")
