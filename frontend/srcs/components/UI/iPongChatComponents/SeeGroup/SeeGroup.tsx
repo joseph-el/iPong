@@ -56,9 +56,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
   const navigate = useNavigate();
 
   if (Members.UserId === MyId) return null;
-
   const [ActionType, setActionType] = useState<String | null>(null);
-
   useEffect(() => {
     const PostActions = async () => {
       try {
@@ -462,7 +460,7 @@ export default function SeeGroup(props) {
   };
 
   const [filteredUsers, setFilteredUsers] = useState([]);
-
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -490,7 +488,7 @@ export default function SeeGroup(props) {
     };
 
     fetchUsers();
-  }, []);
+  }, [UpdateApp]);
 
   const IsAdmin = filteredUsers.find((member) => {
     return member.UserId === UserId && member.IsAdmin === true;
@@ -519,7 +517,7 @@ export default function SeeGroup(props) {
       }
     };
     fetchUsers();
-  }, []);
+  }, [UpdateApp]);
 
   const FriendsNotInRoom = FriendsList.filter((friend) => {
     return !filteredUsers.find((member) => member.UserId === friend.userId);
