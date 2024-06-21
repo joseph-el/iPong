@@ -43,6 +43,71 @@
 .css-1efjw2w {
   margin: 0px !important;
 }
-.JoinRoom-frame {
+.JoinRoom-frame-grid{
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 40px !important;
+}
+
+.JoinRoom-frame-main .User-info {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+}
+.JoinRoom-frame-main .User-info
+.User-avatar,
+
+.JoinRoom-frame-main .User-info .info {
+  align-self: center !important;
+}
+
+.JoinRoom-frame-main .User-info .info {
+  display: flex !important;
+  justify-content: center !important;
 
 }
+
+.JoinRoom-frame-main .User-info .info .User-name {
+
+  font-family: 'Poppins', sans-serif !important;
+  margin-top: -8px !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+
+}
+.JoinRoom-frame-main 
+.descriptions{
+  margin-top: -20px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  max-width: 300px;
+  color: #fff !important;
+}
+
+.JoinRoom-frame-footer {
+ padding-left: 70px !important
+ ;
+
+  margin-top: -20px !important;
+}
+
+.JoinRoom-frame-input-password {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+.JoinRoom-frame-header {
+ margin: 10px 0px 0px 10px !important;
+}
+
+.JoinRoom-frame-header .header {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+}
+
