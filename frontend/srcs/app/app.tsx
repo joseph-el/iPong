@@ -157,6 +157,10 @@ const router = createBrowserRouter([
         element: <SignAuth path="/auth/sign-in" />,
       },
       {
+        path: "/auth/2fa-login",
+        element: <SignAuth path="/auth/2fa-login" />,
+      },
+      {
         path: "/auth/create-account",
         element: <SignAuth path="/auth/create-account" />,
       },
