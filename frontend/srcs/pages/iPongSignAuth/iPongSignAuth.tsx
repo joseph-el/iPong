@@ -15,6 +15,7 @@ import SignInOptions from "../../components/AuthComponents/SignInOptions/SignInO
 import WelcomeNewUser from "../../components/AuthComponents/WelcomeNewUser/WelcomeNewUser";
 import WeSentCodeAndPassword from "../../components/AuthComponents/WeSentCodeAndPassword/WeSentCodeAndPassword";
 import SetUserNameAndPicture from "../../components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture";
+import { TwoFactorAuthenticationLogin } from "../../components/AuthComponents/TwoFactorAuthentication/TwoFactorAuthentication";
 import Spline from "@splinetool/react-spline";
 
 export default function SignAuth(props) {
@@ -22,6 +23,9 @@ export default function SignAuth(props) {
   let componentToRender;
 
   switch (path) {
+    case "/auth/2fa-login":
+      componentToRender = <TwoFactorAuthenticationLogin />;
+      break;
     case "/auth":
       componentToRender = <SignInOptions />;
       break;
