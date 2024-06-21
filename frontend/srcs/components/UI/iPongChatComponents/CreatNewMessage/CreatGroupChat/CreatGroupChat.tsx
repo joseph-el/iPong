@@ -19,6 +19,8 @@ import Close from "../../../Button/CloseButton/CloseButton";
 import { useEffect, useState } from "react";
 import api from "../../../../../api/posts";
 import DefaultGroupImage from "./memoji/alta1r.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../state/store";
 type User = {
   id: number;
   name: string;
@@ -49,6 +51,7 @@ export default function CreatGroupChat(props) {
   const displayGroupType = Array.from(GroupType).join(" ");
   const [testID, setTestID] = useState("");
 
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -70,7 +73,7 @@ export default function CreatGroupChat(props) {
       }
     };
     fetchUsers();
-  }, []);
+  }, [UpdateApp]);
 
   useEffect(() => {
     const fetchReadyToSubmit = async () => {
@@ -125,7 +128,7 @@ export default function CreatGroupChat(props) {
       } catch (error) {}
     };
     ReadyToSubmit && fetchReadyToSubmit();
-  }, [ReadyToSubmit]);
+  }, [ReadyToSubmit, UpdateApp]);
   /* POST REQUEST TO CREATE A NEW GROUP
           const handleCreateGroup = () => {}
   */
