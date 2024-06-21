@@ -12,8 +12,8 @@ const updateState = createSlice({
     name: "update",
     initialState,
     reducers: {
-        setUpdate: (state, action) => {
-            state.update = action.payload;
+        setUpdate: (state) => {
+            state.update = !state.update;
         },
     },
 });
