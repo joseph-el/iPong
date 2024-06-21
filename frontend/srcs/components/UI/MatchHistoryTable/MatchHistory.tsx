@@ -48,7 +48,7 @@ export default function App({ UserId}) {
   const [matches, _setMatches] = useState([]);
   const [filteredItems, setfilteredItems] = useState(matches);
   const [GameMatchHistory, setGameMatchHistory] = useState([]);
-
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,7 +62,7 @@ export default function App({ UserId}) {
       }
     };
     fetchData();
-  }, []);
+  }, [UpdateApp]);
 
   useEffect(() => {
     const fetchOpponentUsers = async () => {
