@@ -24,6 +24,7 @@ import { GetCurrentUser } from './decorators/getCurrentUser.decorator';
 import { RtGuard } from './Guards/refresh.guard';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { TfaDto } from './dto/tfa.dto';
+import { stat } from 'fs';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -130,6 +131,10 @@ export class AuthController {
     const tokens = data.tokens;
     res.cookie('access_token', tokens.access_token, { httpOnly: false });
     res.cookie('refresh_token', tokens.refresh_token, { httpOnly: false, path: '/auth' });
+    return {
+      message: 'ok',
+      status: HttpStatus.CREATED,
+    };
   }
 
 }
