@@ -132,7 +132,7 @@ export class AuthService {
     return { qrCode, tfaToken };
   }
 
-  private generateUniqueToken() {
+  generateUniqueToken() {
     return require('crypto').randomBytes(32).toString('hex');
   }
 
