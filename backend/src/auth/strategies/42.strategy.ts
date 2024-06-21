@@ -38,19 +38,19 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
       profile['_json']['email'].toString(),
     );
     if (UserExust) {
-      if (UserExust.tfaEnabled) {
-        const tfaToken = require('crypto').randomBytes(32).toString('hex');
-        await this.database.user.update({
-          where: {
-            userId: UserExust.userId,
-          },
-          data: {
-            tfaToken: tfaToken,
-          },
-        });
-        // res.redirect(); redirect to tfa page
-        return cb(null, profile);
-      }
+      // if (UserExust.tfaEnabled) {
+      //   const tfaToken = require('crypto').randomBytes(32).toString('hex');
+      //   await this.database.user.update({
+      //     where: {
+      //       userId: UserExust.userId,
+      //     },
+      //     data: {
+      //       tfaToken: tfaToken,
+      //     },
+      //   });
+      //   // res.redirect(); redirect to tfa page
+      //   return cb(null, profile);
+      // }
       const tokens = await this.AuthService.getTokens(
         UserExust.email,
         UserExust.userId,
