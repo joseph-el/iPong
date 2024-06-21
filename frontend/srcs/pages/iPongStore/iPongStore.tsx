@@ -35,8 +35,6 @@ export default function IPongStore() {
   const [AvailablePaddles, setAvailablePaddles] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-
-
   const [ItemBuySuccess, setItemBuySuccess] = useState<[] | null>(null);
 
   enum BUY_TYPES {
