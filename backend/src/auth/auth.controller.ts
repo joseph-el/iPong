@@ -1,5 +1,7 @@
 import { UsersService } from 'src/users/users.service';
 import {
+  BadGatewayException,
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -123,8 +125,7 @@ export class AuthController {
   async validate2fa(@Body() tfaValidation: TfaDto, @Res({ passthrough: true }) res: Response) {
     const data = await this.authService.validateTwoFactorAuth(tfaValidation.otp, tfaValidation.tfaToken);
     if (!data.isValid) {
-      res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid token' });
-      return;
+      return new BadRequestException('Invalid OTP');
     }
     const tokens = data.tokens;
     res.cookie('access_token', tokens.access_token, { httpOnly: false });
