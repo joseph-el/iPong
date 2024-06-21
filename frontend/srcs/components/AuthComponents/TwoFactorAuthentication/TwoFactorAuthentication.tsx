@@ -7,8 +7,10 @@ import { Input } from "@nextui-org/input";
 import { UserGuide } from "../WeSentCodeAndPassword/WeSentCodeAndPassword";
 import { Spacer } from "@nextui-org/react";
 import api from "../../../api/posts";
-
+import { useNavigate } from "react-router-dom";
 export function TwoFactorAuthenticationLogin() {
+
+const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [IsReadt, setIsReady] = useState(false);
 
@@ -16,8 +18,25 @@ export function TwoFactorAuthenticationLogin() {
   const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     const checkAuth = async () => {
+      const tfa_token = document?.cookie
+        ?.split("; ")
+        ?.find((row) => row.startsWith("tfa_token="))
+        ?.split("=")[1];
       try {
-      } catch (error) {}
+
+        console.log("code", code);
+        console.log("tfa_token", tfa_token);
+        const response = await api.post(`/auth/validate2fa`, {
+          otp: code,
+          tfaToken: tfa_token,
+        });
+        if (response.status === 201) {
+          navigate("/ipong/home");
+        }
+      } catch (error) {
+        setIsInvalid(true);
+        setErrorMessage("Invalid Code");
+      }
     };
 
     IsReadt && checkAuth();
