@@ -29,7 +29,7 @@ export default function ChatPanel() {
   const [UserIsBlocked, setUserIsBlocked] = React.useState(false);
 
   const UserId = useSelector((state: RootState) => state.userState.id);
-  
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const checkBlocked = async () => {
       try {
@@ -44,14 +44,14 @@ export default function ChatPanel() {
       }
     }
     checkBlocked();
-  }, []);
+  }, [UpdateApp]);
   
   
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [chatBubbleProps]);
+  }, [chatBubbleProps, UpdateApp]);
 
   console.log(selectedMessage);
     useEffect(() => {
@@ -74,7 +74,7 @@ export default function ChatPanel() {
         }
       }
       fetchChat();
-    }, [selectedMessage]); //  here 
+    }, [selectedMessage, UpdateApp]); //  here 
 
   return (
     <div className="ChatPanel-frame" ref={scrollRef}>
