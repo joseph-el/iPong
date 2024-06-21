@@ -25,6 +25,7 @@ export const UserGuide = ({ guide_title }) => {
   );
 };
 
+import { Spacer } from "@nextui-org/react";
 export default function WeSentCodeAndPassword(props) {
   const dispatch = useDispatch<AppDispatch>();
   const ret = useSelector(
@@ -138,6 +139,8 @@ export default function WeSentCodeAndPassword(props) {
         {props.title === "We sent you a code" ? (
           <LoginHelp title={"Didn’t receive email?"} ClassName={"create-acc"} />
         ) : null}
+        
+        <Spacer y={8} />
         <div
           className="buttons-target"
           style={PaddingStyle}
