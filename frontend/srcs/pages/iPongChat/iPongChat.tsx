@@ -52,11 +52,9 @@ export default function IPongChat() {
     socket?.on("connect", () => {
       console.log("connected:::>");
     });
-
     socket?.on("onlineFriends", (friendIds) => {
       console.log("onlineFriends:::>", friendIds);
     });
-
     socket?.on("joinRoom", (userId) => {
       console.log("joinRoom:::>", userId);
     });
@@ -80,6 +78,7 @@ export default function IPongChat() {
   }, [socket]);
 
 
+  /*
   const accessToken = document?.cookie
     ?.split("; ")
     ?.find((row) => row.startsWith("access_token="))
@@ -125,7 +124,7 @@ export default function IPongChat() {
       console.log("error:::>", error);
     });
   }, []);
-
+*/
 
   return (
     <>
