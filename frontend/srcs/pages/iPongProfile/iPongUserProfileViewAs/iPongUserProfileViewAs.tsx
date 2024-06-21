@@ -286,7 +286,6 @@ export default function UserProfileViewAs() {
           await api.post(`/friendship/unblock`, {
             friendId: userId,
           });
-          return;
         }
         if (isUnfriend) {
           await api.post(`/friendship/unfriend`, {
@@ -298,9 +297,10 @@ export default function UserProfileViewAs() {
           });
         }
       } catch (error) {}
+      dispatch(setUpdate());
     };
     isUnfriend != null && fetchData();
-  }, [isUnfriend, userId]);
+  }, [isUnfriend]);
 
   const handelRemoveUser = (_isUnfriend) => {
     if (typeof _isUnfriend === "string") {
