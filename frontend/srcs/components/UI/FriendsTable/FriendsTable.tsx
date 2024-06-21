@@ -19,6 +19,8 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import api from "../../../api/posts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
 
 const INITIAL_VISIBLE_COLUMNS = ["FRIEND NAME", "UNFRIEND", "BLOCK"];
 
@@ -104,6 +106,7 @@ export default function FriendsTable() {
   const onSearchChangesClear = () => {
     setfilteredItems(friends);
   };
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,7 +130,7 @@ export default function FriendsTable() {
       }
     };
     fetchData();
-  }, []);
+  }, [UpdateApp]);
 
   type Friend = (typeof friends)[0];
 
@@ -204,7 +207,7 @@ export default function FriendsTable() {
       setUserId("");
     };
     handelRemoveUser();
-  }, [removeUser]);
+  }, [removeUser, UpdateApp]);
 
   const handelRemoveUser = (type) => {
     if (type) {
