@@ -18,8 +18,8 @@ import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "V-BUCKS", "RESULTS", "DATE"];
 import api from "../../../api/posts";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../state/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
 
 const TopContent = (props) => {
   return (
@@ -82,7 +82,7 @@ export default function App({ UserId}) {
           };
         } catch (error) {
           // console.log("Error fetching data");
-          return null; // Handle the error case
+          return null; 
         }
       });
       const resolvedMatches = await Promise.all(matchesPromises);
