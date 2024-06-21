@@ -8,6 +8,8 @@
   height: 530px;
   max-width: 460px;
   max-height: 530px;
+  height: auto; /* Change from fixed height to auto */
+  max-height: none; /* Remove max-height restriction */
 }
 
 @layer CloseIcon {
@@ -125,7 +127,11 @@
     width: 460px;
     height: 530px;
     max-width: 400px;
-    max-height: 512px;
+    max-height: 530px;
+
+    height: auto; /* Change from fixed height to auto */
+    max-height: none; /* Remove max-height restriction */
+    
   }
   .CreateAccount-competent-frame .max-w-xs {
     padding: 0px 0px 10px 10px;
@@ -135,7 +141,8 @@
   .CreateAccount-competent-frame .buttons-target {
     display: flex;
     justify-content: center;
-    padding: 5px 0px 20px 0px;
+    padding-bottom: 20px !important;
+
     margin-left: 0;
   }
 
