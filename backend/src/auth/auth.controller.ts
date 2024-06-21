@@ -131,7 +131,10 @@ export class AuthController {
     const tokens = data.tokens;
     res.cookie('access_token', tokens.access_token, { httpOnly: false });
     res.cookie('refresh_token', tokens.refresh_token, { httpOnly: false, path: '/auth' });
-    res.status(HttpStatus.OK).send({ message: 'ogin succes' });
+    return {
+      message: 'login succes',
+      status: HttpStatus.CREATED,
+    };
   }
 
 }
