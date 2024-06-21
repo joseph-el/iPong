@@ -32,7 +32,7 @@ const navigate = useNavigate();
         });
 
         console.log("Submit:> ", response);
-        if (response.data === 201) {
+        if (response.data.status === 201) {
           navigate("/ipong/home");
         } else
             throw new Error("Invalid Code");
