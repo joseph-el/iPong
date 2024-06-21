@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Redirect,
   Req,
@@ -20,12 +21,13 @@ import { ApiCookieAuth } from '@nestjs/swagger';
 import { GetCurrentUser } from './decorators/getCurrentUser.decorator';
 import { RtGuard } from './Guards/refresh.guard';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { TfaDto } from './dto/tfa.dto';
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
     private UsersService: UsersService,
-  ) {}
+  ) { }
   @Get('42')
   @UseGuards(AuthGuard('42'))
   fortyTwoAuth() {
@@ -34,7 +36,7 @@ export class AuthController {
 
   @Get('42/callback')
   @UseGuards(AuthGuard('42'))
-  fortyTwoCallback(@Res() res) {}
+  fortyTwoCallback(@Res() res) { }
 
   @Post('login')
   async login(@Res({ passthrough: true }) res: Response, @Body() dto: AuthDto) {
@@ -46,7 +48,6 @@ export class AuthController {
     });
     res.setHeader('access_token', tokens.access_token);
   }
-
 
   @Post('checkusername')
   async isUsernameUnique(@Body() req, @Res() res: Response) {
@@ -110,5 +111,29 @@ export class AuthController {
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
     res.redirect('http://localhost:3000'); // TODO:;
+  }
+
+  @Get('generate2fa/:email')
+  async generate2fa(@Param('email') email: string) {
+    const { qrCode, tfaToken } = await this.authService.generateTwoFactorAuthSecret(email);
+    return { qrCode, tfaToken };
+  }
+
+  @Post('validate2fa')
+  async validate2fa(@Body() tfaValidation: TfaDto, @Res({ passthrough: true }) res: Response) {
+    const data = await this.authService.validateTwoFactorAuth(tfaValidation.otp, tfaValidation.tfaToken);
+    if (!data.isValid) {
+      res.status(HttpStatus.BAD_REQUEST).send({ message: 'Invalid token' });
+      return;
+    }
+    const tokens = data.tokens;
+    res.cookie('access_token', tokens.access_token, { httpOnly: false });
+    res.cookie('refresh_token', tokens.refresh_token, { httpOnly: false, path: '/auth' });
+  }
+
+  @Get('validateToken/:token')
+  async validateToken(@Param('token') token: string) {
+    const isValid = await this.authService.checkToken(token);
+    return { isValid };
   }
 }

@@ -15,6 +15,10 @@ datasource db {
 
 model User {
   userId           String           @id @default(uuid())
+  tfaEnabled    Boolean        @default(false)
+  tfaSecret     String?
+  tfaToken      String?        @unique
+  tfaTokenExpiry DateTime?
   email            String?          @unique
   username         String?          @unique
   intraId          String?          @unique

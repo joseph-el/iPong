@@ -17,6 +17,7 @@ export class UserProfileDto {
     this.firstName = userData.firstName;
     this.lastName = userData.lastName;
     this.wallet = userData.wallet;
+    this.tfaEnabled = userData.tfaEnabled;
     this.bio = userData.bio;
     this.email = userData.email;
     this.picture = userData.avatar;
@@ -43,6 +44,7 @@ export class UserProfileDto {
   lastName: string;
   xp: number;
   wallet: number;
+  tfaEnabled: boolean;
   bio: string;
   phone: string;
   picture: string;

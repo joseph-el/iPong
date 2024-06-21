@@ -48,4 +48,8 @@ export class UpdateUserDto {
   @IsNumber()
   @IsOptional()
   xp?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  tfaEnabled?: boolean;
 }

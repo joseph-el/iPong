@@ -97,7 +97,7 @@ export default function IPongChat() {
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
     });
-
+    console.log("socket hiiii :::>", socket);
     socket.on("connect", () => {
       console.log("connected:::>");
     });
