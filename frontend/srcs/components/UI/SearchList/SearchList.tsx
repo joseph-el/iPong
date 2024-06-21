@@ -15,9 +15,11 @@ import { useNavigate } from "react-router-dom";
 import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import {RootState} from "../../../state/store";
+import { RootState } from "../../../state/store";
 import { Button } from "@nextui-org/react";
 import { set } from "lodash";
+import "./SearchList.css";
+import { setErrorMessage } from "../../../state/InputComponents/inputSlice";
 export default function SearchList({ Groups, users, func }) {
   const [values, setValues] = useState<Selection>(new Set(["1"]));
   const navigate = useNavigate();
@@ -28,7 +30,6 @@ export default function SearchList({ Groups, users, func }) {
   );
   const [JoinRoom, setJoinRoom] = useState(false);
   const [GroupNeedPassword, setGroupNeedPassword] = useState(false);
-
 
   const topContent = React.useMemo(() => {
     if (!arrayValues.length) {
@@ -69,22 +70,29 @@ export default function SearchList({ Groups, users, func }) {
     );
   }, [arrayValues.length, selectedType]);
 
-  const [value, setValue] = useState("");
   const [ReadyToJoin, setReadyToJoin] = useState([]);
+
+  const [inputValue, setInputValue] = useState("");
+  const [IsInvalid, setIsInvalid] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const joinGroup = async () => {
       try {
-        
         console.warn("the room id is: ", ReadyToJoin.id);
         console.warn("the user id is: ", UserId);
+
         const response = await api.post("/chatroom/join", {
           roomId: ReadyToJoin.id,
           userId: UserId,
-          password: (ReadyToJoin.type === "protected" ? values : ""),
+          password: ReadyToJoin.type === "protected" ? inputValue : "",
         });
-        
+
         console.log("response: of join room ", response);
+  
+          setJoinRoom(false);
+          navigate(`/ipong/chatroom/${ReadyToJoin.id}`);
+      
       } catch (error) {
         console.error("error join room: ", error);
       }
@@ -197,6 +205,7 @@ export default function SearchList({ Groups, users, func }) {
         <ListboxWrapper>
           <div className="JoinRoom-frame">
             <Grid
+              className="JoinRoom-frame-grid"
               templateAreas={`
                   "header header"
                   "main main"
@@ -204,40 +213,57 @@ export default function SearchList({ Groups, users, func }) {
               gridTemplateRows={"50px 1fr 30px"}
               gridTemplateColumns={"150px 1fr"}
               h="100%"
-              color="blackAlpha.700"
               fontWeight="bold"
             >
               <GridItem
                 pl="2"
                 h="full"
                 w="full"
-                bg="orange.300"
+                className="JoinRoom-frame-header"
                 area={"header"}
               >
-                <div>This Group is protected</div>
+                <div className="header">
+                  {" "}
+                  {ReadyToJoin.type === "protected"
+                    ? "Protected Group"
+                    : "Public Group"}{" "}
+                </div>
               </GridItem>
 
-              <GridItem h="full" w="full" pl="2" area={"main"}>
+              <GridItem
+                h="full"
+                w="full"
+                pl="2"
+                area={"main"}
+                className="JoinRoom-frame-main"
+              >
                 <div className="User-info">
                   <Avatar
                     isBordered
                     className="User-avatar w-24 h-24"
-                    src={""}
+                    src={ReadyToJoin.icon}
                   />
 
                   <div className="info">
-                    <div className="User-name"> Peepper Group </div>
-                    <div className="ipongchar">iPong</div>
+                    <div className="User-name"> {ReadyToJoin.roomName} </div>
+            
                   </div>
-                  <p className="small-text">
-                    To join this exclusive group, a password is required. Reach
-                    out to the group's administrator to obtain the key that will
-                    grant you access.
+                  <p className="small-text descriptions">
+                    {ReadyToJoin.type === "protected"
+                      ? "To join this exclusive group, a password is required. Reach out to the group's administrator to obtain the key that will grant you access."
+                      : "You are about to join this group. Are you sure you want to proceed?"}
                   </p>
                   {GroupNeedPassword && (
                     <Input
+                      className="JoinRoom-frame-input-password"
+                      isInvalid={IsInvalid}
+                      errorMessage={ErrorMessage}
                       onChange={(e) => {
-                        setValues(e.target.value);
+                        if (IsInvalid) {
+                          setIsInvalid(false);
+                          setErrorMessage("");
+                        }
+                        setInputValue(e.target.value);
                       }}
                       placeholder="Enter Password"
                       size="md"
@@ -247,12 +273,30 @@ export default function SearchList({ Groups, users, func }) {
                 </div>
               </GridItem>
 
-              <GridItem h="full" w="full" pl="2" area={"footer"}>
+              <GridItem
+                h="full"
+                w="full"
+                pl="2"
+                area={"footer"}
+                className="JoinRoom-frame-footer"
+              >
                 <div className="flex gap-2">
-                  <Button size="md">Cancel</Button>
                   <Button
                     size="md"
                     onClick={() => {
+                      setJoinRoom(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    size="md"
+                    onClick={() => {
+                      if (GroupNeedPassword && inputValue === "") {
+                        setIsInvalid(true);
+                        setErrorMessage("Password is required");
+                        return;
+                      }
                       setReadyToJoin({ ...ReadyToJoin, IsReady: true });
                     }}
                   >
