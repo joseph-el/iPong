@@ -6,6 +6,7 @@ import CustomButton from "../../UI/Button/SubmitButton/SubmitButton";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 import api from "../../../api/posts";
+import { Spacer } from "@nextui-org/react";
 
 export default function WelcomeNewUser(props) {
   const navigate = useNavigate();
@@ -72,6 +73,8 @@ export default function WelcomeNewUser(props) {
           </div>
         </div>
 
+        
+        <Spacer y={2} />
         <div className="buttons-target" onClick={extractUserData}>
           <CustomButton classNames="create-account" text={props.button_text} />
         </div>
