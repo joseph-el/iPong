@@ -112,7 +112,7 @@ export class ChatroomController {
     @Body() setAdminDto: setAdminDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.setAdmin(setAdminDto, userId);
+    return await this.chatroomService.setAdmin(setAdminDto, userId);
   }
 
   @UseGuards(AtGuard)
