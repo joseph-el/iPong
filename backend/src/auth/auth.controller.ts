@@ -131,9 +131,4 @@ export class AuthController {
     res.cookie('refresh_token', tokens.refresh_token, { httpOnly: false, path: '/auth' });
   }
 
-  @Get('validateToken/:token')
-  async validateToken(@Param('token') token: string) {
-    const isValid = await this.authService.checkToken(token);
-    return { isValid };
-  }
 }

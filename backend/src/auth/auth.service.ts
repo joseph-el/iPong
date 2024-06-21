@@ -122,11 +122,10 @@ export class AuthService {
     const qrCode = await qrcode.toDataURL(otpAuthUrl);
 
     const tfaToken = this.generateUniqueToken();
-    const tfaTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes expiry
 
     await this.dataservice.user.update({
       where: { email },
-      data: { tfaSecret: secret.base32, tfaToken, tfaTokenExpiry },
+      data: { tfaSecret: secret.base32, tfaToken },
     });
 
 
@@ -137,24 +136,6 @@ export class AuthService {
     return require('crypto').randomBytes(32).toString('hex');
   }
 
-  async checkToken(tfaToken: string) {
-    const user = await this.dataservice.user.findUnique({
-      where: { tfaToken },
-      select: {
-        tfaToken: true,
-        tfaTokenExpiry: true,
-      },
-    });
-    if (!user) return false;
-    if (new Date() > new Date(user.tfaTokenExpiry)) {
-      await this.dataservice.user.update({
-        where: { tfaToken },
-        data: { tfaToken: null, tfaTokenExpiry: null },
-      });
-      return false;
-    }
-    return true;
-  }
 
   async validateTwoFactorAuth(token: string, tfaToken: string) {
     const user = await this.dataservice.user.findUnique({
@@ -162,22 +143,12 @@ export class AuthService {
       select: {
         tfaSecret: true,
         userId: true,
-        tfaEnabled: true,
         email: true,
-        tfaTokenExpiry: true,
       },
     });
 
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.BAD_REQUEST);
-    }
-
-    if (new Date() > new Date(user.tfaTokenExpiry)) {
-      throw new HttpException('Token expired', HttpStatus.BAD_REQUEST);
-    }
-
-    if (!user.tfaEnabled) {
-      throw new HttpException('Two-factor authentication is not enabled', HttpStatus.BAD_REQUEST);
     }
 
     const isValid = speakeasy.totp.verify({
@@ -187,12 +158,9 @@ export class AuthService {
     });
 
     if (isValid) {
-      await this.dataservice.user.update({
-        where: { userId: user.userId },
-        data: { tfaToken: null, tfaTokenExpiry: null },
-      });
       const tokens = await this.getTokens(user.email, user.userId);
       await this.updateHash(user.userId, tokens.refresh_token);
+      // set tfa to true
       return { isValid, tokens };
     }
     return { isValid };
