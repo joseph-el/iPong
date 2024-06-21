@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo, useCallback } from "react";
 import "./iPongUserProfile.css";
 import {
   Tabs,
@@ -40,38 +40,44 @@ import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 import { formatJoinDate } from "../../../utils/formatJoinDate";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 
-const UserDescriptions = ({ UserInfo }) => {
+
+const UserDescriptions = React.memo(({ UserInfo }) => {
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchCountry = async (latitude, longitude) => {
-      try {
-        const response = await axios.get(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-        );
-        setCountry(response.data.countryName);
-      } catch (err) {
-        setError("Failed to fetch country name");
-      }
-    };
-    const getPosition = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            fetchCountry(latitude, longitude);
-          },
-          (err) => {
-            setError("Geolocation permission denied");
-          }
-        );
-      } else {
-        setError("Geolocation is not supported by this browser");
-      }
-    };
-    getPosition();
+  const fetchCountry = useCallback(async (latitude, longitude) => {
+    try {
+      const response = await axios.get(
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+      );
+      setCountry(response.data.countryName);
+    } catch (err) {
+      setError("Failed to fetch country name");
+    }
   }, []);
+
+  const getPosition = useCallback(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchCountry(latitude, longitude);
+        },
+        (err) => {
+          setError("Geolocation permission denied");
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by this browser");
+    }
+  }, [fetchCountry]);
+
+  useEffect(() => {
+    getPosition();
+  }, [getPosition]);
+
+  const joinDate = useMemo(() => formatJoinDate(UserInfo.createdAt), [UserInfo.createdAt]);
+
   return (
     <div className="info">
       <p className="description">{UserInfo.bio}</p>
@@ -83,12 +89,10 @@ const UserDescriptions = ({ UserInfo }) => {
         <div className="div-2">
           <img className="img" alt="Calendar icon" src={CalendarIcon} />
           <div className="text-wrapper-2">
-            {" "}
-            {formatJoinDate(UserInfo.createdAt)}
+            {joinDate}
           </div>
         </div>
       </div>
-
       <div className="follower-counts">
         <div className="following">
           <div className="text-wrapper">{UserInfo.FriendsCount}</div>
@@ -97,7 +101,8 @@ const UserDescriptions = ({ UserInfo }) => {
       </div>
     </div>
   );
-};
+});
+
 
 export default function UserProfile() {
   const [showAchievementList, setShowAchievementList] = React.useState(false);
