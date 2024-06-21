@@ -254,71 +254,66 @@ export class ChatroomService {
   }
 
   async join(joinChatroomDto: JoinRoomDto) {
-    try {
-      const chatroom = await this.databaseservice.chatRoom.findUnique({
-        where: { id: joinChatroomDto.roomId },
-      });
+    const chatroom = await this.databaseservice.chatRoom.findUnique({
+      where: { id: joinChatroomDto.roomId },
+    });
 
-      if (!chatroom) {
-        return new HttpException('Chatroom not found', 404);
-      }
-
-      if (joinChatroomDto.inviterId) {
-        const isInviterIsAdmin =
-          await this.databaseservice.chatRoomMember.findFirst({
-            where: {
-              chatRoomId: joinChatroomDto.roomId,
-              memberID: joinChatroomDto.inviterId,
-              isAdmin: true,
-            },
-          });
-
-        if (!isInviterIsAdmin) {
-          return new HttpException(
-            'Inviter is not an admin of the chatroom',
-            401,
-          );
-        }
-      } else {
-        if (
-          chatroom.type === ChatRoomType.protected &&
-          !joinChatroomDto.password
-        ) {
-          return new HttpException('Password is required to join', 400);
-        }
-
-        if (chatroom.type === ChatRoomType.protected) {
-          const isMatch = await bcrypt.compare(
-            joinChatroomDto.password,
-            chatroom.password,
-          );
-          if (!isMatch) {
-            return new HttpException('Invalid password', 401);
-          }
-        }
-      }
-
-      const member = await this.databaseservice.chatRoomMember.findFirst({
-        where: {
-          chatRoomId: chatroom.id,
-          memberID: joinChatroomDto.userId,
-        },
-      });
-      if (member) {
-        return new HttpException('Already a member of the chatroom', 400);
-      }
-
-      await this.databaseservice.chatRoomMember.create({
-        data: {
-          member: { connect: { userId: joinChatroomDto.userId } },
-          ChatRoom: { connect: { id: chatroom.id } },
-        },
-      });
-
-      return { message: `${joinChatroomDto.userId} joined the chatroom` };
-    } catch (error) {
-      return error;
+    if (!chatroom) {
+      return new HttpException('Chatroom not found', 404);
     }
+
+    if (joinChatroomDto.inviterId) {
+      const isInviterIsAdmin =
+        await this.databaseservice.chatRoomMember.findFirst({
+          where: {
+            chatRoomId: joinChatroomDto.roomId,
+            memberID: joinChatroomDto.inviterId,
+            isAdmin: true,
+          },
+        });
+
+      if (!isInviterIsAdmin) {
+        return new HttpException(
+          'Inviter is not an admin of the chatroom',
+          401,
+        );
+      }
+    } else {
+      if (
+        chatroom.type === ChatRoomType.protected &&
+        !joinChatroomDto.password
+      ) {
+        return new HttpException('Password is required to join', 400);
+      }
+
+      if (chatroom.type === ChatRoomType.protected) {
+        const isMatch = await bcrypt.compare(
+          joinChatroomDto.password,
+          chatroom.password,
+        );
+        if (!isMatch) {
+          return new HttpException('Invalid password', 401);
+        }
+      }
+    }
+    const member = await this.databaseservice.chatRoomMember.findFirst({
+      where: {
+        chatRoomId: chatroom.id,
+        memberID: joinChatroomDto.userId,
+      },
+    });
+    if (member) {
+      return new HttpException('Already a member of the chatroom', 400);
+    }
+
+    await this.databaseservice.chatRoomMember.create({
+      data: {
+        member: { connect: { userId: joinChatroomDto.userId } },
+        ChatRoom: { connect: { id: chatroom.id } },
+      },
+    });
+
+    return { message: `${joinChatroomDto.userId} joined the chatroom` };
   }
 
   async getRoomDetails(roomId: string) {
@@ -541,7 +536,7 @@ export class ChatroomService {
     console.log('room: ', room);
     console.log('user: ', user);
     console.log('member: ', member);
-    console.log("------------------");
+    console.log('------------------');
     if (!room) return new HttpException('room not found', HttpStatus.NOT_FOUND);
     if (!member)
       return new HttpException('member not found', HttpStatus.NOT_FOUND);
@@ -664,8 +659,7 @@ export class ChatroomService {
       return new HttpException('member not found', HttpStatus.NOT_FOUND);
     if (!user.isAdmin || user.isBanned)
       return new BadRequestException('You are not admin of this room');
-    if (!member.isMuted)
-      return new BadRequestException('Member is not muted');
+    if (!member.isMuted) return new BadRequestException('Member is not muted');
     if (member.memberID === userId)
       return new BadRequestException('You can not unmute yourself');
     await this.databaseservice.chatRoomMember.update({
@@ -918,8 +912,7 @@ export class ChatroomService {
   }
 
   async update(updateRoomDto: UpdateRoomDto, userId: string) {
-
-    console.log("updateRoomDto>> ", updateRoomDto)
+    console.log('updateRoomDto>> ', updateRoomDto);
     const roomId = updateRoomDto.roomId;
 
     // Remove roomId from roomData to avoid updating it in the database
