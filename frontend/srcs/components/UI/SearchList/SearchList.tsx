@@ -28,7 +28,7 @@ export default function SearchList({ Groups, users, func }) {
   );
   const [JoinRoom, setJoinRoom] = useState(false);
   const [GroupNeedPassword, setGroupNeedPassword] = useState(false);
-  console.log("selectedType: ", selectedType);
+
 
   const topContent = React.useMemo(() => {
     if (!arrayValues.length) {
@@ -67,7 +67,7 @@ export default function SearchList({ Groups, users, func }) {
         </div>
       </ScrollShadow>
     );
-  }, [arrayValues.length]);
+  }, [arrayValues.length, selectedType]);
 
   const [value, setValue] = useState("");
   const [ReadyToJoin, setReadyToJoin] = useState([]);
