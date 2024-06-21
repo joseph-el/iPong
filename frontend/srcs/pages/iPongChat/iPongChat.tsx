@@ -19,9 +19,11 @@ export default function IPongChat() {
   const { chatId: paramChatId } = useParams();
   const [chatId, setChatId] = useState(paramChatId);
   const dispatch = useDispatch();
+  
   useEffect(() => {
     setChatId(paramChatId);
   }, [paramChatId]);
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [ShowCreateNewChat, setShowCreateNewChat] = React.useState(false);
   const [ShowCreateFriendChat, setShowFriendChat] = React.useState(false);
