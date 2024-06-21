@@ -89,10 +89,21 @@ export default function SearchList({ Groups, users, func }) {
         });
 
         console.log("response: of join room ", response);
-  
-          setJoinRoom(false);
-          navigate(`/ipong/chatroom/${ReadyToJoin.id}`);
-      
+
+        if (
+          response.data.status == 401 ||
+          response.data.status == 400 ||
+          response.data.status == 404 ||
+          response.data.status == 500 ||
+          response.data.status == 403 ||
+          response.data.status == 402
+        ) {
+          setIsInvalid(true);
+          setErrorMessage("Invalid Password");
+          return;
+        }
+        setJoinRoom(false);
+        navigate(`/ipong/chat/${ReadyToJoin.id}`);
       } catch (error) {
         console.error("error join room: ", error);
       }
@@ -246,7 +257,6 @@ export default function SearchList({ Groups, users, func }) {
 
                   <div className="info">
                     <div className="User-name"> {ReadyToJoin.roomName} </div>
-            
                   </div>
                   <p className="small-text descriptions">
                     {ReadyToJoin.type === "protected"
