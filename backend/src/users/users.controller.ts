@@ -16,19 +16,19 @@ export class UsersController {
   async GetSearchedUsers(
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.usersService.getAllUsers(userId);
+    return await this.usersService.getAllUsers(userId);
   }
 
   @UseGuards(AtGuard)
   @Get()
   async whoami(@GetCurrentUser('userId') userId: string) {
-    return this.usersService.getUserById(userId);
+    return await this.usersService.getUserById(userId);
   }
   
   @UseGuards(AtGuard)
   @Post('update')
   async update( @GetCurrentUser('userId') userId: string, @Body() updateUserDto: UpdateUserDto) {
-    const result = this.usersService.update(userId, updateUserDto);
+    const result = await this.usersService.update(userId, updateUserDto);
     if (result) {
       return { message: 'User updated successfully' };
     } 
@@ -39,7 +39,7 @@ export class UsersController {
   @Post("update/password")
   async updatePassword(@Request() req: any, @Body() updateUserDto: UpdateUserDto) {
 
-    const result = this.usersService.updatePassword(req.user.userId, updateUserDto.password);
+    const result = await this.usersService.updatePassword(req.user.userId, updateUserDto.password);
     if (result) {
       return { message: 'Password updated successfully' };
     } 

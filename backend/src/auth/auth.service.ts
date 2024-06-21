@@ -115,7 +115,7 @@ export class AuthService {
 
     const otpAuthUrl = speakeasy.otpauthURL({
       secret: secret.base32,
-      label: `YourAppName (${email})`,
+      label: `iPong (${email})`,
       encoding: 'base32',
     });
 
@@ -128,6 +128,7 @@ export class AuthService {
       where: { email },
       data: { tfaSecret: secret.base32, tfaToken, tfaTokenExpiry },
     });
+
 
     return { qrCode, tfaToken };
   }
