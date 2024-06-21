@@ -29,10 +29,17 @@ import {
 } from "../state/Notifications/NotificationsSlice";
 import { AppDispatch } from "../state/store";
 import { SocketProvider } from "../context/SocketContext";
+import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+
+import { useSelector } from "react-redux";
+import { RootState } from "../state/store";
+import { setUpdate } from "../state/Update/UpdateSlice";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
+  
   const dispatch = useDispatch<AppDispatch>();
 
   if (
@@ -77,7 +84,7 @@ const RequireAuth = ({ children }) => {
       }
     };
     checkAuth();
-  }, []);
+  }, [UpdateApp]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,7 +125,8 @@ const RequireAuth = ({ children }) => {
 
     fetchData();
     fetchUnreadNotificationsData();
-  }, []);
+  }, [UpdateApp]);
+
   dispatch(setSelectedSkinPath(UserSkin));
   dispatch(setBoardPath(UserBoard));
   if (isAuthenticated === null) {
@@ -223,7 +231,11 @@ export default function App() {
     <>
       <ChakraProvider>
         <SocketProvider>
-          <RouterProvider router={router} />
+          <NextUIProvider>
+            <NextThemesProvider attribute="class" defaultTheme="dark">
+              <RouterProvider router={router} />
+            </NextThemesProvider>
+          </NextUIProvider>
         </SocketProvider>
       </ChakraProvider>
     </>
