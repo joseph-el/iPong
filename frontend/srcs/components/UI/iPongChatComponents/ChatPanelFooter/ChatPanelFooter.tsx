@@ -68,7 +68,7 @@ export default function ChatPanelFooter() {
     setSuggestions([]);
     setStyle("20px");
   };
-
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchChat = async () => {
       try {
@@ -93,7 +93,7 @@ export default function ChatPanelFooter() {
     };
 
     IsReady && fetchChat();
-  }, [IsReady]);
+  }, [IsReady, UpdateApp]);
 
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function ChatPanelFooter() {
     }
 
     IsMuted();
-  })
+  }, [UpdateApp])
 
 
   const handelSendMessage = () => {
@@ -133,7 +133,7 @@ export default function ChatPanelFooter() {
       }
     }
     checkBlocked();
-  }, []);
+  }, [UpdateApp]);
 
   return (
     <div className="ChatPanelFooter-frame">
