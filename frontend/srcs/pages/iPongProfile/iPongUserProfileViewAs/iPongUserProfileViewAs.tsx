@@ -54,8 +54,9 @@ import { set } from "lodash";
 import {useNavigate} from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
+import {setUpdate } from "../../../state/Update/UpdateSlice";
 
-const UserDescriptions = ({ UserprofileInfo, UserIsBlocked }) => {
+const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
 
@@ -128,13 +129,14 @@ const UserDescriptions = ({ UserprofileInfo, UserIsBlocked }) => {
       </div>
     </div>
   );
-};
+});
 
 export default function UserProfileViewAs() {
   // const { userId } = useParams();
 
   const { userId: paramUserId } = useParams();
   const [userId, setUserId] = useState(paramUserId);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     setUserId(paramUserId);
@@ -161,7 +163,7 @@ export default function UserProfileViewAs() {
   const [UserprofileInfo, setUserprofileInfo] = useState([]);
 
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
-
+  const Update = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -179,7 +181,7 @@ export default function UserProfileViewAs() {
     };
 
     fetchData();
-  }, [userId]);
+  }, [userId, Update]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -193,7 +195,7 @@ export default function UserProfileViewAs() {
       }
     };
     fetchData();
-  }, [userId]); // USER PROFILE
+  }, [userId, Update]); // USER PROFILE
 
   useEffect(() => {
     const fetchData = async () => {
@@ -215,7 +217,7 @@ export default function UserProfileViewAs() {
       } catch (error) {}
     };
     fetchData();
-  }, [userId]);
+  }, [userId, Update]);
 
   const dropdownOptions = {
     MAKE_FRIEND: {
@@ -269,9 +271,11 @@ export default function UserProfileViewAs() {
           // console.log("response: reject ", response);
         }
       } catch (error) {}
+
+        dispatch(setUpdate());
     };
     ButtonFriendStatus !== "ACCEPTED" && fetchData();
-  }, [FriendshipStatus, userId]);
+  }, [FriendshipStatus]);
 
   const [isUnfriend, setIsUnfriend] = useState<Boolean | null | String>(null);
 
@@ -311,6 +315,7 @@ export default function UserProfileViewAs() {
   };
 
   const [startChat, setStartChat] = useState(false);
+
   useEffect(() => {
     const fetchCreatChatRoom = async () => {
       try {
@@ -329,8 +334,6 @@ export default function UserProfileViewAs() {
   }, [startChat]);
 
 
-
-  console.log("GithubLink: ", UserInfo.githubLink);
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
