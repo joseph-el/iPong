@@ -19,6 +19,7 @@ export default function UserListMessages(props) {
   const UserId = useSelector((state: RootState) => state.userState.id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -62,7 +63,7 @@ export default function UserListMessages(props) {
       }
     };
     fetchUsers();
-  }, []);
+  }, [UpdateApp]);
 
   const handelListChatItem = (id) => {
     dispatch(setIsSelectedMessage(id));
