@@ -109,6 +109,7 @@ export class GatewayNofifGateway
     notif: CreateNotificationDto,
     blockedRoomMembersIds?: string[],
   ) {
+    console.log('sendNotification event received', notif);
     const newNotif = await this.notificationService.create(notif);
     const channelName: string = `User:${newNotif.receiverId}`;
     this.server.to(channelName).emit('sendNotification', {
