@@ -397,8 +397,7 @@ export class FriendshipService {
       );
     }
 
-    const user = await this.databaseservic\=-p0dcs x
-    \]'0-[o32`1'.user.findUnique({
+    const user = await this.databaseservice.user.findUnique({
       where: { userId },
     });
     if (!user) {
