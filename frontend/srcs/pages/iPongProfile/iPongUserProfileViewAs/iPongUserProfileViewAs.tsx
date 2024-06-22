@@ -51,10 +51,10 @@ import { AppDispatch, RootState } from "../../../state/store";
 import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 import api from "../../../api/posts";
 import { set } from "lodash";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
-import {setUpdate } from "../../../state/Update/UpdateSlice";
+import { setUpdate } from "../../../state/Update/UpdateSlice";
 
 const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
@@ -91,10 +91,7 @@ const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
 
   return (
     <div className="info">
-      <p className="description">
-        {UserprofileInfo.bio}
-
-      </p>
+      <p className="description">{UserprofileInfo.bio}</p>
 
       <div>
         <div className="meta-details">
@@ -186,7 +183,6 @@ export default function UserProfileViewAs() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
         const response = await api.get(`/user-profile/getinfoById${userId}`);
         setUserprofileInfo(response.data);
         console.log("response.data", response.data);
@@ -250,7 +246,7 @@ export default function UserProfileViewAs() {
     const fetchData = async () => {
       try {
         if (FriendshipStatus === "SET_FRIEND") {
-           await api.post(`/friendship/add`, {
+          await api.post(`/friendship/add`, {
             friendId: userId,
           });
           // console.log("response: add ", response);
@@ -272,7 +268,7 @@ export default function UserProfileViewAs() {
         }
       } catch (error) {}
 
-        dispatch(setUpdate());
+      dispatch(setUpdate());
     };
     ButtonFriendStatus !== "ACCEPTED" && fetchData();
   }, [FriendshipStatus]);
@@ -329,10 +325,9 @@ export default function UserProfileViewAs() {
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     startChat && fetchCreatChatRoom();
   }, [startChat]);
-
 
   return (
     <NextUIProvider>
@@ -342,7 +337,7 @@ export default function UserProfileViewAs() {
             <img
               className="user-cover-image"
               alt="NextUI Fruit Image with Zoom"
-              src={ UserprofileInfo.cover }
+              src={UserprofileInfo.cover}
             />
             <Avatar
               src={
@@ -357,7 +352,10 @@ export default function UserProfileViewAs() {
             />
             {UserIsBlocked === null ? (
               <div className="user-LevelBars">
-                <LevelBar xp={UserprofileInfo.xp} level={getUserLevel(UserprofileInfo.xp)} />
+                <LevelBar
+                  xp={UserprofileInfo.xp}
+                  level={getUserLevel(UserprofileInfo.xp)}
+                />
               </div>
             ) : null}
           </div>
@@ -413,7 +411,9 @@ export default function UserProfileViewAs() {
                   {UserprofileInfo.linkedInLink != "" ? (
                     <Tooltip color="primary" content="Visit Linkdin">
                       <Image
-                        onClick={() => window.open(UserprofileInfo.linkedInLink)}
+                        onClick={() =>
+                          window.open(UserprofileInfo.linkedInLink)
+                        }
                         radius="none"
                         src={LinkedinIcon}
                         alt="Linkedin icon"
@@ -423,18 +423,20 @@ export default function UserProfileViewAs() {
                     </Tooltip>
                   ) : null}
 
-                  <Tooltip color="primary" content="send a message">
-                    <Image
-                      onClick={() => {
-                        setStartChat(true);
-                      }}
-                      radius="none"
-                      src={SendMessageIcon}
-                      alt="Linkedin icon"
-                      width={"33px"}
-                      className="social-icon"
-                    />
-                  </Tooltip>
+                  {ButtonFriendStatus === "ACCEPTED" && (
+                    <Tooltip color="primary" content="send a message">
+                      <Image
+                        onClick={() => {
+                          setStartChat(true);
+                        }}
+                        radius="none"
+                        src={SendMessageIcon}
+                        alt="Linkedin icon"
+                        width={"33px"}
+                        className="social-icon"
+                      />
+                    </Tooltip>
+                  )}
                 </div>
               ) : null}
 
