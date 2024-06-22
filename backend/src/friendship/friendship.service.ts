@@ -4,7 +4,7 @@ import { NotificationsService } from 'src/notifications/notifications.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { add_friendDto } from './dto/add-friendship.dto';
 import { DatabaseService } from 'src/database/database.service';
-import { $Enums, NotificationType } from '@prisma/client';
+import { $Enums, ChatRoomType, NotificationType } from '@prisma/client';
 import { res_friendship } from './dto/res-friends.dto';
 import { profile } from './dto/profile.dto';
 import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
@@ -92,31 +92,52 @@ export class FriendshipService {
   async unfriend(userId: string, friendId: string) {
     if (userId === friendId) {
       throw new HttpException(
-        'userd id is the same as firend id',
+        'User ID is the same as friend ID',
         HttpStatus.FORBIDDEN,
       );
     }
+
     const result = await this.databaseservice.friendship.deleteMany({
       where: {
         OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
       },
     });
-    if (result) {
-      await this.databaseservice.user.updateMany({
+
+    if (result.count > 0) {
+      // Ensure that friendships were actually deleted
+      const users = await this.databaseservice.user.findMany({
         where: {
           userId: {
             in: [userId, friendId],
           },
         },
-        data: {
-          FriendsCount: {
-            decrement: 1,
-          },
+        select: {
+          userId: true,
+          FriendsCount: true,
         },
       });
+
+      const updates = users.map((user) => {
+        if (user.FriendsCount > 0) {
+          return this.databaseservice.user.update({
+            where: { userId: user.userId },
+            data: {
+              FriendsCount: {
+                decrement: 1,
+              },
+            },
+          });
+        } else {
+          return Promise.resolve(); // No decrement needed
+        }
+      });
+
+      await Promise.all(updates);
     }
-    return { send: 'done' };
+
+    return { message: 'done' };
   }
+
   async isBlocked(userId: string, friendId: string) {
     console.log('userId', userId);
     console.log('friendId', friendId);
@@ -369,8 +390,6 @@ export class FriendshipService {
   }
 
   async blockUser(userId: string, friendId: string) {
-    // console.log(userId, ' block ', friendId);
-
     if (userId === friendId) {
       throw new HttpException(
         'User id is the same as friend id',
@@ -379,47 +398,33 @@ export class FriendshipService {
     }
 
     const user = await this.databaseservice.user.findUnique({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
-
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
     const friend = await this.databaseservice.user.findUnique({
-      where: {
-        userId: friendId,
-      },
+      where: { userId: friendId },
     });
-
     if (!friend) {
       throw new HttpException('Friend not found', HttpStatus.NOT_FOUND);
     }
+
     // Check if the block already exists
     const existingBlock = await this.databaseservice.blockedUser.findFirst({
       where: {
-        OR: [
-          {
-            id: `${userId}+${friendId}`,
-          },
-          {
-            id: `${friendId}+${userId}`,
-          },
-        ],
+        OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
       },
     });
 
     if (existingBlock) {
       if (existingBlock.blockedBy === userId) {
-        // You have blocked this user
         throw new HttpException(
           'This user is already blocked',
           HttpStatus.BAD_REQUEST,
         );
       } else {
-        // This user has blocked you
         throw new HttpException(
           'This user has already blocked you',
           HttpStatus.BAD_REQUEST,
@@ -433,19 +438,17 @@ export class FriendshipService {
         OR: [{ id: `${userId}+${friendId}` }, { id: `${friendId}+${userId}` }],
       },
     });
+
+    // Find a common direct message room
     const commonRoom = await this.databaseservice.chatRoom.findFirst({
       where: {
-        type: $Enums.ChatRoomType.Dm,
+        type: ChatRoomType.Dm,
         members: {
-          every: {
-            id: {
-              in: [userId, friendId],
-            },
-          },
+          every: { memberID: { in: [userId, friendId] } },
         },
       },
     });
-    // console.log('commonRoom', commonRoom);
+
     // Create a new block
     const result = await this.databaseservice.blockedUser.create({
       data: {
@@ -455,21 +458,29 @@ export class FriendshipService {
         dmId: commonRoom?.id,
       },
     });
+
     if (result) {
-      await this.databaseservice.user.updateMany({
-        where: {
-          userId: {
-            in: [userId, friendId],
-          },
-        },
-        data: {
-          FriendsCount: {
-            decrement: 1,
-          },
-        },
+      // Ensure that friendships were actually deleted
+      const users = await this.databaseservice.user.findMany({
+        where: { userId: { in: [userId, friendId] } },
+        select: { userId: true, FriendsCount: true },
       });
+
+      const updates = users.map((user) => {
+        if (user.FriendsCount > 0) {
+          return this.databaseservice.user.update({
+            where: { userId: user.userId },
+            data: { FriendsCount: { decrement: 1 } },
+          });
+        } else {
+          return Promise.resolve(); // No decrement needed
+        }
+      });
+
+      await Promise.all(updates);
     }
-    return { send: 'done' };
+
+    return { message: 'done' };
   }
 
   async unblockUser(userId: string, friendId: string) {
