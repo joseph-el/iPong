@@ -26,6 +26,7 @@ import { MessageFormatDto } from 'src/messages/dto/msgFormat.dto';
   namespace: 'chat',
   transports: ['websocket'],
 })
+
 export class GatewayChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -48,19 +49,29 @@ export class GatewayChatGateway
 
   async handleConnection(client: Socket) {
     const token = client.handshake.auth.token as string;
+    console.log('Token:', token);
     if (!token) {
       client.disconnect(true);
       return;
     }
-    try {
+    
+
+
+    try {   
       const decoded = this.jwtService.verify(token);
+   
+      console.log('User connected:::::::::::|<>|');
       client.data.user = decoded;
     } catch (error) {
       client.disconnect(true);
       return;
     }
+    
+
+
     const userId = client.data.user.userId;
     client.join(`User:${userId}`);
+    console.log('User connected:', userId);
     const frienduserIds = await this.databaseService.friendship.findMany({
       where: {
         OR: [{ fromUser: userId }, { toUser: userId }],
@@ -82,6 +93,7 @@ export class GatewayChatGateway
   async handleDisconnect(client: Socket) {
     const userId = client.data.user.userId;
     this.server.emit('friendOffline', userId);
+    console.log('User disconnected:', userId);
   }
 
   @SubscribeMessage('createRoom')
