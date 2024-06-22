@@ -16,16 +16,22 @@ import { io } from "socket.io-client";
 import { useSocket } from "../../context/SocketContext";
 import { Socket } from "socket.io-client";
 import { useRef } from "react";
-
+import { useNavigate } from "react-router-dom";
 const accessToken = document?.cookie
   ?.split("; ")
   ?.find((row) => row.startsWith("access_token="))
   ?.split("=")[1];
 
 export default function IPongChat() {
+  const navigate = useNavigate();
+
   const { chatId: paramChatId } = useParams();
+
   const [chatId, setChatId] = useState(paramChatId);
   const dispatch = useDispatch();
+
+  console.log("chatId:::>", chatId);
+  console.log("paramChatId:::>", paramChatId);
 
   useEffect(() => {
     setChatId(paramChatId);
@@ -45,6 +51,7 @@ export default function IPongChat() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   const handleCloseClick = () => {
     setShowFriendChat(false);
     setShowCreateNewChat(false);
@@ -52,6 +59,7 @@ export default function IPongChat() {
   };
   const isWideScreen = windowWidth <= 905;
 
+  console.log("chatid before dispatch:::>", chatId);
   dispatch(setIsSelectedMessage(chatId));
 
   const socketRef = useRef<Socket | null>(null);
@@ -60,11 +68,6 @@ export default function IPongChat() {
     if (!accessToken) {
       return;
     }
-    // const socket = io("http://localhost:3000/chat", {
-    //   transports: ["websocket"],
-    //   auth: { token: accessToken },
-    // });
-
     const socket = io("http://localhost:3000/chat", {
       transports: ["websocket"],
 
@@ -108,59 +111,6 @@ export default function IPongChat() {
       console.log("disconnected:::>", socketRef.current?.id);
     });
   }, []);
-
-  // useEffect(() => {
-  //   if (!socketRef.current) return;
-
-  // }, [socketRef.current]);
-
-  /*
-  const accessToken = document?.cookie
-    ?.split("; ")
-    ?.find((row) => row.startsWith("access_token="))
-    ?.split("=")[1];
-
-  useEffect(() => {
-    const socket = io("http://localhost:3000/chat", {
-      transports: ["websocket"],
-      auth: {
-        token: accessToken,
-      },
-      reconnection: true,
-      reconnectionAttempts: Infinity,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-    });
-    console.log("socket hiiii :::>", socket);
-    socket.on("connect", () => {
-      console.log("connected:::>");
-    });
-
-    socket.on("onlineFriends", (friendIds) => {
-      console.log("onlineFriends:::>", friendIds);
-    });
-
-    socket.on("joinRoom", (userId) => {
-      console.log("joinRoom:::>", userId);
-    });
-
-    socket.on("friendOffline", (userId) => {
-      console.log("friendOffline:::>", userId);
-    });
-
-    socket.on("roomCreated", (room) => {
-      console.log("roomCreated:::>", room);
-    });
-
-    socket.on("message", (message) => {
-      console.log("message:::>", message);
-    });
-
-    socket.on("error", (error) => {
-      console.log("error:::>", error);
-    });
-  }, []);
-*/
 
   return (
     <>
