@@ -138,16 +138,19 @@ export class MessageService {
       blockedMembers: filteredBlockedMembers,
     };
     //event emitter to all members in the room
-    for (const member of filteredBlockedMembers) {
+    
+    console.log('sending message to room:', filteredBlockedMembers);
+    for (const member of membersIDs) {
+      console.log('sending notification to:', member);
       const notification: CreateNotificationDto = {
-        receiverId: member,
+        receiverId: member.memberID,
         senderId: senderId,
         entityType: NotificationType.MessageSent,
-        id: [senderId, member].sort().join('+') + 'accepted',
+        id: [senderId, member.memberID, message.id].sort().join('+') + 'messageSent',
       };
       this.eventEmitter.emit('sendNotification', notification);
-      return responseMessage;
     }
+      return responseMessage;
   }
   async findAll(userId: string, roomId: string) {
     // Fetching the room details and checking if the user is a member
