@@ -63,7 +63,9 @@ export default function StartFriendChat(props) {
           secondUser: value,
         });
           setCreatChatRoom(false);
-          navigate(`/ipong/chat/${response.data.id}`);        
+          props.onCloseComponent();
+          navigate(`/ipong/chat/${response.data.id}`);
+
       } catch (error) {
         console.error(error);
       }
