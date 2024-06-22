@@ -90,13 +90,13 @@ export default function SeeUser(props) {
           />
         </div>
 
-        <div className="privacy-frame">
+        {/* <div className="privacy-frame">
           <div className="privacy-text">privacy</div>
 
           <div className="User-options-buttons">
             <div className="DeleteChat">Delete Chat</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </SeeUsersWrapper>
   );
