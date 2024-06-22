@@ -420,7 +420,13 @@ export class ChatroomService {
       },
     });
     if (ownerId === userId && !newOwner) {
-      return new HttpException('You cannot leave the room', 400);
+      await this.databaseservice.chatRoom.delete({
+        where: {
+          id: leaveRoomDto.roomId,
+        },
+      });
+      return { message: 'Chatroom deleted' };
+      
     }
     if (ownerId === userId && newOwner) {
       await this.databaseservice.chatRoom.update({
