@@ -132,7 +132,7 @@ export class AuthController {
     res.cookie('access_token', tokens.access_token, { httpOnly: false });
     res.cookie('refresh_token', tokens.refresh_token, { httpOnly: false, path: '/auth' });
     return {
-      message: 'ok',
+      message: 'login succes',
       status: HttpStatus.CREATED,
     };
   }

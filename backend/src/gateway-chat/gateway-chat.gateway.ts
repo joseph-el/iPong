@@ -36,7 +36,9 @@ export class GatewayChatGateway
 
   constructor(jwtService: JwtService) {
     this.databaseService = new DatabaseService();
-    this.jwtService = jwtService;
+    this.jwtService = new JwtService({
+      secret: process.env.JWT_SECRET,
+    });
   }
 
   private logger: Logger = new Logger('RoomGateway');
@@ -48,8 +50,10 @@ export class GatewayChatGateway
   }
 
   async handleConnection(client: Socket) {
+    console.log('Client connected');
     const token = client.handshake.auth.token as string;
-    console.log('Token:', token);
+
+    // console.log(token);
     if (!token) {
       client.disconnect(true);
       return;
@@ -59,8 +63,7 @@ export class GatewayChatGateway
 
     try {   
       const decoded = this.jwtService.verify(token);
-   
-      console.log('User connected:::::::::::|<>|');
+      console.log(decoded);
       client.data.user = decoded;
     } catch (error) {
       client.disconnect(true);
@@ -79,13 +82,20 @@ export class GatewayChatGateway
       },
       select: { fromUser: true, toUser: true },
     });
+
+    if (!frienduserIds.length) {
+      return;
+    }
+
     const friendIds = frienduserIds
       .map((friend) =>
         friend.toUser === userId ? friend.fromUser : friend.toUser,
       )
-      .filter(
-        (id) => this.server.sockets.adapter.rooms.get(`User:${id}`)?.size,
-      );
+      .filter((id) => {
+        const rooms = this.server?.sockets?.adapter?.rooms;
+        return rooms && rooms.get(`User:${id}`)?.size;
+      });
+
     client.emit('onlineFriends', friendIds);
     this.server.emit('friendOnline', userId);
   }
@@ -132,6 +142,9 @@ export class GatewayChatGateway
     if (member && !member.isBanned) {
       client.join(`Room:${data.roomId}`);
       client.emit('joinedRoom', data.roomId);
+      
+      console.log('User joined room:', data.roomId);
+
     } else {
       client.emit('error', { message: 'Unable to join room' });
     }
