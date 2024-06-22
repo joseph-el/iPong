@@ -291,9 +291,10 @@ export default function NotificationsBar(props) {
             >
               {userNotifications.map((notif, index) => {
                 const formattedTime = formatTimeDifference(notif.createdAt);
-                if (notif.entityType === "FriendRequestAccepted") {
+                if (notif.entityType === "FriendRequestAccepted" || notif.entityType === "MessageSent") {
                   return (
                     <ImessagesNotifications
+                      type={notif.entityType}
                       key={index}
                       name={notif.firstName + " " + notif.lastName}
                       avatar={notif.picture}
