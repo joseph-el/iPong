@@ -14,10 +14,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import UserSlice from "../../../../state/UserInfo/UserSlice";
 import { useSocket } from "../../../../context/SocketContext";
+import { current } from "@reduxjs/toolkit";
 
-export default function ChatPanelFooter() {
-
-  const { socket } = useSocket();
+export default function ChatPanelFooter({socket}) {
 
   const UserId = useSelector((state: RootState) => state.userState.id);
   const [IsReady, setIsReady] = useState(false);
@@ -25,9 +24,7 @@ export default function ChatPanelFooter() {
     (state: RootState) =>
       state.iPongChat.ListMessages.find((message) => message.isSelect) || null
   );
-  if (!selectedMessage) {
-    return null;
-  }
+
   const [IsMuted, setIsMuted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -68,7 +65,9 @@ export default function ChatPanelFooter() {
     setSuggestions([]);
     setStyle("20px");
   };
+
   const UpdateApp = useSelector((state: RootState) => state.update.update);
+ 
   useEffect(() => {
     const fetchChat = async () => {
       try {
@@ -79,7 +78,8 @@ export default function ChatPanelFooter() {
             content: inputValue,
           }
         );
-        socket?.emit("sendMessages", {
+        
+        socket.current?.emit("sendMessages", {
           roomId: selectedMessage?.id,
           content: inputValue,
           senderId: UserId,
@@ -97,7 +97,7 @@ export default function ChatPanelFooter() {
 
 
   useEffect(() => {
-    const IsMuted = async () => {
+    const _IsMuted = async () => {
       try {
         const response = await api.get(`/chatroom/isMuted/${selectedMessage?.id}/${UserId}`);
         setIsMuted(response.data);
@@ -107,8 +107,8 @@ export default function ChatPanelFooter() {
       }
     }
 
-    IsMuted();
-  }, [UpdateApp])
+    _IsMuted();
+  }, [UpdateApp, selectedMessage, UserId])
 
 
   const handelSendMessage = () => {
@@ -133,7 +133,7 @@ export default function ChatPanelFooter() {
       }
     }
     checkBlocked();
-  }, [UpdateApp]);
+  }, [UpdateApp, selectedMessage]);
 
   return (
     <div className="ChatPanelFooter-frame">

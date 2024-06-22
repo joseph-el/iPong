@@ -17,29 +17,48 @@ import {
   setGroupSetting,
 } from "../../../../state/iPongChatState/iPongChatState";
 
-const getListMessages = (state) => state.iPongChat.ListMessages;
+import { useNavigate } from "react-router-dom";
+// const getListMessages = (state) => state.iPongChat.ListMessages;
 
-const getSelectedMessage = createSelector(
-  [getListMessages],
-  (listMessages) => listMessages.find((message) => message.isSelect) || null
-);
+// const getSelectedMessage = createSelector(
+//   [getListMessages],
+//   (listMessages) => listMessages.find((message) => message.isSelect) || null
+// );
 
-export default function ChatPanelLayout() {
+export default function ChatPanelLayout({socket}) {
+
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [userId, setUserId] = React.useState<string>("");
+  
   const ShowFriendChatSetting = useSelector(
     (state: RootState) => state.iPongChat.UserSetting
   );
   const ShowGroupChatSettings = useSelector(
     (state: RootState) => state.iPongChat.GroupSetting
   );
-  const selectedMessage = useSelector(getSelectedMessage);
+  const selectedMessage = useSelector(
+    (state: RootState) =>
+      state.iPongChat.ListMessages.find((message) => message.isSelect) || null
+  );
 
   const handleCloseClick = () => {
    
     dispatch(setUserSetting(false));
     dispatch(setGroupSetting(false));
   };
+
+  if (!selectedMessage) {
+    handleCloseClick();
+    navigate("/ipong/chat");
+  }
+
+
+  console.log("ChatPanelLayout||||||--------->: ", selectedMessage)
+
+
+  const [userId, setUserId] = React.useState<string>(selectedMessage?.senderId || "");
+  
 
   return (
     <div className="ChatPanel-frame">
@@ -54,11 +73,12 @@ export default function ChatPanelLayout() {
       >
         <GridItem pl="2" area={"header"}>
           <ChatPanelHeader
+            
             SetViewGroupSettings={() => {
               dispatch(setGroupSetting(true));
             }}
             SetViewFriendSettings={ () => {
-              setUserId(selectedMessage.UserId);
+              setUserId(selectedMessage.senderId);
               dispatch(setUserSetting(true));
             }}
           />
@@ -81,7 +101,7 @@ export default function ChatPanelLayout() {
         )}
 
         <GridItem pl="2" area={"Footer"}>
-          <ChatPanelFooter />
+          <ChatPanelFooter socket={socket} />
         </GridItem>
       </Grid>
     </div>

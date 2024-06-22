@@ -26,6 +26,7 @@ import { MessageFormatDto } from 'src/messages/dto/msgFormat.dto';
   namespace: 'chat',
   transports: ['websocket'],
 })
+
 export class GatewayChatGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -50,14 +51,17 @@ export class GatewayChatGateway
 
   async handleConnection(client: Socket) {
     console.log('Client connected');
-    // const token = client.handshake.auth.token as string;
-    const token = client.handshake.headers.token as string;
-    console.log(token);
+    const token = client.handshake.auth.token as string;
+
+    // console.log(token);
     if (!token) {
       client.disconnect(true);
       return;
     }
-    try {
+    
+
+
+    try {   
       const decoded = this.jwtService.verify(token);
       console.log(decoded);
       client.data.user = decoded;
@@ -65,8 +69,12 @@ export class GatewayChatGateway
       client.disconnect(true);
       return;
     }
+    
+
+
     const userId = client.data.user.userId;
     client.join(`User:${userId}`);
+    console.log('User connected:', userId);
     const frienduserIds = await this.databaseService.friendship.findMany({
       where: {
         OR: [{ fromUser: userId }, { toUser: userId }],
@@ -95,6 +103,7 @@ export class GatewayChatGateway
   async handleDisconnect(client: Socket) {
     const userId = client.data.user.userId;
     this.server.emit('friendOffline', userId);
+    console.log('User disconnected:', userId);
   }
 
   @SubscribeMessage('createRoom')
@@ -133,6 +142,9 @@ export class GatewayChatGateway
     if (member && !member.isBanned) {
       client.join(`Room:${data.roomId}`);
       client.emit('joinedRoom', data.roomId);
+      
+      console.log('User joined room:', data.roomId);
+
     } else {
       client.emit('error', { message: 'Unable to join room' });
     }

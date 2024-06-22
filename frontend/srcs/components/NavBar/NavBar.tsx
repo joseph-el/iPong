@@ -34,6 +34,8 @@ import {
 } from "../../state/Notifications/NotificationsSlice";
 import { getAvatarSrc } from "../../utils/getAvatarSrc";
 import { useSocket } from "../../context/SocketContext";
+import { setUpdate } from "../../state/Update/UpdateSlice";
+
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
@@ -163,6 +165,8 @@ export default function NavBar() {
       socket.on("sendNotification", (data) => {
         // TODO: check if the notification is already exist in the store
 
+
+        console.log(" notification here ::> data: ", data);  
         const existingNotificationIndex = NotificationObject.findIndex(
           (notification) =>
             notification.entityType === data.entityType &&
@@ -175,6 +179,9 @@ export default function NavBar() {
           dispatch(setNotification(updatedNotifications));
         }
 
+        if (data.entityType === "MessageSent") {
+          dispatch(setUpdate());
+        }
         dispatch(
           addNotification({
             NotificationId: data.id,

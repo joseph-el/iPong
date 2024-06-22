@@ -21,6 +21,7 @@ import api from "../../../../../api/posts";
 import DefaultGroupImage from "./memoji/alta1r.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../state/store";
+import { useNavigate } from "react-router-dom";
 type User = {
   id: number;
   name: string;
@@ -33,6 +34,7 @@ type User = {
 };
 
 export default function CreatGroupChat(props) {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const [GroupName, setGroupName] = useState("");
@@ -125,6 +127,10 @@ export default function CreatGroupChat(props) {
             console.log("error add members :", error);
           }
         });
+
+        // setReadyToSubmit(false);
+        props.onCloseComponent();
+        navigate(`/ipong/chat/${NewRoom}`);
       } catch (error) {}
     };
     ReadyToSubmit && fetchReadyToSubmit();
