@@ -14,10 +14,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import UserSlice from "../../../../state/UserInfo/UserSlice";
 import { useSocket } from "../../../../context/SocketContext";
+import { current } from "@reduxjs/toolkit";
 
-export default function ChatPanelFooter() {
-
-  const { socket } = useSocket();
+export default function ChatPanelFooter({socket}) {
 
   const UserId = useSelector((state: RootState) => state.userState.id);
   const [IsReady, setIsReady] = useState(false);
@@ -79,7 +78,8 @@ export default function ChatPanelFooter() {
             content: inputValue,
           }
         );
-        socket?.emit("sendMessages", {
+        
+        socket.current?.emit("sendMessages", {
           roomId: selectedMessage?.id,
           content: inputValue,
           senderId: UserId,
