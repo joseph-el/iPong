@@ -1,13 +1,18 @@
-import { ChatRoom } from '@prisma/client';
+import { ChatRoom, NotificationType } from '@prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { ChatRoomType } from '@prisma/client';
 import { MessageFormatDto } from './dto/msgFormat.dto';
+import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class MessageService {
-  constructor(private database: DatabaseService) {}
+  constructor(
+    private database: DatabaseService,
+    private eventEmitter: EventEmitter2,
+  ) {}
   async create(
     roomId: string,
     senderId: string,
@@ -132,8 +137,17 @@ export class MessageService {
       ...message,
       blockedMembers: filteredBlockedMembers,
     };
-    //event emitter
-    return responseMessage;
+    //event emitter to all members in the room
+    for (const member of filteredBlockedMembers) {
+      const notification: CreateNotificationDto = {
+        receiverId: member,
+        senderId: senderId,
+        entityType: NotificationType.MessageSent,
+        id: [senderId, member].sort().join('+') + 'accepted',
+      };
+      this.eventEmitter.emit('sendNotification', notification);
+      return responseMessage;
+    }
   }
   async findAll(userId: string, roomId: string) {
     // Fetching the room details and checking if the user is a member

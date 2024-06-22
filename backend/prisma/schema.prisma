@@ -194,6 +194,7 @@ enum NotificationType {
   FriendRequestAccepted
   JoinRoom
   MessageReceived
+  MessageSent
 }
 
 enum ChatRoomType {
