@@ -111,9 +111,9 @@ export default function AppLayout({ children }) {
     "sidebar main main"
   `
             : `
-  "sidebar nav  livechat"
-  "sidebar main livechat"
-  "sidebar main livechat"
+  "sidebar nav  nav"
+  "sidebar main main"
+  "sidebar main main"
 `
         }
         gridTemplateRows={"72px 1fr 30px"}
@@ -142,11 +142,11 @@ export default function AppLayout({ children }) {
           )}
         </GridItem>
 
-        {isWideScreen ? null : (
+        {/* {isWideScreen ? null : (
           <GridItem pl="2" bg="black" area={"livechat"}>
             <LiveChat />
           </GridItem>
-        )}
+        )} */}
       </Grid>
     </>
   );

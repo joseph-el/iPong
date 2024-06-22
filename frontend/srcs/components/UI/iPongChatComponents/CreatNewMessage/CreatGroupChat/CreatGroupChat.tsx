@@ -19,6 +19,8 @@ import Close from "../../../Button/CloseButton/CloseButton";
 import { useEffect, useState } from "react";
 import api from "../../../../../api/posts";
 import DefaultGroupImage from "./memoji/alta1r.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../state/store";
 type User = {
   id: number;
   name: string;
@@ -49,6 +51,7 @@ export default function CreatGroupChat(props) {
   const displayGroupType = Array.from(GroupType).join(" ");
   const [testID, setTestID] = useState("");
 
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -70,7 +73,7 @@ export default function CreatGroupChat(props) {
       }
     };
     fetchUsers();
-  }, []);
+  }, [UpdateApp]);
 
   useEffect(() => {
     const fetchReadyToSubmit = async () => {
@@ -126,10 +129,7 @@ export default function CreatGroupChat(props) {
     };
     ReadyToSubmit && fetchReadyToSubmit();
   }, [ReadyToSubmit]);
-  /* POST REQUEST TO CREATE A NEW GROUP
-          const handleCreateGroup = () => {}
-  */
-
+ 
   const handelPassingData = () => {
     if (GroupName === "" || GroupName.length < 3 || GroupName.length > 20) {
       setGroupNameIsValid(true);
@@ -138,12 +138,6 @@ export default function CreatGroupChat(props) {
       setGroupNameIsValid(false);
     }
 
-    if (GroupMembers.size === 0) {
-      setGroupMembersIsValid(true);
-      return;
-    } else {
-      setGroupMembersIsValid(false);
-    }
 
     if (displayGroupType === "") {
       setGroupTypeIsValid(true);
@@ -164,26 +158,6 @@ export default function CreatGroupChat(props) {
       setGroupPasswordIsValid(false);
     }
 
-    console.log("everything is valid");
-    console.log("Group Name: ", GroupName);
-    console.log("Group Type: ", GroupType);
-    console.log("Group Password: ", GroupPassword);
-    console.log("Group Members: ", GroupMembers);
-    console.log("extract type : ", displayGroupType);
-
-    const membersArray = Array.from(GroupMembers);
-    console.log(membersArray);
-
-    if (GroupMembers === "all") {
-      console.log("All members selected");
-    } else if (GroupMembers instanceof Set) {
-      GroupMembers.forEach((member) => {
-        console.log(member);
-        setTestID(users[member].userId);
-      });
-    }
-
-    // TODO: wait for the backend to be ready
     setReadyToSubmit(true);
   };
 

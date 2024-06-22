@@ -31,12 +31,10 @@ export const Title = () => {
 };
 
 export const SignInPlatforme = () => {
+
   ResetUserData();
-  const navigate = useNavigate();
 
   const handleOnsubmit = async () => {
-    // console.log("42intra");
-
     window.location.replace("http://localhost:3000/auth/42/");
   };
 
@@ -46,6 +44,7 @@ export const SignInPlatforme = () => {
         <img className="button-content" alt="Button content" src={AppleLogo} />
         <div className="text-wrapper">Sign up with Apple</div>
       </div>
+      
       <div className="google">
         <img className="img" alt="Button content" src={GoogleLogo} />
         <div className="div">Sign up with Google</div>

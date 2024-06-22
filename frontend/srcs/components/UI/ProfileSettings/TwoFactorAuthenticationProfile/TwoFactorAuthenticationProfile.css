@@ -180,3 +180,7 @@
 .already {
   margin-left: 55px;
 }
+
+.input-code-authentication-2fa {
+  padding-left: -20px !important;
+}

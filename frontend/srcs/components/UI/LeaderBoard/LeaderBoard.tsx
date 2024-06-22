@@ -1,3 +1,14 @@
+/*
+{
+        "id": "31e08d35-bcc4-42f2-a69c-3d3e1d240db7", // Game ID
+        "Player1": "53c16ee0-09cb-4847-9661-80a67eedac93", // Player 1 ID
+        "Player2": "bded4240-0eee-429b-8f91-720a24a856ae", // Player 2 ID
+        "createdAt": "2024-06-15T12:32:17.514Z", // Game creation date
+        "winner": null, // Winner ID
+        "status": "ONGOING" // Game status
+}
+*/
+
 import React from "react";
 import {
   Table,
@@ -9,17 +20,34 @@ import {
   Input,
   User,
 } from "@nextui-org/react";
-import { SearchIcon } from "./SearchIcon";
-import { columns } from "./data";
+import { SearchIcon } from "../MatchHistoryTable/SearchIcon";
+
 import { ScrollShadow } from "@nextui-org/react";
-import "./MatchHistory.css";
+// import "./MatchHistory.css";
 import { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
-const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "V-BUCKS", "RESULTS", "DATE"];
 import api from "../../../api/posts";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/store";
+import { useNavigate } from "react-router-dom";
+import {formatTimeDifference} from "../NotificationsBar/NotificationsBar";
+
+const INITIAL_VISIBLE_COLUMNS = [
+  "Player A",
+  "Player B",
+  "Game Status",
+  "Winner",
+  "createdAt",
+];
+
+const columns = [
+  { name: "Player A", uid: "playerA", sortable: true },
+  { name: "Player B", uid: "playerB", sortable: true },
+  { name: "Game Status", uid: "status", sortable: true },
+  { name: "Winner", uid: "winner", sortable: true },
+  { name: "createdAt", uid: "createdAt", sortable: true },
+];
 
 const TopContent = (props) => {
   return (
@@ -43,7 +71,7 @@ const TopContent = (props) => {
   );
 };
 
-export default function App({ UserId}) {
+export function LeaderBoard() {
   const visibleColumns = INITIAL_VISIBLE_COLUMNS;
   const [matches, _setMatches] = useState([]);
   const [filteredItems, setfilteredItems] = useState(matches);
@@ -53,12 +81,10 @@ export default function App({ UserId}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-      
-        const response = await api.get(`/game-history/${UserId}`);
-        // TODO: wait for about to set it
+        const response = await api.get(`game-history/allGames`);
+
         setGameMatchHistory(response.data);
       } catch (error) {
-        // console.log("Error fetching data jjj");
       }
     };
     fetchData();
@@ -68,21 +94,55 @@ export default function App({ UserId}) {
     const fetchOpponentUsers = async () => {
       const matchesPromises = GameMatchHistory.map(async (match, index) => {
         try {
+          const PlayerA = await api.get(
+            `/user-profile/getinfoById${match.Player1}`
+          );
+
+          const PlayerB = await api.get(
+            `/user-profile/getinfoById${match.Player2}`
+          );
+
+          return {
+            id: index,
+            PlayerA_Id: match.Player1,
+            PlayerA_Name: PlayerA.data.firstName + " " + PlayerA.data.lastName,
+            PlayerA_Avatar: PlayerA.data.picture,
+            PlayerA_Username: PlayerA.data.username,
+            PlayerB_Id: match.Player2,
+            PlayerB_Name: PlayerB.data.firstName + " " + PlayerB.data.lastName,
+            PlayerB_Avatar: PlayerB.data.picture,
+            PlayerB_Username: PlayerB.data.username,
+
+            MatchStatus: match?.status,
+            Winner:
+              match?.winner === match.Player1
+                ? PlayerA.data.username
+                : match?.winner === match.Player2
+                ? PlayerB.data.username
+                : null,
+            createdAt:  formatTimeDifference(match?.createdAt) != "now" ? formatTimeDifference(match?.createdAt) + " ago" : "now",
+          };
+          /*
           const response = await api.get(
             `/user-profile/getinfoById${match.opponentId}`
           );
+
           return {
             id: index,
             date: match.createdAt,
             result: match.status,
-            vbucks: ("+") + (match.status === "win" ?  match.winnerVbucks : match.loserVVbucks),
+            vbucks:
+              "+" +
+              (match.status === "win"
+                ? match.winnerVbucks
+                : match.loserVVbucks),
+
             versus: response.data.firstName + " " + response.data.lastName,
             avatar: response.data.picture,
             username: response.data.username,
-          };
+          };*/
         } catch (error) {
-          // console.log("Error fetching data");
-          return null; 
+          return null;
         }
       });
       const resolvedMatches = await Promise.all(matchesPromises);
@@ -114,8 +174,10 @@ export default function App({ UserId}) {
     const matchedUsers = matches
       .filter(
         (user) =>
-          user.versus.toLowerCase().includes(searchTerm) ||
-          user.username.toLowerCase().includes(searchTerm)
+          user.PlayerA_Name.toLowerCase().includes(searchTerm) ||
+          user.PlayerA_Username.toLowerCase().includes(searchTerm) ||
+          user.PlayerB_Name.toLowerCase().includes(searchTerm) ||
+          user.PlayerB_Username.toLowerCase().includes(searchTerm)
       )
       .slice(0, 8);
 
@@ -126,47 +188,87 @@ export default function App({ UserId}) {
     setfilteredItems(matches);
   };
 
-  const renderCell = React.useCallback((user: Match, columnKey: React.Key) => {
+  const navigate = useNavigate();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
+
+  const renderCell = React.useCallback((user: Match, columnKey: React.Key, windowWidth: number) => {
+
     const cellValue = user[columnKey as keyof Match];
 
     switch (columnKey) {
-      case "versus":
+      case "playerA":
+        console.log("leaderboard : user", user);
         return (
           <User
-            avatarProps={{ radius: "sm", size: "md", src: user.avatar }}
+            onClick={() => {
+              navigate(`/ipong/users/${user.PlayerA_Id}`);
+            }}
+            avatarProps={{ radius: "sm", size: "md", src: user.PlayerA_Avatar }}
+            className="hover:cursor-pointer"
             classNames={{
               description: "ver",
             }}
-            description={"@" + user.username}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
+            description={windowWidth < 800 ? "" : "@" + user.PlayerA_Username}
+            name={windowWidth < 1070 ? "" : user.PlayerA_Name}
+          />
         );
-      case "vbucks":
+
+      case "playerB":
         return (
-          <div className="flex flex-col">
-            <p className="vbucks-text">{cellValue}</p>
-          </div>
+          <User
+            onClick={() => {
+              navigate(`/ipong/users/${user.PlayerB_Id}`);
+            }}
+            avatarProps={{ radius: "sm", size: "md", src: user.PlayerB_Avatar }}
+            classNames={{
+              description: "ver",
+            }}
+            className="hover:cursor-pointer"
+            description={windowWidth < 800 ? "" : "@" + user.PlayerB_Username}
+            name={windowWidth < 1070 ? "" : user.PlayerB_Name}
+          />
         );
-      case "result":
+
+      case "status":
         return (
           <div
             className={
-              cellValue !== "loss"
+              user.MatchStatus !== "loss"
                 ? "success-text-result"
                 : "danger-text-result"
             }
           >
-            {cellValue}
+            {user.MatchStatus}
           </div>
         );
-      case "date":
+      case "winner":
+        return (
+          <div
+            className={
+              user.Winner !== null
+                ? "success-text-result"
+                : "danger-text-result"
+            }
+          >
+            {user.Winner !== null ? user.Winner : "-"}
+          </div>
+        );
+
+      case "createdAt":
         return <div className="vbucks-text date-position">{cellValue}</div>;
-      default:
-        return cellValue;
     }
-  }, []);
+  }, [navigate]);
 
   const classNames = React.useMemo(
     () => ({
@@ -184,6 +286,7 @@ export default function App({ UserId}) {
     }),
     []
   );
+
   return (
     <div className="match-history-frame">
       <TopContent
@@ -227,7 +330,7 @@ export default function App({ UserId}) {
               <TableRow key={item.id}>
                 {(columnKey) => (
                   <TableCell className="border-button-row">
-                    {renderCell(item, columnKey)}
+                    {renderCell(item, columnKey, windowWidth)}
                   </TableCell>
                 )}
               </TableRow>

@@ -145,6 +145,7 @@
   .sign-in-platforme .apple:hover,
   .sign-in-platforme .google:hover,
   .sign-in-platforme .element-intra:hover {
+    cursor: pointer;
     background-color: #cccccc;
     border: 0.91px solid;
     border-color: var(--neutral-colors500);
@@ -291,7 +292,7 @@
 
 @media (max-width: 640px) {
   .SignInOptions {
-    padding-left: 10px !important;
+    padding-left: 13px !important;
     width: 460px;
     height: 530px;
     max-width: 400px;

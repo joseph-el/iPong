@@ -21,7 +21,8 @@ import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["BLOCKED FRIEND", "UNBLOCK"];
 import { useState, useEffect } from "react";
 import api from "../../../api/posts";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
 const TopContent = (props) => {
   return (
     <div className="flex flex-col gap-4 MatchHistoryBar">
@@ -97,6 +98,7 @@ export default function BlockedTable() {
 
     onOpen();
   };
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,7 +122,7 @@ export default function BlockedTable() {
       }
     };
     fetchData();
-  }, []);
+  }, [UpdateApp]);
 
   type Match = (typeof friends)[0];
   const [UnblockUser, setUnblockUser] = useState("");
@@ -133,7 +135,7 @@ export default function BlockedTable() {
       setUserId("");
     };
     handelRemoveUser();
-  }, [UnblockUser]);
+  }, [UnblockUser, UpdateApp]);
 
   const renderCell = React.useCallback((user: Match, columnKey: React.Key) => {
     switch (columnKey) {
@@ -164,7 +166,7 @@ export default function BlockedTable() {
           </Button>
         );
     }
-  }, []);
+  }, [UpdateApp]);
 
   const classNames = React.useMemo(
     () => ({

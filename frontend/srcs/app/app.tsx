@@ -29,10 +29,17 @@ import {
 } from "../state/Notifications/NotificationsSlice";
 import { AppDispatch } from "../state/store";
 import { SocketProvider } from "../context/SocketContext";
+import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+
+import { useSelector } from "react-redux";
+import { RootState } from "../state/store";
+import { setUpdate } from "../state/Update/UpdateSlice";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
+  
   const dispatch = useDispatch<AppDispatch>();
 
   if (
@@ -57,7 +64,7 @@ const RequireAuth = ({ children }) => {
         const response = await api.get("/user-profile/me");
 
         let user = response.data;
-
+        console.log("user>>>>> ", user);
         if (
           user.username.startsWith("M-;") ||
           user.username.startsWith("F-;")
@@ -77,7 +84,7 @@ const RequireAuth = ({ children }) => {
       }
     };
     checkAuth();
-  }, []);
+  }, [UpdateApp]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,7 +125,8 @@ const RequireAuth = ({ children }) => {
 
     fetchData();
     fetchUnreadNotificationsData();
-  }, []);
+  }, [UpdateApp]);
+
   dispatch(setSelectedSkinPath(UserSkin));
   dispatch(setBoardPath(UserBoard));
   if (isAuthenticated === null) {
@@ -147,6 +155,10 @@ const router = createBrowserRouter([
       {
         path: "/auth/sign-in",
         element: <SignAuth path="/auth/sign-in" />,
+      },
+      {
+        path: "/auth/2fa-login",
+        element: <SignAuth path="/auth/2fa-login" />,
       },
       {
         path: "/auth/create-account",
@@ -223,7 +235,11 @@ export default function App() {
     <>
       <ChakraProvider>
         <SocketProvider>
-          <RouterProvider router={router} />
+          <NextUIProvider>
+            <NextThemesProvider attribute="class" defaultTheme="dark">
+              <RouterProvider router={router} />
+            </NextThemesProvider>
+          </NextUIProvider>
         </SocketProvider>
       </ChakraProvider>
     </>

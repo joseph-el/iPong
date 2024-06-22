@@ -6,6 +6,9 @@
   /* height: 530px; */
   max-width: 460px;
   max-height: 550px;
+
+  height: auto !important;
+  max-height: none !important; 
 }
 
 .picture-target {
@@ -119,15 +122,18 @@
 }
 
 @media (max-width: 640px) {
-  .WeSentCodeAndPassword-frame 
+  .SetUserNameAndPicture-frame 
   {
     width: 460px;
     height: 530px;
     max-width: 400px;
     max-height: 512px;
+
+    height: auto !important;
+    max-height: none !important; 
   }
 
-  .WeSentCodeAndPassword-frame .text-wrapper-3 {
+  .SetUserNameAndPicture-frame .text-wrapper-3 {
     color: #ffffff;
     font-family: "Segoe UI-Bold", Helvetica;
     font-size: 23.6px;
@@ -144,7 +150,7 @@
     max-width: 348px;
   }
 
-  .WeSentCodeAndPassword-frame .this-will-not-be-user {
+  .SetUserNameAndPicture-frame .this-will-not-be-user {
     font-family: "Archivo-Regular", Helvetica;
     font-size: 13.3px;
     font-weight: 400;
@@ -159,17 +165,17 @@
     padding-left: 25px;
   }
 
-  .WeSentCodeAndPassword-frame .create-acc {
+  .SetUserNameAndPicture-frame .create-acc {
     width: auto;
     padding: 5px 0px 20px 28px;
   }
 
-  .WeSentCodeAndPassword-frame .create-account {
+  .SetUserNameAndPicture-frame .create-account {
     padding: 0 !important;
   }
 
   .SetUserNameAndPicture-frame .buttons-target {
-    padding: 30px 10px 0px 10px !important;
+    padding: 0px 10px 20px 10px !important;
     max-width: 31px !important;
   }
 

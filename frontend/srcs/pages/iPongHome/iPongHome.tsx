@@ -16,8 +16,9 @@ import { getUserLevel } from "../../utils/getCurrentLevel";
 import { SKIN_DB } from "../../pages/iPongStore/db/skins.db";
 import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
 import Spline from "@splinetool/react-spline";
+import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
+
 export default function iPongGame() {
-  
   const UserInfo = useSelector((state: RootState) => state.userState);
   const userSelectedSkinPath = SKIN_DB.find(
     (skin) => skin.name === UserInfo.userSelectedSkinPath
@@ -86,22 +87,25 @@ export default function iPongGame() {
 
   const handleCloseCongratulationsBadge = () => {
     dispatch(setAchievementBadge(null));
-    console.log("achievement: yes reset", Achievement);
   };
 
   return (
     <div className="container--home">
- <Spline scene="https://prod.spline.design/C5iwd6F3Xijf2m-z/scene.splinecode" />
+      {/* 
+        TODO: Two buttons for vsBot and vsRandom
+        - Leaderboard
+      */}
 
-      <div className="container-nav">
+{/* <div className="container-nav">
         <button className="button1" onClick={vsBotHandler}>
           Play vs Bot
         </button>
         <button className="button2" onClick={vsRandomHandler}>
           Play vs Random
         </button>
-      </div>
+      </div>  */}
 
+      <LeaderBoard />
       {Achievement !== null ? (
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
@@ -115,3 +119,13 @@ export default function iPongGame() {
     </div>
   );
 }
+
+/* <Spline scene="https://prod.spline.design/C5iwd6F3Xijf2m-z/scene.splinecode" /> */
+/* <div className="container-nav">
+        <button className="button1" onClick={vsBotHandler}>
+          Play vs Bot
+        </button>
+        <button className="button2" onClick={vsRandomHandler}>
+          Play vs Random
+        </button>
+      </div> */

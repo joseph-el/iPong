@@ -38,11 +38,11 @@ import { useSocket } from "../../context/SocketContext";
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
-
+  const UpdateApp = useSelector((state: RootState) => state.update.update);
   const [activeSearch, setActiveSearch] = React.useState([]);
   const [activeGroups, setActiveGroups] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [searchTerm, setSearchTerm] = React.useState(true);
+  const [searchTerm, setSearchTerm] = React.useState<String | Boolean>(true);
   const [ShowNotificationBar, setShowNotificationBar] = React.useState(false);
   const NotificationCount = useSelector(
     (state: RootState) => state.notification.NotificationCount
@@ -61,7 +61,7 @@ export default function NavBar() {
       }
     };
     isReadAll && fetchData();
-  }, [isReadAll]);
+  }, [isReadAll, UpdateApp]);
 
   // TODO: fetch all users from the server
 
@@ -78,7 +78,7 @@ export default function NavBar() {
       }
     };
     fetchData();
-  }, []);
+  }, [UpdateApp]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,7 +101,7 @@ export default function NavBar() {
       }
     };
     fetchData();
-  }, []);
+  }, [UpdateApp]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -111,7 +111,7 @@ export default function NavBar() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [UpdateApp]);
 
   const isWideScreen = windowWidth < 600;
 
@@ -120,6 +120,7 @@ export default function NavBar() {
 
     if (searchTerm === "") {
       setActiveSearch([]);
+      setActiveGroups([]);
       if (!searchTerm) setSearchTerm(true);
       return;
     }

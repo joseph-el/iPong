@@ -6,6 +6,8 @@ import UserSlice from './UserInfo/UserSlice';
 import achievementSlice from './Achievement/AchievementSlice';
 import notificationSlice from "./Notifications/NotificationsSlice";
 import iPongChatSlice from "./iPongChatState/iPongChatState";
+import UpdateSlice from './Update/UpdateSlice';
+
 export const store = configureStore({
     reducer: {
       input: inputReducer,
@@ -15,6 +17,7 @@ export const store = configureStore({
       achievement: achievementSlice,
       notification: notificationSlice,
       iPongChat: iPongChatSlice,
+      update: UpdateSlice,
     },
 });
 

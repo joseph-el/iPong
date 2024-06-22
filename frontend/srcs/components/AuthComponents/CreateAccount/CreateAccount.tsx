@@ -24,7 +24,7 @@ import {
   validateEmail,
   isDateOfBirthValid,
 } from "../../../utils/formValidation";
-
+import { Spacer } from "@nextui-org/react";
 
 export const DateOfBirth = () => {
   return (
@@ -92,8 +92,6 @@ export default function CreateAccount() {
       return { id: "undefined_gender", message: "User gender required!" };
     }
 
-    // console.log("No errors");
-    // console.log("gender", UserGender);
     return null;
   };
 
@@ -116,8 +114,7 @@ export default function CreateAccount() {
   };
 
   return (
-    <ScrollShadow hideScrollBar size={4} className="h-auto">
-      <div className="CreateAccount-competent-frame max-w-md rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
+    <div className="CreateAccount-competent-frame max-w-md rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto ">
         <Close ClassName={"creat-close"} id={"close"} func={handelonClose} />
 
         <div className="CreateAccount-competent">
@@ -150,11 +147,11 @@ export default function CreateAccount() {
             <CustomCheckbox />
           </div>
 
+          <Spacer y={7} />
           <div className="buttons-target" onClick={handleOnSubmit}>
             <CustomButton classNames="create-account" text="Next" />
           </div>
         </div>
       </div>
-    </ScrollShadow>
   );
 }

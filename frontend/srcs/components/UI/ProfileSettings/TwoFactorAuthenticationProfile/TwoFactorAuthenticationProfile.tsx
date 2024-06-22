@@ -6,6 +6,11 @@ import { Link, Switch, cn, Input, Image } from "@nextui-org/react";
 import QRtest from "./QrcodeTest.svg";
 import CustomButton from "../../Button/SubmitButton/SubmitButton";
 import Icon2FASuccess from "./2FA.svg";
+import { useState, useEffect } from "react";
+import api from "../../../../api/posts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../..//state/store";
+import { set } from "lodash";
 
 const TwoFactorAuthenticationProfileNavbar = (props) => {
   return (
@@ -21,7 +26,7 @@ const TwoFactorAuthenticationProfileNavbar = (props) => {
   );
 };
 
-const TwoFactorAuthenticationProfileContent = () => {
+const TwoFactorAuthenticationProfileContent = ({ QrCode }) => {
   return (
     <div className="code-QR">
       <p className="text-wrapper">
@@ -43,14 +48,102 @@ const TwoFactorAuthenticationProfileContent = () => {
         </p>
       </div>
 
-      <img className="Qr-vector" alt="Vector" src={QRtest} />
+      <img className="Qr-vector" alt="Vector" src={QrCode} />
     </div>
   );
 };
 
 export default function TwoFactorAuthenticationProfile(props) {
-  const [isSelected, setIsSelected] = React.useState(false);
-  const [AuthenticationisTurnedOn, setIsTurnedOn] = React.useState(false);
+  const TfaEnabled = useSelector(
+    (state: RootState) => state.userState?.tfaEnabled
+  );
+
+  const [isSelected, setIsSelected] = useState(false);
+  const [AuthenticationisTurnedOn, setIsTurnedOn] = useState(TfaEnabled);
+
+  const [GeneratedCode, setGeneratedCode] = useState(
+    !TfaEnabled ? true : false
+  );
+  const UserEmail = useSelector((state: RootState) => state.userState.email);
+  const [QrCode, setQrCode] = useState("");
+  const [tfaToken, setTfaToken] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/auth/generate2fa/${UserEmail}`);
+
+        setQrCode(response.data.qrCode);
+        setTfaToken(response.data.tfaToken);
+      } catch (error) {
+        console.log("error tfa", error);
+      }
+      setGeneratedCode(false);
+    };
+    GeneratedCode && fetchData();
+  }, [GeneratedCode]);
+
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [IsReadyToSubmit, setIsReadyToSubmit] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("tfaToken", tfaToken);
+        console.log("inputValue", inputValue);
+        const response = await api.post(`/auth/validate2fa`, {
+          otp: inputValue,
+          tfaToken: tfaToken,
+        });
+
+        console.log("Submit:> ", response.data);
+
+        // setIsTurnedOn(true);
+        setIsSelected(false);
+      } catch (error) {
+        setIsInvalid(true);
+        setErrorMessage("Invalid Code");
+
+        console.log("error tfa", error);
+      }
+      setIsReadyToSubmit(false);
+    };
+    IsReadyToSubmit && fetchData();
+  }, [IsReadyToSubmit]);
+
+  const [GenerateCodeTime, setGenerateCodeTime] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (GenerateCodeTime) {
+      timer = setTimeout(() => {
+        setGenerateCodeTime(false);
+        console.log("GenerateCodeTime", GenerateCodeTime);
+        console.log("hello");
+      }, 15000);
+      return () => clearTimeout(timer);
+    }
+  }, [GenerateCodeTime]);
+
+  const [DisableTfa, setDisableTfa] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.post(`/users/update`, {
+          tfaEnabled: false,
+        });
+        console.log("EnableDisable:> ", response.data);
+      } catch (error) {
+        console.log("error tfa enable:> ", error);
+      }
+      setDisableTfa(false);
+    };
+
+    DisableTfa && fetchData();
+  }, [DisableTfa]);
 
   return (
     <TwoFactorAuthenticationProfileWrapper>
@@ -60,9 +153,13 @@ export default function TwoFactorAuthenticationProfile(props) {
 
       <div className="Authentication-header">
         <Switch
-          isSelected={isSelected || AuthenticationisTurnedOn}
-          onValueChange={setIsSelected || setIsTurnedOn}
-          isDisabled={isSelected ? true : false}
+          isSelected={isSelected}
+          onValueChange={() => {
+            if (AuthenticationisTurnedOn)
+              setDisableTfa(true);
+
+            setIsSelected(!isSelected);
+          }}
           classNames={{
             base: cn(
               "inline-flex flex-row-reverse w-full max-w-lg bg-content1 hover:bg-content2 items-center",
@@ -78,25 +175,54 @@ export default function TwoFactorAuthenticationProfile(props) {
 
       {isSelected ? (
         <div className="Authentication-on">
-          <TwoFactorAuthenticationProfileContent />
+          <TwoFactorAuthenticationProfileContent QrCode={QrCode} />
 
           <div className="Authentication-submit">
-            <Link href="#" size="sm">
+            <Link
+              isDisabled={GenerateCodeTime}
+              href="#"
+              size="sm"
+              onClick={() => {
+                setGenerateCodeTime(true);
+                setGeneratedCode(true);
+              }}
+            >
               can’t scan the QR code?
             </Link>
 
             <Input
+              errorMessage={ErrorMessage}
+              onChange={(e) => {
+                if (isInvalid) {
+                  setIsInvalid(false);
+                  setErrorMessage("");
+                }
+
+                const inputValue = e.target.value;
+                const lastCharacter = inputValue.slice(-1);
+
+                if (e.nativeEvent.inputType === "deleteContentBackward") {
+                  setInputValue(inputValue);
+                  return;
+                }
+
+                if (!/^\d$/.test(lastCharacter) || inputValue.length > 6) {
+                  return;
+                }
+
+                setInputValue(inputValue);
+              }}
+              value={inputValue}
               type="code"
               label="Verification Code"
               placeholder="Enter Code"
-              className="max-w-xs"
+              className="max-w-xsk"
             />
             <CustomButton
               classNames="sign-in-competent-sign-in"
               text="Next"
               onClick={() => {
-                setIsTurnedOn(true);
-                setIsSelected(false);
+                setIsReadyToSubmit(true);
               }}
             />
           </div>

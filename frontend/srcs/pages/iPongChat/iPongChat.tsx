@@ -19,9 +19,11 @@ export default function IPongChat() {
   const { chatId: paramChatId } = useParams();
   const [chatId, setChatId] = useState(paramChatId);
   const dispatch = useDispatch();
+  
   useEffect(() => {
     setChatId(paramChatId);
   }, [paramChatId]);
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [ShowCreateNewChat, setShowCreateNewChat] = React.useState(false);
   const [ShowCreateFriendChat, setShowFriendChat] = React.useState(false);
@@ -52,11 +54,9 @@ export default function IPongChat() {
     socket?.on("connect", () => {
       console.log("connected:::>");
     });
-
     socket?.on("onlineFriends", (friendIds) => {
       console.log("onlineFriends:::>", friendIds);
     });
-
     socket?.on("joinRoom", (userId) => {
       console.log("joinRoom:::>", userId);
     });
@@ -80,6 +80,7 @@ export default function IPongChat() {
   }, [socket]);
 
 
+  /*
   const accessToken = document?.cookie
     ?.split("; ")
     ?.find((row) => row.startsWith("access_token="))
@@ -125,7 +126,7 @@ export default function IPongChat() {
       console.log("error:::>", error);
     });
   }, []);
-
+*/
 
   return (
     <>

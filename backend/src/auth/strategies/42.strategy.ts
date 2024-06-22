@@ -50,7 +50,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
           httpOnly: false,
           maxAge: 15 * 60 * 1000, // 15 minutes
         });
-        // res.redirect('http://localhost:5173/ipong/tfa');
+        res.redirect('http://localhost:5173/auth/2fa-login');
         return cb(null, profile);
       }
       const tokens = await this.AuthService.getTokens(

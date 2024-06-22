@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { set } from 'lodash';
 
 interface UserState {
   id: string;
@@ -16,6 +17,7 @@ interface UserState {
   FriendsCount: number;
   intraId: string;
   cover: string;
+  tfaEnabled: boolean;
   userSelectedSkinPath: string;
   userSelectedBoardPath: string;
 }
@@ -25,6 +27,7 @@ const initialState: UserState = {
   userSelectedBoardPath: '',
   userSelectedSkinPath: '',
   id: '',
+  tfaEnabled:false,
   intraId: '',
   xp: 0,
   firstName: '',
@@ -45,6 +48,9 @@ const userState = createSlice({
   name: 'userState',
   initialState,
   reducers: {
+    setTfaEnabled: (state, action) => {
+      state.tfaEnabled = action.payload;
+    },
     setCover: (state, action) => {
       state.cover = action.payload;
     },
@@ -107,6 +113,7 @@ export const {
   setFirstName,
   setLastName,
   setBio,
+  setTfaEnabled,
   setIntraId,
   setEmail,
   setXp,
