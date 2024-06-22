@@ -3,14 +3,13 @@ import "./TwoFactorAuthenticationProfile.css";
 import { TwoFactorAuthenticationProfileWrapper } from "./TwoFactorAuthenticationProfileWrapper";
 import LeftIcon from "./lefticon.svg";
 import { Link, Switch, cn, Input, Image } from "@nextui-org/react";
-import QRtest from "./QrcodeTest.svg";
 import CustomButton from "../../Button/SubmitButton/SubmitButton";
 import Icon2FASuccess from "./2FA.svg";
 import { useState, useEffect } from "react";
 import api from "../../../../api/posts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../..//state/store";
-import { set } from "lodash";
+
 
 const TwoFactorAuthenticationProfileNavbar = (props) => {
   return (
@@ -58,7 +57,7 @@ export default function TwoFactorAuthenticationProfile(props) {
     (state: RootState) => state.userState?.tfaEnabled
   );
 
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(TfaEnabled);
   const [AuthenticationisTurnedOn, setIsTurnedOn] = useState(TfaEnabled);
 
   const [GeneratedCode, setGeneratedCode] = useState(
@@ -99,9 +98,8 @@ export default function TwoFactorAuthenticationProfile(props) {
         });
 
         console.log("Submit:> ", response.data);
-
-        // setIsTurnedOn(true);
-        setIsSelected(false);
+        if (response.data.status !== 201) throw new Error("Invalid Code");
+        setIsTurnedOn(true);
       } catch (error) {
         setIsInvalid(true);
         setErrorMessage("Invalid Code");
@@ -135,6 +133,7 @@ export default function TwoFactorAuthenticationProfile(props) {
         const response = await api.post(`/users/update`, {
           tfaEnabled: false,
         });
+        setIsTurnedOn(false);
         console.log("EnableDisable:> ", response.data);
       } catch (error) {
         console.log("error tfa enable:> ", error);
@@ -155,8 +154,12 @@ export default function TwoFactorAuthenticationProfile(props) {
         <Switch
           isSelected={isSelected}
           onValueChange={() => {
-            if (AuthenticationisTurnedOn)
-              setDisableTfa(true);
+            if (inputValue !== "") {
+              setInputValue("");
+              setIsInvalid(false);
+              setErrorMessage("");
+            }
+            if (AuthenticationisTurnedOn) setDisableTfa(true);
 
             setIsSelected(!isSelected);
           }}
@@ -173,7 +176,7 @@ export default function TwoFactorAuthenticationProfile(props) {
         </Switch>
       </div>
 
-      {isSelected ? (
+      {isSelected && !AuthenticationisTurnedOn ? (
         <div className="Authentication-on">
           <TwoFactorAuthenticationProfileContent QrCode={QrCode} />
 
@@ -191,6 +194,7 @@ export default function TwoFactorAuthenticationProfile(props) {
             </Link>
 
             <Input
+              isInvalid={isInvalid}
               errorMessage={ErrorMessage}
               onChange={(e) => {
                 if (isInvalid) {
