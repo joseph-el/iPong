@@ -24,7 +24,8 @@ const getSelectedMessage = createSelector(
   (listMessages) => listMessages.find((message) => message.isSelect) || null
 );
 
-export default function ChatPanelLayout() {
+export default function ChatPanelLayout({socket}) {
+
   const dispatch = useDispatch();
   const [userId, setUserId] = React.useState<string>("");
   const ShowFriendChatSetting = useSelector(
@@ -54,6 +55,7 @@ export default function ChatPanelLayout() {
       >
         <GridItem pl="2" area={"header"}>
           <ChatPanelHeader
+            
             SetViewGroupSettings={() => {
               dispatch(setGroupSetting(true));
             }}
@@ -81,7 +83,7 @@ export default function ChatPanelLayout() {
         )}
 
         <GridItem pl="2" area={"Footer"}>
-          <ChatPanelFooter />
+          <ChatPanelFooter socket={socket} />
         </GridItem>
       </Grid>
     </div>
