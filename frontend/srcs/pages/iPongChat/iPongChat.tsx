@@ -14,12 +14,19 @@ import { RootState } from "../../state/store";
 import { setIsSelectedMessage } from "../../state/iPongChatState/iPongChatState";
 import { io } from "socket.io-client";
 import { useSocket } from "../../context/SocketContext";
+import { Socket } from "socket.io-client";
+import { useRef } from "react";
+
+const accessToken = document?.cookie
+  ?.split("; ")
+  ?.find((row) => row.startsWith("access_token="))
+  ?.split("=")[1];
 
 export default function IPongChat() {
   const { chatId: paramChatId } = useParams();
   const [chatId, setChatId] = useState(paramChatId);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     setChatId(paramChatId);
   }, [paramChatId]);
@@ -47,38 +54,65 @@ export default function IPongChat() {
 
   dispatch(setIsSelectedMessage(chatId));
 
-  const { socket } = useSocket();
+  const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    if (!socket) return;
-    socket?.on("connect", () => {
-      console.log("connected:::>");
+    if (!accessToken) {
+      return;
+    }
+    // const socket = io("http://localhost:3000/chat", {
+    //   transports: ["websocket"],
+    //   auth: { token: accessToken },
+    // });
+
+    const socket = io("http://localhost:3000/chat", {
+      transports: ["websocket"],
+
+      auth: { token: accessToken },
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
     });
-    socket?.on("onlineFriends", (friendIds) => {
+    
+    socketRef.current = socket;
+
+    socketRef.current?.on("connect", () => {
+      console.log("connected:::>", socketRef.current?.id);
+    });
+
+    socketRef.current?.on("onlineFriends", (friendIds) => {
       console.log("onlineFriends:::>", friendIds);
     });
-    socket?.on("joinRoom", (userId) => {
+    socketRef.current?.on("joinRoom", (userId) => {
       console.log("joinRoom:::>", userId);
     });
 
-    socket?.on("friendOffline", (userId) => {
+    socketRef.current?.on("friendOffline", (userId) => {
       console.log("friendOffline:::>", userId);
     });
 
-    socket?.on("roomCreated", (room) => {
+    socketRef.current?.on("roomCreated", (room) => {
       console.log("roomCreated:::>", room);
     });
 
-    socket?.on("message", (message) => {
+    socketRef.current?.on("message", (message) => {
       console.log("message:::>", message);
     });
 
-    socket?.on("error", (error) => {
+    socketRef.current?.on("error", (error) => {
       console.log("error:::>", error);
     });
 
-  }, [socket]);
+    socketRef.current?.on("disconnect", () => {
+      console.log("disconnected:::>", socketRef.current?.id);
+    });
+  }, []);
 
+  // useEffect(() => {
+  //   if (!socketRef.current) return;
+
+  // }, [socketRef.current]);
 
   /*
   const accessToken = document?.cookie
@@ -155,6 +189,7 @@ export default function IPongChat() {
         {!isWideScreen || chatId == undefined ? (
           <GridItem pl="2" w={"full"} area={"sidebar"}>
             <UserListMessages
+              socket={socketRef}
               ShowCreateNewChat={() => {
                 handleCloseClick();
                 setShowCreateNewChat(true);
@@ -165,7 +200,7 @@ export default function IPongChat() {
 
         {chatId != undefined && (
           <GridItem pl="2" h={"full"} area={"main"}>
-            <ChatPanelLayout />
+            <ChatPanelLayout socket={socketRef} />
           </GridItem>
         )}
 
