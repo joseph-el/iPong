@@ -30,6 +30,7 @@ export default function ChatPanel() {
 
   const UserId = useSelector((state: RootState) => state.userState.id);
   const UpdateApp = useSelector((state: RootState) => state.update.update);
+  
   useEffect(() => {
     const checkBlocked = async () => {
       try {
@@ -73,7 +74,7 @@ export default function ChatPanel() {
           console.error("Error fetching chat:", error);
         }
       }
-      fetchChat();
+      selectedMessage?.id != undefined && fetchChat();
     }, [selectedMessage, UpdateApp]); //  here 
 
   return (
