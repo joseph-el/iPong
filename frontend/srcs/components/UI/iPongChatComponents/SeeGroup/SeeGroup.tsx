@@ -557,6 +557,22 @@ export default function SeeGroup(props) {
     MutCHat && MuteChat();
   }, [MutCHat]);
 
+  const [LeaveGroup, setLeaveGroup] = useState(false);
+  useEffect(() => {
+    const LeaveGroupChat = async () => {
+      try {
+        const response = await api.post("chatroom/leaveRoom/", {
+          roomId: selectedMessage?.id,
+        });
+        console.log("response in leave chat: ", response);
+      } catch (error) {
+        console.log("error in leave chat: ", error);
+      }
+      setLeaveGroup(false);
+    };
+    LeaveGroup && LeaveGroupChat();
+  }, [LeaveGroup]);
+
   return (
     <div
       className={
@@ -585,14 +601,14 @@ export default function SeeGroup(props) {
                       <div className="ipongchar">ipongChat</div>
                     </div>
                   </div>
-                  <img
+                  {/* <img
                     src={MuteMode ? MuteIcon : UnmuteIcon}
                     alt="mute-icon"
                     className={MuteMode ? "mute-icon" : "unmute-icon"}
                     onClick={() => {
                       setMuteMode(!MuteMode);
                     }}
-                  />
+                  /> */}
 
                   <Close
                     func={() => props.handleCloseClick()}
@@ -690,8 +706,7 @@ export default function SeeGroup(props) {
                     <div className="privacy-title"> privacy </div>
 
                     <div className="privacy-options">
-                      {/* <div className="Private-and-Security">Private & Security</div> */}
-                      <div
+                      {/* <div
                         className="DeleteChat"
                         onClick={() => {
                           handleOpen("Delete Chat");
@@ -699,7 +714,8 @@ export default function SeeGroup(props) {
                       >
                         {" "}
                         Delete Chat{" "}
-                      </div>
+                      </div> */}
+
                       <div
                         className="Leave-this-conversation"
                         onClick={() => {
@@ -717,6 +733,9 @@ export default function SeeGroup(props) {
                 isOpen={isOpen}
                 onClose={onClose}
                 UserAlertHeader={UserOptions}
+                handelRemoveUser={() => {
+                  setLeaveGroup(true);
+                }}
                 UserAlertMessage={
                   UserOptions === "Delete Chat"
                     ? "Are you sure you want to Delete this chat ?"
