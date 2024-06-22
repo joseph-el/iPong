@@ -14,6 +14,9 @@ import { setIsSelectedMessage } from "../../../../state/iPongChatState/iPongChat
 import api from "../../../../api/posts";
 import { formatTimeDifference } from "../../NotificationsBar/NotificationsBar";
 import { setListMessages } from "../../../../state/iPongChatState/iPongChatState";
+
+
+
 export default function UserListMessages(props) {
   const UserChat = useSelector((state: RootState) => state.iPongChat);
   const UserId = useSelector((state: RootState) => state.userState.id);
@@ -66,6 +69,10 @@ export default function UserListMessages(props) {
   }, [UpdateApp]);
 
   const handelListChatItem = (id) => {
+    props.socket.current?.emit("joinRoom", {
+      userId: UserId,
+      roomId: id,
+    });
     dispatch(setIsSelectedMessage(id));
     navigate(`/ipong/chat/${id}`);
   };
