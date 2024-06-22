@@ -85,7 +85,7 @@ export class ChatroomController {
     @Body() leaveRoomDto: LeaveRoomDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.chatroomService.leaveRoom(leaveRoomDto, userId);
+    return await this.chatroomService.leaveRoom(leaveRoomDto, userId);
   }
 
   @UseGuards(AtGuard)

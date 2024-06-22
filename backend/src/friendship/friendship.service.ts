@@ -86,7 +86,6 @@ export class FriendshipService {
       id: [userId, add_friendDto.friendId].sort().join('+') + 'request',
     };
     this.eventEmitter.emit('sendNotification', notification);
-    // await this.GatewayNofifGateway.sendNotification(notification);
     return responseOfReq;
   }
 

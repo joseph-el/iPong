@@ -419,6 +419,7 @@ export class ChatroomService {
         },
       },
     });
+    
     if (ownerId === userId && !newOwner) {
       return new HttpException('You cannot leave the room', 400);
     }
