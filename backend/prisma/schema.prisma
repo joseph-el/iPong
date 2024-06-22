@@ -188,7 +188,6 @@ enum FriendshipStatus {
   DECLINED
 }
 
-
 enum NotificationType {
   FriendRequest
   FriendRequestAccepted
