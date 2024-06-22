@@ -36,7 +36,7 @@ export class FriendshipController {
     @Body() acceptReqDto: add_friendDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    this.friendshipService.acceptReq(userId, acceptReqDto.friendId);
+    await this.friendshipService.acceptReq(userId, acceptReqDto.friendId);
   }
 
   @UseGuards(AtGuard)
@@ -55,13 +55,13 @@ export class FriendshipController {
     @GetCurrentUser('userId') userId: string,
   ) {
     // console.log('hahahaha', rejectReqDto.friendId);
-    return this.friendshipService.rejectFriend(userId, rejectReqDto.friendId);
+    return await this.friendshipService.rejectFriend(userId, rejectReqDto.friendId);
   }
 
   @UseGuards(AtGuard)
   @Get('blockingList')
   async blockingList(@GetCurrentUser('userId') userId: string) {
-    return this.friendshipService.blockedUsers(userId);
+    return await this.friendshipService.blockedUsers(userId);
   }
 
   @UseGuards(AtGuard)
@@ -71,7 +71,7 @@ export class FriendshipController {
     @GetCurrentUser('userId') userId: string,
   ) {
     // console.log(quer.friendId, ' ', userId);
-    return this.friendshipService.isFriend(userId, quer.friendId);
+    return await this.friendshipService.isFriend(userId, quer.friendId);
   }
 
   @UseGuards(AtGuard)
@@ -83,19 +83,19 @@ export class FriendshipController {
   @UseGuards(AtGuard)
   @Get('friendList:userId')
   async friendListById(@Param('userId') userId: string) {
-    return this.friendshipService.friendList(userId);
+    return await this.friendshipService.friendList(userId);
   }
 
   @UseGuards(AtGuard)
   @Get('pendingList')
   async pendingList(@GetCurrentUser('userId') userId: string) {
-    return this.friendshipService.pendingList(userId);
+    return await this.friendshipService.pendingList(userId);
   }
 
   @UseGuards(AtGuard)
   @Get('sentList')
   async sentList(@GetCurrentUser('userId') userId: string) {
-    return this.friendshipService.sentList(userId);
+    return await this.friendshipService.sentList(userId);
   }
 
   @UseGuards(AtGuard)
@@ -104,7 +104,7 @@ export class FriendshipController {
     @Body() friendId: add_friendDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.friendshipService.blockUser(userId, friendId.friendId);
+    return await this.friendshipService.blockUser(userId, friendId.friendId);
   }
 
   @UseGuards(AtGuard)
@@ -113,7 +113,7 @@ export class FriendshipController {
     @Body() friendId: add_friendDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.friendshipService.unblockUser(userId, friendId.friendId);
+    return await this.friendshipService.unblockUser(userId, friendId.friendId);
   }
 
   @UseGuards(AtGuard)
@@ -122,7 +122,7 @@ export class FriendshipController {
     @Body() friendId: add_friendDto,
     @GetCurrentUser('userId') userId: string,
   ) {
-    return this.friendshipService.unfriend(userId, friendId.friendId);
+    return await this.friendshipService.unfriend(userId, friendId.friendId);
   }
 
   @UseGuards(AtGuard)
@@ -133,6 +133,6 @@ export class FriendshipController {
   ) {
     // console.log('------------friendId', friendId);
     // console.log('----------User: ', userId);
-    return this.friendshipService.friendshipStatus(userId, friendId);
+    return await this.friendshipService.friendshipStatus(userId, friendId);
   }
 }
