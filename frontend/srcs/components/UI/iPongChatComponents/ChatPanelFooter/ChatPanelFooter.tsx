@@ -24,9 +24,7 @@ export default function ChatPanelFooter({socket}) {
     (state: RootState) =>
       state.iPongChat.ListMessages.find((message) => message.isSelect) || null
   );
-  if (!selectedMessage) {
-    return null;
-  }
+
   const [IsMuted, setIsMuted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -67,7 +65,9 @@ export default function ChatPanelFooter({socket}) {
     setSuggestions([]);
     setStyle("20px");
   };
+
   const UpdateApp = useSelector((state: RootState) => state.update.update);
+ 
   useEffect(() => {
     const fetchChat = async () => {
       try {
@@ -97,7 +97,7 @@ export default function ChatPanelFooter({socket}) {
 
 
   useEffect(() => {
-    const IsMuted = async () => {
+    const _IsMuted = async () => {
       try {
         const response = await api.get(`/chatroom/isMuted/${selectedMessage?.id}/${UserId}`);
         setIsMuted(response.data);
@@ -107,8 +107,8 @@ export default function ChatPanelFooter({socket}) {
       }
     }
 
-    IsMuted();
-  }, [UpdateApp])
+    _IsMuted();
+  }, [UpdateApp, selectedMessage, UserId])
 
 
   const handelSendMessage = () => {
@@ -133,7 +133,7 @@ export default function ChatPanelFooter({socket}) {
       }
     }
     checkBlocked();
-  }, [UpdateApp]);
+  }, [UpdateApp, selectedMessage]);
 
   return (
     <div className="ChatPanelFooter-frame">
