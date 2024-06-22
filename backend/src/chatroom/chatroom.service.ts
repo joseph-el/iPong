@@ -419,6 +419,7 @@ export class ChatroomService {
         },
       },
     });
+    
     if (ownerId === userId && !newOwner) {
       await this.databaseservice.chatRoom.delete({
         where: {

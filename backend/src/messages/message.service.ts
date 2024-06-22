@@ -146,7 +146,7 @@ export class MessageService {
         receiverId: member.memberID,
         senderId: senderId,
         entityType: NotificationType.MessageSent,
-        id: [senderId, member.memberID, message.id].sort().join('+') + 'messageSent',
+        id: [senderId, member , message.id].sort().join('+') + 'accepted',
       };
       this.eventEmitter.emit('sendNotification', notification);
     }
