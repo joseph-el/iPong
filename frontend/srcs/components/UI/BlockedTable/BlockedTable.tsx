@@ -98,7 +98,6 @@ export default function BlockedTable() {
 
     onOpen();
   };
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,7 +121,7 @@ export default function BlockedTable() {
       }
     };
     fetchData();
-  }, [UpdateApp]);
+  }, []);
 
   type Match = (typeof friends)[0];
   const [UnblockUser, setUnblockUser] = useState("");
@@ -135,7 +134,7 @@ export default function BlockedTable() {
       setUserId("");
     };
     handelRemoveUser();
-  }, [UnblockUser, UpdateApp]);
+  }, [UnblockUser, ]);
 
   const renderCell = React.useCallback((user: Match, columnKey: React.Key) => {
     switch (columnKey) {
@@ -166,7 +165,7 @@ export default function BlockedTable() {
           </Button>
         );
     }
-  }, [UpdateApp]);
+  }, []);
 
   const classNames = React.useMemo(
     () => ({
