@@ -35,6 +35,7 @@ import {
 import { getAvatarSrc } from "../../utils/getAvatarSrc";
 import { useSocket } from "../../context/SocketContext";
 import { setUpdate } from "../../state/Update/UpdateSlice";
+import { set } from "lodash";
 
 
 export default function NavBar() {
@@ -117,8 +118,12 @@ export default function NavBar() {
 
   const isWideScreen = windowWidth < 600;
 
+
+  const [inputValue, setInputValue] = useState("");
+
   const handleOnChange = (e) => {
     const searchTerm = e.target.value.toLowerCase();
+    setInputValue(searchTerm);
 
     if (searchTerm === "") {
       setActiveSearch([]);
@@ -149,7 +154,9 @@ export default function NavBar() {
   };
 
   const handelCloseSearchBar = () => {
+    setInputValue("");
     setActiveSearch([]);
+    setActiveGroups([]);
   };
 
   const handelCloseNotificationBar = () => {
@@ -221,10 +228,13 @@ export default function NavBar() {
         <SearchIcon onClick={handleIconClick} />
       ) : (
         <div className="search-bar">
-          <SearchInput onChange={handleOnChange} />
+          <SearchInput 
+          inputValue={inputValue}
+          onChange={handleOnChange} />
           {activeSearch.length != 0 || activeGroups.length != 0 ? (
             <div className="SearchList">
               <SearchList
+                InputValue={setInputValue}
                 Groups={activeGroups}
                 users={activeSearch}
                 func={handelCloseSearchBar}
@@ -234,7 +244,7 @@ export default function NavBar() {
         </div>
       )}
 
-      {/* RIGHT ITEMS  */}
+
       {searchTerm ? (
         <div className="right-side-menu">
           <CoinsButton coins={UserInfo.wallet} />
@@ -261,7 +271,7 @@ export default function NavBar() {
                     src={NotifactionIcon}
                     alt="noticon"
                     className="notification-button"
-                    style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
+                    // style={{ zIndex: ShowNotificationBar ? 9999999 : 0 }}
                     onClick={() => {
                       setIsReadAll(true);
 
