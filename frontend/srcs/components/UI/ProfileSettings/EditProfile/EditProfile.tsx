@@ -23,25 +23,8 @@ import { isFullNameValid } from "../../../../utils/formValidation";
 import validateUsername from "../../../../utils/usernameValidation";
 import api from "../../../../api/posts";
 
-const EditProfileNavbar = (props) => {
-  return (
-    <div className="EditProfileNavbar">
-      <div className="overlap-group">
-        <div className="text-wrapper">Edit Profile</div>
-        <div className="push-button">
-          <div
-            className="EditProfileNavbar-button"
-            onClick={props.closeEditProfile}
-          >
-            Done
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export default function EditProfile(props) {
+  const [Loading, setLoading] = useState(false);
   const UserInfo = useSelector((state: RootState) => state.userState);
   const [formData, setFormData] = useState({
     name: UserInfo.firstName + " " + UserInfo.lastName,
@@ -60,6 +43,12 @@ export default function EditProfile(props) {
   const [errorInput, setErrorInput] = useState([]);
   const [CoverFile, setCoverFile] = useState(null);
   const [error, setError] = useState("");
+
+  // const EditProfileNavbar = (props) => {
+  //   return (
+
+  //   );
+  // };
 
   const InputTypes = [
     {
@@ -111,6 +100,7 @@ export default function EditProfile(props) {
 
   useEffect(() => {
     const SubmitData = async () => {
+      setLoading(true);
       await api.post("/users/update", {
         firstName: formData.name.split(" ")[0],
         lastName: formData.name.split(" ").slice(1).join(" "),
@@ -127,16 +117,11 @@ export default function EditProfile(props) {
         formDataAvatar.append("file", AvatarFile!);
 
         try {
-          await api.post(
-            "user-profile/avatar",
-            formDataAvatar,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-
+          await api.post("user-profile/avatar", formDataAvatar, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
         } catch (error) {
           console.log("error upload avatar :", error);
         }
@@ -147,21 +132,16 @@ export default function EditProfile(props) {
         formDataAvatar.append("file", CoverFile!);
 
         try {
-          await api.post(
-            "user-profile/cover",
-            formDataAvatar,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-   
+          await api.post("user-profile/cover", formDataAvatar, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
         } catch (error) {
           console.log("error upload avatar :", error);
         }
       }
-
+      setLoading(false);
       props.closeEditProfile();
     };
     ReadyForSubmit && SubmitData();
@@ -270,10 +250,35 @@ export default function EditProfile(props) {
     // TODO: call CloseEditProfile function from parent component
   };
 
-
   return (
     <EditProfileWrapper>
-      <EditProfileNavbar closeEditProfile={handleDone} />
+      
+      <div className="EditProfileNavbar">
+        <div className="overlap-group">
+          <div className="push-button">
+            <Button
+              className="CancelProfileNavbar-button"
+              onClick={() => {
+                props.closeEditProfile();
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
+
+          <div className="text-wrapper">Edit Profile</div>
+
+          <div className="push-button">
+            <Button
+              isLoading={Loading}
+              className="EditProfileNavbar-button"
+              onClick={handleDone}
+            >
+              Done
+            </Button>
+          </div>
+        </div>
+      </div>
 
       <div className="profile-cover-edit-profile">
         <img
