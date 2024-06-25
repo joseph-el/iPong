@@ -15,9 +15,11 @@ import { RootState } from "../../../../state/store";
 import UserSlice from "../../../../state/UserInfo/UserSlice";
 import { useSocket } from "../../../../context/SocketContext";
 import { current } from "@reduxjs/toolkit";
-
+import { setUpdate } from "../../../../state/Update/UpdateSlice";
+import { useDispatch } from "react-redux";
 export default function ChatPanelFooter({socket}) {
 
+  const dispatch = useDispatch();
   const UserId = useSelector((state: RootState) => state.userState.id);
   const [IsReady, setIsReady] = useState(false);
   const selectedMessage = useSelector(
@@ -84,6 +86,7 @@ export default function ChatPanelFooter({socket}) {
           content: inputValue,
           senderId: UserId,
         });
+        dispatch(setUpdate());
         setInputValue("");
         setIsReady(false);
         console.log("post :", response.data);
@@ -93,7 +96,7 @@ export default function ChatPanelFooter({socket}) {
     };
 
     IsReady && fetchChat();
-  }, [IsReady, UpdateApp]);
+  }, [IsReady]);
 
 
   useEffect(() => {
@@ -139,7 +142,7 @@ export default function ChatPanelFooter({socket}) {
     <div className="ChatPanelFooter-frame">
       <div className="autocomplete">
         {suggestions.slice(0, 6).map((suggestion, index) => (
-          <Chip key={index} onClick={() => handleSuggestionClick(suggestion)}>
+          <Chip className="subtitles-chip" key={index} onClick={() => handleSuggestionClick(suggestion)}>
             {suggestion}
           </Chip>
         ))}
