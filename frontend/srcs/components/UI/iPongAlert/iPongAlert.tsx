@@ -23,7 +23,6 @@ import {
 
 export default function IPongAlert(props) {
   
-  console.log("undefinded:,", props.hideCloseButton);
 
   return (
     <Modal backdrop="opaque" isOpen={props.isOpen} onClose={props.onClose}>
