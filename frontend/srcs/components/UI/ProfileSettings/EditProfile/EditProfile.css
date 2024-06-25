@@ -32,7 +32,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 43.688px;
-  padding-left: 60px;
+  /* margin-left: 40px; */
   margin-top: -10px;
 }
 
@@ -40,7 +40,7 @@
   display: flex;
   justify-content: space-between; /* Distributes space between items */
   align-items: center; /* Vertically centers items */
-  padding: 15px 10px 10px 10px;
+  padding: 16px 10px 10px 10px !important;
 }
 
 .EditProfileNavbar .text-wrapper {
@@ -55,7 +55,7 @@
 }
 
 .EditProfileNavbar .push-button {
-  margin-left: auto; /* Pushes the button to the end of the flex container */
+  margin-left: auto;
 }
 
 .center-items {
@@ -63,7 +63,29 @@
   justify-content: center;
 }
 
+
+.CancelProfileNavbar-button {
+  background-color: transparent !important;
+  padding-left: 20px;
+  color: #696969;
+  margin-top: -10px;
+  text-align: left;
+  font-family: "sfprodisplay-regular", serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 46.423px; /* 110% */
+  letter-spacing: -0.861px;
+
+}
+
+.CancelProfileNavbar-button:hover {
+  color: #3c424d;
+  cursor: pointer;
+}
+
 .EditProfileNavbar-button {
+  background-color: transparent  !important;
   padding-right: 20px;
   color: #007bfe;
   margin-top: -10px;
@@ -75,6 +97,7 @@
   line-height: 46.423px; /* 110% */
   letter-spacing: -0.861px;
 }
+
 .EditProfileNavbar-button:hover {
   color: #007bfed4;
   cursor: pointer;
