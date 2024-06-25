@@ -20,14 +20,12 @@ export default function UserListMessages(props) {
   const UserId = useSelector((state: RootState) => state.userState.id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await api.get(`/chatroom/myrooms`);
 
-        console.log("Rooms::> ", response.data);
         const MessageList = response.data
           .sort(
             (a, b) =>
@@ -64,7 +62,7 @@ export default function UserListMessages(props) {
       }
     };
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   const handelListChatItem = (id) => {
     props.socket.current?.emit("joinRoom", {
@@ -79,7 +77,6 @@ export default function UserListMessages(props) {
     (state: RootState) => state.iPongChat.filterType
   );
 
-  console.log("List,");
   return (
     <Grid
       templateAreas={`"header"
