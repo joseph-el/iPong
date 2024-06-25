@@ -34,14 +34,15 @@ import {
 } from "../../state/Notifications/NotificationsSlice";
 import { getAvatarSrc } from "../../utils/getAvatarSrc";
 import { useSocket } from "../../context/SocketContext";
-import { setUpdate } from "../../state/Update/UpdateSlice";
+
 import { set } from "lodash";
+import { selectUser } from "../../state/iPongChatState/iPongChatState";
 
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
+
   const [activeSearch, setActiveSearch] = React.useState([]);
   const [activeGroups, setActiveGroups] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -64,7 +65,7 @@ export default function NavBar() {
       }
     };
     isReadAll && fetchData();
-  }, [isReadAll, UpdateApp]);
+  }, [isReadAll, ]);
 
   // TODO: fetch all users from the server
 
@@ -81,7 +82,7 @@ export default function NavBar() {
       }
     };
     fetchData();
-  }, [UpdateApp]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,7 +105,7 @@ export default function NavBar() {
       }
     };
     fetchData();
-  }, [UpdateApp]);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -114,7 +115,7 @@ export default function NavBar() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [UpdateApp]);
+  }, []);
 
   const isWideScreen = windowWidth < 600;
 
@@ -173,7 +174,6 @@ export default function NavBar() {
         // TODO: check if the notification is already exist in the store
 
 
-        console.log(" notification here ::> data: ", data);  
         const existingNotificationIndex = NotificationObject.findIndex(
           (notification) =>
             notification.entityType === data.entityType &&
@@ -187,7 +187,8 @@ export default function NavBar() {
         }
 
         if (data.entityType === "MessageSent") {
-          dispatch(setUpdate());
+          dispatch(selectUser());
+          // dispatch(setUpdate());
         }
         dispatch(
           addNotification({
