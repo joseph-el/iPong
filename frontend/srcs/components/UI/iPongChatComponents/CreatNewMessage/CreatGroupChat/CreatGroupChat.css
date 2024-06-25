@@ -9,28 +9,25 @@
   height: 550px;
   max-height: 1000px;
   margin: 5px;
+  height: auto !important;
+  max-height: none !important; 
 }
 
-.CreatGroupChat-frame .CreatGroupChat-header {
-  color: #e0e0e0;
-  font-family: "popins-medium", sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  margin: 40px 0px 10px 30px;
-}
+
 .CreatGroupChat-frame .Groups-Info {
-  /* margin: 0px 10px 30px; */
+
 }
+
 .CreatGroupChat-frame .User-avatar {
-  margin: 50px 0px 20px 150px;
+  margin: 10px 0px 30px 150px;
 }
 
 .Edit-avatar {
   display: flex;
 }
 .CreatGroupChat-frame .Edit-group-icon {
-  margin-top: 125px;
-  margin-left: -5px;
+  margin-top: -40px ;
+  margin-right: -10px !important;
 }
 
 .CreatGroupChat-frame .Edit-group-icon:hover {
@@ -40,17 +37,18 @@
 .StartFriendChat-frame .max-w-xs ,
 .CreatGroupChat-frame .max-w-xs {
   max-width: 350px;
+
   /* margin-left: 10px; */
 }
 .CreatGroupChat-frame .edit-Group-Name {
-  margin-left: 25px;
+  margin-left: 15px;
 }
 .CreatGroupChat-frame .group-privaty,
 .CreatGroupChat-frame .Add-people {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin-left: 25px;
+  margin-left: 15px;
 }
 
 .group-privaty-title,
@@ -63,14 +61,14 @@
   letter-spacing: -0.12px;
   line-height: 28.3px;
   position: relative;
-  margin-left: 10px;
-  margin-top: 5px;
+  margin-left: 20px;
+  margin-top: -5px;
 }
 
 .group-privaty-select {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   margin-bottom: 20px;
 }
 
@@ -93,9 +91,22 @@
   transform: translateX(-40%);
 }
 
+.closeiconsss {
+
+   margin-top: 20px;
+  margin-left: 350px !important;
+}
+.closeicons:hover {
+  cursor: pointer;
+} 
 
 .CreatGroupChat-frame .closeicons {
   margin-left: 360px;
   margin-top: 13px;
   margin-bottom: -40px;
+}
+
+
+.text-small1 {
+  color: #a1a1a1  !important;
 }
