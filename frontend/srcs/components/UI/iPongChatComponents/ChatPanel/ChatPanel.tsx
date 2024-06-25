@@ -62,6 +62,7 @@ export default function ChatPanel() {
             console.log("haia :", response.data);
             const MessageList = response.data.map((message) => {
               return {
+                user: message.Username,
                 id: message.id,
                 authorId: message.authorId,
                 message: message.content,
@@ -88,6 +89,8 @@ export default function ChatPanel() {
             key={index}
             message={chatBubble.message}
             avatarUrl={chatBubble.avatar}
+            User={chatBubble.user}
+          
           />
         ) : (
           <LeftChatBubbles
