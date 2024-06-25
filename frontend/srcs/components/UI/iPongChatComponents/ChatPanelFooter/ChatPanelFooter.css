@@ -1,15 +1,17 @@
 .ChatPanelFooter-frame {
-    width: 100%;
+    width: calc(100% - 100px);
+    max-width: 1200px;
+    margin: 0 auto;
     height: 100%;
 
     display: flex;
     flex-direction: column;
-    background-color: transparent !important;
     gap: 5px;
-    padding: 0px 50px 0px 50px;
-    /* margin-top: 30px; */
-    /* background-color: red !important; */
-
+    padding: 0px 25px;
+    background-color: transparent !important;
+    /* // why when i remove this the input take the full screen width  */
+    backdrop-filter: blur(0px);
+    position: relative;
 }
 
 .autocomplete {
@@ -17,22 +19,36 @@
     gap: 5px;
     width: 100%;
     overflow-x: auto;
+    position: absolute;
+    top: 2px;
+    left: 0;
+    z-index: 1;
+
+}
+
+.ChatPanelFooter-Input {
+
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    z-index: 2;
 }
 
 @media (min-width: 1900px) {
     .ChatPanelFooter-frame {
         padding: 0px 400px 0px 400px;
     }
-   
 }
-.css-13w9pnp {
-    padding: 0px !important;
-}
+
 .ChatPanelFooter-frame .SendMessage {
     width: 26px;
     height: 26px;
 }
 
+.ChatPanelFooter-frame [data-slot="input-wrapper"] {
+    background-color:  #202020 !important;
+}
 
 .ChatPanelFooter-frame .SendMessage:hover {
     cursor: pointer;
