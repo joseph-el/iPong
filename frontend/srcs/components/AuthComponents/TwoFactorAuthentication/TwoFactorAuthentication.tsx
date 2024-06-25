@@ -24,14 +24,11 @@ const navigate = useNavigate();
         ?.split("=")[1];
       try {
 
-        console.log("code", code);
-        console.log("tfa_token", tfa_token);
         const response = await api.post(`/auth/validate2fa`, {
           otp: code,
           tfaToken: tfa_token,
         });
 
-        console.log("Submit:> ", response);
         if (response.data.status === 201) {
           navigate("/ipong/home");
         } else
