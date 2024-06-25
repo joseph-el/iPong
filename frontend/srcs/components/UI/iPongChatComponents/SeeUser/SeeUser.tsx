@@ -61,7 +61,7 @@ export default function SeeUser(props) {
 
           <div className="info">
             <div className="User-name">{selectedMessage?.fullname}</div>
-            <div className="ipongchar">iPong</div>
+            <div className="ipongchar">iPongChat</div>
           </div>
         </div>
 
@@ -80,6 +80,7 @@ export default function SeeUser(props) {
             alt="See Profile"
             className="User-options-See-Profile-img"
           />
+          
           <img
             onClick={handelInviteMatch}
             src={InviteMatchIcon}
