@@ -9,6 +9,9 @@
   height: 550px;
   max-height: 1000px;
   margin: 5px;
+
+  height: auto !important;
+  max-height: none !important; 
 }
 
 
