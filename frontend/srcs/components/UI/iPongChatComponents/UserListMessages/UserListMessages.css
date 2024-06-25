@@ -10,7 +10,16 @@
 }
 
 .kkk {
-    border-right: 0.5px solid #5d5b5bd5;
-    border-top: 0.5px solid #5d5b5bd5;
+    border-right:  0.8px solid #3c424d;
+}
 
+.No_conversations {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #D3D3D3; 
+    font-family: "sfprodisplay-semibold", serif;
+    font-size: 18px;
+    text-align: center; 
 }
