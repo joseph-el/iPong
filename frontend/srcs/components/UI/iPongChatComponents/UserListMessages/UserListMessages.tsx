@@ -96,8 +96,20 @@ export default function UserListMessages(props) {
       </GridItem>
       <GridItem pl="2" bg="black" className="kkk" area={"main"}>
         <ScrollShadow hideScrollBar className="h-full">
-          {UserChat.ListMessages.length === 0 ? (
-            <div className="No_conversations">No conversations yet. Start chatting now!</div>
+          {UserChat.ListMessages.length === 0 ||
+          (FilterType != "All" &&
+            !UserChat.ListMessages.some((message) => {
+              if (FilterType === "All") {
+                return true;
+              } else if (FilterType === "Dm") {
+                return message.type === "Dm";
+              } else {
+                return message.type !== "Dm";
+              }
+            })) ? (
+            <div className="No_conversations">
+              No conversations yet. Start chatting now!
+            </div>
           ) : (
             UserChat.ListMessages.filter((message) => {
               if (FilterType === "All") {
@@ -105,7 +117,6 @@ export default function UserListMessages(props) {
               } else if (FilterType === "Dm") {
                 return message.type === "Dm";
               } else {
-                console.log("iam here");
                 return message.type !== "Dm";
               }
             }).map((message, index) => (
@@ -118,6 +129,7 @@ export default function UserListMessages(props) {
                   lastMessage={message.lastMessage}
                   avatar={message.avatar}
                 />
+    
               </React.Fragment>
             ))
           )}
