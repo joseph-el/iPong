@@ -15,8 +15,6 @@ import api from "../../../../api/posts";
 import { formatTimeDifference } from "../../NotificationsBar/NotificationsBar";
 import { setListMessages } from "../../../../state/iPongChatState/iPongChatState";
 
-
-
 export default function UserListMessages(props) {
   const UserChat = useSelector((state: RootState) => state.iPongChat);
   const UserId = useSelector((state: RootState) => state.userState.id);
@@ -81,6 +79,7 @@ export default function UserListMessages(props) {
     (state: RootState) => state.iPongChat.filterType
   );
 
+  console.log("List,");
   return (
     <Grid
       templateAreas={`"header"
@@ -97,27 +96,31 @@ export default function UserListMessages(props) {
       </GridItem>
       <GridItem pl="2" bg="black" className="kkk" area={"main"}>
         <ScrollShadow hideScrollBar className="h-full">
-        {UserChat.ListMessages.filter((message) => {
-          if (FilterType === "All") {
-            return true;
-          } else if (FilterType === "Dm") {
-            return message.type === "Dm";
-          } else {
-            console.log("iam here");
-            return message.type !== "Dm";
-          }
-        }).map((message, index) => (
-          <React.Fragment key={index}>
-            <MessagesItems
-              IsSelectes={message.isSelect}
-              handelCLickChat={() => handelListChatItem(message.id)}
-              name={message.fullname}
-              messageTime={message.time}
-              lastMessage={message.lastMessage}
-              avatar={message.avatar}
-            />
-          </React.Fragment>
-        ))}
+          {UserChat.ListMessages.length === 0 ? (
+            <div className="No_conversations">No conversations yet. Start chatting now!</div>
+          ) : (
+            UserChat.ListMessages.filter((message) => {
+              if (FilterType === "All") {
+                return true;
+              } else if (FilterType === "Dm") {
+                return message.type === "Dm";
+              } else {
+                console.log("iam here");
+                return message.type !== "Dm";
+              }
+            }).map((message, index) => (
+              <React.Fragment key={index}>
+                <MessagesItems
+                  IsSelectes={message.isSelect}
+                  handelCLickChat={() => handelListChatItem(message.id)}
+                  name={message.fullname}
+                  messageTime={message.time}
+                  lastMessage={message.lastMessage}
+                  avatar={message.avatar}
+                />
+              </React.Fragment>
+            ))
+          )}
         </ScrollShadow>
       </GridItem>
     </Grid>
