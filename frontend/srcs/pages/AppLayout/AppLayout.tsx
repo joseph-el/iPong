@@ -116,7 +116,7 @@ export default function AppLayout({ children }) {
   "sidebar main main"
 `
         }
-        gridTemplateRows={"72px 1fr 30px"}
+        gridTemplateRows={"74px 1fr 30px"}
         gridTemplateColumns={"78px 1fr 300px"}
         h="100vh"
         gap="0"
