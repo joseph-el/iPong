@@ -64,6 +64,7 @@ const RequireAuth = ({ children }) => {
         const response = await api.get("/user-profile/me");
 
         let user = response.data;
+        console.log("userrrr>>>> ", user);
         console.log("user>>>>> ", user);
         if (
           user.username.startsWith("M-;") ||
@@ -86,6 +87,7 @@ const RequireAuth = ({ children }) => {
     checkAuth();
   }, [UpdateApp]);
 
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
