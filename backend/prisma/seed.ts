@@ -26,7 +26,7 @@ async function main() {
     },
   });
 
-  console.log({ defaultSkin, defaultBoard });
+  // console.log({ defaultSkin, defaultBoard });
 }
 
 main()
