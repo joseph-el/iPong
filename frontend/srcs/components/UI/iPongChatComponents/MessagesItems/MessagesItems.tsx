@@ -1,6 +1,6 @@
 import React from "react";
 import "./MessagesItems.css";
-import { Avatar } from "@nextui-org/react";
+import { Avatar, Divider } from "@nextui-org/react";
 
 import SelectConversationIcon from "./select-converstation-icon.svg";
 
@@ -18,6 +18,7 @@ export default function MessagesItems(props) {
   // style={ {backgroundColor: (props.IsSelectes ? "#3a3a3c" : "#000")} }
   // onClick={ () => {setIsSelectes(true)} } style={ {backgroundColor: (IsSelectes ? "#3a3a3c" : "#000")} }
   return (
+    <div>
     <div
       className="MessagesItems-frame"
       onClick={props.handelCLickChat}
@@ -44,6 +45,13 @@ export default function MessagesItems(props) {
           {handleLastMessageSize(props.lastMessage)}
         </div>
       </div>
+
+    {/* <div className="message-border"></div> */}
+
+      
+    </div>
+    <div className="message-border"/>
+    
     </div>
   );
 }
