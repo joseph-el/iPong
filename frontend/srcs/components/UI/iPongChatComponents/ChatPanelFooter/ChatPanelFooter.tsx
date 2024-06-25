@@ -28,16 +28,16 @@ export default function ChatPanelFooter({socket}) {
   const [IsMuted, setIsMuted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [style, setStyle] = useState("30px");
 
   const handleInputChange = (event) => {
+
     if (inputValue.length > 500) {
       return;
     }
     const newValue = event.target.value;
 
     if (!newValue) {
-      setStyle("20px");
+      // setStyle("20px");
       setSuggestions([]);
       setInputValue(newValue);
       return;
@@ -48,12 +48,12 @@ export default function ChatPanelFooter({socket}) {
     );
 
     if (filteredSuggestions.length === 0) {
-      setStyle("20px");
+      // setStyle("20px");
       setSuggestions([]);
       setInputValue(newValue);
       return;
     }
-    setStyle("0px");
+    // setStyle("0px");
     setSuggestions(filteredSuggestions);
     setInputValue(newValue);
   };
@@ -63,7 +63,7 @@ export default function ChatPanelFooter({socket}) {
     words.pop();
     setInputValue(words.join(" ") + " " + suggestion);
     setSuggestions([]);
-    setStyle("20px");
+    // setStyle("20px");
   };
 
   const UpdateApp = useSelector((state: RootState) => state.update.update);
@@ -137,7 +137,7 @@ export default function ChatPanelFooter({socket}) {
 
   return (
     <div className="ChatPanelFooter-frame">
-      <div className="autocomplete" style={{ marginTop: style }}>
+      <div className="autocomplete">
         {suggestions.slice(0, 6).map((suggestion, index) => (
           <Chip key={index} onClick={() => handleSuggestionClick(suggestion)}>
             {suggestion}
@@ -151,6 +151,11 @@ export default function ChatPanelFooter({socket}) {
         value={inputValue}
         placeholder={userIsBlocked ? "You are blocked by this person!" :   "Type a message"}
         onChange={handleInputChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handelSendMessage();
+          }
+        }}
         endContent={
           <img
             onClick={handelSendMessage}
