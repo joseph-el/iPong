@@ -21,7 +21,17 @@ margin-top: 1px;
 .ChatPanel-frame {
   overflow: -moz-scrollbars-none;
   -ms-overflow-style: none;
+  background-image: url("./background.png");
+  background-size: cover;
+  background-position: center; 
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+  /* height: 100%;  */
+  /* width: 100%;  */
+  background-color: black;
 }
+
+
 
 .ChatPanel-frame::-webkit-scrollbar {
   display: none; 
