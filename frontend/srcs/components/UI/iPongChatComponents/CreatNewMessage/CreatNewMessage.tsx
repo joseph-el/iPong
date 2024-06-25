@@ -74,7 +74,7 @@ export default function CreatNewMessage(props) {
 
   return (
     <CreatNewMessageWrapper>
-      <ScrollShadow className="h-[550px]" hideScrollBar>
+      {/* <ScrollShadow className="h-[550px]" hideScrollBar> */}
         <div className="CreatNewMessage-frame">
           <div className="div-title">
             <div className="title">Create New Chat</div>
@@ -128,7 +128,7 @@ export default function CreatNewMessage(props) {
             />
           </div>
         </div>
-      </ScrollShadow>
+      {/* </ScrollShadow> */}
     </CreatNewMessageWrapper>
   );
 }
