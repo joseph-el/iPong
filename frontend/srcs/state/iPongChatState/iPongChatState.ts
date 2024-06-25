@@ -7,6 +7,7 @@ interface Messages {
   avatar: string;
   time: string;
   authorId:string;
+  user: string;
 }
 
 interface ListMessages {
