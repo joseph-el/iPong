@@ -54,7 +54,6 @@ export default function CreatGroupChat(props) {
   const displayGroupType = Array.from(GroupType).join(" ");
 
 
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -76,28 +75,20 @@ export default function CreatGroupChat(props) {
       }
     };
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   useEffect(() => {
     const fetchReadyToSubmit = async () => {
       try {
         let NewRoom;
-        console.log("response roomooooo : |", displayGroupType, "|");
-        console.log(
-          "response roomooooo : ",
-          displayGroupType,
-          GroupPassword,
-          GroupName
-        );
+ 
         const response = await api.post("chatroom/create", {
           type: displayGroupType,
           password: GroupPassword,
           roomName: GroupName,
         });
-        console.log("response room : ", response.data);
         NewRoom = response.data.id;
 
-        console.log("response room : ", NewRoom);
 
         if (AvatarFile) {
           const formDataAvatar = new FormData();
@@ -113,9 +104,7 @@ export default function CreatGroupChat(props) {
                 },
               }
             );
-            console.log("response upload avatar :", response);
           } catch (error) {
-            console.log("error upload avatar :", error);
           }
         }
         GroupMembers.forEach(async (member) => {
@@ -123,9 +112,7 @@ export default function CreatGroupChat(props) {
             const response2 = await api.post(
               `chatroom/invite/${users[member].userId}/${NewRoom}`
             );
-            console.log("invite:: ", response2.data);
           } catch (error) {
-            console.log("error add members :", error);
           }
         });
 
