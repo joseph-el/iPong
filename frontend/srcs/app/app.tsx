@@ -32,13 +32,10 @@ import { SocketProvider } from "../context/SocketContext";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-import { useSelector } from "react-redux";
-import { RootState } from "../state/store";
-import { setUpdate } from "../state/Update/UpdateSlice";
+
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
   
   const dispatch = useDispatch<AppDispatch>();
 
@@ -64,8 +61,6 @@ const RequireAuth = ({ children }) => {
         const response = await api.get("/user-profile/me");
 
         let user = response.data;
-        console.log("userrrr>>>> ", user);
-        console.log("user>>>>> ", user);
         if (
           user.username.startsWith("M-;") ||
           user.username.startsWith("F-;")
@@ -85,7 +80,7 @@ const RequireAuth = ({ children }) => {
       }
     };
     checkAuth();
-  }, [UpdateApp]);
+  }, []);
 
  
   useEffect(() => {
@@ -94,7 +89,7 @@ const RequireAuth = ({ children }) => {
         const response = await api.get("/notifications/getAllNotifications");
         const notifications = response.data;
 
-        console.log("notifications>>>>> ", notifications);
+   
         const NotificationObj = notifications.map((notification) => {
           console.error("notification !!!!!>", notification);
           return {
@@ -107,7 +102,7 @@ const RequireAuth = ({ children }) => {
           };
         });
 
-        console.log("NotificationObj>> ", NotificationObj);
+
         dispatch(setNotification(NotificationObj));
       } catch (error) {
         console.error("error: notitifications", error);
@@ -117,9 +112,9 @@ const RequireAuth = ({ children }) => {
     const fetchUnreadNotificationsData = async () => {
       try {
         const response = await api.get("/notifications/unreadNotifications");
-        console.log("unread notifications", response.data);
+    
         dispatch(setNotificationCount(response.data.length));
-        console.log("unread notifications", response.data.length);
+
       } catch (error) {
         console.error("error: notitifications", error);
       }
@@ -127,7 +122,7 @@ const RequireAuth = ({ children }) => {
 
     fetchData();
     fetchUnreadNotificationsData();
-  }, [UpdateApp]);
+  }, []);
 
   dispatch(setSelectedSkinPath(UserSkin));
   dispatch(setBoardPath(UserBoard));
