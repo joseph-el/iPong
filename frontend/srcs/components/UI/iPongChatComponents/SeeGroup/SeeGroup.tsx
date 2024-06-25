@@ -64,9 +64,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
           roomId: RoomId,
         });
 
-        console.log("response in PostActions: ", response);
       } catch (error) {
-        console.log("error in PostActions: ", error);
       }
       setActionType(null);
     };
@@ -186,7 +184,6 @@ const EditGroup = (props) => {
     new Set([props.selectedMessage.type])
   );
   const CurrentGroupType = props.selectedMessage.type;
-  console.log("CurrentGroupType: ", CurrentGroupType);
 
   const [GroupPassword, setGroupPassword] = useState("");
   const [IsReady, setIsReady] = useState(false);
@@ -252,9 +249,7 @@ const EditGroup = (props) => {
                 },
               }
             );
-            console.log("response upload avatar :", response);
           } catch (error) {
-            console.log("error upload avatar :", error);
           }
         }
         const response = await api.post("/chatroom/update", {
@@ -472,14 +467,12 @@ export default function SeeGroup(props) {
   };
 
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await api.get(
           `/chatroom/${selectedMessage?.id}/members`
         );
-        console.log("Room members:> ", response.data);
         const Members = response.data.map((member) => {
           return {
             IsAdmin: member.isAdmin,
@@ -492,15 +485,13 @@ export default function SeeGroup(props) {
             Username: member.member.username,
           };
         });
-        console.log("Members:>>>>>> ", Members);
         setFilteredUsers(Members);
       } catch (err) {
-        console.error("can`t get members> ", err);
       }
     };
 
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   const IsAdmin = filteredUsers.find((member) => {
     return member.UserId === UserId && member.IsAdmin === true;
@@ -529,7 +520,7 @@ export default function SeeGroup(props) {
       }
     };
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   const FriendsNotInRoom = FriendsList.filter((friend) => {
     return !filteredUsers.find((member) => member.UserId === friend.userId);
@@ -543,9 +534,7 @@ export default function SeeGroup(props) {
         const response2 = await api.post(
           `chatroom/invite/${selectedUser}/${selectedMessage?.id}`
         );
-        console.log("response in invite user: ", response2);
       } catch (error) {
-        console.log("error in invite user: ", error);
       }
       setSelectedUser(null);
     };
@@ -560,9 +549,7 @@ export default function SeeGroup(props) {
         const response = await api.post(
           `chatroom/muteChat/${selectedMessage?.id}`
         );
-        console.log("response in mute chat: ", response);
       } catch (error) {
-        console.log("error in mute chat: ", error);
       }
       setMuteChat(false);
     };
@@ -576,9 +563,7 @@ export default function SeeGroup(props) {
         const response = await api.post("chatroom/leaveRoom/", {
           roomId: selectedMessage?.id,
         });
-        console.log("response in leave chat: ", response);
       } catch (error) {
-        console.log("error in leave chat: ", error);
       }
       setLeaveGroup(false);
     };
