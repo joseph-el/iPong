@@ -4,10 +4,8 @@ import { ImessagesNotificationsWrapper } from "./iMessagesNotificationsWrapper";
 import ImessageIcon from "./imessage.svg";
 import { User } from "@nextui-org/react";
 
-
 export default function ImessagesNotifications(props) {
 
- 
 
 
   return (
@@ -15,7 +13,12 @@ export default function ImessagesNotifications(props) {
       <div className="notification-content">
         <User
           name="iMessages"
-          description={props.name + (props.type == "MessageSent" ? " Sent a Message" : " Accepted your friend request")  }
+          description={
+            props.name +
+            (props.type == "MessageSent"
+              ? " Sent a Message"
+              : " Accepted your friend request")
+          }
           avatarProps={{
             src: props.avatar,
           }}
