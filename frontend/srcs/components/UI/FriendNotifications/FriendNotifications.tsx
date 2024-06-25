@@ -22,7 +22,6 @@ export const Actions = (props) => {
 };
 
 export default function FriendNotifications(props) {
-  console.log(props);
 
   return (
     <div className="FriendNotifications-frame">
