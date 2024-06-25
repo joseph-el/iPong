@@ -8,8 +8,8 @@
   height: 530px;
   max-width: 460px;
   max-height: 530px;
-  height: auto; /* Change from fixed height to auto */
-  max-height: none; /* Remove max-height restriction */
+  height: auto; 
+  max-height: none; 
 }
 
 @layer CloseIcon {
