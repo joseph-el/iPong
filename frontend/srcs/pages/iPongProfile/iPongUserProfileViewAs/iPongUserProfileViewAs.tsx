@@ -54,7 +54,7 @@ import { set } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
-import { setUpdate } from "../../../state/Update/UpdateSlice";
+
 
 const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
@@ -160,7 +160,7 @@ export default function UserProfileViewAs() {
   const [UserprofileInfo, setUserprofileInfo] = useState([]);
 
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
-  const Update = useSelector((state: RootState) => state.update.update);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -178,7 +178,7 @@ export default function UserProfileViewAs() {
     };
 
     fetchData();
-  }, [userId, Update]);
+  }, [userId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -191,7 +191,7 @@ export default function UserProfileViewAs() {
       }
     };
     fetchData();
-  }, [userId, Update]); // USER PROFILE
+  }, [userId]); // USER PROFILE
 
   useEffect(() => {
     const fetchData = async () => {
@@ -213,7 +213,7 @@ export default function UserProfileViewAs() {
       } catch (error) {}
     };
     fetchData();
-  }, [userId, Update]);
+  }, [userId]);
 
   const dropdownOptions = {
     MAKE_FRIEND: {
@@ -268,7 +268,7 @@ export default function UserProfileViewAs() {
         }
       } catch (error) {}
 
-      dispatch(setUpdate());
+      // dispatch(setUpdate());
     };
     ButtonFriendStatus !== "ACCEPTED" && fetchData();
   }, [FriendshipStatus]);
@@ -293,7 +293,7 @@ export default function UserProfileViewAs() {
           });
         }
       } catch (error) {}
-      dispatch(setUpdate());
+      // dispatch(setUpdate());
     };
     isUnfriend != null && fetchData();
   }, [isUnfriend]);
