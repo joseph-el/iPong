@@ -27,16 +27,13 @@ export default function ChatPanel() {
     (state: RootState) => state.iPongChat.messages
   );
   const [UserIsBlocked, setUserIsBlocked] = React.useState(false);
-
+  const UserSelect = useSelector((state: RootState) => state.iPongChat.selectedMessage);
   const UserId = useSelector((state: RootState) => state.userState.id);
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
   
   useEffect(() => {
     const checkBlocked = async () => {
       try {
-        console.log(`Checking if user is blocked: ${selectedMessage?.senderId}`);
         const response = await api.post(`/friendship/isBlocked/${selectedMessage?.senderId}`);
-        console.log(`User is blocked: ${response.data}`);
         if (response.data) {
           setUserIsBlocked(true);
         }
@@ -45,23 +42,23 @@ export default function ChatPanel() {
       }
     }
     checkBlocked();
-  }, [UpdateApp]);
+  }, []);
   
   
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [chatBubbleProps, UpdateApp]);
+  }, [chatBubbleProps]);
 
-  console.log(selectedMessage);
+
     useEffect(() => {
       const fetchChat = async () => {
         try {
             const response = await api.get(`/messages/room/${selectedMessage?.id}`);
-            console.log("haia :", response.data);
             const MessageList = response.data.map((message) => {
               return {
+                user: message.Username,
                 id: message.id,
                 authorId: message.authorId,
                 message: message.content,
@@ -75,7 +72,7 @@ export default function ChatPanel() {
         }
       }
       selectedMessage?.id != undefined && fetchChat();
-    }, [selectedMessage, UpdateApp]); //  here 
+    }, [selectedMessage, UserSelect]); //  here 
 
   return (
     <div className="ChatPanel-frame" ref={scrollRef}>
@@ -88,6 +85,8 @@ export default function ChatPanel() {
             key={index}
             message={chatBubble.message}
             avatarUrl={chatBubble.avatar}
+            User={chatBubble.user}
+          
           />
         ) : (
           <LeftChatBubbles

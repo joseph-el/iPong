@@ -4,7 +4,7 @@
 }
 
 .NotificationsBar-box {
-  background-color: rgba(17, 19, 22, 1);
+  background-color: #0e0e0e;
   border-radius: 15px;
   left: 1px;
   position: relative;
@@ -13,12 +13,13 @@
   height: 500px;
   max-height: 1000px;
   margin: 5px;
+  border: 0.6px solid #2c2c2e;
 }
 
 .NotificationsNavbar {
-  background-color: #191c1f;
+  background-color: #0e0e0e;
   height: 55px;
-  width: 365px;
+  width: 364px;
   border-radius: 15px 15px 0px 0px;
   border-bottom: 0.8px solid rgba(230, 209, 209, 0.27);
 }

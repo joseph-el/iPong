@@ -53,13 +53,8 @@ export default function ChatPanelLayout({socket}) {
     navigate("/ipong/chat");
   }
 
-
-  console.log("ChatPanelLayout||||||--------->: ", selectedMessage)
-
-
   const [userId, setUserId] = React.useState<string>(selectedMessage?.senderId || "");
   
-
   return (
     <div className="ChatPanel-frame">
       <Grid
@@ -68,8 +63,7 @@ export default function ChatPanelLayout({socket}) {
                         "Footer Footer"`}
         gridTemplateRows={"90px 1fr 90px"}
         h="100%"
-        color="blackAlpha.700"
-        fontWeight="bold"
+
       >
         <GridItem pl="2" area={"header"}>
           <ChatPanelHeader

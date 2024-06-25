@@ -22,6 +22,7 @@ import DefaultGroupImage from "./memoji/alta1r.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../state/store";
 import { useNavigate } from "react-router-dom";
+
 type User = {
   id: number;
   name: string;
@@ -51,9 +52,8 @@ export default function CreatGroupChat(props) {
   const [users, setUsers] = useState([]);
   const [ReadyToSubmit, setReadyToSubmit] = useState(false);
   const displayGroupType = Array.from(GroupType).join(" ");
-  const [testID, setTestID] = useState("");
 
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -75,28 +75,20 @@ export default function CreatGroupChat(props) {
       }
     };
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   useEffect(() => {
     const fetchReadyToSubmit = async () => {
       try {
         let NewRoom;
-        console.log("response roomooooo : |", displayGroupType, "|");
-        console.log(
-          "response roomooooo : ",
-          displayGroupType,
-          GroupPassword,
-          GroupName
-        );
+ 
         const response = await api.post("chatroom/create", {
           type: displayGroupType,
           password: GroupPassword,
           roomName: GroupName,
         });
-        console.log("response room : ", response.data);
         NewRoom = response.data.id;
 
-        console.log("response room : ", NewRoom);
 
         if (AvatarFile) {
           const formDataAvatar = new FormData();
@@ -112,9 +104,7 @@ export default function CreatGroupChat(props) {
                 },
               }
             );
-            console.log("response upload avatar :", response);
           } catch (error) {
-            console.log("error upload avatar :", error);
           }
         }
         GroupMembers.forEach(async (member) => {
@@ -122,9 +112,7 @@ export default function CreatGroupChat(props) {
             const response2 = await api.post(
               `chatroom/invite/${users[member].userId}/${NewRoom}`
             );
-            console.log("invite:: ", response2.data);
           } catch (error) {
-            console.log("error add members :", error);
           }
         });
 
@@ -194,10 +182,10 @@ export default function CreatGroupChat(props) {
 
   return (
     <CreatGroupChatWrapper>
-      <ScrollShadow className="h-[550px]" size={5} hideScrollBar>
+      {/* <ScrollShadow className="h-[550px]" size={5} hideScrollBar> */}
         <div className="CreatGroupChat-frame">
           <Close
-            ClassName="closeicons"
+            ClassName="closeiconsss"
             func={props.onCloseComponent}
             id="close"
           />
@@ -211,6 +199,7 @@ export default function CreatGroupChat(props) {
                   src={selectedAvatar ? selectedAvatar : DefaultGroupImage}
                 />
                 <CameraIcon
+                  
                   className="animate-pulse w-6 h-6 text-default-500 Edit-group-icon"
                   fill="currentColor"
                 />
@@ -230,6 +219,8 @@ export default function CreatGroupChat(props) {
 
             <div className="edit-Group-Name">
               <Input
+     
+
                 isInvalid={GroupNameIsValid}
                 errorMessage={"Group Name must be between 3 and 20 characters"}
                 // label="Group Name"
@@ -237,7 +228,7 @@ export default function CreatGroupChat(props) {
                 placeholder="Enter Group Name"
                 value={GroupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                className="max-w-xs"
+                className="max-w-xs h-16"
               />
             </div>
           </div>
@@ -275,12 +266,12 @@ export default function CreatGroupChat(props) {
                   <div className="flex gap-2 items-center">
                     <Avatar
                       alt={user.name}
-                      className="flex-shrink-0"
+                      className="flex-shrink-0 small-text text-500"
                       size="sm"
                       src={user.avatar}
                     />
                     <div className="flex flex-col">
-                      <span className="text-small">{user.name}</span>
+                      <span className="text-small1">{user.name}</span>
                       <span className="text-tiny text-default-400">
                         {user.email}
                       </span>
@@ -355,7 +346,8 @@ export default function CreatGroupChat(props) {
             />
           </div>
         </div>
-      </ScrollShadow>
+
+      {/* </ScrollShadow> */}
     </CreatGroupChatWrapper>
   );
 }

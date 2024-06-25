@@ -9,6 +9,9 @@
   height: 550px;
   max-height: 1000px;
   margin: 5px;
+
+  height: auto !important;
+  max-height: none !important; 
 }
 
 .StartFriendChat-frame .StartFriendChat-header {
@@ -36,13 +39,13 @@
   font-style: normal;
   font-weight: 500;
   line-height: 18px; /* 105.277% */
-  letter-spacing: -0.39px;
+  letter-spacing: 1px;
   width: 330px;
 }
 
 
 .StartFriendChat-frame .Select-friend {
-  margin: 0px 10px 10px 30px;
+  margin: 0px 10px 10px 19px;
 }
 .StartFriendChat-frame .buttons-target {
   margin-bottom: 20px;

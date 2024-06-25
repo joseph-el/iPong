@@ -135,7 +135,6 @@ export default function FriendsInCommon({ UserId }) {
     setfilteredItems(friends);
   };
 
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -158,7 +157,7 @@ export default function FriendsInCommon({ UserId }) {
       }
     };
     fetchData();
-  }, [UpdateApp]);
+  }, []);
 
   const classNames = React.useMemo(
     () => ({

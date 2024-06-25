@@ -65,7 +65,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
         httpOnly: false,
         path: '/auth',
       });
-      res.redirect('http://localhost:5173/ipong/profile');
+      res.redirect('http://localhost:5173/ipong/home');
       return cb(null, profile);
     }
     const newUser = await this.User.createUser({
@@ -88,7 +88,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
       httpOnly: false,
       path: '/auth',
     });
-    res.redirect('http://localhost:5173/ipong/profile');
+    res.redirect('http://localhost:5173/ipong/home');
 
     return cb(null, profile);
   }

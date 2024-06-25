@@ -165,7 +165,7 @@ export class AuthService {
           data: { tfaEnabled: true },
         });
       }
-      console.log('tfa enabled for user', user.email);
+      // console.log('tfa enabled for user', user.email);
       const tokens = await this.getTokens(user.email, user.userId);
       await this.updateHash(user.userId, tokens.refresh_token);
       // set tfa to true

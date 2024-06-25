@@ -1,12 +1,12 @@
-<svg width="235" height="118" viewBox="0 0 235 118" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="901" height="450" viewBox="0 0 901 450" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g filter="url(#filter0_f_3_4410)">
-<path d="M0.917969 8.72115C0.917969 4.63917 4.22706 1.33008 8.30903 1.33008H226.345C230.427 1.33008 233.736 4.63917 233.736 8.72114V109.609C233.736 113.691 230.427 117 226.345 117H8.30905C4.22707 117 0.917969 113.691 0.917969 109.609V8.72115Z" fill="url(#pattern0_3_4410)"/>
+<path d="M2.40732 30.8116C2.40732 15.0947 15.1484 2.35352 30.8654 2.35352H870.378C886.095 2.35352 898.836 15.0946 898.836 30.8116V419.264C898.836 434.981 886.095 447.722 870.378 447.722H30.8654C15.1484 447.722 2.40732 434.981 2.40732 419.264V30.8116Z" fill="url(#pattern0_3_4410)"/>
 </g>
 <defs>
-<filter id="filter0_f_3_4410" x="0.548416" y="0.960525" width="233.558" height="116.409" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_f_3_4410" x="0.984415" y="0.930613" width="899.275" height="448.215" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="0.184777" result="effect1_foregroundBlur_3_4410"/>
+<feGaussianBlur stdDeviation="0.711451" result="effect1_foregroundBlur_3_4410"/>
 </filter>
 <pattern id="pattern0_3_4410" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_3_4410" transform="matrix(0.000244141 0 0 0.000491401 0 -0.00319488)"/>

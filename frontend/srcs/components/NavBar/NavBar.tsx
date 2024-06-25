@@ -34,13 +34,15 @@ import {
 } from "../../state/Notifications/NotificationsSlice";
 import { getAvatarSrc } from "../../utils/getAvatarSrc";
 import { useSocket } from "../../context/SocketContext";
-import { setUpdate } from "../../state/Update/UpdateSlice";
+
+import { set } from "lodash";
+import { selectUser } from "../../state/iPongChatState/iPongChatState";
 
 
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
+
   const [activeSearch, setActiveSearch] = React.useState([]);
   const [activeGroups, setActiveGroups] = React.useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -63,7 +65,7 @@ export default function NavBar() {
       }
     };
     isReadAll && fetchData();
-  }, [isReadAll, UpdateApp]);
+  }, [isReadAll, ]);
 
   // TODO: fetch all users from the server
 
@@ -80,7 +82,7 @@ export default function NavBar() {
       }
     };
     fetchData();
-  }, [UpdateApp]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,7 +105,7 @@ export default function NavBar() {
       }
     };
     fetchData();
-  }, [UpdateApp]);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -113,12 +115,16 @@ export default function NavBar() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [UpdateApp]);
+  }, []);
 
   const isWideScreen = windowWidth < 600;
 
+
+  const [inputValue, setInputValue] = useState("");
+
   const handleOnChange = (e) => {
     const searchTerm = e.target.value.toLowerCase();
+    setInputValue(searchTerm);
 
     if (searchTerm === "") {
       setActiveSearch([]);
@@ -149,7 +155,9 @@ export default function NavBar() {
   };
 
   const handelCloseSearchBar = () => {
+    setInputValue("");
     setActiveSearch([]);
+    setActiveGroups([]);
   };
 
   const handelCloseNotificationBar = () => {
@@ -166,7 +174,6 @@ export default function NavBar() {
         // TODO: check if the notification is already exist in the store
 
 
-        console.log(" notification here ::> data: ", data);  
         const existingNotificationIndex = NotificationObject.findIndex(
           (notification) =>
             notification.entityType === data.entityType &&
@@ -180,7 +187,8 @@ export default function NavBar() {
         }
 
         if (data.entityType === "MessageSent") {
-          dispatch(setUpdate());
+          dispatch(selectUser());
+          // dispatch(setUpdate());
         }
         dispatch(
           addNotification({
@@ -221,10 +229,13 @@ export default function NavBar() {
         <SearchIcon onClick={handleIconClick} />
       ) : (
         <div className="search-bar">
-          <SearchInput onChange={handleOnChange} />
+          <SearchInput 
+          inputValue={inputValue}
+          onChange={handleOnChange} />
           {activeSearch.length != 0 || activeGroups.length != 0 ? (
             <div className="SearchList">
               <SearchList
+                InputValue={setInputValue}
                 Groups={activeGroups}
                 users={activeSearch}
                 func={handelCloseSearchBar}
@@ -234,7 +245,7 @@ export default function NavBar() {
         </div>
       )}
 
-      {/* RIGHT ITEMS  */}
+
       {searchTerm ? (
         <div className="right-side-menu">
           <CoinsButton coins={UserInfo.wallet} />
@@ -261,7 +272,7 @@ export default function NavBar() {
                     src={NotifactionIcon}
                     alt="noticon"
                     className="notification-button"
-                    style={{ zIndex: ShowNotificationBar ? 999999 : 0 }}
+                    // style={{ zIndex: ShowNotificationBar ? 9999999 : 0 }}
                     onClick={() => {
                       setIsReadAll(true);
 

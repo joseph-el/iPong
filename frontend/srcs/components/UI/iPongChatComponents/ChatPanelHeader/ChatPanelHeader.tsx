@@ -8,26 +8,25 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../state/store";
 import { createSelector } from "reselect";
 
-const getListMessages = (state) => state.iPongChat.ListMessages;
-const getSelectedMessage = createSelector(
-  [getListMessages],
-  (listMessages) => listMessages.find((message) => message.isSelect) || null
-);
-
 export default function ChatPanelHeader(props) {
-  const selectedMessage = useSelector(getSelectedMessage);
+  const selectedMessage = useSelector(
+    (state: RootState) =>
+      state.iPongChat.ListMessages.find((message) => message.isSelect) || null
+  );
 
-  if (!selectedMessage) {
-    return null;
-  }
+
+
+  const ListMessages = useSelector((state: RootState) => state.iPongChat.ListMessages);
+  console.log("ListMessages:: Header:> ", ListMessages);
+  console.log("selectedMessage:: Header:> ", selectedMessage);
+  // if (!selectedMessage) {
+  //   return null;
+  // }
   return (
     <div className="ChatPanelHeader-frame">
       <div
         className="ChatPanelHeader-title"
         onClick={() => {
-          console.log(selectedMessage);
-          console.log(selectedMessage.type);
-          console.log(selectedMessage.fullname);
           (selectedMessage.type.includes("public") ||
             selectedMessage.type.includes("private") ||
             selectedMessage.type.includes("protected")) &&

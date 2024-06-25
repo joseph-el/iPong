@@ -20,7 +20,10 @@ import { Button } from "@nextui-org/react";
 import { set } from "lodash";
 import "./SearchList.css";
 import { setErrorMessage } from "../../../state/InputComponents/inputSlice";
-export default function SearchList({ Groups, users, func }) {
+
+
+
+export default function SearchList({ Groups, users, func , InputValue}) {
   const [values, setValues] = useState<Selection>(new Set(["1"]));
   const navigate = useNavigate();
   const arrayValues = Array.from(values);
@@ -103,6 +106,8 @@ export default function SearchList({ Groups, users, func }) {
           return;
         }
         setJoinRoom(false);
+        func();
+        InputValue("");
         navigate(`/ipong/chat/${ReadyToJoin.id}`);
       } catch (error) {
         console.error("error join room: ", error);
@@ -145,7 +150,9 @@ export default function SearchList({ Groups, users, func }) {
                 textValue={item.name}
                 onClick={() => {
                   func();
+                  InputValue("");
                   navigate(`/ipong/users/${item.UserId}`);
+                  
                   console.log("user_selected: ", item.UserId);
                 }}
               >

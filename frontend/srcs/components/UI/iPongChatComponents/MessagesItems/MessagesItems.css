@@ -6,6 +6,17 @@
   justify-content: space-between;
   align-items: center;
   padding: 13px 35px 13px 20px;
+  /* border-bottom: 0.4px solid #545458; */
+  
+}
+
+
+.message-border {
+  width: 90% !important; 
+  margin-left: 5%;
+  border-bottom: 0.2px solid rgba(84, 84, 88, 0.6) !important;
+  /* background-color: #545458; */
+  
 }
 
 .MessagesItems-frame:hover {

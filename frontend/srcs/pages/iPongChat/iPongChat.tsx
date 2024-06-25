@@ -22,20 +22,80 @@ const accessToken = document?.cookie
   ?.find((row) => row.startsWith("access_token="))
   ?.split("=")[1];
 
-export default function IPongChat() {
-  const navigate = useNavigate();
 
-  const { chatId: paramChatId } = useParams();
+  
+  export default function IPongChat() {
 
-  const [chatId, setChatId] = useState(paramChatId);
-  const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { chatId: paramChatId } = useParams();
+    
+    useEffect(() => {
+      setChatId(paramChatId);
+    }, [paramChatId]);
 
-  console.log("chatId:::>", chatId);
-  console.log("paramChatId:::>", paramChatId);
+    const [chatId, setChatId] = useState(paramChatId);
+    const dispatch = useDispatch();
+    const UserId = useSelector((state: RootState) => state.userState.id);
+    const selectedMessage = useSelector(
+      (state: RootState) =>
+        state.iPongChat.ListMessages.find((message) => message.isSelect) || null
+    );
 
-  useEffect(() => {
-    setChatId(paramChatId);
-  }, [paramChatId]);
+    console.log("selectedMessage::----------------------> ", selectedMessage);
+
+
+    const socketRef = useRef<Socket | null>(null);
+
+    useEffect(() => {
+      if (!accessToken) {
+        return;
+      }
+      const socket = io("http://localhost:3000/chat", {
+        transports: ["websocket"],
+  
+        auth: { token: accessToken },
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+      });
+  
+      socketRef.current = socket;
+  
+      socketRef.current?.on("connect", () => {
+        console.log("connected:::>", socketRef.current?.id);
+      });
+  
+      socketRef.current?.on("onlineFriends", (friendIds) => {
+        console.log("onlineFriends:::>", friendIds);
+      });
+      socketRef.current?.on("joinRoom", (userId) => {
+        console.log("joinRoom:::>", userId);
+      });
+  
+      socketRef.current?.on("friendOffline", (userId) => {
+        console.log("friendOffline:::>", userId);
+      });
+  
+      socketRef.current?.on("roomCreated", (room) => {
+        console.log("roomCreated:::>", room);
+      });
+  
+      socketRef.current?.on("message", (message) => {
+        console.log("message:::>", message);
+      });
+  
+      socketRef.current?.on("error", (error) => {
+        console.log("error:::>", error);
+      });
+  
+      socketRef.current?.on("disconnect", () => {
+        console.log("disconnected:::>", socketRef.current?.id);
+      });
+    }, []);
+
+
+
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [ShowCreateNewChat, setShowCreateNewChat] = React.useState(false);
@@ -57,60 +117,8 @@ export default function IPongChat() {
     setShowCreateNewChat(false);
     setShowCreateGroupChat(false);
   };
+
   const isWideScreen = windowWidth <= 905;
-
-  console.log("chatid before dispatch:::>", chatId);
-  dispatch(setIsSelectedMessage(chatId));
-
-  const socketRef = useRef<Socket | null>(null);
-
-  useEffect(() => {
-    if (!accessToken) {
-      return;
-    }
-    const socket = io("http://localhost:3000/chat", {
-      transports: ["websocket"],
-
-      auth: { token: accessToken },
-      reconnection: true,
-      reconnectionAttempts: Infinity,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-    });
-    
-    socketRef.current = socket;
-
-    socketRef.current?.on("connect", () => {
-      console.log("connected:::>", socketRef.current?.id);
-    });
-
-    socketRef.current?.on("onlineFriends", (friendIds) => {
-      console.log("onlineFriends:::>", friendIds);
-    });
-    socketRef.current?.on("joinRoom", (userId) => {
-      console.log("joinRoom:::>", userId);
-    });
-
-    socketRef.current?.on("friendOffline", (userId) => {
-      console.log("friendOffline:::>", userId);
-    });
-
-    socketRef.current?.on("roomCreated", (room) => {
-      console.log("roomCreated:::>", room);
-    });
-
-    socketRef.current?.on("message", (message) => {
-      console.log("message:::>", message);
-    });
-
-    socketRef.current?.on("error", (error) => {
-      console.log("error:::>", error);
-    });
-
-    socketRef.current?.on("disconnect", () => {
-      console.log("disconnected:::>", socketRef.current?.id);
-    });
-  }, []);
 
   return (
     <>

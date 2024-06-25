@@ -5,10 +5,14 @@ import SearchInput from "../../Input/SearchInput/SearchInput";
 import { Chip } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import { setFilterType } from "../../../../state/iPongChatState/iPongChatState";
+import { useState } from "react";
+
 export default function UserListHeader(props) {
   const dispatch = useDispatch();
+  const [selectedFilter, setSelectedFilter] = useState("All");
 
   const handleFilterType = (filterType) => {
+    setSelectedFilter(filterType);
     dispatch(setFilterType(filterType));
   };
   return (
@@ -28,18 +32,21 @@ export default function UserListHeader(props) {
         <Chip
           className="filter-List-buttons-chip"
           onClick={() => handleFilterType("All")}
+          color={selectedFilter === "All" ? "primary" : "default"}
         >
           All
         </Chip>
         <Chip
           className="filter-List-buttons-chip"
           onClick={() => handleFilterType("Dm")}
+          color={selectedFilter === "Dm" ? "primary" : "default"}
         >
           Users
         </Chip>
         <Chip
           className="filter-List-buttons-chip"
           onClick={() => handleFilterType("Groups")}
+          color={selectedFilter === "Groups" ? "primary" : "default"}
         >
           Groups
         </Chip>

@@ -133,7 +133,7 @@ export default function BotMode({
   };
 
   return (
-    <div className="container">
+    <div className="container-bootmode">
       <div className="iPongGame-frame">
         <IPongGameNav
           opponentName="Ai Bot"

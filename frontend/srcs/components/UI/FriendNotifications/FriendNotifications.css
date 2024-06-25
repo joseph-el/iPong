@@ -67,12 +67,16 @@ You can apply the theme on any DOM node, not just the `body`
   border-radius: 20px !important;
   max-width: 347px;
   margin: 0px 0px 5px 9px;
+  height: auto !important;
+  max-height: none !important; 
 }
 
 .FriendNotifications-frame .wrapper-style-request {
   display: flex;
   padding: 10px;
   align-items: center;
+  height: auto !important;
+  max-height: none !important; 
 }
 
 .FriendNotifications-content {
@@ -84,13 +88,15 @@ You can apply the theme on any DOM node, not just the `body`
 
 .FriendNotifications-time {
   color: rgba(234, 234, 234, 1);
-
+  margin-top: -15px;
+  margin-right: 5px;
   font-family: "sfprodisplay-regular", sans-serif;
   font-size: 13px;
   font-weight: 450;
   letter-spacing: -0.6px;
   line-height: 26.6px;
   opacity: 0.5;
+
 }
 
 .imessage-icon {
@@ -109,18 +115,20 @@ You can apply the theme on any DOM node, not just the `body`
   font-weight: 450;
   letter-spacing: 0;
   line-height: normal;
+  max-width: max-content;
+
 }
 
 .FriendNotifications-content .text-tiny {
   color: #ffffff !important;
   font-family: "Poppins", sans-serif;
   font-style: normal;
-  font-size: 10px;
+  font-size: 11px !important;
   font-weight: 450;
   letter-spacing: 0;
   line-height: normal;
   opacity: 0.7;
-  max-width: 217.34px;
+
 }
 
 .actions {

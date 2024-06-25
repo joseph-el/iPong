@@ -5,12 +5,13 @@
     flex-direction: column;
     gap: 2px;
     padding: 5px 0px 10px 0px;
+
     
   }
   .notificationBadge {
     /* margin-left: 5px; */
     margin-right: 5px;
-
+    
     margin-bottom: -10px;
   }
 
@@ -94,8 +95,11 @@
   padding: 10px 20px;
 
   background-color: #000000;
-  border-bottom: 0.537px solid #3c424d;
   border-bottom: 0.8px solid #3c424d !important;
+  /* border-bottom: 0.537px solid #3c424d;
+   */
+  /* border-bottom: 0.537px solid #3c424d;
+  margin-bottom: 2px; */
 }
 
 .page-name-breadcrumb {

@@ -1,7 +1,7 @@
 import React from "react";
 import "./EditSecurity.css";
 import { EditSecurityWrapper } from "./EditSecurityWrapper";
-import { Input, Accordion, AccordionItem, Link } from "@nextui-org/react";
+import { Input, Accordion, AccordionItem, Button } from "@nextui-org/react";
 import { EyeFilledIcon } from "../../Input/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../../Input/EyeSlashFilledIcon";
 import { useState } from "react";
@@ -16,13 +16,13 @@ import { isFullNameValid } from "../../../../utils/formValidation";
 import validateUsername from "../../../../utils/usernameValidation";
 import api from "../../../../api/posts";
 import { useEffect } from "react";
+import validatePassword from "../../../../utils/passwordValidation";
 
-import Close from "../../../UI/Button/CloseButton/CloseButton"
+import Close from "../../../UI/Button/CloseButton/CloseButton";
 const EditProfileNavbar = (props) => {
   return (
     <div className="EditProfileNavbar">
       <div className="overlap-group">
-        <Close id={"$"} func={props.closeEditSecurity} />
         <div className="text-wrapper">Security</div>
         <div className="push-button">
           <div
@@ -38,33 +38,30 @@ const EditProfileNavbar = (props) => {
 };
 
 enum InputType {
-  Current = 1,
-  New = 2,
-  Confirm = 3,
+  New = "newPassword",
+  Confirm = "confirmPassword",
 }
 
 export default function EditSecurity(props) {
+  const [Loading, setLoading] = useState(false);
   const [isVisibleNew, setIsVisibleNew] = useState(false);
   const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
-  const [isVisibleCurrent, setIsVisibleCurrent] = useState(false);
 
   const UserInfo = useSelector((state: RootState) => state.userState);
 
   const [isNewPasswordValid, setIsNewPasswordValid] = useState(false);
-  const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(false);
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
 
   const [ErrorMessageNewPassword, setErrorMessageNewPassword] = useState("");
-  const [ErrorMessageCurrentPassword, setErrorMessageCurrentPassword] =
-    useState("");
+
   const [ErrorMessageConfirmPassword, setErrorMessageConfirmPassword] =
     useState("");
 
   const toggleVisibility = (inputType) => {
     switch (inputType) {
-      case InputType.Current:
-        setIsVisibleCurrent(!isVisibleCurrent);
-        break;
+      // case InputType.Current:
+      //   setIsVisibleCurrent(!isVisibleCurrent);
+      //   break;
       case InputType.New:
         setIsVisibleNew(!isVisibleNew);
         break;
@@ -77,25 +74,9 @@ export default function EditSecurity(props) {
   };
 
   const [inputPassword, setInputPassword] = useState({
-    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
-
-  const [currentPassword, setCurrentPassword] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get("/users/whoami");
-
-        // TODO: set current password
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
 
   const [IsReadyToSubmit, setIsReadyToSubmit] = useState(false);
 
@@ -108,11 +89,12 @@ export default function EditSecurity(props) {
 
         console.log(response.data);
       } catch (error) {
-        setIsCurrentPasswordValid(false);
-        setErrorMessageCurrentPassword("Password update failed");
+        setIsNewPasswordValid(false);
+        setIsConfirmPasswordValid(false);
         console.log(error);
       }
       setIsReadyToSubmit(false);
+
       props.closeEditSecurity();
     };
 
@@ -121,27 +103,25 @@ export default function EditSecurity(props) {
 
   const handelSubmit = () => {
     console.log("handelSubmit");
-    if (inputPassword[InputType.Current] == "") {
-      setIsCurrentPasswordValid(true);
-      setErrorMessageCurrentPassword("Please enter your current password");
-      return;
-    }
 
-    if (inputPassword[InputType.New] == "") {
+    console.log("object>", inputPassword);
+    console.log("object---->", inputPassword[InputType.New]);
+
+    if (typeof validatePassword(inputPassword[InputType.New]) === "string") {
       setIsNewPasswordValid(true);
-      setErrorMessageNewPassword("Please enter your new password");
+      setErrorMessageNewPassword(
+        validatePassword(inputPassword[InputType.New]) as string
+      );
       return;
     }
 
-    if (inputPassword[InputType.Confirm] == "") {
+    if (
+      typeof validatePassword(inputPassword[InputType.Confirm]) === "string"
+    ) {
       setIsConfirmPasswordValid(true);
-      setErrorMessageConfirmPassword("Please confirm your new password");
-      return;
-    }
-
-    if (inputPassword[InputType.Current] != currentPassword) {
-      setIsCurrentPasswordValid(true);
-      setErrorMessageCurrentPassword("Current password is incorrect");
+      setErrorMessageConfirmPassword(
+        validatePassword(inputPassword[InputType.Confirm]) as string
+      );
       return;
     }
 
@@ -153,115 +133,56 @@ export default function EditSecurity(props) {
       return;
     }
 
-    if (inputPassword[InputType.New].length < 8) {
-      setIsNewPasswordValid(true);
-      setErrorMessageNewPassword("Password must be at least 8 characters");
-      return;
-    }
-
-    if (inputPassword[InputType.New].length > 20) {
-      setIsNewPasswordValid(true);
-      setErrorMessageNewPassword("Password must be less than 20 characters");
-      return;
-    }
-    console.log("handelSubmit Done");
     setIsReadyToSubmit(true);
   };
 
   return (
     <EditSecurityWrapper>
-      <EditProfileNavbar
-        closeEditSecurity={() => {
-          handelSubmit();
-          // props.closeEditSecurity()
-        }}
-      />
-
-      <div className="security-form">
-
-        <Input
-          isInvalid={isCurrentPasswordValid}
-          errorMessage={ErrorMessageCurrentPassword}
-          onChange={(e) => {
-            if (e.target.value.length > 20) {
-              return;
-            }
-            if (
-              !isConfirmPasswordValid ||
-              !isNewPasswordValid ||
-              !isCurrentPasswordValid
-            ) {
-              setIsConfirmPasswordValid(false);
-              setIsNewPasswordValid(false);
-              setIsCurrentPasswordValid(false);
-
-              setErrorMessageNewPassword("");
-              setErrorMessageCurrentPassword("");
-              setErrorMessageConfirmPassword("");
-            }
-            setInputPassword({
-              ...inputPassword,
-              [InputType.Current]: e.target.value,
-            });
-          }}
-          isDisabled={UserInfo.intraId == ""}
-          size={"md"}
-          value={inputPassword[InputType.Current]}
-          label={"Current Password:"}
-          className={"input-edit-profile"}
-          classNames={{
-            description: "text-black60",
-            label: "text-black50",
-            input: [
-              "bg-transparent",
-              "text-black/90 dark:text-white/90",
-              "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-            ],
-          }}
-          endContent={
-            <button
-              className="focus:outline-none"
-              type="button"
+      <div className="EditProfileNavbar">
+        <div className="overlap-group">
+          <div className="push-button">
+            <Button
+              className="CancelProfileNavbar-button"
               onClick={() => {
-                toggleVisibility(InputType.Current);
+                props.closeEditSecurity();
               }}
             >
-              {isVisibleCurrent ? (
-                <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-              ) : (
-                <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-              )}
-            </button>
-          }
-          type={isVisibleCurrent ? "text" : "password"}
-          description={
-            <Link isDisabled={true} href="#" size="sm">
-              forgot password?
-            </Link>
-          }
-          placeholder={"current password"}
-        
-        />
+              Cancel
+            </Button>
+          </div>
 
+          <div className="text-wrapper">Edit Profile</div>
+
+          <div className="push-button">
+            <Button
+              isLoading={Loading}
+              className="EditProfileNavbar-button"
+              onClick={() => {
+                if (UserInfo.intraId != "") props.closeEditSecurity();
+                else handelSubmit();
+              }}
+            >
+              Done
+            </Button>
+          </div>
+        </div>
+      </div>
+
+
+      <div className="security-form">
         <Input
-        
           isInvalid={isNewPasswordValid}
           errorMessage={ErrorMessageNewPassword}
           onChange={(e) => {
             if (e.target.value.length > 20) {
               return;
             }
-            if (
-              !isConfirmPasswordValid ||
-              !isNewPasswordValid ||
-              !isCurrentPasswordValid
-            ) {
+            if (!isConfirmPasswordValid || !isNewPasswordValid) {
               setIsConfirmPasswordValid(false);
               setIsNewPasswordValid(false);
-              setIsCurrentPasswordValid(false);
 
               setErrorMessageNewPassword("");
-              setErrorMessageCurrentPassword("");
+
               setErrorMessageConfirmPassword("");
             }
             setInputPassword({
@@ -269,7 +190,7 @@ export default function EditSecurity(props) {
               [InputType.New]: e.target.value,
             });
           }}
-          isDisabled={UserInfo.intraId == ""}
+          isDisabled={UserInfo.intraId != ""}
           size={"md"}
           value={inputPassword[InputType.New]}
           label={"New Password:"}
@@ -300,28 +221,21 @@ export default function EditSecurity(props) {
           }
           type={isVisibleNew ? "text" : "password"}
           placeholder={"new password"}
-        
         />
 
         <Input
-
           isInvalid={isConfirmPasswordValid}
           errorMessage={ErrorMessageConfirmPassword}
           onChange={(e) => {
             if (e.target.value.length > 20) {
               return;
             }
-            if (
-              !isConfirmPasswordValid ||
-              !isNewPasswordValid ||
-              !isCurrentPasswordValid
-            ) {
+            if (!isConfirmPasswordValid || !isNewPasswordValid) {
               setIsConfirmPasswordValid(false);
               setIsNewPasswordValid(false);
-              setIsCurrentPasswordValid(false);
 
               setErrorMessageNewPassword("");
-              setErrorMessageCurrentPassword("");
+
               setErrorMessageConfirmPassword("");
             }
             setInputPassword({
@@ -329,7 +243,7 @@ export default function EditSecurity(props) {
               [InputType.Confirm]: e.target.value,
             });
           }}
-          isDisabled={UserInfo.intraId == ""}
+          isDisabled={UserInfo.intraId != ""}
           size={"md"}
           value={inputPassword[InputType.Confirm]}
           label={"Confirm Password:"}
@@ -360,7 +274,6 @@ export default function EditSecurity(props) {
           }
           type={isVisibleConfirm ? "text" : "password"}
           placeholder={"confirm password"}
-
         />
 
         <div className="two-factor">
@@ -378,7 +291,6 @@ export default function EditSecurity(props) {
                 props.setShowTwoFactorAuthentication();
                 setInputPassword({
                   ...inputPassword,
-                  [InputType.Current]: "",
                   [InputType.New]: "",
                   [InputType.Confirm]: "",
                 });

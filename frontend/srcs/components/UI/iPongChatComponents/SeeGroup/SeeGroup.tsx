@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Divider,
   useDisclosure,
 } from "@nextui-org/react";
 import { NextUIProvider } from "@nextui-org/react";
@@ -24,7 +25,7 @@ import AcceptIcon from "./approve.svg";
 import OptionIcon from "./peopleListOption.svg";
 import { Select, SelectItem } from "@nextui-org/react";
 import { users } from "./data";
-import { Select, SelectItem } from "@nextui-org/select";
+
 import IPongAlert from "../../iPongAlert/iPongAlert";
 import {
   Modal,
@@ -32,9 +33,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Checkbox,
   Input,
-  Link,
 } from "@nextui-org/react";
 
 import { EyeFilledIcon } from "../../Input/EyeFilledIcon";
@@ -60,18 +59,12 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
   useEffect(() => {
     const PostActions = async () => {
       try {
-        console.log("ActionType: ", ActionType);
-        console.log("Members.UserId: ", Members.UserId);
-        console.log("RoomId: ", RoomId);
-
         const response = await api.post(`/chatroom/${ActionType}`, {
           memberId: Members.UserId,
           roomId: RoomId,
         });
 
-        console.log("response in PostActions: ", response);
       } catch (error) {
-        console.log("error in PostActions: ", error);
       }
       setActionType(null);
     };
@@ -81,7 +74,11 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
   return (
     <div className="PeopleListItem-frame">
       <div className="User-info-details">
-        <img src={Members.Avatar} alt="user-avatar" className="User-avatar" />
+        <Avatar
+          src={Members.Avatar}
+          alt="user-avatar"
+          className="User-avatar"
+        />
 
         <div className="User-infos">
           <div className="User-fullname">{Members.Name}</div>
@@ -93,7 +90,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
 
       <div className="actions">
         <div className="options">
-          <Dropdown>
+          <Dropdown className="Memebers-dropdown">
             <DropdownTrigger>
               <img
                 src={OptionIcon}
@@ -111,7 +108,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                 >
                   Remove member
                 </DropdownItem>
-
+                
                 {!Members.IsAdmin && (
                   <DropdownItem
                     className="invite-People-list-text"
@@ -186,6 +183,7 @@ const EditGroup = (props) => {
   const [GroupType, setGroupType] = React.useState<Selection>(
     new Set([props.selectedMessage.type])
   );
+  const CurrentGroupType = props.selectedMessage.type;
 
   const [GroupPassword, setGroupPassword] = useState("");
   const [IsReady, setIsReady] = useState(false);
@@ -196,6 +194,7 @@ const EditGroup = (props) => {
 
   const displayGroupType = Array.from(GroupType).join(", ");
 
+  const [Loading, setLoading] = useState(false);
   const handelSubmitData = () => {
     const nameRegex = /^[a-zA-Z\s]+$/;
     setAvatarError("");
@@ -218,12 +217,12 @@ const EditGroup = (props) => {
       setGroupTypeIsInvalid(true);
       return;
     }
-    if (GroupPassword === "" && displayGroupType === "protected") {
+    if (GroupPassword === "" && displayGroupType === "protected" && CurrentGroupType !== "protected") {
       setError("Group Password is required");
       setGroupPasswordIsInvalid(true);
       return;
     }
-    if (GroupPassword.length < 6 && displayGroupType === "protected") {
+    if (GroupPassword.length < 6 && displayGroupType === "protected" && CurrentGroupType !== "protected") {
       setError("Group Password is too short");
       setGroupPasswordIsInvalid(true);
       return;
@@ -235,6 +234,7 @@ const EditGroup = (props) => {
   useEffect(() => {
     const PostGroupSetting = async () => {
       try {
+        setLoading(true);
         if (AvatarFile !== null) {
           const formDataAvatar = new FormData();
           formDataAvatar.append("file", AvatarFile!);
@@ -249,9 +249,7 @@ const EditGroup = (props) => {
                 },
               }
             );
-            console.log("response upload avatar :", response);
           } catch (error) {
-            console.log("error upload avatar :", error);
           }
         }
         const response = await api.post("/chatroom/update", {
@@ -260,6 +258,7 @@ const EditGroup = (props) => {
           roomId: props.selectedMessage.id,
           password: GroupPassword,
         });
+        setLoading(false);
         props.onClose();
       } catch (error) {}
     };
@@ -294,6 +293,7 @@ const EditGroup = (props) => {
   return (
     <>
       <Modal
+        className="group-settings-modal"
         isOpen={props.isOpen}
         onClose={props.onClose}
         onOpenChange={props.onOpenChange}
@@ -302,12 +302,14 @@ const EditGroup = (props) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 border-ModalContent invite-People-list-text ">
+              <ModalHeader className="flex flex-col EditGroup-title  gap-1 border-ModalContent invite-People-list-text ">
                 Group settings
               </ModalHeader>
 
               <ModalBody>
-                <div className="Edit-profile EditGroup-blurbackground">
+                
+                
+                <div className="Edit-profile EditGroup-blurbackground ">
                   <div className="Groups-Info">
                     <label htmlFor="avatarInput">
                       <div className="Edit-avatar">
@@ -349,7 +351,7 @@ const EditGroup = (props) => {
                           setGroupName(e.target.value);
                         }}
                         defaultValue={props.selectedMessage.fullname}
-                        className="max-w-xs "
+                        className="max-w-xs some-padding"
                       />
                     </div>
                   </div>
@@ -362,7 +364,7 @@ const EditGroup = (props) => {
                       isInvalid={GroupTypeIsInvalid}
                       errorMessage={error}
                       selectedKeys={GroupType}
-                      className="max-w-xs"
+                      className="max-w-xs some-padding"
                       onClick={() => {
                         if (GroupTypeIsInvalid) {
                           setGroupNameIsInvalid(false);
@@ -422,16 +424,20 @@ const EditGroup = (props) => {
                         </button>
                       }
                       type={isVisible ? "text" : "password"}
-                      className="max-w-xs Group-Password"
+                      className="max-w-xs Group-Password some-padding"
                     />
                   </div>
                 </div>
+
+
               </ModalBody>
-              <ModalFooter>
+
+             
+              <ModalFooter className="EditGroup-blurbackground Group-setting-footer">
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onClick={handelSubmitData}>
+                <Button isLoading={Loading} color="primary" onClick={handelSubmitData}>
                   Done
                 </Button>
               </ModalFooter>
@@ -443,8 +449,9 @@ const EditGroup = (props) => {
   );
 };
 
+
+
 export default function SeeGroup(props) {
-  const [MuteMode, setMuteMode] = useState(false);
   const [UserOptions, setUserOptions] = React.useState("");
   const [EditProfileState, setEditProfileState] = React.useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -460,14 +467,12 @@ export default function SeeGroup(props) {
   };
 
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await api.get(
           `/chatroom/${selectedMessage?.id}/members`
         );
-        console.log("Room members:> ", response.data);
         const Members = response.data.map((member) => {
           return {
             IsAdmin: member.isAdmin,
@@ -480,15 +485,13 @@ export default function SeeGroup(props) {
             Username: member.member.username,
           };
         });
-        console.log("Members:>>>>>> ", Members);
         setFilteredUsers(Members);
       } catch (err) {
-        console.error("can`t get members> ", err);
       }
     };
 
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   const IsAdmin = filteredUsers.find((member) => {
     return member.UserId === UserId && member.IsAdmin === true;
@@ -517,7 +520,7 @@ export default function SeeGroup(props) {
       }
     };
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   const FriendsNotInRoom = FriendsList.filter((friend) => {
     return !filteredUsers.find((member) => member.UserId === friend.userId);
@@ -531,9 +534,7 @@ export default function SeeGroup(props) {
         const response2 = await api.post(
           `chatroom/invite/${selectedUser}/${selectedMessage?.id}`
         );
-        console.log("response in invite user: ", response2);
       } catch (error) {
-        console.log("error in invite user: ", error);
       }
       setSelectedUser(null);
     };
@@ -548,9 +549,7 @@ export default function SeeGroup(props) {
         const response = await api.post(
           `chatroom/muteChat/${selectedMessage?.id}`
         );
-        console.log("response in mute chat: ", response);
       } catch (error) {
-        console.log("error in mute chat: ", error);
       }
       setMuteChat(false);
     };
@@ -564,9 +563,7 @@ export default function SeeGroup(props) {
         const response = await api.post("chatroom/leaveRoom/", {
           roomId: selectedMessage?.id,
         });
-        console.log("response in leave chat: ", response);
       } catch (error) {
-        console.log("error in leave chat: ", error);
       }
       setLeaveGroup(false);
     };
@@ -577,7 +574,7 @@ export default function SeeGroup(props) {
     <div
       className={
         !EditProfileState
-          ? "z-50 bg-overlay/50 backdrop-opacity-disabled w-screen h-screen fixed inset-0"
+          ? "z-50 bg-overlay/50 backdrop-opacity-disabled Group-setting w-screen h-screen fixed inset-0"
           : ""
       }
     >
@@ -601,14 +598,6 @@ export default function SeeGroup(props) {
                       <div className="ipongchar">ipongChat</div>
                     </div>
                   </div>
-                  {/* <img
-                    src={MuteMode ? MuteIcon : UnmuteIcon}
-                    alt="mute-icon"
-                    className={MuteMode ? "mute-icon" : "unmute-icon"}
-                    onClick={() => {
-                      setMuteMode(!MuteMode);
-                    }}
-                  /> */}
 
                   <Close
                     func={() => props.handleCloseClick()}
@@ -671,17 +660,9 @@ export default function SeeGroup(props) {
                                     {user.name}
                                   </span>
 
-                                  {/* <div className="flex "> */}
                                   <span className="text-tiny text-default-400">
                                     {user.email}
                                   </span>
-                                  {/* <img
-                                  src={AcceptIcon}
-                                  className="w-[20px] h-[20px] gap-2"
-                                  alt="AddIcon"
-                                /> */}
-
-                                  {/* </div> */}
                                 </div>
                               </div>
                             </SelectItem>
@@ -706,16 +687,6 @@ export default function SeeGroup(props) {
                     <div className="privacy-title"> privacy </div>
 
                     <div className="privacy-options">
-                      {/* <div
-                        className="DeleteChat"
-                        onClick={() => {
-                          handleOpen("Delete Chat");
-                        }}
-                      >
-                        {" "}
-                        Delete Chat{" "}
-                      </div> */}
-
                       <div
                         className="Leave-this-conversation"
                         onClick={() => {

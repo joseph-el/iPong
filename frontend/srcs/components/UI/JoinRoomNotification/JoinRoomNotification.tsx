@@ -30,14 +30,11 @@ export default function JoinRoomNotification(props) {
       try {
  
 
-        console.log("RoomId: ", props.RoomId);
         const response = await api.get(`/chatroom/roomDetails/${props.RoomId}`);
 
-        console.log("Room details: ", response.data);
 
         setRoomInfo(response.data);
       } catch (error) {
-        console.log(error);
       }
     }
     GetRoomInfo();

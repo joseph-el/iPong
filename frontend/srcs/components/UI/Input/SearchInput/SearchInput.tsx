@@ -4,9 +4,10 @@ import { SearchIcon } from "./SearchIcon";
 
 import "./SearchInput.css";
 
-export default function SearchInput(props) {
+export default function SearchInput({inputValue, onChange}) {
+
   const handleClear = () => {
-    props.onChange({ target: { value: "" } });
+    onChange({ target: { value: "" } });
   };
 
 
@@ -14,11 +15,12 @@ export default function SearchInput(props) {
     <div className="flex justify-center search">
       <div className="flex w-full justify-center w-[226px] sm:w-48 md:w-64 lg:w-64 xl:w-72 2xl:w-80">
         <Input
-          onChange={props.onChange}
+          onChange={onChange}
           isClearable
-          onClear={handleClear}
+          onClear={handleClear }
           className="SearchInput"
           radius="lg"
+          value={inputValue}
           classNames={{
             label: "text-black/50 dark:text-white/90",
             input: [

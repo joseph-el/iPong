@@ -15,7 +15,7 @@ import {
   Divider,
 } from "@nextui-org/react";
 
-import IpongLogo from "../../../components/SideBar/assets/iPongLogo.svg";
+import api from "../../../api/posts";
 
 import { useNavigate } from "react-router-dom";
 
@@ -37,13 +37,23 @@ export default function NavBarUser(props) {
   const isLongEmail = userName.length > 5 && windowWidth < 1150;
   let truncatedUserName = isLongEmail ? userName.substring(0, 4) : userName;
 
-  const handleOnClick = (mode) => {
-    if (mode) {
-      navigate("/ipong/profile");
-    } else {
-      navigate("/");
-    }
+  const handleOnClick = () => {
+    navigate("/ipong/profile");
   };
+
+  const [logout, setLogout] = useState(false);
+
+  useEffect(() => {
+    const logoutUser = async () => {
+      try {
+        await api.get("/auth/logout");
+        setLogout(false);
+      } catch (error) {
+      }
+    };
+    logout && logoutUser();
+  }, [logout]);
+
   return (
     <div className="flex items-center gap-4 NavBarUser w-max-content  ">
       <Dropdown
@@ -70,7 +80,7 @@ export default function NavBarUser(props) {
         <DropdownMenu aria-label="Static Actions">
           <DropdownItem
             onClick={() => {
-              handleOnClick(true);
+              handleOnClick();
             }}
             variant="faded"
           >
@@ -78,7 +88,8 @@ export default function NavBarUser(props) {
           </DropdownItem>
           <DropdownItem
             onClick={() => {
-              handleOnClick(false);
+              // handleOnClick(false);
+              setLogout(true);
             }}
             variant="faded"
             className="text-danger"

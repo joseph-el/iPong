@@ -21,7 +21,6 @@ export default function StartFriendChat(props) {
   const [users, setUsers] = useState([]);
   const [CreatChatRoom, setCreatChatRoom] = useState(false);
 
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -43,7 +42,7 @@ export default function StartFriendChat(props) {
       }
     };
     fetchUsers();
-  }, [UpdateApp]);
+  }, []);
 
   const handelOnChage = (item) => {
     console.log("Item:::OnChange: ", item);
@@ -71,7 +70,7 @@ export default function StartFriendChat(props) {
       }
     }
     CreatChatRoom && fetchCreatChatRoom();
-  }, [CreatChatRoom, UpdateApp]);
+  }, [CreatChatRoom]);
 
   const handleStartChat = () => {
     if (value.length === 0) {

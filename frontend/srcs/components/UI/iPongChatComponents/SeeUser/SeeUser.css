@@ -1,5 +1,5 @@
 .SeeUsers-box {
-  background-color: #1c1c1e;
+  background-color: #0e0e0e;
   border-radius: 15px;
   left: 1px;
   position: relative;
@@ -51,6 +51,8 @@
 .SeeUser-frame .User-options {
   margin-top: 10px;
   display: flex;
+  gap: 5px;
+  margin-left: 2px;
   justify-content: center;
   align-items: center;
 }
@@ -67,14 +69,14 @@
 .User-options-See-Profile-img:hover {
   cursor: pointer;
   opacity: 0.8;
-  width: 65px;
-  height: 65px;
+  /* width: 65px;
+  height: 65px; */
 }
 .User-options-Invite-Match-img:hover {
   cursor: pointer;
   opacity: 0.8;
-  width: 75px;
-  height: 75px;
+  /* width: 75px;
+  height: 75px; */
 }
 
 /* Disable Invite After Click */
