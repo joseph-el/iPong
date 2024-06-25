@@ -30,8 +30,9 @@ export default function FriendNotifications(props) {
         <div className="wrapper-style-request">
           <div className="FriendNotifications-content">
             <User
+              className="FriendNotifications-user-widget"
               name={props.title}
-              description={props.name + " " + props.description}
+              description={props.name + " " + props.description }
               avatarProps={{
                 src: props.avatar,
               }}
