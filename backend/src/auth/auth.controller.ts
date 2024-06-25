@@ -113,7 +113,7 @@ export class AuthController {
     await this.authService.logout(userId);
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
-    res.redirect('http://localhost:3000'); // TODO:;
+    res.redirect('http://localhost:5173/auth');
   }
 
   @Get('generate2fa/:email')
