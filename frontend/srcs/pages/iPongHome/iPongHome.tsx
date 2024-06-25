@@ -17,7 +17,7 @@ import { SKIN_DB } from "../../pages/iPongStore/db/skins.db";
 import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
 import Spline from "@splinetool/react-spline";
 import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
-
+import { Grid, GridItem } from "@chakra-ui/react";
 export default function iPongGame() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const userSelectedSkinPath = SKIN_DB.find(
@@ -90,35 +90,68 @@ export default function iPongGame() {
   };
 
   return (
-    <div className="container--home">
-      {/* 
-        TODO: Two buttons for vsBot and vsRandom
-        - Leaderboard
-      */}
+    <Grid
+      templateAreas={`"main main"
+                  "main main"
+                  "leaderboard leaderboard"`}
+      gridTemplateRows={"50px 1fr 395px"}
+      gridTemplateColumns={"150px 1fr "}
+      h="100%"
+      className="container--home" 
+    >
+      <GridItem pl="2" area={"main"} className="main-container">
+        <div className="container-nav">
+          <button className="button1" onClick={vsBotHandler}>
+            Play vs Bot
+          </button>
+          <button className="button2" onClick={vsRandomHandler}>
+            Play vs Random
+          </button>
+        </div>
+      </GridItem>
 
-{/* <div className="container-nav">
+      <GridItem pl="2" area={"leaderboard"}>
+        <LeaderBoard />
+        {Achievement !== null ? (
+          <div className="blur-background">
+            <div className="AchievementList-place fade-in">
+              <CongratulationsBadge
+                level={Achievement}
+                CongratulationsBadge={handleCloseCongratulationsBadge}
+              />
+            </div>
+          </div>
+        ) : null}
+      </GridItem>
+    </Grid>
+  );
+}
+
+/*
+    <div className="container--home">
+  
+
+
+
+
+      <div className="container-nav">
         <button className="button1" onClick={vsBotHandler}>
           Play vs Bot
         </button>
         <button className="button2" onClick={vsRandomHandler}>
           Play vs Random
         </button>
-      </div>  */}
+      </div>
 
-      <LeaderBoard />
-      {Achievement !== null ? (
-        <div className="blur-background">
-          <div className="AchievementList-place fade-in">
-            <CongratulationsBadge
-              level={Achievement}
-              CongratulationsBadge={handleCloseCongratulationsBadge}
-            />
-          </div>
-        </div>
-      ) : null}
+
+
+
+
+
+
+
     </div>
-  );
-}
+*/
 
 /* <Spline scene="https://prod.spline.design/C5iwd6F3Xijf2m-z/scene.splinecode" /> */
 /* <div className="container-nav">
