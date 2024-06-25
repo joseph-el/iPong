@@ -51,17 +51,16 @@ const iPongChatSlice = createSlice({
   initialState,
   reducers: {
     setIsSelectedMessage(state, action) {
+      const { payload: selectedId } = action;
       state.ListMessages = state.ListMessages.map((message) => {
-        if (message.id === action.payload) {
-          return {
-            ...message,
-            isSelect: true,
-          };
+        if (message.id === selectedId) {
+          if (!message.isSelect) {
+            return { ...message, isSelect: true };
+          }
+        } else if (message.isSelect) {
+          return { ...message, isSelect: false };
         }
-        return {
-          ...message,
-          isSelect: false,
-        };
+        return message;
       });
     },
     setFilterType(state, action) {
@@ -76,8 +75,8 @@ const iPongChatSlice = createSlice({
     setMessages(state, action) {
       state.messages = action.payload;
     },
-    selectUser(state, action) {
-      state.selectedMessage = action.payload;
+    selectUser(state) {
+      state.selectedMessage = !state.selectedMessage
     },
     setUserSetting(state, action) {
       state.UserSetting = action.payload;
