@@ -33,7 +33,7 @@
 }
 
 .yours .message {
-  background-color: var(--Dark-Quaternary, rgba(255, 255, 255, 0.1));
+  background-color: #202020;
   position: relative;
 }
 
@@ -44,7 +44,7 @@
   left: -7px;
   height: 20px;
   width: 20px;
-  background: #1a1a1a;
+  background: #202020;
   border-bottom-right-radius: 15px;
 }
 
@@ -138,4 +138,24 @@
   .message {
     max-width: 300px !important;
   }
+}
+
+
+.Sender-name {
+  color: var(--Dark-Secondary, rgba(255, 255, 255, 0.55));
+
+  font-family: "sfprodisplay-regular", serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px; /* 130% */
+  letter-spacing: 0.12px;
+  margin-left: 10px;
+}
+
+.LeftChatBubbles-frame {
+  margin-bottom: 10px;
+}
+.RightChatBubbles-frame {
+  margin-bottom: 10px;
 }
