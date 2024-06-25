@@ -49,7 +49,6 @@ export default function NavBarUser(props) {
         await api.get("/auth/logout");
         setLogout(false);
       } catch (error) {
-        console.log("Erros:> ", error);
       }
     };
     logout && logoutUser();
