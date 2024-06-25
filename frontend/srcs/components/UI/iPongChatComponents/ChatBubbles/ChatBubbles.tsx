@@ -5,7 +5,6 @@ import { Avatar } from "@nextui-org/avatar";
 
 export function RightChatBubbles(props) {
 
-  console.log("RightChatBubbles props", props);
   return (
     <div className="RightChatBubbles-frame">
       <Avatar className="User-avatar w-12 h-12" src={props.avatarUrl} />
