@@ -1,14 +1,16 @@
 .SeeGroup-box {
-  background-color: #1c1c1e;
+  background-color: #0e0e0e;
   border-radius: 15px;
   left: 1px;
   position: relative;
-  border: 0.5px solid #3c424d;
+  border: 0.5px solid #2c2c2e;
   width: 500px;
   max-width: 400px;
   height: 750px;
   max-height: 1000px;
   margin: 5px;
+  height: auto;
+  max-height: none;
 }
 
 .SeeGroup-frame .User-info {
@@ -88,7 +90,7 @@
 .SeeGroup-frame .Customize-chat-button {
   display: flex;
   justify-content: space-between;
-  background-color: #2c2c2e;
+  background-color: #1a1a1a;
   padding: 13px 20px 10px 20px;
 
   border-radius: 10px;
@@ -135,7 +137,7 @@
   gap: 5px;
   padding: 9px 15px 9px 15px;
   justify-content: space-between;
-  border-top: 1px solid #3c424d;
+  border-bottom: 0.5px solid #545458;
 }
 
 .PeopleListItem-frame .request {
@@ -160,13 +162,14 @@
   margin: 0px 20px 0px 20px;
   border-radius: 10px;
 
-  background-color: #2c2c2e;
+  background-color: #1a1a1a;
 }
 .SeeGroup-frame .invite-People {
   display: flex;
   gap: 10px;
-  padding: 10px 20px 0px 20px;
-  /* border-bottom: 1px solid #3c424d; */
+  padding: 10px 20px 0px 0px;
+  border-bottom: 0.5px solid #545458;
+  margin-bottom: -5px;
 }
 
 .SeeGroup-frame .invite-People-title {
@@ -178,14 +181,11 @@
   font-size: 16.913px;
   font-style: normal;
   font-weight: 400;
-  line-height: 19.3px; /* 129.412% */
+  line-height: 19.3px;
   letter-spacing: -0.377px;
 }
 
 .PeopleListItem-frame .User-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
   margin-right: 10px;
 }
 
@@ -257,7 +257,6 @@
   letter-spacing: -0.07px;
   text-transform: uppercase;
 
-
   margin: 10px 0px 10px 20px;
 }
 
@@ -266,7 +265,6 @@
   flex-direction: column;
   gap: 10px;
   margin: 10px 20px 10px 20px;
-
 }
 
 .SeeGroup-frame .Private-and-Security {
@@ -282,7 +280,7 @@
   padding: 13px 20px 13px 20px;
 
   border-radius: 10px;
-  background-color: #2c2c2e;
+  background-color: #1a1a1a;
 }
 
 .SeeGroup-frame .DeleteChat {
@@ -313,7 +311,7 @@
   padding: 13px 20px 13px 20px;
 
   border-radius: 10px;
-  background-color: #2c2c2e;
+  background-color: #1a1a1a;
 }
 
 .SeeGroup-frame .Private-and-Security:hover {
@@ -331,11 +329,13 @@
   background-color: #3c3c3e;
 }
 
-.invite-People-list-text  {
-  color:#ecececcf !important;
+.invite-People-list-text {
+  color: #ecececcf !important;
 }
 
-
+.group-settings-modal {
+  background-color: #0e0e0e !important;
+}
 .Customize-chat-icon {
   position: absolute;
   top: 2%;
@@ -347,29 +347,38 @@
   cursor: pointer;
   opacity: 0.8;
 }
-
-.border-ModalContent {
-  /* height: 60px !important;
-  border-bottom: 0.8px solid #3c424d; */
-  /* border-radius: 10px; */
-
+.group-settings-modal 
+.EditGroup-title {
+  color: #fff;
+  font-family: "sfprodisplay-regular", sans-serif;
+  font-size: 19.913px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19.3px;
+  letter-spacing: -0.377px;
+  margin: 20px;
 }
-.Groups-Info 
-.User-avatar {
-  margin-left: 150px;
-}
 
+.group-settings-modal 
 .Groups-Info {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.group-settings-modal 
+.Edit-avatar {
+
+margin-left: 38%;
+margin-bottom: 5%;
+}
+
+.group-settings-modal 
+.Edit-profile > * {
+  /* margin-top: 15px !important; */
+  margin-left: 5px !important;
 
 }
-.Edit-profile
-.edit-Group-Name  {
-  margin-top: 15px;
-  margin-left: 45px;
-}
 
+.group-settings-modal 
 .Private-and-Security-title {
   color: #fff;
   font-family: "sfprodisplay-regular", sans-serif;
@@ -378,15 +387,26 @@
   font-weight: 400;
   line-height: 19.3px;
   letter-spacing: -0.377px;
-  margin: 10px 0px 10px 20px;
-}
-
-.text-small-ovrride
-{
-  color: #c7c7d4;
+  padding: 5px 0px 10px 20px !important;
+  
 }
 
 
+
+
+
+.Group-setting-footer {
+  display: flex;
+  /* justify-content: space-between; */
+  margin: 10px 20px 10px 20px;
+
+}
+
+.text-small-ovrride {
+  color: #ebebf5b6 !important;
+}
+
+.group-settings-modal 
 .privacy-setting {
   display: flex;
   flex-direction: column;
@@ -394,29 +414,45 @@
   margin: 0px 20px 10px 45px;
 }
 
+.group-settings-modal 
 .Private-and-Security-title {
   margin-left: 0px;
 }
 
+.group-settings-modal 
 .Edit-group-icon {
   position: absolute;
   top: 30%;
   right: 36%;
-
 }
 
 .Edit-group-icon:hover {
   cursor: pointer;
-
 }
 
-
+.group-settings-modal 
 .Group-Password {
-    margin-top: 10px;
+  margin-top: 10px;
 }
-
-
 
 .EditGroup-blurbackground {
   z-index: 900000 !important;
+  background-color: #0e0e0e !important;
+}
+
+
+
+
+
+
+.group-settings-modal > .px-6,
+.group-settings-modal > .py-2 {
+  padding: 0px !important;
+}
+
+.some-padding {
+  padding-right: 10px !important;
+}
+.Memebers-dropdown {
+  background-color: #0e0e0e !important;
 }
