@@ -1,9 +1,9 @@
-/* .container {
+.container {
   width: 100%;
   height: 100%;
-  margin-top: 1px; */
-  /* background: url("/assets//game/backgrounds/game-background.jpg"); */
-  /* background-size: cover;
+  margin-top: 1px; 
+  background: url("/assets//game/backgrounds/game-background.jpg");
+  background-size: cover; 
   position: relative;
 }
 
@@ -29,4 +29,4 @@
 
 .leaveBtn:hover {
   background-color: #c9302c;
-} */
+} 
