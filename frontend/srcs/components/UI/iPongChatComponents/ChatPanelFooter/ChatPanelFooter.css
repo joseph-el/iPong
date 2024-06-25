@@ -26,6 +26,12 @@
 
 }
 
+.subtitles-chip:hover {
+    cursor: pointer;
+    background-color: #3a3a3a;
+
+}
+
 .ChatPanelFooter-Input {
 
     position: fixed;
