@@ -185,6 +185,8 @@ const EditGroup = (props) => {
   const [GroupType, setGroupType] = React.useState<Selection>(
     new Set([props.selectedMessage.type])
   );
+  const CurrentGroupType = props.selectedMessage.type;
+  console.log("CurrentGroupType: ", CurrentGroupType);
 
   const [GroupPassword, setGroupPassword] = useState("");
   const [IsReady, setIsReady] = useState(false);
@@ -194,6 +196,7 @@ const EditGroup = (props) => {
   const [GroupPasswordIsInvalid, setGroupPasswordIsInvalid] = useState(false);
 
   const displayGroupType = Array.from(GroupType).join(", ");
+
   const [Loading, setLoading] = useState(false);
   const handelSubmitData = () => {
     const nameRegex = /^[a-zA-Z\s]+$/;
@@ -217,12 +220,12 @@ const EditGroup = (props) => {
       setGroupTypeIsInvalid(true);
       return;
     }
-    if (GroupPassword === "" && displayGroupType === "protected") {
+    if (GroupPassword === "" && displayGroupType === "protected" && CurrentGroupType !== "protected") {
       setError("Group Password is required");
       setGroupPasswordIsInvalid(true);
       return;
     }
-    if (GroupPassword.length < 6 && displayGroupType === "protected") {
+    if (GroupPassword.length < 6 && displayGroupType === "protected" && CurrentGroupType !== "protected") {
       setError("Group Password is too short");
       setGroupPasswordIsInvalid(true);
       return;
