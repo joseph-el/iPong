@@ -76,7 +76,6 @@ export function LeaderBoard() {
   const [matches, _setMatches] = useState([]);
   const [filteredItems, setfilteredItems] = useState(matches);
   const [GameMatchHistory, setGameMatchHistory] = useState([]);
-  const UpdateApp = useSelector((state: RootState) => state.update.update);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +87,7 @@ export function LeaderBoard() {
       }
     };
     fetchData();
-  }, [UpdateApp]);
+  }, []);
 
   useEffect(() => {
     const fetchOpponentUsers = async () => {
@@ -208,7 +207,6 @@ export function LeaderBoard() {
 
     switch (columnKey) {
       case "playerA":
-        console.log("leaderboard : user", user);
         return (
           <User
             onClick={() => {
