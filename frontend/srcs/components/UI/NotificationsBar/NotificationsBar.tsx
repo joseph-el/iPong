@@ -128,28 +128,22 @@ export default function NotificationsBar(props) {
         const UserId = FriendshipStatus?.userId;
         let response;
         if (FriendshipStatus?.option === "MAKE_FRIEND") {
-
-
           if (FriendshipStatus?.type === "FRIEND_REQUEST") {
             response = await api.post(`/friendship/accept`, {
               friendId: UserId,
             });
           } else {
-
-
             // TODO: Join Room
 
-          console.log("the data response: join room>>>>", FriendshipStatus);
+            console.log("the data response: join room>>>>", FriendshipStatus);
 
             const response = await api.post(`/chatroom/join`, {
               roomId: FriendshipStatus.RoomId,
               userId: UserId,
               inviterId: FriendshipStatus.senderId,
             });
-            
-            console.log("response: join room>>>>  ", response);
-            
 
+            console.log("response: join room>>>>  ", response);
           }
 
           setNotificationId(FriendshipStatus?.notifId);
@@ -157,13 +151,11 @@ export default function NotificationsBar(props) {
         }
 
         if (FriendshipStatus?.option === "SET_CANCEL") {
-
-
           if (FriendshipStatus?.type === "FRIEND_REQUEST") {
             response = await api.post(`/friendship/reject`, {
               friendId: UserId,
             });
-          } 
+          }
           setNotificationId(FriendshipStatus.notifId);
           console.log("response: reject ", response);
         }
@@ -193,7 +185,14 @@ export default function NotificationsBar(props) {
         const updatedNotifications = await Promise.all(
           NotificationsObject.map(async (notif) => {
             console.log("notif:>>>>> ", notif);
-            const { senderId, entityType, createdAt, NotificationId, RoomId, receiverId } = notif;
+            const {
+              senderId,
+              entityType,
+              createdAt,
+              NotificationId,
+              RoomId,
+              receiverId,
+            } = notif;
 
             if (senderId === _UserId) {
               return null;
@@ -288,7 +287,10 @@ export default function NotificationsBar(props) {
             >
               {userNotifications.map((notif, index) => {
                 const formattedTime = formatTimeDifference(notif.createdAt);
-                if (notif.entityType === "FriendRequestAccepted" || notif.entityType === "MessageSent") {
+                if (
+                  notif.entityType === "FriendRequestAccepted" ||
+                  notif.entityType === "MessageSent"
+                ) {
                   return (
                     <ImessagesNotifications
                       type={notif.entityType}
@@ -299,7 +301,6 @@ export default function NotificationsBar(props) {
                     />
                   );
                 } else if (notif.entityType === "JoinRoom") {
-                  console.error("notif: LOL >>>>>> ", notif);
                   return (
                     <JoinRoomNotification
                       deleteButton={() => {
@@ -327,7 +328,6 @@ export default function NotificationsBar(props) {
                       time={formattedTime}
                     />
                   );
-
                 } else if (notif.entityType === "FriendRequest") {
                   return (
                     <FriendNotifications
@@ -357,4 +357,3 @@ export default function NotificationsBar(props) {
     </div>
   );
 }
-
