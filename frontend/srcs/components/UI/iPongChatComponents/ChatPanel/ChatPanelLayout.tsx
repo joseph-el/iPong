@@ -18,15 +18,8 @@ import {
 } from "../../../../state/iPongChatState/iPongChatState";
 
 import { useNavigate } from "react-router-dom";
-// const getListMessages = (state) => state.iPongChat.ListMessages;
-
-// const getSelectedMessage = createSelector(
-//   [getListMessages],
-//   (listMessages) => listMessages.find((message) => message.isSelect) || null
-// );
 
 export default function ChatPanelLayout({socket}) {
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,14 +36,13 @@ export default function ChatPanelLayout({socket}) {
   );
 
   const handleCloseClick = () => {
-   
     dispatch(setUserSetting(false));
     dispatch(setGroupSetting(false));
   };
 
   if (!selectedMessage) {
     handleCloseClick();
-    navigate("/ipong/chat");
+    // navigate("/ipong/chat");
   }
 
   const [userId, setUserId] = React.useState<string>(selectedMessage?.senderId || "");
