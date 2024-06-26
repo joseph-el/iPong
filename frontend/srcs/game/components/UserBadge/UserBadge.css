@@ -23,6 +23,7 @@
   filter: brightness(0.8);
 }
 
+
 .iPongGame-UserBadge-username {
   position: absolute;
   top: 41%;
@@ -32,9 +33,10 @@
   align-items: center;
 }
 
+
 .iPongGame-UserBadge-username .UserBadge-img {
-  width: 35%; 
-  height: 35%;
+  width: 35% !important; 
+  height: 35% !important;
   max-width: 100px; 
   border-radius: 50%;
   object-fit: cover;
