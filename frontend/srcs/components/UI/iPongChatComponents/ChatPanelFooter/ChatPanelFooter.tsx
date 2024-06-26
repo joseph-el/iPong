@@ -18,11 +18,13 @@ import { current } from "@reduxjs/toolkit";
 
 import { useDispatch } from "react-redux";
 import { add, random } from "lodash";
-import { addMessage } from "../../../../state/iPongChatState/iPongChatState";
+import {
+  addMessage,
+  selectUser,
+} from "../../../../state/iPongChatState/iPongChatState";
 import { User } from "@nextui-org/user";
 import { user } from "@nextui-org/react";
-export default function ChatPanelFooter({socket}) {
-
+export default function ChatPanelFooter({ socket }) {
   const dispatch = useDispatch();
   const UserId = useSelector((state: RootState) => state.userState.id);
   const [IsReady, setIsReady] = useState(false);
@@ -37,7 +39,6 @@ export default function ChatPanelFooter({socket}) {
   const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = (event) => {
-
     if (inputValue.length > 500) {
       return;
     }
@@ -73,17 +74,13 @@ export default function ChatPanelFooter({socket}) {
     // setStyle("20px");
   };
 
- 
   useEffect(() => {
     const fetchChat = async () => {
       try {
-        await api.post(
-          `/messages/room/${selectedMessage?.id}`,
-          {
-            content: inputValue,
-          }
-        );
-        
+        await api.post(`/messages/room/${selectedMessage?.id}`, {
+          content: inputValue,
+        });
+
         socket.current?.emit("sendMessages", {
           roomId: selectedMessage?.id,
           content: inputValue,
@@ -98,8 +95,10 @@ export default function ChatPanelFooter({socket}) {
             time: new Date().toISOString(),
             avatar: UserInfo.picture,
             authorId: UserInfo.id,
-            user: UserInfo.username})
-        )
+            user: UserInfo.username,
+          })
+        );
+        dispatch(selectUser());
         setInputValue("");
         setIsReady(false);
       } catch (error) {
@@ -110,47 +109,50 @@ export default function ChatPanelFooter({socket}) {
     IsReady && fetchChat();
   }, [IsReady]);
 
-
   useEffect(() => {
     const _IsMuted = async () => {
       try {
-        const response = await api.get(`/chatroom/isMuted/${selectedMessage?.id}/${UserId}`);
+        const response = await api.get(
+          `/chatroom/isMuted/${selectedMessage?.id}/${UserId}`
+        );
         setIsMuted(response.data);
-      
-      } catch (error) {
-      }
-    }
+      } catch (error) {}
+    };
 
     _IsMuted();
-  }, [ selectedMessage, UserId])
-
+  }, [selectedMessage, UserId]);
 
   const handelSendMessage = () => {
     setIsReady(true);
   };
-
 
   const [userIsBlocked, setUserIsBlocked] = useState(false);
 
   useEffect(() => {
     const checkBlocked = async () => {
       try {
-        const response =  await api.post(`/friendship/isBlocked/${selectedMessage?.senderId}`);
+        const response = await api.post(
+          `/friendship/isBlocked/${selectedMessage?.senderId}`
+        );
         if (response.data) {
           setUserIsBlocked(true);
         }
       } catch (error) {
         console.error("Error fetching chat:", error);
       }
-    }
+    };
     checkBlocked();
-  }, [ selectedMessage]);
+  }, [selectedMessage]);
 
   return (
     <div className="ChatPanelFooter-frame">
       <div className="autocomplete">
         {suggestions.slice(0, 6).map((suggestion, index) => (
-          <Chip className="subtitles-chip" key={index} onClick={() => handleSuggestionClick(suggestion)}>
+          <Chip
+            className="subtitles-chip"
+            key={index}
+            onClick={() => handleSuggestionClick(suggestion)}
+          >
             {suggestion}
           </Chip>
         ))}
@@ -160,11 +162,13 @@ export default function ChatPanelFooter({socket}) {
         isDisabled={userIsBlocked || IsMuted}
         className="ChatPanelFooter-Input"
         value={inputValue}
-        placeholder={userIsBlocked ? "You are blocked by this person!" :   "Type a message"}
+        placeholder={
+          userIsBlocked ? "You are blocked by this person!" : "Type a message"
+        }
         onChange={handleInputChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            handelSendMessage();
+            if (inputValue.length > 0) handelSendMessage();
           }
         }}
         endContent={
