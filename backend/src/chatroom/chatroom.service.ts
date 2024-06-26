@@ -845,6 +845,7 @@ export class ChatroomService {
         members: {
           some: {
             memberID: userId,
+            isBanned: false,
           },
         },
       },
