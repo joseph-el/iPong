@@ -33,11 +33,12 @@
 }
 
 .iPongGame-UserBadge-username .UserBadge-img {
-  margin-left: 20px;
-  width: 30%;
-  height: 30%;
-  margin-right: 1vw;
-  border-radius: 50px;
+  width: 35%; 
+  height: 35%;
+  max-width: 100px; 
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
   border: 1px solid #fff;
 }
 
