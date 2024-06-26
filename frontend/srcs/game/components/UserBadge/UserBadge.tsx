@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state/store";
 import {Avatar} from "@nextui-org/avatar";
 
-export default function UserBadge() {
+export default function UserBadge({playerScore}) {
   const UserInfo = useSelector((state: RootState) => state.userState);
 
   return (
@@ -20,6 +20,7 @@ export default function UserBadge() {
           className="UserBadge-img"
         />
         <div className="username">{UserInfo.username}</div>
+        <div className="score">{playerScore}</div>
       </div>
     </div>
   );
