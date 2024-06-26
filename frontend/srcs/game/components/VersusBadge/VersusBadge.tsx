@@ -8,11 +8,13 @@ import { RootState } from "../../../state/store";
 interface VersusBadgeProps {
   userName: string;
   avatarPath: string;
+  playerScore: number;
 }
 
 export default function VersusBadge({
   userName,
   avatarPath,
+  playerScore,
 }: VersusBadgeProps) {
 
 
@@ -25,9 +27,10 @@ export default function VersusBadge({
         
           src={UserInfo.picture}
           alt="UserAvatar"
-          className="UserBadge-img UserBadge-img-vr"
+          className="VersusBadge-img UserBadge-img-vr"
         />
         <div className="username">{userName}</div>
+        <div className="score">{playerScore}</div>
       </div>
     </div>
   );
