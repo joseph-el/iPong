@@ -41,6 +41,16 @@
   border: 1px solid #fff;
 } */
 
+.iPongGame-UserBadge-username .VersusBadge-img
+{
+  width: 35% !important; 
+  height: 35% !important;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid #fff;
+}
+
 .Versus3d {
   height: 13vw;
   width: 13vw;
