@@ -13,89 +13,100 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
 import { setIsSelectedMessage } from "../../state/iPongChatState/iPongChatState";
 import { io } from "socket.io-client";
-import { useSocket } from "../../context/SocketContext";
 import { Socket } from "socket.io-client";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+
 const accessToken = document?.cookie
   ?.split("; ")
   ?.find((row) => row.startsWith("access_token="))
   ?.split("=")[1];
 
+export default function IPongChat() {
+  const navigate = useNavigate();
+  const { chatId: paramChatId } = useParams();
 
-  
-  export default function IPongChat() {
+  useEffect(() => {
+    setChatId(paramChatId);
+  }, [paramChatId]);
 
-    const navigate = useNavigate();
-    const { chatId: paramChatId } = useParams();
-    
-    useEffect(() => {
-      setChatId(paramChatId);
-    }, [paramChatId]);
+  const [chatId, setChatId] = useState(paramChatId);
+  const dispatch = useDispatch();
+  const UserId = useSelector((state: RootState) => state.userState.id);
 
-    const [chatId, setChatId] = useState(paramChatId);
-    const dispatch = useDispatch();
-    const UserId = useSelector((state: RootState) => state.userState.id);
-    const selectedMessage = useSelector(
-      (state: RootState) =>
-        state.iPongChat.ListMessages.find((message) => message.isSelect) || null
-    );
+  const selectedMessage = useSelector(
+    (state: RootState) =>
+      state.iPongChat.ListMessages.find((message) => message.isSelect) || null
+  );
 
-    console.log("selectedMessage::----------------------> ", selectedMessage);
+  const ListMessages = useSelector(
+    (state: RootState) => state.iPongChat.ListMessages
+  );
 
-
-    const socketRef = useRef<Socket | null>(null);
-
-    useEffect(() => {
-      if (!accessToken) {
-        return;
+  const socketRef = useRef<Socket | null>(null);
+  useEffect(() => {
+    if (!selectedMessage && chatId != undefined) {
+      if (socketRef.current && ListMessages.length > 0) {
+        const IsFounded = ListMessages.find((message) => message.id === chatId);
+        if (!IsFounded) {
+          navigate("/ipong/chat");
+        }
+        socketRef.current.emit("joinRoom", {
+          userId: UserId,
+          roomId: chatId,
+        });
+        dispatch(setIsSelectedMessage(chatId));
       }
-      const socket = io("http://localhost:3000/chat", {
-        transports: ["websocket"],
-  
-        auth: { token: accessToken },
-        reconnection: true,
-        reconnectionAttempts: Infinity,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-      });
-  
-      socketRef.current = socket;
-  
-      socketRef.current?.on("connect", () => {
-        console.log("connected:::>", socketRef.current?.id);
-      });
-  
-      socketRef.current?.on("onlineFriends", (friendIds) => {
-        console.log("onlineFriends:::>", friendIds);
-      });
-      socketRef.current?.on("joinRoom", (userId) => {
-        console.log("joinRoom:::>", userId);
-      });
-  
-      socketRef.current?.on("friendOffline", (userId) => {
-        console.log("friendOffline:::>", userId);
-      });
-  
-      socketRef.current?.on("roomCreated", (room) => {
-        console.log("roomCreated:::>", room);
-      });
-  
-      socketRef.current?.on("message", (message) => {
-        console.log("message:::>", message);
-      });
-  
-      socketRef.current?.on("error", (error) => {
-        console.log("error:::>", error);
-      });
-  
-      socketRef.current?.on("disconnect", () => {
-        console.log("disconnected:::>", socketRef.current?.id);
-      });
-    }, []);
+    }
+  }, [ListMessages]);
 
+  useEffect(() => {
+    if (!accessToken) {
+      return;
+    }
+    const socket = io("http://localhost:3000/chat", {
+      transports: ["websocket"],
 
+      auth: { token: accessToken },
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+    });
 
+    socketRef.current = socket;
+
+    socketRef.current?.on("connect", () => {
+      console.log("connected:::>", socketRef.current?.id);
+    });
+
+    socketRef.current?.on("onlineFriends", (friendIds) => {
+      // console.log("onlineFriends:::>", friendIds);
+    });
+    socketRef.current?.on("joinRoom", (userId) => {
+      console.log("joinRoom:::>", userId);
+    });
+
+    socketRef.current?.on("friendOffline", (userId) => {
+      console.log("friendOffline:::>", userId);
+    });
+
+    socketRef.current?.on("roomCreated", (room) => {
+      console.log("roomCreated:::>", room);
+    });
+
+    socketRef.current?.on("message", (message) => {
+      console.log("message:::>", message);
+    });
+
+    socketRef.current?.on("error", (error) => {
+      console.log("error:::>", error);
+    });
+
+    socketRef.current?.on("disconnect", () => {
+      console.log("disconnected:::>", socketRef.current?.id);
+    });
+  }, []);
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [ShowCreateNewChat, setShowCreateNewChat] = React.useState(false);
