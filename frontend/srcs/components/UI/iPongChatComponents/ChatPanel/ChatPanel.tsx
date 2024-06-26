@@ -53,6 +53,8 @@ export default function ChatPanel() {
 
 
     useEffect(() => {
+      console.log("i try to update the chat");
+      console.log("selectedMessage form useEffect", selectedMessage?.id);
       const fetchChat = async () => {
         try {
             const response = await api.get(`/messages/room/${selectedMessage?.id}`);
@@ -72,7 +74,7 @@ export default function ChatPanel() {
         }
       }
       selectedMessage?.id != undefined && fetchChat();
-    }, [selectedMessage, UserSelect]); //  here 
+    }, [selectedMessage, UserSelect]); 
 
   return (
     <div className="ChatPanel-frame" ref={scrollRef}>
