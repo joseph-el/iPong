@@ -6,7 +6,7 @@ interface Messages {
   message: string;
   avatar: string;
   time: string;
-  authorId:string;
+  authorId: string;
   user: string;
 }
 
@@ -24,7 +24,7 @@ interface ListMessages {
 enum FilterType {
   All = "All",
   Users = "Dm",
-  Groups = "Groups"
+  Groups = "Groups",
 }
 
 interface iPongChatState {
@@ -34,7 +34,6 @@ interface iPongChatState {
   UserSetting: Boolean;
   GroupSetting: Boolean;
   filterType: FilterType;
-
 }
 
 const initialState: iPongChatState = {
@@ -76,7 +75,7 @@ const iPongChatSlice = createSlice({
       state.messages = action.payload;
     },
     selectUser(state) {
-      state.selectedMessage = !state.selectedMessage
+      state.selectedMessage = !state.selectedMessage;
     },
     setUserSetting(state, action) {
       state.UserSetting = action.payload;
