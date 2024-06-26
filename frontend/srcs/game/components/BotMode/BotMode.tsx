@@ -145,14 +145,14 @@ export default function BotMode({
     >
       <GridItem pl="2" area={"nav"}>
         <IPongGameNav
+          player1Score={playerScore}
+          player2Score={botScore}
           opponentName="Ai Bot"
           opponentAvatarPath={GAME_SETTING.BOT_ICON}
           playerPos={1}
         />
-        
       </GridItem>
 
-      
       <GridItem pl="2" area={"main"}>
         <div className="Game-container-frame">
           <div className="canvas-container">
@@ -175,9 +175,8 @@ export default function BotMode({
         </div>
       </GridItem>
 
-
       <GridItem pl="2" className="button-leave" area={"footer"}>
-        <Button  onClick={leaveBotMode}>Leave Training</Button>
+        <Button onClick={leaveBotMode}>Leave Training</Button>
       </GridItem>
     </Grid>
 
