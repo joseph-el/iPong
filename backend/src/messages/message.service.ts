@@ -102,7 +102,7 @@ export class MessageService {
       where: {
         chatRoomId: roomId,
         isBanned: false,
-        isMuted: false,
+        // isMuted: false,
         NOT: {
           memberID: senderId,
         },
