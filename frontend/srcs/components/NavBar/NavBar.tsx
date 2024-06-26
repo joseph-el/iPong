@@ -187,6 +187,7 @@ export default function NavBar() {
         }
 
         if (data.entityType === "MessageSent") {
+          console.log("socket catched by success ! ", data);
           dispatch(selectUser());
           // dispatch(setUpdate());
         }
