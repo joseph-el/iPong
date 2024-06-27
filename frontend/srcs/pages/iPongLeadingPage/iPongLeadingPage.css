@@ -2,9 +2,11 @@
   height: 100vh;
   width: 100%;
   position: relative;
- 
+  background: url("../../../public/pep.jpg");
+  background-size: cover;
+  overflow-y: auto;
+  overflow-x: auto;
 }
-feSpecularLighting{nav-down: ii$;}
 
 .iPong-Leading-page .ddddd {
   position: absolute;
