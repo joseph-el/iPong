@@ -16,7 +16,7 @@ import IPongProfileViewAs from "../pages/iPongProfile/iPongUserProfileViewAs/iPo
 import { Navigate } from "react-router-dom";
 import api from "../api/posts";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setUserProfile,
   setSelectedSkinPath,
@@ -27,7 +27,7 @@ import {
   setNotification,
   setNotificationCount,
 } from "../state/Notifications/NotificationsSlice";
-import { AppDispatch } from "../state/store";
+import { AppDispatch, RootState } from "../state/store";
 import { SocketProvider } from "../context/SocketContext";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -55,6 +55,8 @@ const RequireAuth = ({ children }) => {
   const UserSkin = localStorage.getItem("userSkin");
   const UserBoard = localStorage.getItem("userBoard");
 
+  const UpdatedProfileInfo = useSelector((state: RootState) => state.update.UpdateProfile);
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -80,7 +82,7 @@ const RequireAuth = ({ children }) => {
       }
     };
     checkAuth();
-  }, []);
+  }, [UpdatedProfileInfo]);
 
  
   useEffect(() => {
