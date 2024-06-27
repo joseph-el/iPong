@@ -1,4 +1,44 @@
+
+.iPongGame-UserBadge,
+.iPongGame-VersusBadge {
+  display: flex;
+  position: relative;
+
+}
+
+.VersusBadge-img ,
+.UserBadge-img {
+  width: 12%;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid #fff;
+}
+
+
 .iPongGame-UserBadge-username {
+  /* position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  display: flex;
+
+  gap: 10px;
+  width: 60%; */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* .iPongGame-UserBadge-username {
   position: absolute;
   top: 50%;
   left: 40%;
@@ -18,15 +58,23 @@
 .iPongGame-UserBadge-username .username {
   font-weight: 550 !important;
   padding-top: 8px;  
-  font-size: 1vw;
+  font-size: 1.2vw;
   color: var(--Dark-color-Text-content, #ececec);
   font-family: "Poppins-regular", Helvetica;
-
 
 }
 
 
+.VersusBadge-img , 
+.UserBadge-img {
 
+}
+
+.iPongGame-VersusBadge 
+.score,
+.iPongGame-UserBadge-username .score {
+
+} */
 
 
 
