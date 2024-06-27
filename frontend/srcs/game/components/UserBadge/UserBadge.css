@@ -1,21 +1,78 @@
 .iPongGame-UserBadge-username {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
   display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: max-content;
-}
 
-.iPongGame-UserBadge-username .username {
-  font-weight: 550 !important;
-  font-size: 1.2vw;
-  color: var(--Dark-color-Text-content, #ececec);
-  font-family: Montserrat;
+  gap: 10px;
+  width: 60%;
 }
 
 .iPongGame-VersusBadge,
 .iPongGame-UserBadge {
   position: relative;
+  display: flex;
+}
+
+.iPongGame-UserBadge-username .username {
+  font-weight: 550 !important;
+  padding-top: 8px;  
+  font-size: 1vw;
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: "Poppins-regular", Helvetica;
+
+
+}
+
+
+
+
+
+
+
+/* 
+
+.iPongGame-UserBadge-username {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  display: flex;
+
+  gap: 10px;
+  width: 60%;
+}
+
+
+
+.iPongGame-UserBadge-username .username {
+  font-weight: 550 !important;
+  font-size: 1.2vw;
+
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: "Poppins-regular", Helvetica;
+  padding-right: 40px;
+  width: max-content !important;
+}
+
+.iPongGame-UserBadge-username .score {
+  margin-top: 10px;
+  margin-left: 15%;
+  font-weight: 550 !important;
+  font-size: 1.1vw;
+  width: 200px;
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: "Poppins-regular", Helvetica;
+}
+
+
+
+.iPongGame-VersusBadge,
+.iPongGame-UserBadge {
+  position: relative;
   display: inline-block;
+  max-width: max-content;
 }
 
 .VersusBadge,
@@ -24,14 +81,18 @@
 }
 
 
-.iPongGame-UserBadge-username {
-  position: absolute;
-  top: 41%;
-  left: 40%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
+
+.iPongGame-UserBadge-username .VersusBadge-img
+{
+  width: 35% !important; 
+  height: 35% !important;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid #fff;
 }
+
+
 
 
 .iPongGame-UserBadge-username .UserBadge-img {
@@ -54,4 +115,4 @@
     font-size: 2vw !important;
   }
 }
-
+ */
