@@ -62,7 +62,28 @@ export default function SeeUser(props) {
           <div className="info">
             <div className="User-name">{selectedMessage?.fullname}</div>
             <div className="ipongchar">iPongChat</div>
+            <div className="User-options">
+            <img
+              onClick={() => {
+                navigate(`/ipong/users/${props.userId}`);
+              }}
+              src={SeeProfileIcon}
+              alt="See Profile"
+              className="User-options-See-Profile-img"
+            />
+
+            <img
+              onClick={handelInviteMatch}
+              src={InviteMatchIcon}
+              alt="Invite Match"
+              className={`User-options-Invite-Match-img ${
+                isInviteDisabled ? "disabled" : ""
+              }`}
+            />
           </div>
+          </div>
+
+     
         </div>
 
         <Close
@@ -70,26 +91,6 @@ export default function SeeUser(props) {
           ClassName={"Customize-chat-icon animate-pulse"}
           id="close"
         />
-
-        <div className="User-options">
-          <img
-            onClick={() => {
-              navigate(`/ipong/users/${props.userId}`);
-            }}
-            src={SeeProfileIcon}
-            alt="See Profile"
-            className="User-options-See-Profile-img"
-          />
-          
-          <img
-            onClick={handelInviteMatch}
-            src={InviteMatchIcon}
-            alt="Invite Match"
-            className={`User-options-Invite-Match-img ${
-              isInviteDisabled ? "disabled" : ""
-            }`}
-          />
-        </div>
 
         {/* <div className="privacy-frame">
           <div className="privacy-text">privacy</div>
