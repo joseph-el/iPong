@@ -205,7 +205,7 @@ export default function App({ UserId}) {
       <ScrollShadow
         // h-[200px] sm:h-[200px]  md:h-[200px]   lg:h-[200px]   xm:h-[200px]  2xl:h-[300px]
         size={10}
-        className=" h-[280px] History"
+        className="h-[280px] History"
       >
         <Table
           isCompact
