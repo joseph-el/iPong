@@ -6,7 +6,7 @@ export const GAME_SETTING = {
   GAME_WIDTH: 800,
   GAME_HEIGHT: 500,
   FRAME_PER_SECONDS: 60,
-  GAME_TARGET: 5,
+  GAME_TARGET: 1000000,
 
   /* Players Settings */
   PLAYERS_WIDTH_PERCENTAGE: 3,
@@ -25,8 +25,8 @@ export const GAME_SETTING = {
   PLAYER_DEF_COLOR: "WHITE",
 
   /* Sounds */
-  HIT_BALL_SOUND: "/sounds/hitBall.mp3",
-  SCORE_SOUND: "/sounds/scoreSound.mp3",
+  // HIT_BALL_SOUND: "/sounds/hitBall.mp3",
+  // SCORE_SOUND: "/sounds/scoreSound.mp3",
 
   /*Live Game Emit Freq */
   EMIT_MOVE_LIMIT: 40, //milliseconds

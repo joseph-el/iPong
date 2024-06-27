@@ -63,9 +63,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
           memberId: Members.UserId,
           roomId: RoomId,
         });
-
-      } catch (error) {
-      }
+      } catch (error) {}
       setActionType(null);
     };
     ActionType != null && PostActions();
@@ -99,7 +97,9 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
               />
             </DropdownTrigger>
 
-            {IsAdmin && (
+            {IsAdmin && !Members.IsBanned && 
+            
+            (
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem
                   className="invite-People-list-text"
@@ -108,7 +108,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                 >
                   Remove member
                 </DropdownItem>
-                
+
                 {!Members.IsAdmin && (
                   <DropdownItem
                     className="invite-People-list-text"
@@ -134,13 +134,9 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                 <DropdownItem
                   className="invite-People-list-text"
                   key="copy"
-                  onClick={() =>
-                    setActionType(
-                      Members.IsBanned ? "unbanMember" : "banMember"
-                    )
-                  }
+                  onClick={() => setActionType("banMember")}
                 >
-                  {Members.IsBanned ? "Unban Member" : "Ban Member"}
+                  Ban Member
                 </DropdownItem>
 
                 <DropdownItem
@@ -151,15 +147,27 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                   View profile
                 </DropdownItem>
               </DropdownMenu>
-            )}
+            )
+            
+            }
 
-            {!IsAdmin && (
-              <DropdownMenu aria-label="Static Actions">
-                <DropdownItem className="invite-People-list-text" key="copy">
-                  View profile
-                </DropdownItem>
-              </DropdownMenu>
-            )}
+            {(!IsAdmin || (IsAdmin && Members.IsBanned)) && (
+                <DropdownMenu aria-label="Static Actions">
+                  <DropdownItem className="invite-People-list-text" key="copy">
+                    View profile
+                  </DropdownItem>
+
+                  {IsAdmin && Members.IsBanned && (
+                    <DropdownItem
+                      className="invite-People-list-text"
+                      key="copy"
+                      onClick={() => setActionType("unbanMember")}
+                    >
+                      Unban Member
+                    </DropdownItem>
+                  )}
+                </DropdownMenu>
+              )}
           </Dropdown>
         </div>
       </div>
@@ -217,12 +225,20 @@ const EditGroup = (props) => {
       setGroupTypeIsInvalid(true);
       return;
     }
-    if (GroupPassword === "" && displayGroupType === "protected" && CurrentGroupType !== "protected") {
+    if (
+      GroupPassword === "" &&
+      displayGroupType === "protected" &&
+      CurrentGroupType !== "protected"
+    ) {
       setError("Group Password is required");
       setGroupPasswordIsInvalid(true);
       return;
     }
-    if (GroupPassword.length < 6 && displayGroupType === "protected" && CurrentGroupType !== "protected") {
+    if (
+      GroupPassword.length < 6 &&
+      displayGroupType === "protected" &&
+      CurrentGroupType !== "protected"
+    ) {
       setError("Group Password is too short");
       setGroupPasswordIsInvalid(true);
       return;
@@ -249,8 +265,7 @@ const EditGroup = (props) => {
                 },
               }
             );
-          } catch (error) {
-          }
+          } catch (error) {}
         }
         const response = await api.post("/chatroom/update", {
           roomName: GroupName,
@@ -307,8 +322,6 @@ const EditGroup = (props) => {
               </ModalHeader>
 
               <ModalBody>
-                
-                
                 <div className="Edit-profile EditGroup-blurbackground ">
                   <div className="Groups-Info">
                     <label htmlFor="avatarInput">
@@ -428,16 +441,17 @@ const EditGroup = (props) => {
                     />
                   </div>
                 </div>
-
-
               </ModalBody>
 
-             
               <ModalFooter className="EditGroup-blurbackground Group-setting-footer">
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button isLoading={Loading} color="primary" onClick={handelSubmitData}>
+                <Button
+                  isLoading={Loading}
+                  color="primary"
+                  onClick={handelSubmitData}
+                >
                   Done
                 </Button>
               </ModalFooter>
@@ -448,8 +462,6 @@ const EditGroup = (props) => {
     </>
   );
 };
-
-
 
 export default function SeeGroup(props) {
   const [UserOptions, setUserOptions] = React.useState("");
@@ -486,8 +498,7 @@ export default function SeeGroup(props) {
           };
         });
         setFilteredUsers(Members);
-      } catch (err) {
-      }
+      } catch (err) {}
     };
 
     fetchUsers();
@@ -534,8 +545,7 @@ export default function SeeGroup(props) {
         const response2 = await api.post(
           `chatroom/invite/${selectedUser}/${selectedMessage?.id}`
         );
-      } catch (error) {
-      }
+      } catch (error) {}
       setSelectedUser(null);
     };
     selectedUser != null && InviteUser();
@@ -549,8 +559,7 @@ export default function SeeGroup(props) {
         const response = await api.post(
           `chatroom/muteChat/${selectedMessage?.id}`
         );
-      } catch (error) {
-      }
+      } catch (error) {}
       setMuteChat(false);
     };
     MutCHat && MuteChat();
@@ -563,8 +572,7 @@ export default function SeeGroup(props) {
         const response = await api.post("chatroom/leaveRoom/", {
           roomId: selectedMessage?.id,
         });
-      } catch (error) {
-      }
+      } catch (error) {}
       setLeaveGroup(false);
     };
     LeaveGroup && LeaveGroupChat();

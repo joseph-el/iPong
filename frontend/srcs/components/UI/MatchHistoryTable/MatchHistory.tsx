@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
 const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "V-BUCKS", "RESULTS", "DATE"];
 import api from "../../../api/posts";
-
+import {formatTimeDifference} from "../NotificationsBar/NotificationsBar"
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/store";
 
@@ -73,7 +73,7 @@ export default function App({ UserId}) {
           );
           return {
             id: index,
-            date: match.createdAt,
+            date: formatTimeDifference(match?.createdAt) != "now" ? formatTimeDifference(match?.createdAt) + " ago" : "now",
             result: match.status,
             vbucks: ("+") + (match.status === "win" ?  match.winnerVbucks : match.loserVVbucks),
             versus: response.data.firstName + " " + response.data.lastName,

@@ -17,8 +17,7 @@ export default function ChatPanelHeader(props) {
 
 
   const ListMessages = useSelector((state: RootState) => state.iPongChat.ListMessages);
-  console.log("ListMessages:: Header:> ", ListMessages);
-  console.log("selectedMessage:: Header:> ", selectedMessage);
+
   // if (!selectedMessage) {
   //   return null;
   // }

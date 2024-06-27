@@ -18,6 +18,8 @@ import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
 import Spline from "@splinetool/react-spline";
 import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
 import { Grid, GridItem } from "@chakra-ui/react";
+
+import KKKK from "../../pages/iPongStore/assets/maps/map.JPG"
 export default function iPongGame() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const userSelectedSkinPath = SKIN_DB.find(
@@ -66,7 +68,7 @@ export default function iPongGame() {
     return (
       <BotMode
         userSelectedSkin={userSelectedSkinPath}
-        userSelectedBoard={userSelectedBoardPath}
+        userSelectedBoard={KKKK}
         botSelectedSkin={botSelectedSkinPath}
       />
     );

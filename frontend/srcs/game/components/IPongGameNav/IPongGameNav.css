@@ -1,15 +1,22 @@
-.iPongGame-frame {
+/* .iPongGame-frame {
   width: 100%;
   height: 100%;
-  margin-top: 1px;
+
   background: url("./assets/game-background.jpg");
   background-size: cover;
   position: relative;
-}
+} */
 
 .iPongGame-frame-nav {
+  margin-top: 15px;
   padding-top: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 10px;
 }
+
+.Versus3d {
+  height: 120px;
+}
+

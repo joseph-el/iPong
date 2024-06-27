@@ -8,10 +8,12 @@ interface IPongGameNavProps {
   opponentName: string;
   opponentAvatarPath: string;
   playerPos: number;
+  player1Score: number;
+  player2Score: number;
 }
 
 export default function IPongGameNav(props: IPongGameNavProps) {
-  const { opponentName, opponentAvatarPath, playerPos } = props;
+  const { opponentName, opponentAvatarPath, playerPos, player1Score, player2Score } = props;
 
   useEffect(() => {
     console.log("my pos is: ");
@@ -22,9 +24,10 @@ export default function IPongGameNav(props: IPongGameNavProps) {
     <div className="iPongGame-frame-nav">
       {playerPos === 1 ? (
         <>
-          <UserBadge />
+          <UserBadge playerScore={player1Score}/>
           <img src={Versus3d} alt="Versus3d" className="Versus3d" />
           <VersusBadge
+            playerScore={player2Score}
             userName={opponentName}
             avatarPath={opponentAvatarPath}
           />
@@ -32,11 +35,13 @@ export default function IPongGameNav(props: IPongGameNavProps) {
       ) : (
         <>
           <VersusBadge
+            playerScore={player1Score}
             userName={opponentName}
             avatarPath={opponentAvatarPath}
           />
+          
           <img src={Versus3d} alt="Versus3d" className="Versus3d" />
-          <UserBadge />
+          <UserBadge  playerScore={player1Score}/>
         </>
       )}
     </div>

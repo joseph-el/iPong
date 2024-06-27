@@ -21,11 +21,13 @@ export default function UserListMessages(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const UserSelect = useSelector((state: RootState) => state.iPongChat.selectedMessage);
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get(`/chatroom/myrooms`);
 
+        const response = await api.get(`/chatroom/myrooms`);
         const MessageList = response.data
           .sort(
             (a, b) =>
@@ -33,8 +35,8 @@ export default function UserListMessages(props) {
               new Date(a.lastMessage.createdAt)
           )
           .map((message) => {
+            //  console.log("message", message);
             let memberInfo;
-
             if (message.type === "Dm") {
               message.members.find((member) => {
                 if (member.member.userId !== UserId) {
@@ -62,7 +64,7 @@ export default function UserListMessages(props) {
       }
     };
     fetchUsers();
-  }, []);
+  }, [UserSelect]);
 
   const handelListChatItem = (id) => {
     props.socket.current?.emit("joinRoom", {
@@ -119,6 +121,7 @@ export default function UserListMessages(props) {
             }).map((message, index) => (
               <React.Fragment key={index}>
                 <MessagesItems
+                  isBanned={message.isBanned}
                   IsSelectes={message.isSelect}
                   handelCLickChat={() => handelListChatItem(message.id)}
                   name={message.fullname}

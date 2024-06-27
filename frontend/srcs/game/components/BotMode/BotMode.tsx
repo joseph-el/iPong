@@ -5,11 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { GAME_SETTING } from "../../constants/settings";
 import { GameAlgo } from "../../algo/GameAlgo";
 import "./BotMode.css";
+import { Tooltip, Button } from "@nextui-org/react";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import IPongGameNav from "../../components/IPongGameNav/IPongGameNav";
 import Scores from "../Score/Score";
 import GameOver from "../GameOver/GameOver";
-
+import { Grid, GridItem } from "@chakra-ui/react";
 interface BotModeProps {
   userSelectedSkin: string;
   userSelectedBoard: string;
@@ -133,37 +134,64 @@ export default function BotMode({
   };
 
   return (
-    <div className="container-bootmode">
-      <div className="iPongGame-frame">
+    <Grid
+      templateAreas={`"nav nav"
+                  "main main"
+                  "footer footer"`}
+      gridTemplateRows={"115px 1fr 50px"}
+      gridTemplateColumns={"150px 1fr"}
+      h="100%"
+      className="container-bootmode"
+    >
+      <GridItem pl="2" area={"nav"}>
         <IPongGameNav
+          player1Score={playerScore}
+          player2Score={botScore}
           opponentName="Ai Bot"
           opponentAvatarPath={GAME_SETTING.BOT_ICON}
           playerPos={1}
         />
-        <div className="progress-container">
-          {!gameStarted && <ProgressBar progress={progress} />}
-        </div>
-        <div className="canvas-container">
-          {gameStarted && !winner && (
-            <>
-              <Scores
+      </GridItem>
+
+      <GridItem pl="2" area={"main"}>
+        <div className="Game-container-frame">
+          <div className="canvas-container">
+            {gameStarted && !winner && (
+              <>
+                {/* <Scores
                 player1Score={playerScore}
                 player2Score={botScore}
-              ></Scores>
-              <canvas
-                ref={canvasRef}
-                className="game"
-                width="800px"
-                height="500px"
-              ></canvas>
-              <button className="leaveButton" onClick={leaveBotMode}>
-                Leave Training
-              </button>
-            </>
-          )}
-          {winner && <GameOver winner={winner} />}
+              ></Scores> */}
+                <canvas
+                  ref={canvasRef}
+                  className="game"
+                  width="800px"
+                  height="500px"
+                ></canvas>
+              </>
+            )}
+            {winner && <GameOver winner={winner} />}
+          </div>
         </div>
-      </div>
-    </div>
+      </GridItem>
+
+      <GridItem pl="2" className="button-leave" area={"footer"}>
+        <Button onClick={leaveBotMode}>Leave Training</Button>
+      </GridItem>
+    </Grid>
+
+    // <div className="container-bootmode">
+    //   <div className="iPongGame-frame">
+    //     <IPongGameNav
+    //       opponentName="Ai Bot"
+    //       opponentAvatarPath={GAME_SETTING.BOT_ICON}
+    //       playerPos={1}
+    //     />
+    //     <div className="progress-container">
+    //       {!gameStarted && <ProgressBar progress={progress} />}
+    //     </div>
+
+    //   </div>
+    // </div>
   );
 }
