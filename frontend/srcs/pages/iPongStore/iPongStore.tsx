@@ -214,7 +214,7 @@ export default function IPongStore() {
               setShowPaddlesTabel(false);
             }}
           >
-            <h2>TABLE</h2>
+            <h2>TABLES</h2>
           </div>
           <div
             className="Store-List-nav-item"
@@ -253,13 +253,13 @@ export default function IPongStore() {
                   </CardBody>
                   <CardFooter className="text-small justify-between">
                     <b>{item.name}</b>
-                    <p className="text-default-500">
+                    <p className=" text-default-500-over text-default-500">
                       {item.isUnlocked ? "" : item.price + " iCoins"}
                     </p>
 
                     {item.isUnlocked &&
                     UserInfo.userSelectedBoardPath === item.name ? (
-                      <b className="text-default-500">Selected</b>
+                      <b className="text-default-500-over text-default-500">Selected</b>
                     ) : null}
                   </CardFooter>
                 </Card>
@@ -290,12 +290,12 @@ export default function IPongStore() {
                   </CardBody>
                   <CardFooter className="text-small justify-between">
                     <b>{item.name}</b>
-                    <p className="text-default-500">
+                    <p className=" text-default-500-over text-default-500">
                       {item.isUnlocked ? "" : item.price + " iCoins"}
                     </p>
                     {item.isUnlocked &&
                     UserInfo.userSelectedSkinPath === item.name ? (
-                      <b className="text-default-500">Selected</b>
+                      <b className=" text-default-500-over text-default-500">Selected</b>
                     ) : null}
                   </CardFooter>
                 </Card>

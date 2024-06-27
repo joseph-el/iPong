@@ -41,7 +41,7 @@ const MyComponent = (props) => {
   // console.log("progressPercentage: ", progressPercentage);
 
   return (
-    <div className="container">
+    <div className="container-progress">
       <div className="box1"></div>
       <div className="box2" style={{ width: `${progressPercentage}%` }}></div>
     </div>
