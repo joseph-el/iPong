@@ -59,7 +59,9 @@ const RequireAuth = ({ children }) => {
     const checkAuth = async () => {
       try {
         const response = await api.get("/user-profile/me");
-
+        console.log("-------------------------------------------------");
+        console.log("response", response);
+        console.log("-------------------------------------------------");
         let user = response.data;
         if (
           user.username.startsWith("M-;") ||

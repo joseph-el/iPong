@@ -16,10 +16,11 @@ import { OnEvent, EventEmitter2 } from '@nestjs/event-emitter';
 import { Logger } from '@nestjs/common';
 import { ConnectedUsersService } from './connected-users.service';
 import { InviteFriendService } from './invite-friend.service';
+import { env } from 'process';
 
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin: env.CORS_ORIGIN?.split(',') || ['http://localhost:5173'],
   },
   namespace: 'notifications',
   transports: ['websocket'],

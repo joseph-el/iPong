@@ -75,7 +75,7 @@ export class ChatroomService {
       },
     });
     if (!res) {
-      return new HttpException('Room not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Room not found', HttpStatus.NOT_FOUND);
     }
     // console.log('Avatar uploaded:', avatar.secure_url);
     return 'Avatar uploaded successfully';
@@ -87,12 +87,12 @@ export class ChatroomService {
       createChatroomDto.type === ChatRoomType.Dm &&
       !createChatroomDto.secondUser
     ) {
-      return new HttpException('Second user is required for dm chatrooms', 400);
+      throw new HttpException('Second user is required for dm chatrooms', 400);
     } else if (
       createChatroomDto.type === ChatRoomType.Dm &&
       createChatroomDto.secondUser === userOwner
     ) {
-      return new HttpException(
+      throw new HttpException(
         'You cannot create a dm chatroom with yourself',
         400,
       );
@@ -111,7 +111,7 @@ export class ChatroomService {
       },
     });
     if (!user) {
-      return new HttpException('User not found', 404);
+      throw new HttpException('User not found', 404);
     }
     if (createChatroomDto.type === ChatRoomType.Dm) {
       const secondUser = await this.databaseservice.user.findUnique({
@@ -120,7 +120,7 @@ export class ChatroomService {
         },
       });
       if (!secondUser) {
-        return new HttpException('Second user not found', 404);
+        throw new HttpException('Second user not found', 404);
       }
       const ifChatroomExists = await this.databaseservice.chatRoom.findFirst({
         where: {
@@ -144,7 +144,7 @@ export class ChatroomService {
       createChatroomDto.type === ChatRoomType.Dm &&
       userOwner == createChatroomDto.secondUser
     ) {
-      return new HttpException(
+      throw new HttpException(
         'You cannot create a dm chatroom with yourself',
         400,
       );
@@ -166,7 +166,7 @@ export class ChatroomService {
     // });
 
     // if (existingBlock) {
-    //   return new HttpException('User is blocked', 403);
+    //   throw new HttpException('User is blocked', 403);
     // }
 
     // Create chatroom
@@ -229,7 +229,7 @@ export class ChatroomService {
     });
     console.log('admin: ', chekAdmin);
     if (!chekAdmin) {
-      return new HttpException('You are not an admin', 401);
+      throw new HttpException('You are not an admin', 401);
     }
     //check if joinedUserId is a member
     const checkMember = await this.databaseservice.chatRoomMember.findFirst({
@@ -239,7 +239,7 @@ export class ChatroomService {
       },
     });
     if (checkMember) {
-      return new HttpException('User is already a member', 400);
+      throw new HttpException('User is already a member', 400);
     }
     //create chatroom member
     const notification: CreateNotificationDto = {
@@ -259,7 +259,7 @@ export class ChatroomService {
     });
 
     if (!chatroom) {
-      return new HttpException('Chatroom not found', 404);
+      throw new HttpException('Chatroom not found', 404);
     }
 
     if (joinChatroomDto.inviterId) {
@@ -273,7 +273,7 @@ export class ChatroomService {
         });
 
       if (!isInviterIsAdmin) {
-        return new HttpException(
+        throw new HttpException(
           'Inviter is not an admin of the chatroom',
           401,
         );
@@ -283,7 +283,7 @@ export class ChatroomService {
         chatroom.type === ChatRoomType.protected &&
         !joinChatroomDto.password
       ) {
-        return new HttpException('Password is required to join', 400);
+        throw new HttpException('Password is required to join', 400);
       }
 
       if (chatroom.type === ChatRoomType.protected) {
@@ -292,7 +292,7 @@ export class ChatroomService {
           chatroom.password,
         );
         if (!isMatch) {
-          return new HttpException('Invalid password', 401);
+          throw new HttpException('Invalid password', 401);
         }
       }
     }
@@ -303,7 +303,7 @@ export class ChatroomService {
       },
     });
     if (member) {
-      return new HttpException('Already a member of the chatroom', 400);
+      throw new HttpException('Already a member of the chatroom', 400);
     }
 
     await this.databaseservice.chatRoomMember.create({
@@ -389,7 +389,7 @@ export class ChatroomService {
 
     // Check if chatroom exists
     if (!chatroom) {
-      return new HttpException('Chatroom not found', 404);
+      throw new HttpException('Chatroom not found', 404);
     }
 
     // Check if user is a member of the chatroom
@@ -401,7 +401,7 @@ export class ChatroomService {
     });
 
     if (!member) {
-      return new HttpException('Not a member of the chatroom', 400);
+      throw new HttpException('Not a member of the chatroom', 400);
     }
     const { ownerId } = await this.databaseservice.chatRoom.findUnique({
       where: {
@@ -472,11 +472,11 @@ export class ChatroomService {
 
     // Check if chatroom exists
     if (!chatroom) {
-      return new HttpException('Chatroom not found', 404);
+      throw new HttpException('Chatroom not found', 404);
     }
     // Check if user is the owner of the chatroom
     if (chatroom.ownerId !== userId) {
-      return new HttpException('Not the owner of the chatroom', 403);
+      throw new HttpException('Not the owner of the chatroom', 403);
     }
 
     // Delete chatroom
@@ -500,7 +500,7 @@ export class ChatroomService {
     });
 
     if (!chatRoom) {
-      return new HttpException('Chatroom not found', 404);
+      throw new HttpException('Chatroom not found', 404);
     }
     const owner = await this.databaseservice.chatRoomMember.findFirst({
       where: {
@@ -512,10 +512,10 @@ export class ChatroomService {
       },
     });
     if (chatRoom.ownerId !== userId) {
-      return new HttpException('ur nor the onwer', 401);
+      throw new HttpException('ur nor the onwer', 401);
     }
     if (owner.isAdmin || chatRoom.ownerId === setAdminDto.memberId) {
-      return new HttpException('User is already an admin', 400);
+      throw new HttpException('User is already an admin', 400);
     }
     await this.databaseservice.chatRoomMember.update({
       where: {
@@ -554,9 +554,9 @@ export class ChatroomService {
     console.log('user: ', user);
     console.log('member: ', member);
     console.log('------------------');
-    if (!room) return new HttpException('room not found', HttpStatus.NOT_FOUND);
+    if (!room) throw new HttpException('room not found', HttpStatus.NOT_FOUND);
     if (!member)
-      return new HttpException('member not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('member not found', HttpStatus.NOT_FOUND);
     if (!user.isAdmin || user.isBanned)
       return new BadRequestException('You are not admin of this room');
     if (member.memberID === room.ownerId)
@@ -611,9 +611,9 @@ export class ChatroomService {
         memberID: true,
       },
     });
-    if (!room) return new HttpException('room not found', HttpStatus.NOT_FOUND);
+    if (!room) throw new HttpException('room not found', HttpStatus.NOT_FOUND);
     if (!member)
-      return new HttpException('member not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('member not found', HttpStatus.NOT_FOUND);
     if (!user.isAdmin || user.isBanned)
       return new BadRequestException('You are not admin of this room');
     if (member.isMuted)
@@ -671,9 +671,9 @@ export class ChatroomService {
         memberID: true,
       },
     });
-    if (!room) return new HttpException('room not found', HttpStatus.NOT_FOUND);
+    if (!room) throw new HttpException('room not found', HttpStatus.NOT_FOUND);
     if (!member)
-      return new HttpException('member not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('member not found', HttpStatus.NOT_FOUND);
     if (!user.isAdmin || user.isBanned)
       return new BadRequestException('You are not admin of this room');
     if (!member.isMuted) return new BadRequestException('Member is not muted');
@@ -752,9 +752,9 @@ export class ChatroomService {
       },
     });
     if (!member)
-      return new HttpException('user not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
     if (!member.isBanned)
-      return new HttpException('member is not banned', HttpStatus.BAD_REQUEST);
+      throw new HttpException('member is not banned', HttpStatus.BAD_REQUEST);
     if (!user.isAdmin)
       return new BadRequestException('You are not admin of this room');
     await this.databaseservice.chatRoomMember.update({
@@ -781,7 +781,7 @@ export class ChatroomService {
 
     // Check if chatroom exists
     if (!chatroom) {
-      return new HttpException('Chatroom not found', 404);
+      throw new HttpException('Chatroom not found', 404);
     }
     const user = await this.databaseservice.chatRoomMember.findFirst({
       where: {
@@ -790,7 +790,7 @@ export class ChatroomService {
       },
     });
     if (!user) {
-      return new HttpException('ur Not a member of the chatroom', 400);
+      throw new HttpException('ur Not a member of the chatroom', 400);
     }
 
     // Check if user is already a member of the chatroom
@@ -801,7 +801,7 @@ export class ChatroomService {
       },
     });
     if (member) {
-      return new HttpException('Already a member of the chatroom', 400);
+      throw new HttpException('Already a member of the chatroom', 400);
     }
 
     // Create chatroom member
@@ -894,7 +894,7 @@ export class ChatroomService {
     });
 
     if (!chatroom) {
-      return new HttpException('Chatroom not found', 404);
+      throw new HttpException('Chatroom not found', 404);
     }
 
     const member = await this.databaseservice.chatRoomMember.findFirst({
@@ -905,7 +905,7 @@ export class ChatroomService {
     });
 
     if (!member) {
-      return new HttpException('Not a member of the chatroom', 400);
+      throw new HttpException('Not a member of the chatroom', 400);
     }
 
     const members = await this.databaseservice.chatRoomMember.findMany({
@@ -942,17 +942,17 @@ export class ChatroomService {
       select: { ownerId: true, type: true },
     });
     if (!room) {
-      return new HttpException('Chatroom not found', 404);
+      throw new HttpException('Chatroom not found', 404);
     }
     // Check if the room type is 'dm' (direct message) which should not be updated
     if (room.type === ChatRoomType.Dm) {
-      return new HttpException(
+      throw new HttpException(
         'dm room can not be updated',
         HttpStatus.BAD_REQUEST,
       );
     }
     if (updateRoomDto.type == 'protected' && !updateRoomDto.password) {
-      return new HttpException(
+      throw new HttpException(
         'missing password for protected room',
         HttpStatus.BAD_REQUEST,
       );
