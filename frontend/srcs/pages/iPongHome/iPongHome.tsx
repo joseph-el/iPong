@@ -175,14 +175,14 @@ export default function iPongGame() {
      
         </div>
 
-        {/* <div className="container-nav">
+        <div className="container-nav">
           <button className="button1" onClick={vsBotHandler}>
             Play vs Bot
           </button>
           <button className="button2" onClick={vsRandomHandler}>
             Play vs Random
           </button>
-        </div> */}
+        </div>
       </GridItem>
 
       <GridItem pl="2" area={"leaderboard"}>
