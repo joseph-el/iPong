@@ -121,7 +121,7 @@ export default function UserProfile() {
   const UserInfo = useSelector((state: RootState) => state.userState);
 
   return (
-    <NextUIProvider>
+    <NextUIProvider className="scrool">
       <NextThemesProvider attribute="class" defaultTheme="dark">
         <div className="UserProfile-frame">
           <div className="profile-cover">
@@ -222,6 +222,7 @@ export default function UserProfile() {
           <div className="users-tabs">
             <div className="flex w-full flex-col">
               <Tabs
+                className="Tabs-frame"
                 aria-label="Options"
                 color="primary"
                 variant="underlined"

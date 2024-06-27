@@ -54,7 +54,7 @@ import { set } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
-
+import { setUpdateProfile } from "../../../state/update/UpdateSlice";
 
 const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
@@ -129,16 +129,10 @@ const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
 });
 
 export default function UserProfileViewAs() {
-  // const { userId } = useParams();
 
   const { userId: paramUserId } = useParams();
   const [userId, setUserId] = useState(paramUserId);
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    setUserId(paramUserId);
-  }, [paramUserId]);
-
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [ShowZindex, setShowZindex] = React.useState(false);
   const handleCloseClick = () => {
@@ -149,71 +143,15 @@ export default function UserProfileViewAs() {
   const [ButtonFriendStatus, setButtonFriendStatus] = useState("");
   const [FriendshipStatus, setFriendshipStatus] = useState("");
   const [DropdownButtonStatus, setDropdownButtonStatus] = useState([]);
-
+  const [startChat, setStartChat] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const handleOpen = (UserAction) => {
-    setUserOptions(UserAction);
-    onOpen();
-  };
   const navigate = useNavigate();
   const [UserprofileInfo, setUserprofileInfo] = useState([]);
-
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.post(`/friendship/isBlocked/${userId}`);
-
-        console.log("response.data of Block", response.data);
-
-        if (response.data.blockedBy === UserInfo.id) {
-          setUserIsBlocked("BLOCKED_BY_ME");
-        } else if (response.data.blocked === UserInfo.id) {
-          setUserIsBlocked("BLOCKED_BY_FRIEND");
-        }
-      } catch (error) {}
-    };
-
-    fetchData();
-  }, [userId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/user-profile/getinfoById${userId}`);
-        setUserprofileInfo(response.data);
-        console.log("response.data", response.data);
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-    fetchData();
-  }, [userId]); // USER PROFILE
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/friendship/friendshipStatus${userId}`);
-        if (!response.data) {
-          setButtonFriendStatus("ADD FRIEND");
-        } else {
-          if (response.data.status === "ACCEPTED") {
-            setButtonFriendStatus("ACCEPTED");
-            return;
-          }
-          if (response.data.from.userId === UserInfo.id) {
-            setButtonFriendStatus("CANCEL");
-          } else {
-            setButtonFriendStatus("ACCEPT");
-          }
-        }
-      } catch (error) {}
-    };
-    fetchData();
-  }, [userId]);
+  const UpdatedProfileInfo = useSelector(
+    (state: RootState) => state.update.UpdateProfile
+  );
+  const [isUnfriend, setIsUnfriend] = useState<Boolean | null | String>(null);
 
   const dropdownOptions = {
     MAKE_FRIEND: {
@@ -224,6 +162,23 @@ export default function UserProfileViewAs() {
       first: "Cancel Request",
       second: "",
     },
+  };
+
+  const handleOpen = (UserAction) => {
+    setUserOptions(UserAction);
+    onOpen();
+  };
+
+  const handelRemoveUser = (_isUnfriend) => {
+    if (typeof _isUnfriend === "string") {
+      setIsUnfriend("unblock");
+      return;
+    }
+    if (_isUnfriend) {
+      setIsUnfriend(true);
+    } else {
+      setIsUnfriend(false);
+    }
   };
 
   const handelFriendButton = () => {
@@ -245,10 +200,67 @@ export default function UserProfileViewAs() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("i try to update the block");
+        const response = await api.post(`/friendship/isBlocked/${userId}`);
+
+        console.log("response.data of Block", response.data);
+
+        if (response.data.blockedBy === UserInfo.id) {
+          setUserIsBlocked("BLOCKED_BY_ME");
+        } else if (response.data.blocked === UserInfo.id) {
+          setUserIsBlocked("BLOCKED_BY_FRIEND");
+        } else {
+          setUserIsBlocked(null);
+        }
+      } catch (error) {}
+    };
+
+    fetchData();
+  }, [userId, UpdatedProfileInfo]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/user-profile/getinfoById${userId}`);
+        setUserprofileInfo(response.data);
+        console.log("response.data", response.data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    fetchData();
+  }, [userId, UpdatedProfileInfo]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/friendship/friendshipStatus${userId}`);
+        if (!response.data) {
+          setButtonFriendStatus("ADD FRIEND");
+        } else {
+          if (response.data.status === "ACCEPTED") {
+            setButtonFriendStatus("ACCEPTED");
+            return;
+          }
+          if (response.data.from.userId === UserInfo.id) {
+            setButtonFriendStatus("CANCEL");
+          } else {
+            setButtonFriendStatus("ACCEPT");
+          }
+        }
+      } catch (error) {}
+    };
+    fetchData();
+  }, [userId, UpdatedProfileInfo]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         if (FriendshipStatus === "SET_FRIEND") {
           await api.post(`/friendship/add`, {
             friendId: userId,
           });
+
           // console.log("response: add ", response);
         }
         if (FriendshipStatus === "MAKE_FRIEND") {
@@ -258,6 +270,7 @@ export default function UserProfileViewAs() {
           // console.log("response: make friend ", response);
         }
         if (FriendshipStatus === "SET_CANCEL") {
+          console.log("i try to cancel");
           await api.post(`/friendship/reject`, {
             friendId: userId,
           });
@@ -266,24 +279,25 @@ export default function UserProfileViewAs() {
           }
           // console.log("response: reject ", response);
         }
-      } catch (error) {}
-
-      // dispatch(setUpdate());
+        console.log("done with the request");
+      } catch (error) {
+        console.error("cacel", error);
+      }
+      dispatch(setUpdateProfile());
     };
     ButtonFriendStatus !== "ACCEPTED" && fetchData();
   }, [FriendshipStatus]);
 
-  const [isUnfriend, setIsUnfriend] = useState<Boolean | null | String>(null);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         if (typeof isUnfriend === "string") {
           await api.post(`/friendship/unblock`, {
             friendId: userId,
           });
         }
-        if (isUnfriend) {
+        else if (isUnfriend ) {
           await api.post(`/friendship/unfriend`, {
             friendId: userId,
           });
@@ -293,24 +307,11 @@ export default function UserProfileViewAs() {
           });
         }
       } catch (error) {}
-      // dispatch(setUpdate());
+      dispatch(setUpdateProfile());
+
     };
     isUnfriend != null && fetchData();
   }, [isUnfriend]);
-
-  const handelRemoveUser = (_isUnfriend) => {
-    if (typeof _isUnfriend === "string") {
-      setIsUnfriend("unblock");
-      return;
-    }
-    if (_isUnfriend) {
-      setIsUnfriend(true);
-    } else {
-      setIsUnfriend(false);
-    }
-  };
-
-  const [startChat, setStartChat] = useState(false);
 
   useEffect(() => {
     const fetchCreatChatRoom = async () => {
@@ -328,6 +329,7 @@ export default function UserProfileViewAs() {
     };
     startChat && fetchCreatChatRoom();
   }, [startChat]);
+
 
   return (
     <NextUIProvider>
@@ -450,7 +452,7 @@ export default function UserProfileViewAs() {
                     content: "p-0 border-small border-divider bg-background",
                   }}
                 >
-                  <DropdownTrigger onClick={() => {}}>
+                  <DropdownTrigger>
                     <Button
                       color="primary"
                       onClick={
@@ -482,6 +484,7 @@ export default function UserProfileViewAs() {
                     </Button>
                   </DropdownTrigger>
 
+
                   {ButtonFriendStatus !== "ADD FRIEND" ? (
                     <DropdownMenu aria-label="Static Actions">
                       <DropdownItem
@@ -492,7 +495,7 @@ export default function UserProfileViewAs() {
                         }}
                         variant="faded"
                       >
-                        {"--accept: " + DropdownButtonStatus.first}
+                        {DropdownButtonStatus.first}
                       </DropdownItem>
 
                       {ButtonFriendStatus === "ACCEPT" ? (
@@ -504,7 +507,7 @@ export default function UserProfileViewAs() {
                           className="text-danger"
                           color="danger"
                         >
-                          {"--cancel: " + DropdownButtonStatus.second}
+                          {DropdownButtonStatus.second}
                         </DropdownItem>
                       ) : null}
                     </DropdownMenu>
@@ -560,7 +563,7 @@ export default function UserProfileViewAs() {
                     </DropdownItem>
 
                     <DropdownItem
-                      isDisabled={ButtonFriendStatus === "ADD FRIEND"}
+                      isDisabled={ButtonFriendStatus !== "ACCEPTED"}
                       onPress={() => handleOpen("Unfriend")}
                       className="menu-item-dropdown-font"
                       key="new"

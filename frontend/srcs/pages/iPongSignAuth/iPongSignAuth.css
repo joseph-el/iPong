@@ -7,6 +7,11 @@
 
   position: relative;
   height: 100vh;
+  background: url("../../../public/pep.jpg");
+  background-size: cover;
+  overflow-y: auto;
+  overflow-x: auto;
+  float: inherit;
  
 }
 

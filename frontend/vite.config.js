@@ -1,6 +1,8 @@
 // vite.config.js
 export default {
-    // other configurations
-    assetsInclude: ["**/*.jpg", "**/*.JPG"],
-  };
-  
+  server: {
+    host: '0.0.0.0',
+  },
+  assetsInclude: ["**/*.jpg", "**/*.JPG"],
+};
+

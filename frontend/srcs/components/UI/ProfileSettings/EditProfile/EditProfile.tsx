@@ -13,8 +13,8 @@ import {
 } from "@nextui-org/react";
 import { CameraIcon } from "./CameraIcon";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../state/store";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../../state/store";
 import { getAvatarSrc } from "../../../../utils/getAvatarSrc";
 import { getUserLevel } from "../../../../utils/getCurrentLevel";
 import { isValidURL } from "../../../../utils/isValidURL";
@@ -22,8 +22,10 @@ import { validateEmail } from "../../../../utils/formValidation";
 import { isFullNameValid } from "../../../../utils/formValidation";
 import validateUsername from "../../../../utils/usernameValidation";
 import api from "../../../../api/posts";
+import { setUpdateProfile } from "../../../../state/update/UpdateSlice";
 
 export default function EditProfile(props) {
+  
   const [Loading, setLoading] = useState(false);
   const UserInfo = useSelector((state: RootState) => state.userState);
   const [formData, setFormData] = useState({
@@ -44,11 +46,8 @@ export default function EditProfile(props) {
   const [CoverFile, setCoverFile] = useState(null);
   const [error, setError] = useState("");
 
-  // const EditProfileNavbar = (props) => {
-  //   return (
+  const dispatch = useDispatch<AppDispatch>();
 
-  //   );
-  // };
 
   const InputTypes = [
     {
@@ -142,6 +141,7 @@ export default function EditProfile(props) {
         }
       }
       setLoading(false);
+      dispatch(setUpdateProfile());
       props.closeEditProfile();
     };
     ReadyForSubmit && SubmitData();

@@ -96,7 +96,7 @@ export default function SignAuth(props) {
   return (
     <>
       <div className="SignAuth-page">
-        <Spline scene="https://prod.spline.design/JWAicw3aLyRWTOWg/scene.splinecode" />
+        {/* <Spline scene="https://prod.spline.design/JWAicw3aLyRWTOWg/scene.splinecode" /> */}
 
         <div className="component-container">{componentToRender}</div>
       </div>

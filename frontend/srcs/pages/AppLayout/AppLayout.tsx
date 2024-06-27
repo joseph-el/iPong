@@ -131,7 +131,7 @@ export default function AppLayout({ children }) {
           <SideBar />
         </GridItem>
 
-        <GridItem pl="2" area={"main"} w="full" h="full">
+        <GridItem pl="2" area={"main"} w="full" h="full" style={{ overflow: "hidden" }} >
           {isInviteAccepted ? (
             <InitInvitedPlayers inviteId={inviteId} />
           ) : (

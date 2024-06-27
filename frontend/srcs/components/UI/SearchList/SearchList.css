@@ -1,5 +1,5 @@
 .list-search-box .bg-black {
-  background-color: #111316 !important;
+  background-color: #0e0e0e !important;
   /* height: 200px !important; */
 }
 
@@ -32,7 +32,7 @@
 }
 
 .Chip-Selected:hover {
-  background-color: #1e1f22 !important;
+  background-color:#006feedb !important;
   color: #fff !important;
   cursor: pointer;
 }

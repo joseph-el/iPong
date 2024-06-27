@@ -19,8 +19,9 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import api from "../../../api/posts";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../state/store";
+import { setUpdateProfile } from "../../../state/update/UpdateSlice";
 
 const INITIAL_VISIBLE_COLUMNS = ["FRIEND NAME", "UNFRIEND", "BLOCK"];
 
@@ -64,7 +65,8 @@ export default function FriendsTable() {
   };
 
   const [userId, setUserId] = useState("");
-
+  const dispatch = useDispatch();
+  const UpdatedProfile = useSelector((state: RootState) => state.update.UpdateProfile);
   const [showAlert, setShowAlert] = useState(AlertProps("")[0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -129,7 +131,7 @@ export default function FriendsTable() {
       }
     };
     fetchData();
-  }, []);
+  }, [UpdatedProfile]);
 
   type Friend = (typeof friends)[0];
 
@@ -204,6 +206,7 @@ export default function FriendsTable() {
         });
       }
       setUserId("");
+      dispatch(setUpdateProfile());
     };
     handelRemoveUser();
   }, [removeUser]);

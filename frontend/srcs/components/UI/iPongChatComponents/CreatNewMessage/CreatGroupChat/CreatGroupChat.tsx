@@ -19,10 +19,10 @@ import Close from "../../../Button/CloseButton/CloseButton";
 import { useEffect, useState } from "react";
 import api from "../../../../../api/posts";
 import DefaultGroupImage from "./memoji/alta1r.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../state/store";
 import { useNavigate } from "react-router-dom";
-
+import { setUpdateChatList } from "../../../../../state/update/UpdateSlice";
 type User = {
   id: number;
   name: string;
@@ -36,6 +36,7 @@ type User = {
 
 export default function CreatGroupChat(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const [GroupName, setGroupName] = useState("");
@@ -117,6 +118,7 @@ export default function CreatGroupChat(props) {
         });
 
         // setReadyToSubmit(false);
+        dispatch(setUpdateChatList());
         props.onCloseComponent();
         navigate(`/ipong/chat/${NewRoom}`);
       } catch (error) {}
