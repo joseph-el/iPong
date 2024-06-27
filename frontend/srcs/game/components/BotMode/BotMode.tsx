@@ -176,7 +176,7 @@ export default function BotMode({
       </GridItem>
 
       <GridItem pl="2" className="button-leave" area={"footer"}>
-        <Button onClick={leaveBotMode}>Leave Training</Button>
+        <Button color="primary" onClick={leaveBotMode}>Leave Training</Button>
       </GridItem>
     </Grid>
 
