@@ -20,7 +20,7 @@ import { env } from 'process';
 
 @WebSocketGateway({
   cors: {
-    origin: env.CORS_ORIGIN?.split(',') || ['http://localhost:5173'],
+    origin: 'http://localhost:5173',
   },
   namespace: 'notifications',
   transports: ['websocket'],
