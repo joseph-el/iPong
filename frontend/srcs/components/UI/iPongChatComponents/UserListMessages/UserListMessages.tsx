@@ -22,7 +22,8 @@ export default function UserListMessages(props) {
   const navigate = useNavigate();
 
   const UserSelect = useSelector((state: RootState) => state.iPongChat.selectedMessage);
-  
+  const UpdatedList = useSelector((state: RootState) => state.update.UpdateChatList);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -64,7 +65,7 @@ export default function UserListMessages(props) {
       }
     };
     fetchUsers();
-  }, [UserSelect]);
+  }, [UserSelect, UpdatedList]);
 
   const handelListChatItem = (id) => {
     props.socket.current?.emit("joinRoom", {
