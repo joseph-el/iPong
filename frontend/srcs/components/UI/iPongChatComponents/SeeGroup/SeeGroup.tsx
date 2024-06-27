@@ -50,12 +50,14 @@ import { useDispatch } from "react-redux";
 import { setGroupSetting } from "../../../../state/iPongChatState/iPongChatState";
 import { useNavigate } from "react-router-dom";
 import { set } from "lodash";
-
+import { setUpdateChatList } from "../../../../state/update/UpdateSlice";
+import { setUpdateChatPanel } from "../../../../state/update/UpdateSlice";
 const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   if (Members.UserId === MyId) return null;
   const [ActionType, setActionType] = useState<String | null>(null);
+
   useEffect(() => {
     const PostActions = async () => {
       try {
@@ -64,6 +66,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
           roomId: RoomId,
         });
       } catch (error) {}
+      dispatch(setUpdateChatPanel());
       setActionType(null);
     };
     ActionType != null && PostActions();
@@ -97,9 +100,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
               />
             </DropdownTrigger>
 
-            {IsAdmin && !Members.IsBanned && 
-            
-            (
+            {IsAdmin && !Members.IsBanned && (
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem
                   className="invite-People-list-text"
@@ -147,27 +148,25 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
                   View profile
                 </DropdownItem>
               </DropdownMenu>
-            )
-            
-            }
+            )}
 
             {(!IsAdmin || (IsAdmin && Members.IsBanned)) && (
-                <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem className="invite-People-list-text" key="copy">
-                    View profile
-                  </DropdownItem>
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem className="invite-People-list-text" key="copy">
+                  View profile
+                </DropdownItem>
 
-                  {IsAdmin && Members.IsBanned && (
-                    <DropdownItem
-                      className="invite-People-list-text"
-                      key="copy"
-                      onClick={() => setActionType("unbanMember")}
-                    >
-                      Unban Member
-                    </DropdownItem>
-                  )}
-                </DropdownMenu>
-              )}
+                {IsAdmin && Members.IsBanned && (
+                  <DropdownItem
+                    className="invite-People-list-text"
+                    key="copy"
+                    onClick={() => setActionType("unbanMember")}
+                  >
+                    Unban Member
+                  </DropdownItem>
+                )}
+              </DropdownMenu>
+            )}
           </Dropdown>
         </div>
       </div>
@@ -176,6 +175,7 @@ const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
 };
 
 const EditGroup = (props) => {
+  const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -273,6 +273,7 @@ const EditGroup = (props) => {
           roomId: props.selectedMessage.id,
           password: GroupPassword,
         });
+        dispatch(setUpdateChatList());
         setLoading(false);
         props.onClose();
       } catch (error) {}
@@ -471,8 +472,11 @@ export default function SeeGroup(props) {
     (state: RootState) =>
       state.iPongChat.ListMessages.find((message) => message.isSelect) || null
   );
+  const dispatch = useDispatch();
   const UserId = useSelector((state: RootState) => state.userState.id);
-
+  const UpdatedChatPanel = useSelector(
+    (state: RootState) => state.update.UpdateChatPanel
+  );
   const handleOpen = (UserAction) => {
     setUserOptions(UserAction);
     onOpen();
@@ -497,12 +501,13 @@ export default function SeeGroup(props) {
             Username: member.member.username,
           };
         });
+
         setFilteredUsers(Members);
       } catch (err) {}
     };
 
     fetchUsers();
-  }, []);
+  }, [UpdatedChatPanel]);
 
   const IsAdmin = filteredUsers.find((member) => {
     return member.UserId === UserId && member.IsAdmin === true;
@@ -531,7 +536,7 @@ export default function SeeGroup(props) {
       }
     };
     fetchUsers();
-  }, []);
+  }, [UpdatedChatPanel]);
 
   const FriendsNotInRoom = FriendsList.filter((friend) => {
     return !filteredUsers.find((member) => member.UserId === friend.userId);
@@ -556,7 +561,7 @@ export default function SeeGroup(props) {
   useEffect(() => {
     const MuteChat = async () => {
       try {
-        const response = await api.post(
+        await api.post(
           `chatroom/muteChat/${selectedMessage?.id}`
         );
       } catch (error) {}
@@ -569,10 +574,11 @@ export default function SeeGroup(props) {
   useEffect(() => {
     const LeaveGroupChat = async () => {
       try {
-        const response = await api.post("chatroom/leaveRoom/", {
+        await api.post("chatroom/leaveRoom/", {
           roomId: selectedMessage?.id,
         });
       } catch (error) {}
+      dispatch(setUpdateChatList());
       setLeaveGroup(false);
     };
     LeaveGroup && LeaveGroupChat();
