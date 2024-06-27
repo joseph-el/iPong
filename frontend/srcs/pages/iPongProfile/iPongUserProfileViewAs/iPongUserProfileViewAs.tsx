@@ -54,7 +54,7 @@ import { set } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
-
+import { setUpdateProfile } from "../../../state/update/UpdateSlice";
 
 const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
@@ -160,7 +160,9 @@ export default function UserProfileViewAs() {
   const [UserprofileInfo, setUserprofileInfo] = useState([]);
 
   const [UserIsBlocked, setUserIsBlocked] = useState<String | null>(null);
-
+  const UpdatedProfileInfo = useSelector(
+    (state: RootState) => state.update.UpdateProfile
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -178,7 +180,7 @@ export default function UserProfileViewAs() {
     };
 
     fetchData();
-  }, [userId]);
+  }, [userId, UpdatedProfileInfo]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -191,7 +193,7 @@ export default function UserProfileViewAs() {
       }
     };
     fetchData();
-  }, [userId]); // USER PROFILE
+  }, [userId, UpdatedProfileInfo]); // USER PROFILE
 
   useEffect(() => {
     const fetchData = async () => {
@@ -213,7 +215,7 @@ export default function UserProfileViewAs() {
       } catch (error) {}
     };
     fetchData();
-  }, [userId]);
+  }, [userId, UpdatedProfileInfo]);
 
   const dropdownOptions = {
     MAKE_FRIEND: {
@@ -245,10 +247,12 @@ export default function UserProfileViewAs() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         if (FriendshipStatus === "SET_FRIEND") {
           await api.post(`/friendship/add`, {
             friendId: userId,
           });
+         
           // console.log("response: add ", response);
         }
         if (FriendshipStatus === "MAKE_FRIEND") {
@@ -258,6 +262,7 @@ export default function UserProfileViewAs() {
           // console.log("response: make friend ", response);
         }
         if (FriendshipStatus === "SET_CANCEL") {
+          console.log("i try to cancel");
           await api.post(`/friendship/reject`, {
             friendId: userId,
           });
@@ -266,9 +271,11 @@ export default function UserProfileViewAs() {
           }
           // console.log("response: reject ", response);
         }
-      } catch (error) {}
-
-      // dispatch(setUpdate());
+        console.log("done with the request");
+      } catch (error) {
+        console.error("cacel", error);
+      }
+      dispatch(setUpdateProfile());
     };
     ButtonFriendStatus !== "ACCEPTED" && fetchData();
   }, [FriendshipStatus]);
@@ -292,8 +299,10 @@ export default function UserProfileViewAs() {
             friendId: userId,
           });
         }
+        dispatch(setUpdateProfile());
       } catch (error) {}
-      // dispatch(setUpdate());
+      dispatch(setUpdateProfile());
+    
     };
     isUnfriend != null && fetchData();
   }, [isUnfriend]);
