@@ -20,7 +20,7 @@ import api from "../../api/posts";
 import IPongAlert from "../../components/UI/iPongAlert/iPongAlert";
 import { useDisclosure } from "@nextui-org/react";
 import CongratulationsNewSkin from "../../components/UI/CongratulationsNewItem/CongratulationsNewSkin";
-
+import { setUpdateProfile } from "../../state/update/UpdateSlice";
 let closed = false;
 const setClosed = (value) => {
   closed = value;
@@ -139,6 +139,7 @@ export default function IPongStore() {
       } catch (error) {
         console.log("Error buying board", error);
       }
+      dispatch(setUpdateProfile());
     };
     const postPaddlesData = async () => {
       try {
@@ -149,12 +150,14 @@ export default function IPongStore() {
           const BuyedSkin = SKIN_DB.find(
             (item) => item.name === BuyItem.item.name
           );
+
           setItemBuySuccess(BuyedSkin);
         }
         console.log("buy State: ", response.data);
       } catch (error) {
         console.log("Error buying paddle", error);
       }
+      dispatch(setUpdateProfile());
     };
     if (BuyItem.ReadyToBuy == undefined || !BuyItem.ReadyToBuy) return;
     BuyItem.type === BUY_TYPES.BUY_BOARD && postBoardsData();
@@ -259,7 +262,9 @@ export default function IPongStore() {
 
                     {item.isUnlocked &&
                     UserInfo.userSelectedBoardPath === item.name ? (
-                      <b className="text-default-500-over text-default-500">Selected</b>
+                      <b className="text-default-500-over text-default-500">
+                        Selected
+                      </b>
                     ) : null}
                   </CardFooter>
                 </Card>
@@ -295,7 +300,9 @@ export default function IPongStore() {
                     </p>
                     {item.isUnlocked &&
                     UserInfo.userSelectedSkinPath === item.name ? (
-                      <b className=" text-default-500-over text-default-500">Selected</b>
+                      <b className=" text-default-500-over text-default-500">
+                        Selected
+                      </b>
                     ) : null}
                   </CardFooter>
                 </Card>
