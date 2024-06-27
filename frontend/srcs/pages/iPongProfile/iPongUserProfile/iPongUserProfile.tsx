@@ -222,6 +222,7 @@ export default function UserProfile() {
           <div className="users-tabs">
             <div className="flex w-full flex-col">
               <Tabs
+                className="Tabs-frame"
                 aria-label="Options"
                 color="primary"
                 variant="underlined"
