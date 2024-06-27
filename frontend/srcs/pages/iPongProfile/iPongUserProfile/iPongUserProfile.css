@@ -6,9 +6,6 @@
 .UserProfile-frame {
   width: 100%;
   height: 100%;
-  overflow: hidden !important;
-  overflow-y: auto !important;
-
   background-color: rgba(0, 0, 0, 0.88);
 }
 
@@ -49,14 +46,8 @@
   margin-left: 100px;
 }
 
-.Tabs-frame {
-
-
-}
 .users-tabs {
   padding-left: 10px;
-
-
 }
 
 .User-details-and-menu {
@@ -330,5 +321,3 @@
 .arch-items {
   position: absolute;
 }
-
-
