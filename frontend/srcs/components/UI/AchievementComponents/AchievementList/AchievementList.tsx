@@ -22,7 +22,7 @@ const AchievementListNavbar = (props) => {
         <div className="text-wrapper">Achievement</div>
         <div className="push-button">
           <div
-            className="AchievementListNavbar-button"
+            className="EditProfileNavbar-button"
             onClick={props.closeList}
           >
             Done
