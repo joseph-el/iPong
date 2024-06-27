@@ -113,7 +113,7 @@ export default function iPongGame() {
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
    
           
-          <Card
+          {/* <Card
             isFooterBlurred
             className="w-full h-[300px] col-span-12 sm:col-span-5"
           >
@@ -171,7 +171,7 @@ export default function iPongGame() {
                 Notify Me
               </Button>
             </CardFooter>
-          </Card>
+          </Card> */}
      
         </div>
 
