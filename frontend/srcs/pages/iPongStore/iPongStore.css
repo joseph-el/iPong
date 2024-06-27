@@ -1,13 +1,36 @@
+@keyframes backgroundAnimation {
+  0% {
+
+    filter: brightness(0.8);
+    opacity: 0.8;
+  }
+  30% {
+
+    filter: brightness(0.8);
+    opacity: 1;
+  }
+
+  50% {
+
+    filter: brightness(0.9);
+    opacity: 1;
+  }
+  100% {
+
+    filter: brightness(1);
+    opacity: 0.8;
+  }
+}
+
 .store-frame {
   width: 100%;
   height: 100%;
-  margin-top: 1px;
+  /* margin-top: 1px; */
   background: url("./assets/iPongStoreBackground.jpg");
   background-size: cover;
-
-  opacity: 0.8;
   border: 0.8px solid #3c424d;
-  position: relative; 
+  position: relative;
+  animation: backgroundAnimation 10s infinite alternate;
 }
 
 .Store-List-nav {
@@ -51,6 +74,12 @@
     border-radius: 10px;
     background-color: #101c2e;
   }
+
+
+  .text-default-500-over {
+    font-size: 12px !important;
+  }
+
 .store-frame .object-coverd {
   /* margin-left: 40px;
     margin-top: 10px; */
