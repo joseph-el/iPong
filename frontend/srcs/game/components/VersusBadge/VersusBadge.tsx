@@ -23,8 +23,8 @@ export default function VersusBadge({
     <div className="iPongGame-VersusBadge">
       <img src={VersusBadgeImg} alt="VersusBadge" className="VersusBadge" />
       <div className="iPongGame-UserBadge-username">
-        <img
-        
+        <Avatar
+          isBordered
           src={UserInfo.picture}
           alt="UserAvatar"
           className="VersusBadge-img UserBadge-img-vr"
