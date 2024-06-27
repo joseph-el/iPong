@@ -12,8 +12,8 @@ export default function UserBadge({playerScore}) {
     <div className="iPongGame-UserBadge">
       <img src={UserBadgeImg} alt="UserBadge" className="UserBadge" />
       <div className="iPongGame-UserBadge-username">
-        <img
-  
+        <Avatar
+          isBordered
           src={UserInfo.picture}
           alt="UserAvatar"
           
