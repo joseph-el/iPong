@@ -2,20 +2,18 @@ import React from "react";
 import "./StartFriendChat.css";
 
 import "../CreatGroupChat/CreatGroupChat.css";
-import { Selection } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import Close from "../../../Button/CloseButton/CloseButton";
 import { Select, SelectItem, Avatar } from "@nextui-org/react";
 import { StartFriendChatWrapper } from "./StartFriendChatWrapper";
 import CustomButton from "../../../Button/SubmitButton/SubmitButton";
-
 import { useState, useEffect } from "react";
 import api from "../../../../../api/posts";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../../state/store";
-
+import { useDispatch } from "react-redux";
+import { setUpdateChatList } from "../../../../../state/update/UpdateSlice";
 export default function StartFriendChat(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [value, setValue] = useState("");
   const [isInvalid, setIsInvalid] = React.useState(false);
   const [users, setUsers] = useState([]);
@@ -47,28 +45,25 @@ export default function StartFriendChat(props) {
   const handelOnChage = (item) => {
     console.log("Item:::OnChange: ", item);
     setValue(item);
-
   };
-
-
 
   useEffect(() => {
     const fetchCreatChatRoom = async () => {
       try {
-
         console.log("UserId:::", value);
         const response = await api.post(`/chatroom/create`, {
           type: "Dm",
           secondUser: value,
         });
-          setCreatChatRoom(false);
-          props.onCloseComponent();
-          navigate(`/ipong/chat/${response.data.id}`);
+        setCreatChatRoom(false);
+        dispatch(setUpdateChatList());
+        props.onCloseComponent();
 
+        navigate(`/ipong/chat/${response.data.id}`);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     CreatChatRoom && fetchCreatChatRoom();
   }, [CreatChatRoom]);
 
@@ -78,7 +73,6 @@ export default function StartFriendChat(props) {
       return;
     }
     setCreatChatRoom(true);
-    
   };
 
   return (
@@ -147,7 +141,11 @@ export default function StartFriendChat(props) {
             }}
           >
             {(user) => (
-              <SelectItem key={user.id} textValue={user.name} onClick={() => handelOnChage(user.userId)} >
+              <SelectItem
+                key={user.id}
+                textValue={user.name}
+                onClick={() => handelOnChage(user.userId)}
+              >
                 <div className="flex gap-2 items-center">
                   <Avatar
                     alt={user.name}
