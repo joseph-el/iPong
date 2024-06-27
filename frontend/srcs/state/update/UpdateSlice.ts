@@ -20,7 +20,7 @@ const updateSlice = createSlice({
     initialState,
     reducers: {
         setUpdateProfile: (state) => {
-            console.log("setUpdateProfile");
+            console.log("setUpdateProfile, unblock");
             state.UpdateProfile = !state.UpdateProfile;
         },
         setUpdateChatPanel: (state) => {
