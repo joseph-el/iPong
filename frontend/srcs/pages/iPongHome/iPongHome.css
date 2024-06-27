@@ -5,14 +5,14 @@
     background-color: rgb(255, 237, 237);
     position: relative;
     background: url("/assets//game/backgrounds/game-background.jpg");
-  background: url("../../../public/__pic.jpg");
+  /* background: url("../../../public/__pic.jpg"); */
     background-size: cover;
     overflow-y: auto;
     overflow-x: auto;
 }
 
 .container--home .main-container {
-  background: url("../../../public/__pic.jpg");
+  /* background: url("../../../public/__pic.jpg"); */
   background-size: cover;
   background-repeat: no-repeat;
 }
