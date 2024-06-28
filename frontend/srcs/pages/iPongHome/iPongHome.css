@@ -4,16 +4,17 @@
     height: 100vh;
     background-color: rgb(255, 237, 237);
     position: relative;
-    background: url("../../../public/peakpx.jpg");
+    background: url("../../../public/peakpx_.jpg");
   /* background: url("../../../public/__pic.jpg"); */
+    /* background-color: #000000; */
     background-size: cover;
     overflow-y: auto;
     overflow-x: auto;
 }
 
 .container--home .main-container {
-  /* background: url("../../../public/__pic.jpg"); */
-  background-size: cover;
+  /* background: url("../../../public//home.png"); */
+  background-size:100%;
   background-repeat: no-repeat;
 }
 

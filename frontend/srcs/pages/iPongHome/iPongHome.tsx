@@ -18,16 +18,10 @@ import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
 import Spline from "@splinetool/react-spline";
 import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
 import { Grid, GridItem } from "@chakra-ui/react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-  Button,
-} from "@nextui-org/react";
+
 
 import KKKK from "../../pages/iPongStore/assets/maps/map.JPG";
+
 export default function iPongGame() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const userSelectedSkinPath = SKIN_DB.find(
@@ -175,18 +169,18 @@ export default function iPongGame() {
      
         </div>
 
-        <div className="container-nav">
+        {/* <div className="container-nav">
           <button className="button1" onClick={vsBotHandler}>
             Play vs Bot
           </button>
           <button className="button2" onClick={vsRandomHandler}>
             Play vs Random
           </button>
-        </div>
+        </div> */}
       </GridItem>
 
       <GridItem pl="2" area={"leaderboard"}>
-        <LeaderBoard />
+        {/* <LeaderBoard /> */}
         {Achievement !== null ? (
           <div className="blur-background">
             <div className="AchievementList-place fade-in">
