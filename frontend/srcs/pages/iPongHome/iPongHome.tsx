@@ -21,6 +21,10 @@ import { Grid, GridItem } from "@chakra-ui/react";
 
 
 import KKKK from "../../pages/iPongStore/assets/maps/map.JPG";
+import ddd from "../../../public/dddd.jpeg";
+import {Card, CardHeader, CardBody, CardFooter, Image, Button} from "@nextui-org/react";
+
+
 
 export default function iPongGame() {
   const UserInfo = useSelector((state: RootState) => state.userState);
@@ -104,68 +108,68 @@ export default function iPongGame() {
       className="container--home"
     >
       <GridItem pl="2" area={"main"} className="main-container">
-        <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
+        <div className="flex gap-16">
    
-          
-          {/* <Card
+      
+          <Card
             isFooterBlurred
-            className="w-full h-[300px] col-span-12 sm:col-span-5"
+            className="w-[500px] h-[300px] col-span-12 sm:col-span-5"
           >
             <CardHeader className="absolute z-10 top-1 flex-col items-start">
-              <p className="text-tiny text-white/60 uppercase font-bold">New</p>
-              <h4 className="text-black font-medium text-2xl">Acme camera</h4>
+              {/* <p className="text-tiny text-white/60 uppercase font-bold">Play </p> */}
+              {/* <h4 className="text-black font-medium text-2xl">Random</h4> */}
             </CardHeader>
             <Image
               removeWrapper
               alt="Card example background"
               className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
-              src="https://nextui.org/images/card-example-6.jpeg"
+              src={ddd}
             />
             <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between">
               <div>
                 <p className="text-black text-tiny">Available soon.</p>
                 <p className="text-black text-tiny">Get notified.</p>
               </div>
-              <Button
+              {/* <Button
                 className="text-tiny"
                 color="primary"
                 radius="full"
                 size="sm"
               >
-                Notify Me
-              </Button>
+                
+              </Button> */}
             </CardFooter>
           </Card>
 
-          <Card
+               <Card
             isFooterBlurred
-            className="w-full h-[300px] col-span-12 sm:col-span-5"
+            className="w-[500px] h-[300px] col-span-12 sm:col-span-5"
           >
             <CardHeader className="absolute z-10 top-1 flex-col items-start">
-              <p className="text-tiny text-white/60 uppercase font-bold">New</p>
-              <h4 className="text-black font-medium text-2xl">Acme camera</h4>
+              {/* <p className="text-tiny text-white/60 uppercase font-bold">Play </p> */}
+              {/* <h4 className="text-black font-medium text-2xl">Random</h4> */}
             </CardHeader>
             <Image
               removeWrapper
               alt="Card example background"
               className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
-              src="https://nextui.org/images/card-example-6.jpeg"
+              src={ddd}
             />
             <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between">
               <div>
                 <p className="text-black text-tiny">Available soon.</p>
                 <p className="text-black text-tiny">Get notified.</p>
               </div>
-              <Button
+              {/* <Button
                 className="text-tiny"
                 color="primary"
                 radius="full"
                 size="sm"
               >
-                Notify Me
-              </Button>
+                
+              </Button> */}
             </CardFooter>
-          </Card> */}
+          </Card>  
      
         </div>
 
@@ -180,7 +184,7 @@ export default function iPongGame() {
       </GridItem>
 
       <GridItem pl="2" area={"leaderboard"}>
-        {/* <LeaderBoard /> */}
+        <LeaderBoard />
         {Achievement !== null ? (
           <div className="blur-background">
             <div className="AchievementList-place fade-in">
