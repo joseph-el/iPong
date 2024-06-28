@@ -10,7 +10,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("../../../../public/assets/game/backgrounds/game-background.jpg")
+  background: url("../../../../public/pep.jpg")
     no-repeat center center;
   background-size: cover;
   filter: blur(2px);
