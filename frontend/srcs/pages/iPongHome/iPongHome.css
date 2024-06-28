@@ -4,9 +4,9 @@
     height: 100vh;
     background-color: rgb(255, 237, 237);
     position: relative;
-    background: url("../../../public/peakpx_.jpg");
+    /* background: url("../../../public/peakpx_.jpg"); */
   /* background: url("../../../public/__pic.jpg"); */
-    /* background-color: #000000; */
+    background-color: #737070ae;
     background-size: cover;
     overflow-y: auto;
     overflow-x: auto;
