@@ -1,0 +1,1 @@
+export default "\n\nvarying float glow;\n\nvoid main() {\n    float circle = 1.0 - clamp(length(gl_PointCoord.xy - 0.5) / 0.5, 0.0, 1.0);\n\n    gl_FragColor = vec4(vec3(sin(glow * 3.14) * circle), 1.0);\n}\n";

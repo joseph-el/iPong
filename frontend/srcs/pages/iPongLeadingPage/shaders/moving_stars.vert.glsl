@@ -1,0 +1,1 @@
+export default "\nattribute float scale;\n\nuniform float appear;\n\n\nvarying float glow;\n\nvoid main() {\n    vec4 pos = modelViewMatrix * vec4(position, 1.0);\n    float range = length(pos);\n    glow = smoothstep(8.0, 6.0, range) * smoothstep(0.5, 6.0, range) * appear;\n\n    gl_PointSize = scale;\n    gl_Position = projectionMatrix * pos;\n}\n";

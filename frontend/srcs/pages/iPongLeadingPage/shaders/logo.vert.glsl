@@ -1,0 +1,1 @@
+export default "\nvarying vec3 globalPos;\nvarying vec4 screenPos;\nvarying vec4 localPos;\nvarying vec3 screenNormal;\n\nvoid main() {\n    screenNormal = normalize(normalMatrix * normal);\n    globalPos = position;\n    localPos = viewMatrix * modelMatrix * vec4(globalPos, 1.0);\n    screenPos = projectionMatrix * localPos;\n    gl_Position = screenPos;\n}\n";
