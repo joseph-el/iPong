@@ -32,7 +32,8 @@ import { SocketProvider } from "../context/SocketContext";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-
+import { useLocation, Outlet } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -138,96 +139,66 @@ const RequireAuth = ({ children }) => {
   return children;
 };
 
+const AnimatedSwitch = () => {
+  const location = useLocation();
+
+  return (
+    <TransitionGroup>
+      <CSSTransition key={location.key} classNames="fade" timeout={300}>
+        <div className="route-section">
+          <Outlet />
+        </div>
+      </CSSTransition>
+    </TransitionGroup>
+  );
+};
+
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <IPongLeadingPage />,
-    errorElement: <h1> Not Found </h1>,
-  },
-  {
-    path: "/auth",
+    path: '/',
+    element: <AnimatedSwitch />, // Use AnimatedSwitch for top-level routes
     children: [
       {
-        path: "/auth/",
-        element: <SignAuth path="/auth" />,
+        path: '/',
+        element: <IPongLeadingPage />,
+        errorElement: <h1> Not Found </h1>,
       },
       {
-        path: "/auth/sign-in",
-        element: <SignAuth path="/auth/sign-in" />,
+        path: '/auth',
+        children: [
+          { path: '/auth/', element: <SignAuth path="/auth" /> },
+          { path: '/auth/sign-in', element: <SignAuth path="/auth/sign-in" /> },
+          { path: '/auth/2fa-login', element: <SignAuth path="/auth/2fa-login" /> },
+          { path: '/auth/create-account', element: <SignAuth path="/auth/create-account" /> },
+          { path: '/auth/set-username-picture', element: <SignAuth path="/auth/set-username-picture" /> },
+          { path: '/auth/reset-password', element: <SignAuth path="/auth/reset-password" /> },
+          { path: '/auth/new-password', element: <SignAuth path="/auth/new-password" /> },
+          { path: '/auth/welcome', element: <SignAuth path="/auth/welcome" /> },
+          { path: '/auth/verify-email', element: <SignAuth path="/auth/verify-email" /> },
+          { path: '/auth/set-password', element: <SignAuth path="/auth/set-password" /> },
+          { path: '/auth/verify-reset-code', element: <SignAuth path="/auth/verify-reset-code" /> },
+        ],
       },
       {
-        path: "/auth/2fa-login",
-        element: <SignAuth path="/auth/2fa-login" />,
-      },
-      {
-        path: "/auth/create-account",
-        element: <SignAuth path="/auth/create-account" />,
-      },
-      {
-        path: "/auth/set-username-picture",
-        element: <SignAuth path="/auth/set-username-picture" />,
-      },
-      {
-        path: "/auth/reset-password",
-        element: <SignAuth path="/auth/reset-password" />,
-      },
-      {
-        path: "/auth/new-password",
-        element: <SignAuth path="/auth/new-password" />,
-      },
-      {
-        path: "/auth/welcome",
-        element: <SignAuth path="/auth/welcome" />,
-      },
-      {
-        path: "/auth/verify-email",
-        element: <SignAuth path="/auth/verify-email" />,
-      },
-      {
-        path: "/auth/set-password",
-        element: <SignAuth path="/auth/set-password" />,
-      },
-      {
-        path: "/auth/verify-reset-code",
-        element: <SignAuth path="/auth/verify-reset-code" />,
-      },
-    ],
-  },
-  {
-    path: "/ipong",
-    element: (
-      <RequireAuth>
-        <AppLayout />
-      </RequireAuth>
-    ),
-    children: [
-      {
-        path: "home",
-        element: <Home />,
-      },
-      {
-        path: "profile",
-        element: <IPongProfile />,
-      },
-      {
-        path: "chat",
-        element: <IPongChat />, // Component to render when no chatId is provided
-      },
-      {
-        path: "chat/:chatId",
-        element: <IPongChat />,
-      },
-      {
-        path: "store",
-        element: <IPongStore />,
-      },
-      {
-        path: "users/:userId",
-        element: <IPongProfileViewAs />,
+        path: '/ipong',
+        element: (
+          <RequireAuth>
+            <AppLayout />
+          </RequireAuth>
+        ),
+        children: [
+          { path: 'home', element: <Home /> },
+          { path: 'profile', element: <IPongProfile /> },
+          { path: 'chat', element: <IPongChat /> },
+          { path: 'chat/:chatId', element: <IPongChat /> },
+          { path: 'store', element: <IPongStore /> },
+          { path: 'users/:userId', element: <IPongProfileViewAs /> },
+        ],
       },
     ],
   },
 ]);
+
 
 export default function App() {
   return (
