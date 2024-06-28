@@ -1,0 +1,1 @@
+export default "\n\nvarying float strokeOpacity;\nvarying float value;\nvarying float activeValue;\n\nvoid main() {\n    if (activeValue < value) discard;\n    gl_FragColor = vec4(0.5, 0.5, 0.5, strokeOpacity * 0.5);\n}\n";

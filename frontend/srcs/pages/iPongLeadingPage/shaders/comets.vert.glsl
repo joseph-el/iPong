@@ -1,0 +1,1 @@
+export default "\nvarying vec2 directUV;\n\nvoid main() {\n    directUV = uv;\n    gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position, 1.0);\n}\n";

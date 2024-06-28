@@ -13,6 +13,9 @@
   overflow: hidden;
   height: auto !important;
   max-height: none !important;
+  background-color: #0e0e0ed7;
+  
+  border: 0.1px solid #72767a;
 }
 
 .maskgroup-svg {

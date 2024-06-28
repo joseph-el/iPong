@@ -1,17 +1,25 @@
 .overlay {
+  // background: url("../../../public/peakpx.jpg") !important;
+  // background-size: cover !important;
+
     --ring-size: 100px;
     background: #000;
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: var(--full-height);
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: 500ms ease-in-out all, 0ms height linear;
     user-select: none;
   
+    &.overlay-transition {
+      opacity: 0; /* Example: Fade out effect */
+      transition: 500ms ease-in-out all, 0ms height linear;
+    }
+
     &__center {
       --progress-stroke: #fff;
       display: flex;
@@ -169,4 +177,25 @@
       transform: rotate(30deg);
     }
   }
+
+
+  @mixin content-padding {
+    padding: var(--content-padding-top) var(--content-padding-side);
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--full-height);
+  }
+  
+  @mixin tablet() {
+    @media (max-width: 900px) {
+      @content
+    }
+  }
+  
+  @mixin mobile() {
+    @media (max-width: 450px) {
+      @content
+    }
+  }
+  
   
