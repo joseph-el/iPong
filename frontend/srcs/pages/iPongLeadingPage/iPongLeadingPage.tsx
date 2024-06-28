@@ -97,18 +97,9 @@ export default function iPongLeadingPage() {
   }, []);
 
   const onClickEnter = () => {
-    document.body.classList.add('overlay-transition');
+    navigate("/Auth");
 
-    // Delay the navigation using setTimeout
-    setTimeout(() => {
-      localStorage.setItem("isLoaded", "true");
-      navigate("/Auth");
-    }, 800); // Adjust timing as needed to match your transition timing
-  
-    // Optionally, you can remove the transition class after a delay
-    setTimeout(() => {
-      document.body.classList.remove('overlay-transition');
-    }, 1200); // Adjust timing accordingly
+
   };
 
   const onClickNoSound = (event: MouseEvent) => {
