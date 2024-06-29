@@ -242,9 +242,7 @@ export function LeaderBoard() {
         return (
           <div
             className={
-              user.MatchStatus !== "loss"
-                ? "success-text-result"
-                : "danger-text-result"
+       "vbucks-text"
             }
           >
             {user.MatchStatus}
@@ -254,9 +252,7 @@ export function LeaderBoard() {
         return (
           <div
             className={
-              user.Winner !== null
-                ? "success-text-result"
-                : "danger-text-result"
+              "vbucks-text"
             }
           >
             {user.Winner !== null ? user.Winner : "-"}
