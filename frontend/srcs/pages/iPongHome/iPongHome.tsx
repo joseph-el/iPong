@@ -20,7 +20,7 @@ import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 import KKKK from "../../pages/iPongStore/assets/maps/map.JPG";
-import ddd from "../../../public/ai.jpeg";
+import ddd from "../../../public/ai.jpg";
 import ddd2 from "../../../public/dddd.jpeg";
 import img_split from "../../../public/splite.png";
 import {
@@ -115,15 +115,47 @@ export default function iPongGame() {
     >
       <GridItem pl="2" area={"main"} className="main-container">
         <div className="Home-button">
-         
-         
+
           <Card
+
             isFooterBlurred
-            className="w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
+            className=" main-card w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
           >
             <CardHeader className="absolute z-10 top-16 flex-col items-start ">
-              <p className="text-tiny text-white/60  font-bold random-challenger-title fancy ">
-              Random Challenger
+              <p className="text-tiny text-white/60  font-bold random-challenger-title  ">
+              Battle Royale <br/> Ranked
+              </p>
+  
+            </CardHeader>
+
+            <Image
+              removeWrapper
+              alt="Relaxing app background "
+              className="z-0 w-full h-full button-img-ground object-cover "
+              src={ddd2}
+            />
+
+            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+              <div className="flex flex-grow gap-2 items-center">
+      
+                <div className="flex flex-col">
+                  <p className="text-tiny text-white/60">Compete in ranked matches</p>
+                  <p className="text-tiny text-white/60">
+                   against random opponents and climb the leaderboard
+                  </p>
+                </div>
+              </div>
+    
+            </CardFooter>
+          </Card>
+
+          <Card
+            isFooterBlurred
+            className=" main-card w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
+          >
+            <CardHeader className="absolute z-10 top-16 flex-col items-start ">
+              <p className="text-tiny text-white/60  font-bold random-challenger-title  ">
+              AI <br/> Training
               </p>
               {/* <h4 className="text-white/90 font-medium text-xl">
                Embrace unpredictability with matches against surprise opponents
@@ -134,32 +166,22 @@ export default function iPongGame() {
               removeWrapper
               alt="Relaxing app background "
               className="z-0 w-full h-full button-img-ground object-cover "
-              src={ddd2}
-            />
-          </Card>
-
-
-          <Card
-            isFooterBlurred
-            className="w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
-          >
-            <CardHeader className="absolute z-10 top-1 flex-col items-start">
-              <p className="text-tiny text-white/60 uppercase font-bold">
-                Your day your way
-              </p>
-              <h4 className="text-white/90 font-medium text-xl">
-                Your checklist for better sleep
-              </h4>
-            </CardHeader>
-
-            <Image
-              removeWrapper
-              alt="Relaxing app background"
-              className="z-0 w-full h-full object-cover"
               src={ddd}
             />
-          </Card>
 
+            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+              <div className="flex flex-grow gap-2 items-center">
+        
+                <div className="flex flex-col">
+                  <p className="text-tiny text-white/60">Train against advanced AI </p>
+                  <p className="text-tiny text-white/60">
+                  to master your skills and rise to the top
+                  </p>
+                </div>
+              </div>
+    
+            </CardFooter>
+          </Card>
         </div>
       </GridItem>
 
