@@ -10,7 +10,10 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import IPongGameNav from "../../components/IPongGameNav/IPongGameNav";
 import Scores from "../Score/Score";
 import GameOver from "../GameOver/GameOver";
+import { BOARDS_DB } from "../../../pages/iPongStore/db/board.db";
 import { Grid, GridItem } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
 interface BotModeProps {
   userSelectedSkin: string;
   userSelectedBoard: string;
@@ -32,7 +35,13 @@ export default function BotMode({
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [playerScore, setPlayerScore] = useState<number>(0);
   const [botScore, setBotScore] = useState<number>(0);
+  const UserInfo = useSelector((state: RootState) => state.userState);
 
+  const userSelectedBoardPath = BOARDS_DB.find(
+    (board) => board.name === UserInfo.userSelectedBoardPath
+  )?.imgPath;
+
+  console.log("userSelectedBoardPath", userSelectedBoardPath);
   const navigate = useNavigate();
 
   const winnerCallback = (winner: string) => {
@@ -142,7 +151,27 @@ export default function BotMode({
       gridTemplateColumns={"150px 1fr"}
       h="100%"
       className="container-bootmode"
+      style={{
+        position: 'relative', // Ensure position is relative for absolute positioning of pseudo-element
+        // overflow: 'hidden',   // Hide overflow to prevent blur from affecting child elements
+      }}
     >
+  
+    <div
+      className="background-blur"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: `url(${userSelectedBoardPath})`,
+        backgroundSize: 'cover',
+        filter: 'blur(5px)',
+        // zIndex: ,
+      }}
+    ></div>
+
       <GridItem pl="2" area={"nav"}>
         <IPongGameNav
           player1Score={playerScore}
@@ -178,8 +207,10 @@ export default function BotMode({
       <GridItem pl="2" className="button-leave" area={"footer"}>
         <Button color="primary" onClick={leaveBotMode}>Leave Training</Button>
       </GridItem>
+
     </Grid>
 
+    
     // <div className="container-bootmode">
     //   <div className="iPongGame-frame">
     //     <IPongGameNav
