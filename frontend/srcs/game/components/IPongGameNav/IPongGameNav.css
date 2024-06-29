@@ -6,17 +6,160 @@
   background-size: cover;
   position: relative;
 } */
-
-.iPongGame-frame-nav {
-  margin-top: 15px;
-  padding-top: 0px;
+.nav-area {
+  position: absolute;
+  top: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.iPongGame-frame-nav {
+
   margin-right: 10px;
+
+  filter: brightness(0.8);
+  width: 100%;
+  max-width: 900px;
+  max-height: 600px;
+  height: auto;
+
+  padding: 0px 10px 0px 10px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 25px;
+  border: 0.9px solid #ffffff5d !important;
+
+  /* border: 2px solid transparent; */
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25), -4px 4px 4px rgba(0, 0, 0, 0.25),
+    4px -4px 4px rgba(0, 0, 0, 0.25), -4px -4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .Versus3d {
-  height: 120px;
+
+  height: 100%;
 }
 
+
+
+.Versus-opp .text-small {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: "Poppins-Medium", Helvetica;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.Versus-opp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1.5rem;
+ width: 50%;
+  /* font-size: 1.5rem;
+  font-weight: 700; */
+  /* color: #fff; */
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.iPongGame-UserBadge-score {
+  margin-top: 10px;
+  font-size: 45px;
+  font-weight: 550 !important;
+  color: var(--Dark-color-Text-content, #ececec);
+  font-family: "fortnite-1", Helvetica;
+}
+
+.Versus3d {
+  align-self: center !important;
+  align-items: center !important;
+  height: 80px;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+
+  .Versus-opp .text-small {
+    font-size: 1.3rem;
+  }
+  .iPongGame-UserBadge-score {
+    font-size: 40px;
+  }
+  .Versus3d {
+    height: 75px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .Versus-opp .text-small {
+    font-size: 1.2rem;
+  }
+  .iPongGame-UserBadge-score {
+    font-size: 35px;
+  }
+  .Versus3d {
+    height: 70px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .Versus-opp .text-small {
+    font-size: 1.1rem;
+  }
+  .iPongGame-UserBadge-score {
+    font-size: 30px;
+  }
+  .Versus3d {
+    height: 60px;
+  }
+  .VersusBadge-img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 575px) {
+  .Versus-opp .text-small {
+    font-size: 1rem;
+  }
+  .iPongGame-UserBadge-score {
+    font-size: 30px;
+  }
+  .Versus3d {
+    margin-top: 5px;
+
+    height: 50px;
+  }
+  .VersusBadge-img {
+    display: none;
+  }
+}
+
+@media (max-width: 374px) {
+  .Versus-opp .text-small {
+    font-size: 0.9rem;
+  }
+  .iPongGame-UserBadge-score {
+    font-size: 25px;
+  }
+  .Versus3d {
+    height: 40px;
+  }
+  .VersusBadge-img {
+    display: none;
+  }
+}
+
+@media (max-width: 319px) {
+  .iPongGame-UserBadge-score {
+    font-size: 20px;
+  }
+  .iPongGame-UserBadge-score {
+    font-size: 20px;
+  }
+  .Versus3d {
+    height: 30px;
+  }
+  .VersusBadge-img {
+    display: none;
+  }
+}
