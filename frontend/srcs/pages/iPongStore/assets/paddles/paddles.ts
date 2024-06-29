@@ -1,19 +1,35 @@
 
-export { default as Paddles1 } from './paddles-1.svg';
-export { default as PaddlesEpicFlux } from './paddles-Epic Flux 1.svg';
-export { default as PaddlesLegendaryFlux } from './paddles-Legendary Flux.svg';
-export { default as PaddlesRareFlux } from './paddles-Rare Flux 1.svg';
-export { default as PaddlesCold } from './paddles-cold 1.svg';
-export { default as PaddlesFir3awn } from './paddles-fir3awn.svg';
-export { default as PaddlesHacker } from './paddles-hacker.svg';
-export { default as PaddlesJocker } from './paddles-jocker.svg';
-export { default as PaddlesLacasa } from './paddles-lacasa.svg';
-export { default as PaddlesNinja } from './paddles-ninja.svg';
-export { default as PaddlesPalyer10 } from './paddles-palyer10.svg';
-export { default as PaddlesPlayer20 } from './paddles-player20.svg';
-export { default as PaddlesSahrawi } from './paddles-sahrawi.svg';
-export { default as PaddlesSaudi } from './paddles-saudi.svg';
-export { default as PaddlesSpaceMan } from './paddles-space man.svg';
-export { default as PaddlesSpiderman } from './paddles-spiderman.svg';
-export { default as PaddlesTheDark } from './paddles-the_dark.svg';
-export { default as PaddlesZombie } from './paddles-zombie.svg';
+import { default as Archer } from           './Archer.png';
+import { default as Pharaoh } from          './Pharaoh.png';
+import { default as UaeMan } from           './Uae Man.png';
+import { default as Joker } from            './Joker.png';
+import { default as Ninja } from            './Ninja.png';
+import { default as SaudiMan } from         './Saudi man.png';
+import { default as Spiderman } from        './Spiderman.png';
+import { default as Zombie } from           './Zombie.png';
+import { default as Ice } from              './Ice.png';
+import { default as Hacker } from           './Hacker.png';
+import { default as AlbertEinstein } from   './Albert Einstein.png';
+import { default as LaCasaDePapel } from    './La Casa De Papel.png';
+import { default as DesertMan } from        './Desert Man.png';
+import { default as Astronaut } from        './Astronaut.png';
+import { default as BloodSucker } from      './Blood Sucker.png';
+
+// Export renamed paddle images
+export {
+  Archer,
+  Pharaoh,
+  UaeMan,
+  Joker,
+  Ninja,
+  SaudiMan,
+  Spiderman,
+  Zombie,
+  Ice,
+  Hacker,
+  AlbertEinstein,
+  LaCasaDePapel,
+  DesertMan,
+  Astronaut,
+  BloodSucker,
+};
