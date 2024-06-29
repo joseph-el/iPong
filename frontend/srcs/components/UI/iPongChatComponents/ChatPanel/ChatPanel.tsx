@@ -15,7 +15,7 @@ import {getAvatarSrc} from "../../../../utils/getAvatarSrc";
 
 import { ScrollShadow } from "@nextui-org/react";
 import {setMessages} from "../../../../state/iPongChatState/iPongChatState";
-export default function ChatPanel() {
+export default function ChatPanel(props) {
   const scrollRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -86,7 +86,7 @@ export default function ChatPanel() {
             className="RightChatBubbles-frame"
             key={index}
             message={chatBubble.message}
-            avatarUrl={chatBubble.avatar}
+            avatarUrl={!props.isBlocked ?     chatBubble.avatar : ""}
             User={chatBubble.user}
           
           />

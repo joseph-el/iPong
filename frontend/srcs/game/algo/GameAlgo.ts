@@ -212,7 +212,7 @@ export class GameAlgo {
     ctx.restore();
   }
   private drawPlayerShadow(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.0)";
     const shadowOffsetX = 3;
     const shadowOffsetY = 5;
     ctx.fillRect(

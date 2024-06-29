@@ -34,11 +34,33 @@ export class UsersService {
       data: udateuserDto,
     });
   }
+  
   async getAllUsers(userId: string) {
     const allUsers = await this.DatabaseService.user.findMany();
-    const filteredUsers = allUsers.filter((user) => user.userId !== userId);
-    return filteredUsers;
+    //get blockers and blocked by users
+    const blockedUsers = await this.DatabaseService.blockedUser.findMany({
+      where: {
+        OR: [
+          {
+            blocked: userId,
+          },
+
+        ],
+      },
+    });
+    //filter out blocked users and the current user
+    const users = allUsers.filter((user) => {
+      return (
+        !blockedUsers.find((blockedUser) => blockedUser.blockedBy === user.userId) &&
+        !blockedUsers.find((blockedUser) => blockedUser.blocked === user.userId) &&
+        user.userId !== userId
+      );
+    });
+    return users;
   }
+
+
+
   // TODO: Implement this method and add frindshipId to the user
   async getUserById(userId: string, friendId?: string) {
     return await this.DatabaseService.user.findUnique({

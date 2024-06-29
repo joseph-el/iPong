@@ -5,50 +5,124 @@
     background-color: rgb(255, 237, 237);
     position: relative;
     /* background: url("../../../public/peakpx_.jpg"); */
-  /* background: url("../../../public/__pic.jpg"); */
-    background-color: #737070ae;
+    background-color: #0e0e0eae;
     background-size: cover;
     overflow-y: auto;
     overflow-x: auto;
 }
 
-.container--home .main-container {
-  /* background: url("../../../public//home.png"); */
-  background-size:100%;
-  background-repeat: no-repeat;
+.Home-button {
+  /* padding: 20px; */
+  display: flex;
+  height: 100%;
+  gap: 10px; 
 }
 
+
+.split {
+  display: absolute;
+  z-index: 2;
+}
+
+.random-card:hover {
+  transition: all 800ms cubic-bezier(0.65, 0, 0.35, 1) !important;
+
+}
+
+.random-card-description {
+  font-family: "sfprodisplay-meduim", sans-serif;
+  font-size: 20px;
+  color: white;
+  font-weight: 900;
+  text-align: center;
+
+}
+.container--home .main-container {
+  
+  background-size: cover;
+
+  border-radius: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  /* border: 1px solid #2f2f2f; */
+}
+.main-card {
+   border: 1px solid #2f2f2f;
+}
+.container--home 
 .match-history-frame {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #2f2f2f;
   padding-top: 20px ;
   padding-left: 10px;
-  background-color: #0e0e0eae !important;
+  background-color: #0e0e0ed1 !important;
 }
- .container--home 
-.button1 {
 
-  /* margin: auto; */
-  background-color: #007bff;
-  color: #000000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+
 
 .css-15at1dk {
   padding: 0px !important
   ;
 }
-.container--home 
-.button2 {
-
-  /* margin: auto; */
-  background-color: #007bff;
-  color: #000000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.css-p8u02r, css-1q0h5u5 {
+  padding: 0px !important
+  ;
 }
+.button-img-ground {
+  filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.5));
+  filter: brightness(0.8);
+  /* opacity: 0.5 !important; */
+}
+
+.random-challenger-title {
+  color: raidiant(255, 255, 255, 0.5);
+
+  /* font-size: 40px; */
+  /* font-weight: 900; */
+  font-family: "fortnite-1", Helvetica;
+  word-spacing: 5px;
+  letter-spacing: 2px;
+  font-size: 3.5vw;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+  text-shadow: 0 0 10px #000;
+
+}
+
+
+.fancy {
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    height: 100%;
+    background-image: url("../../../public/peakpx_.jpg");
+    background-size: auto auto;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+
+
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900");
+
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+} */
+/* 
+body {
+  display: flex;
+  background: #000;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+} */

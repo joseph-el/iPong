@@ -15,7 +15,7 @@ import { ScrollShadow } from "@nextui-org/react";
 import "./MatchHistory.css";
 import { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
-const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "V-BUCKS", "RESULTS", "DATE"];
+const INITIAL_VISIBLE_COLUMNS = ["Versus Player", "iCoins", "RESULTS", "DATE"];
 import api from "../../../api/posts";
 import {formatTimeDifference} from "../NotificationsBar/NotificationsBar"
 import { useSelector } from "react-redux";

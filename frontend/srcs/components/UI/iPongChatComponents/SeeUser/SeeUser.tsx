@@ -11,6 +11,7 @@ import { RootState } from "../../../../state/store";
 import { useNavigate } from "react-router-dom";
 import Close from "../../Button/CloseButton/CloseButton";
 import { useSocket } from "../../../../context/SocketContext";
+import { Image } from "@nextui-org/react";
 
 export default function SeeUser(props) {
   const selectedMessage = useSelector(
@@ -41,8 +42,6 @@ export default function SeeUser(props) {
         console.log("opponent have another matchmaking/game going");
       });
     }
-
-    /* Disabled the invite button until the invite Accepted or Destroyed */
     setIsInviteDisabled(true);
     setTimeout(() => {
       setIsInviteDisabled(false);
@@ -56,34 +55,32 @@ export default function SeeUser(props) {
           <Avatar
             isBordered
             className="User-avatar w-24 h-24"
-            src={selectedMessage?.avatar}
+            src={!props.isBlocked ? selectedMessage?.avatar : ""}
           />
 
           <div className="info">
             <div className="User-name">{selectedMessage?.fullname}</div>
             <div className="ipongchar">iPongChat</div>
             <div className="User-options">
-            <img
-              onClick={() => {
-                navigate(`/ipong/users/${props.userId}`);
-              }}
-              src={SeeProfileIcon}
-              alt="See Profile"
-              className="User-options-See-Profile-img"
-            />
+              <img
+                onClick={() => {
+                  navigate(`/ipong/users/${props.userId}`);
+                }}
+                src={SeeProfileIcon}
+                alt="See Profile"
+                className="User-options-See-Profile-img"
+              />
 
-            <img
-              onClick={handelInviteMatch}
-              src={InviteMatchIcon}
-              alt="Invite Match"
-              className={`User-options-Invite-Match-img ${
-                isInviteDisabled ? "disabled" : ""
-              }`}
-            />
+              <Image
+                onClick={handelInviteMatch}
+                src={InviteMatchIcon}
+                alt="Invite Match"
+                className={`User-options-Invite-Match-img ${
+                  isInviteDisabled || props.isBlocked ? "disabled" : ""
+                }`}
+              />
+            </div>
           </div>
-          </div>
-
-     
         </div>
 
         <Close

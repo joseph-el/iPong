@@ -1,9 +1,9 @@
-FROM node:20
+FROM node:latest
 
 WORKDIR /app
 
-COPY ./code .
+COPY . .
 
-RUN npm install && npm run build
+RUN npm install
 
-CMD sleep 5
+CMD ["npm", "run",  "dev"]

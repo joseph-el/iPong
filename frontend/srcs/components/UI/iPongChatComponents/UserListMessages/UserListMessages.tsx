@@ -45,6 +45,7 @@ export default function UserListMessages(props) {
                 }
               });
             }
+            console.log("memberInfo::>", memberInfo);
             return {
               id: message.id,
               type: message.type,

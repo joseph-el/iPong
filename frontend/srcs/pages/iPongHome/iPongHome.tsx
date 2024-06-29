@@ -15,16 +15,25 @@ import { AppDispatch, RootState } from "../../state/store";
 import { getUserLevel } from "../../utils/getCurrentLevel";
 import { SKIN_DB } from "../../pages/iPongStore/db/skins.db";
 import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
+import * as MirrorPaddlesPNGs from "../iPongStore/assets/mirror-paddles/mirror-paddles";
 import Spline from "@splinetool/react-spline";
 import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
 import { Grid, GridItem } from "@chakra-ui/react";
 
-
 import KKKK from "../../pages/iPongStore/assets/maps/map.JPG";
-import ddd from "../../../public/dddd.jpeg";
-import {Card, CardHeader, CardBody, CardFooter, Image, Button} from "@nextui-org/react";
+import ddd from "../../../public/ai.jpg";
+import ddd2 from "../../../public/dddd.jpeg";
 
+import img_split from "../../../public/splite.png";
 
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+  Button,
+} from "@nextui-org/react";
 
 export default function iPongGame() {
   const UserInfo = useSelector((state: RootState) => state.userState);
@@ -34,8 +43,15 @@ export default function iPongGame() {
   const userSelectedBoardPath = BOARDS_DB.find(
     (board) => board.name === UserInfo.userSelectedBoardPath
   )?.imgPath;
-  const botSelectedSkinPath =
-    SKIN_DB[Math.floor(Math.random() * SKIN_DB.length)].imgPath;
+
+  function getRandomKey(obj: Record<string, any>): string {
+    const keys = Object.keys(obj);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    return randomKey;
+  }
+  
+  const botSelectedSkinPath = MirrorPaddlesPNGs[getRandomKey(MirrorPaddlesPNGs)];
+
 
   type ModeType = "practice" | "onlineBattle" | null;
   const [mode, setMode] = useState<ModeType>(null);
@@ -74,7 +90,7 @@ export default function iPongGame() {
     return (
       <BotMode
         userSelectedSkin={userSelectedSkinPath}
-        userSelectedBoard={KKKK}
+        userSelectedBoard={userSelectedBoardPath}
         botSelectedSkin={botSelectedSkinPath}
       />
     );
@@ -102,85 +118,90 @@ export default function iPongGame() {
       templateAreas={`"main main"
                   "main main"
                   "leaderboard leaderboard"`}
-      gridTemplateRows={"50px 1fr 395px"}
+      gridTemplateRows={"30px 1fr 420px"}
       gridTemplateColumns={"150px 1fr "}
       h="100%"
       className="container--home"
     >
       <GridItem pl="2" area={"main"} className="main-container">
-        <div className="flex gap-16">
-   
-      
+        <div className="Home-button">
           <Card
             isFooterBlurred
-            className="w-[500px] h-[300px] col-span-12 sm:col-span-5"
+            className=" main-card w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
           >
-            <CardHeader className="absolute z-10 top-1 flex-col items-start">
-              {/* <p className="text-tiny text-white/60 uppercase font-bold">Play </p> */}
-              {/* <h4 className="text-black font-medium text-2xl">Random</h4> */}
+            <CardHeader
+              onClick={() => {
+                // console.log("clicked on card 1");
+                // vsRandomHandler();
+              }}
+              className="absolute z-10 top-16 flex-col items-start "
+            >
+              <p className="text-tiny text-white/60  font-bold random-challenger-title  ">
+                Battle Royale <br /> Ranked
+              </p>
             </CardHeader>
+
             <Image
               removeWrapper
-              alt="Card example background"
-              className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
-              src={ddd}
+              alt="Relaxing app background "
+              className="z-0 w-full h-full button-img-ground object-cover "
+              src={ddd2}
             />
-            <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between">
-              <div>
-                <p className="text-black text-tiny">Available soon.</p>
-                <p className="text-black text-tiny">Get notified.</p>
+
+            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+              <div className="flex flex-grow gap-2 items-center">
+                <div className="flex flex-col">
+                  <p className="text-tiny text-white/60">
+                    Compete in ranked matches
+                  </p>
+                  <p className="text-tiny text-white/60">
+                    against random opponents and climb the leaderboard
+                  </p>
+                </div>
               </div>
-              {/* <Button
-                className="text-tiny"
-                color="primary"
-                radius="full"
-                size="sm"
-              >
-                
-              </Button> */}
             </CardFooter>
           </Card>
 
-               <Card
+          <Card
             isFooterBlurred
-            className="w-[500px] h-[300px] col-span-12 sm:col-span-5"
+            className=" main-card w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
           >
-            <CardHeader className="absolute z-10 top-1 flex-col items-start">
-              {/* <p className="text-tiny text-white/60 uppercase font-bold">Play </p> */}
-              {/* <h4 className="text-black font-medium text-2xl">Random</h4> */}
+            <CardHeader
+              onClick={() => {
+                console.log("clicked on card 2");
+                vsBotHandler();
+              }}
+              className="absolute z-10 top-16 flex-col items-start "
+            >
+              <p className="text-tiny text-white/60  font-bold random-challenger-title  ">
+                AI <br /> Training
+              </p>
+              {/* <h4 className="text-white/90 font-medium text-xl">
+               Embrace unpredictability with matches against surprise opponents
+              </h4> */}
             </CardHeader>
+
             <Image
               removeWrapper
-              alt="Card example background"
-              className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
+              alt="Relaxing app background "
+              className="z-0 w-full h-full button-img-ground object-cover "
               src={ddd}
             />
-            <CardFooter className="absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between">
-              <div>
-                <p className="text-black text-tiny">Available soon.</p>
-                <p className="text-black text-tiny">Get notified.</p>
-              </div>
-              {/* <Button
-                className="text-tiny"
-                color="primary"
-                radius="full"
-                size="sm"
-              >
-                
-              </Button> */}
-            </CardFooter>
-          </Card>  
-     
-        </div>
 
-        {/* <div className="container-nav">
-          <button className="button1" onClick={vsBotHandler}>
-            Play vs Bot
-          </button>
-          <button className="button2" onClick={vsRandomHandler}>
-            Play vs Random
-          </button>
-        </div> */}
+            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+              <div className="flex flex-grow gap-2 items-center">
+                <div className="flex flex-col">
+                  <p className="text-tiny text-white/60">
+                    Train against advanced AI{" "}
+                  </p>
+                  <p className="text-tiny text-white/60">
+                    to master your skills and rise to the top
+                  </p>
+                </div>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
       </GridItem>
 
       <GridItem pl="2" area={"leaderboard"}>
@@ -219,7 +240,14 @@ export default function iPongGame() {
 
 
 
-
+        {<div className="container-nav">
+          <button className="button1" onClick={vsBotHandler}>
+            Play vs Bot
+          </button>
+          <button className="button2" onClick={vsRandomHandler}>
+            Play vs Random
+          </button>
+        </div> }
 
 
 
