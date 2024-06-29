@@ -152,28 +152,27 @@ export default function BotMode({
       h="100%"
       className="container-bootmode"
       style={{
-        position: 'relative', // Ensure position is relative for absolute positioning of pseudo-element
-        // overflow: 'hidden',   // Hide overflow to prevent blur from affecting child elements
+        position: "relative",
       }}
     >
-  
-    <div
-      className="background-blur"
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `url(${userSelectedBoardPath})`,
-        backgroundSize: 'cover',
-        filter: 'blur(5px)',
-        // zIndex: ,
-      }}
-    ></div>
+      <div
+        className="background-blur"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `url(${userSelectedBoardPath})`,
+          opacity: 0.5,
+          backgroundSize: "cover",
+          filter: "blur(4px)",
+        }}
+      ></div>
 
-      <GridItem pl="2" area={"nav"}>
+      <GridItem pl="2" area={"nav"} className="nav-area">
         <IPongGameNav
+          SelectedBackground={userSelectedBoardPath}
           player1Score={playerScore}
           player2Score={botScore}
           opponentName="Ai Bot"
@@ -183,34 +182,39 @@ export default function BotMode({
       </GridItem>
 
       <GridItem pl="2" area={"main"}>
-        <div className="Game-container-frame">
-          <div className="canvas-container">
-            {gameStarted && !winner && (
-              <>
-                {/* <Scores
+        <div className="progress-container">
+          {!gameStarted && <ProgressBar progress={progress} />}
+        </div>
+        {gameStarted && (
+          <div className="Game-container-frame">
+            <div className="canvas-container">
+              {gameStarted && !winner && (
+                <>
+                  {/* <Scores
                 player1Score={playerScore}
                 player2Score={botScore}
               ></Scores> */}
-                <canvas
-                  ref={canvasRef}
-                  className="game"
-                  width="800px"
-                  height="500px"
-                ></canvas>
-              </>
-            )}
-            {winner && <GameOver winner={winner} />}
+                  <canvas
+                    ref={canvasRef}
+                    className="game"
+                    width="800px"
+                    height="500px"
+                  ></canvas>
+                </>
+              )}
+              {winner && <GameOver winner={winner} />}
+            </div>
           </div>
-        </div>
+        )}
       </GridItem>
 
       <GridItem pl="2" className="button-leave" area={"footer"}>
-        <Button color="primary" onClick={leaveBotMode}>Leave Training</Button>
+        <Button className="bg-black" onClick={leaveBotMode}>
+          Leave Training
+        </Button>
       </GridItem>
-
     </Grid>
 
-    
     // <div className="container-bootmode">
     //   <div className="iPongGame-frame">
     //     <IPongGameNav
