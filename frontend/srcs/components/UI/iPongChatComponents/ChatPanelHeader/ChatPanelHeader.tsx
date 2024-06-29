@@ -33,7 +33,7 @@ export default function ChatPanelHeader(props) {
           selectedMessage.type === "Dm" && props.SetViewFriendSettings();
         }}
       >
-        <Avatar src={selectedMessage?.avatar} className="w-14 h-14" />
+        <Avatar src={!props.isBlocked ?     selectedMessage?.avatar : ""} className="w-14 h-14" />
         <div className="conversation-name-and-conversation-details">
           <div className="conversation-name">{selectedMessage?.fullname}</div>
           <img
