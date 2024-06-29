@@ -16,7 +16,8 @@ import {
   setUserSetting,
   setGroupSetting,
 } from "../../../../state/iPongChatState/iPongChatState";
-
+import { useEffect, useState } from "react";
+import api from "../../../../api/posts";
 import { useNavigate } from "react-router-dom";
 
 export default function ChatPanelLayout({socket}) {
@@ -47,6 +48,26 @@ export default function ChatPanelLayout({socket}) {
 
   const [userId, setUserId] = React.useState<string>(selectedMessage?.senderId || "");
   
+  const [userIsBlocked, setUserIsBlocked] = useState(false);
+
+  useEffect(() => {
+    const checkBlocked = async () => {
+      try {
+        const response = await api.post(
+          `/friendship/isBlocked/${selectedMessage?.senderId}`
+        );
+        if (response.data) {
+          setUserIsBlocked(true);
+        }
+      } catch (error) {
+        console.error("Error fetching chat:", error);
+      }
+    };
+    checkBlocked();
+  }, [selectedMessage]);
+
+
+
   return (
     <div className="ChatPanel-frame">
       <Grid
@@ -59,7 +80,7 @@ export default function ChatPanelLayout({socket}) {
       >
         <GridItem pl="2" area={"header"}>
           <ChatPanelHeader
-            
+            isBlocked={userIsBlocked}
             SetViewGroupSettings={() => {
               dispatch(setGroupSetting(true));
             }}
@@ -71,7 +92,7 @@ export default function ChatPanelLayout({socket}) {
         </GridItem>
 
         <GridItem pl="2" style={{ overflowY: "auto" }} area={"main"}>
-          <ChatPanel />
+          <ChatPanel isBlocked={userIsBlocked} />
         </GridItem>
 
         {ShowGroupChatSettings && (
@@ -81,7 +102,9 @@ export default function ChatPanelLayout({socket}) {
         {ShowFriendChatSetting && (
           <div className="blur-background">
             <div className="AchievementList-place fade-in">
-              <SeeUser handleCloseClick={handleCloseClick} userId={userId} />
+              <SeeUser
+              isBlocked={userIsBlocked}
+              handleCloseClick={handleCloseClick} userId={userId} />
             </div>
           </div>
         )}
