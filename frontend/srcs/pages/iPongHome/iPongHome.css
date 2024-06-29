@@ -4,7 +4,7 @@
     height: 100vh;
     background-color: rgb(255, 237, 237);
     position: relative;
-    background: url("../../../public/peakpx_.jpg");
+    /* background: url("../../../public/peakpx_.jpg"); */
     background-color: #0e0e0eae;
     background-size: cover;
     overflow-y: auto;
@@ -17,8 +17,6 @@
   height: 100%;
   gap: 10px; 
 }
-
-
 
 
 .split {
@@ -49,7 +47,9 @@
   margin-top: 10px;
   /* border: 1px solid #2f2f2f; */
 }
-
+.main-card {
+   border: 1px solid #2f2f2f;
+}
 .container--home 
 .match-history-frame {
   margin-left: 20px;
@@ -73,32 +73,33 @@
   ;
 }
 .button-img-ground {
-  opacity: 0.5 !important;
+  filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.5));
+  filter: brightness(0.8);
+  /* opacity: 0.5 !important; */
 }
 
 .random-challenger-title {
-  color: rgb(255, 255, 255);
+  color: raidiant(255, 255, 255, 0.5);
 
   /* font-size: 40px; */
-  font-weight: 900;
+  /* font-weight: 900; */
   font-family: "fortnite-1", Helvetica;
   word-spacing: 5px;
   letter-spacing: 2px;
-}
-
-
-p {
-  font-size: 40px !important
-  ;
+  font-size: 3.5vw;
   text-transform: uppercase;
   text-align: center;
   line-height: 1;
+  text-shadow: 0 0 10px #000;
+
 }
+
 
 .fancy {
   @supports (background-clip: text) or (-webkit-background-clip: text) {
+    height: 100%;
     background-image: url("../../../public/peakpx_.jpg");
-    background-size: 100% auto;
+    background-size: auto auto;
     background-position: center;
     color: transparent;
     -webkit-background-clip: text;
@@ -106,3 +107,22 @@ p {
   }
 }
 
+
+
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900");
+
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+} */
+/* 
+body {
+  display: flex;
+  background: #000;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+} */
