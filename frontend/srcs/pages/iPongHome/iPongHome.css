@@ -72,14 +72,37 @@
   padding: 0px !important
   ;
 }
-
+.button-img-ground {
+  opacity: 0.5 !important;
+}
 
 .random-challenger-title {
-  color: white;
+  color: rgb(255, 255, 255);
 
-  font-size: 30px;
+  /* font-size: 40px; */
   font-weight: 900;
   font-family: "fortnite-1", Helvetica;
   word-spacing: 5px;
   letter-spacing: 2px;
 }
+
+
+p {
+  font-size: 40px !important
+  ;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+}
+
+.fancy {
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    background-image: url("../../../public/peakpx_.jpg");
+    background-size: 100% auto;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
