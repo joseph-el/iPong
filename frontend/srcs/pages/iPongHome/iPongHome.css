@@ -4,51 +4,82 @@
     height: 100vh;
     background-color: rgb(255, 237, 237);
     position: relative;
-    /* background: url("../../../public/peakpx_.jpg"); */
-  /* background: url("../../../public/__pic.jpg"); */
-    background-color: #737070ae;
+    background: url("../../../public/peakpx_.jpg");
+    background-color: #0e0e0eae;
     background-size: cover;
     overflow-y: auto;
     overflow-x: auto;
 }
 
-.container--home .main-container {
-  /* background: url("../../../public//home.png"); */
-  background-size:100%;
-  background-repeat: no-repeat;
+.Home-button {
+  /* padding: 20px; */
+  display: flex;
+  height: 100%;
+  gap: 10px; 
 }
 
+
+
+
+.split {
+  display: absolute;
+  z-index: 2;
+}
+
+.random-card:hover {
+  transition: all 800ms cubic-bezier(0.65, 0, 0.35, 1) !important;
+
+}
+
+.random-card-description {
+  font-family: "sfprodisplay-meduim", sans-serif;
+  font-size: 20px;
+  color: white;
+  font-weight: 900;
+  text-align: center;
+
+}
+.container--home .main-container {
+  
+  background-size: cover;
+
+  border-radius: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  /* border: 1px solid #2f2f2f; */
+}
+
+.container--home 
 .match-history-frame {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #2f2f2f;
   padding-top: 20px ;
   padding-left: 10px;
-  background-color: #0e0e0eae !important;
+  background-color: #0e0e0ed1 !important;
 }
- .container--home 
-.button1 {
 
-  /* margin: auto; */
-  background-color: #007bff;
-  color: #000000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+
 
 .css-15at1dk {
   padding: 0px !important
   ;
 }
-.container--home 
-.button2 {
+.css-p8u02r, css-1q0h5u5 {
+  padding: 0px !important
+  ;
+}
 
-  /* margin: auto; */
-  background-color: #007bff;
-  color: #000000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+
+.random-challenger-title {
+  color: white;
+
+  font-size: 30px;
+  font-weight: 900;
+  font-family: "fortnite-1", Helvetica;
+  word-spacing: 5px;
+  letter-spacing: 2px;
 }
