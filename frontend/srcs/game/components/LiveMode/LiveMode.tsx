@@ -13,6 +13,7 @@ import Scores from "../Score/Score";
 import { BallState } from "../../types/BallState";
 import CancelledMatch from "../CancelledMatch/CancelledMatch";
 import GameOver from "../GameOver/GameOver";
+import { Grid, GridItem } from "@chakra-ui/react";
 
 interface LiveGameModeProps {
   socketRef: React.MutableRefObject<Socket | null>;
@@ -465,32 +466,109 @@ export default function LiveMode({
   return (
     <div className="live-mode-container">
       {!cancelledGame && !endedGame && (
-        <div className="iPongGame-frame">
-          <IPongGameNav
-            playerPos={playerPos}
-            opponentName={opponent}
-            opponentAvatarPath=""
-          ></IPongGameNav>
-          <div className="progress-container">
-            {!gameStarted && <ProgressBar progress={progress} />}
-          </div>
-          <div className="canvas-container">
-            {gameStarted && (
-              <>
-                <Scores
-                  player1Score={player1Score}
-                  player2Score={player2Score}
-                ></Scores>
-                <canvas
-                  ref={canvasRef}
-                  className="game"
-                  width="800px"
-                  height="500px"
-                ></canvas>
-              </>
-            )}
-          </div>
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Grid
+templateAreas={`"nav nav"
+            "main main"
+            "footer footer"`}
+gridTemplateRows={"115px 1fr 50px"}
+gridTemplateColumns={"150px 1fr"}
+h="100%"
+className="container-bootmode"
+style={{
+  position: "relative",
+}}
+>
+<div
+  className="background-blur"
+  style={{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundImage: `url(${userSelectedBoardPath})`,
+    opacity: 0.5,
+    backgroundSize: "cover",
+    filter: "blur(4px)",
+  }}
+></div>
+
+<GridItem pl="2" area={"nav"} className="nav-area">
+  <IPongGameNav
+    SelectedBackground={userSelectedBoardPath}
+    player1Score={playerScore}
+    player2Score={botScore}
+    opponentName="Ai Bot"
+    opponentAvatarPath={GAME_SETTING.BOT_ICON}
+    playerPos={1}
+  />
+</GridItem>
+
+<GridItem pl="2" area={"main"}>
+  <div className="progress-container">
+    {!gameStarted && <ProgressBar progress={progress} />}
+  </div>
+  {gameStarted && (
+    <div className="Game-container-frame">
+      <div className="canvas-container">
+        {gameStarted && !winner && (
+          <>
+            {/* <Scores
+          player1Score={playerScore}
+          player2Score={botScore}
+        ></Scores> */}
+            <canvas
+              ref={canvasRef}
+              className="game"
+              width="800px"
+              height="500px"
+            ></canvas>
+          </>
+        )}
+        {winner && <GameOver winner={winner} />}
+      </div>
+    </div>
+  )}
+</GridItem>
+
+{/* <GridItem pl="2" className="button-leave" area={"footer"}>
+  <Button className="bg-black" onClick={leaveBotMode}>
+    Leave Training
+  </Button>
+</GridItem> */}
+</Grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       )}
       {cancelledGame && (
         <CancelledMatch WhyReason="Opponent Disconnected! The match has been cancelled." />
