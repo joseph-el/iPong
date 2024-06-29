@@ -1,7 +1,7 @@
 import React from "react";
 const columns = [
   { name: "VERSUS PLAYER", uid: "versus", sortable: true },
-  { name: "V-BUCKS", uid: "vbucks", sortable: true },
+  { name: "iCoins", uid: "vbucks", sortable: true },
   { name: "RESULTS", uid: "result", sortable: true },
   { name: "DATE", uid: "date", sortable: true },
 ];
