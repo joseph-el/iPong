@@ -22,7 +22,9 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import KKKK from "../../pages/iPongStore/assets/maps/map.JPG";
 import ddd from "../../../public/ai.jpg";
 import ddd2 from "../../../public/dddd.jpeg";
+
 import img_split from "../../../public/splite.png";
+
 import {
   Card,
   CardHeader,
@@ -80,7 +82,7 @@ export default function iPongGame() {
     return (
       <BotMode
         userSelectedSkin={userSelectedSkinPath}
-        userSelectedBoard={KKKK}
+        userSelectedBoard={userSelectedBoardPath}
         botSelectedSkin={botSelectedSkinPath}
       />
     );
