@@ -15,6 +15,7 @@ import { AppDispatch, RootState } from "../../state/store";
 import { getUserLevel } from "../../utils/getCurrentLevel";
 import { SKIN_DB } from "../../pages/iPongStore/db/skins.db";
 import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
+import * as MirrorPaddlesPNGs from "../iPongStore/assets/mirror-paddles/mirror-paddles";
 import Spline from "@splinetool/react-spline";
 import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
 import { Grid, GridItem } from "@chakra-ui/react";
@@ -42,8 +43,15 @@ export default function iPongGame() {
   const userSelectedBoardPath = BOARDS_DB.find(
     (board) => board.name === UserInfo.userSelectedBoardPath
   )?.imgPath;
-  const botSelectedSkinPath =
-    SKIN_DB[Math.floor(Math.random() * SKIN_DB.length)].imgPath;
+
+  function getRandomKey(obj: Record<string, any>): string {
+    const keys = Object.keys(obj);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    return randomKey;
+  }
+  
+  const botSelectedSkinPath = MirrorPaddlesPNGs[getRandomKey(MirrorPaddlesPNGs)];
+
 
   type ModeType = "practice" | "onlineBattle" | null;
   const [mode, setMode] = useState<ModeType>(null);
