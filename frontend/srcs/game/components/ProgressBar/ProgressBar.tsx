@@ -6,14 +6,11 @@ interface ProgressBarProps {
 
 export default function ProgressBar({ progress }: ProgressBarProps) {
   return (
-    <div className="progress-container">
-      <div className="progressBar">
-        {" "}
-        <div
-          className="progressBarFill"
-          style={{ width: `${progress}%` }}
-        ></div>{" "}
-      </div>
+    <div
+      className="range here "
+      style={{ "--p": progress } as React.CSSProperties}
+    >
+      <div className="range__label"></div>
     </div>
   );
 }
