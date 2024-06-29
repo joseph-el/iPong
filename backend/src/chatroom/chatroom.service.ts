@@ -834,6 +834,13 @@ export class ChatroomService {
       },
       orderBy: {
         createdAt: 'asc',
+
+      },
+      select: {
+        roomName: true,
+        id: true,
+        type: true,
+        icon: true,
       },
     });
     return chatrooms;
