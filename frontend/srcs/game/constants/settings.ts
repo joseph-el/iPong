@@ -32,5 +32,5 @@ export const GAME_SETTING = {
   EMIT_MOVE_LIMIT: 40, //milliseconds
 
   /* BOT ASSETS */
-  BOT_ICON: "/assets/game/icons/aiBotIcon.png",
+  BOT_ICON: "/ai.jpeg",
 };
