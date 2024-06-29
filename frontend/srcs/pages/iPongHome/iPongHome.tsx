@@ -115,47 +115,51 @@ export default function iPongGame() {
     >
       <GridItem pl="2" area={"main"} className="main-container">
         <div className="Home-button">
+         
+         
           <Card
             isFooterBlurred
-            className="w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card"
+            className="w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
           >
+            <CardHeader className="absolute z-10 top-16 flex-col items-start ">
+              <p className="text-tiny text-white/60  font-bold random-challenger-title fancy ">
+              Random Challenger
+              </p>
+              {/* <h4 className="text-white/90 font-medium text-xl">
+               Embrace unpredictability with matches against surprise opponents
+              </h4> */}
+            </CardHeader>
+
             <Image
               removeWrapper
-              alt="Relaxing app background"
-              className="z-0 w-full h-full object-cover"
+              alt="Relaxing app background "
+              className="z-0 w-full h-full button-img-ground object-cover "
               src={ddd2}
             />
-            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-              <div className="gap-2 items-center">
-                <p className="random-challenger-title">Random Challenger</p>
-                <h4 className="random-card-description">
-                  Embrace unpredictability with matches against surprise
-                  opponents.
-                </h4>
-              </div>
-            </CardFooter>
           </Card>
+
 
           <Card
             isFooterBlurred
-            className="w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card"
+            className="w-[95%] h-[95%] col-span-12 sm:col-span-7 hover:w-[100%] hover:h-[100%] random-card cursor-pointer"
           >
+            <CardHeader className="absolute z-10 top-1 flex-col items-start">
+              <p className="text-tiny text-white/60 uppercase font-bold">
+                Your day your way
+              </p>
+              <h4 className="text-white/90 font-medium text-xl">
+                Your checklist for better sleep
+              </h4>
+            </CardHeader>
+
             <Image
               removeWrapper
               alt="Relaxing app background"
               className="z-0 w-full h-full object-cover"
               src={ddd}
             />
-            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-              <div className="gap-2 items-center">
-                <p className="random-challenger-title">Random Challenger</p>
-                <h4 className="random-card-description">
-                  Embrace unpredictability with matches against surprise
-                  opponents.
-                </h4>
-              </div>
-            </CardFooter>
           </Card>
+
         </div>
       </GridItem>
 
