@@ -133,7 +133,7 @@ export class MatchmakingService {
           if (this.matchedPlayersIds) {
             this.matchPlayers(false);
           }
-        }, 10000);
+        }, 3000);
       } else {
         throw new WsException(ERROR.SOCKET_NOT_FOUND);
       }
