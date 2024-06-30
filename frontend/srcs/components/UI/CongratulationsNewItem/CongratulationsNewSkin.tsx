@@ -22,18 +22,18 @@ export default function CongratulationsNewSkin(props) {
   return (
     <CongratulationsNewSkinWrapper>
       <CongratulationsNewSkinNavbar close={props.close} />
-      <div className="CongratulationsNewSkin-frame">
+      <div className="CongratulationsNewSkin-frame"  >
         <Image
           shadow="none"
           radius="none"
           width="100%"
           alt={"SKIN IMG"}
-          className="w-full h-[400px] animate-pulse"
+          className="w-[40%] h-[400px] animate-pulse"
           src={props.imgPath}
         />
 
-        <Tooltip color="primary" size={"lg"} placement={"bottom"} className="w-[250px]" content={props.description} delay={10}>
-          <Button size="lg" className="Tooltip-Button" color="primary" variant="flat">
+        <Tooltip size={"lg"} placement={"bottom"} className="w-[250px] bg-black" content={props.description} delay={10}>
+          <Button size="md"  radius="lg" className="Tooltip-Button bg-black border-1"  variant="flat">
             {props.name}
           </Button>
         </Tooltip>
