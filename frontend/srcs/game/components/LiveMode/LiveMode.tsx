@@ -62,6 +62,9 @@ export default function LiveMode({
   const bgImageRef = useRef<HTMLImageElement | null>(null);
   const [isBgImageLoaded, setIsBgImageLoaded] = useState(false);
 
+  const netImgRef = useRef<HTMLImageElement | null>(null);
+  const [isNetImgLoaded, setIsNetImageLoaded] = useState(false);
+
   const userSkinImgRef = useRef<HTMLImageElement | null>(null);
   const [isUserSkinImgLoaded, setIsUserSkinImgLoaded] = useState(false);
 
@@ -134,6 +137,13 @@ export default function LiveMode({
     bgImage.src = selectedBoardPath;
     bgImageRef.current = bgImage;
 
+    // net Image
+    const netImg = new Image();
+    netImg.onload = () => setIsNetImageLoaded(true);
+    netImg.onerror = () => setIsNetImageLoaded(false);
+    netImg.src = GAME_SETTING.NET_IMG_PATH;
+    netImgRef.current = netImg;
+
     const userSkinImg = new Image();
     userSkinImg.onload = () => setIsUserSkinImgLoaded(true);
     userSkinImg.onerror = () => setIsUserSkinImgLoaded(false);
@@ -160,6 +170,10 @@ export default function LiveMode({
       if (bgImageRef.current) {
         bgImageRef.current.src = "";
         bgImageRef.current = null;
+      }
+      if (netImgRef.current) {
+        netImgRef.current.src = "";
+        netImgRef.current = null;
       }
       if (userSkinImgRef.current) {
         userSkinImgRef.current.src = "";
@@ -297,7 +311,20 @@ export default function LiveMode({
         ctx.fillStyle = "BLACK";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
-      drawNet(ctx, canvas.height, canvas.width);
+      if (isNetImgLoaded && netImgRef.current) {
+        const netX = (canvas.width - GAME_SETTING.NET_WIDTH) / 2;
+        const netY = (canvas.height - GAME_SETTING.NET_HEIGHT) / 2;
+        ctx.drawImage(
+          netImgRef.current,
+          netX,
+          netY,
+          GAME_SETTING.NET_WIDTH,
+          GAME_SETTING.NET_HEIGHT
+        );
+      } else {
+        drawNet(ctx, canvas.height, canvas.width);
+      }
+
       if (playerPos === 1) {
         if (isUserSkinImgLoaded && userSkinImgRef.current) {
           ctx.drawImage(
