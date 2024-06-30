@@ -9,7 +9,8 @@ import { useState, useEffect } from "react";
 import api from "../../../../api/posts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../..//state/store";
-
+import { setUpdateProfile } from "../../../../state/update/UpdateSlice";
+import { useDispatch } from "react-redux";
 
 const TwoFactorAuthenticationProfileNavbar = (props) => {
   return (
@@ -53,9 +54,12 @@ const TwoFactorAuthenticationProfileContent = ({ QrCode }) => {
 };
 
 export default function TwoFactorAuthenticationProfile(props) {
+  const dispatch = useDispatch();
+
   const TfaEnabled = useSelector(
     (state: RootState) => state.userState?.tfaEnabled
   );
+
 
   const [isSelected, setIsSelected] = useState(TfaEnabled);
   const [AuthenticationisTurnedOn, setIsTurnedOn] = useState(TfaEnabled);
@@ -100,6 +104,7 @@ export default function TwoFactorAuthenticationProfile(props) {
         console.log("Submit:> ", response.data);
         if (response.data.status !== 201) throw new Error("Invalid Code");
         setIsTurnedOn(true);
+        dispatch(setUpdateProfile());
       } catch (error) {
         setIsInvalid(true);
         setErrorMessage("Invalid Code");
