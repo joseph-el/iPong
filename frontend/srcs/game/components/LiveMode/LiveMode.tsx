@@ -90,7 +90,6 @@ export default function LiveMode({
   }
 
   useEffect(() => {
-
     console.log("username:", UserInfo.username);
     console.log("playerPos of ", playerPos);
     if (playerPos === 2) {
@@ -101,7 +100,6 @@ export default function LiveMode({
       console.log("opponentSkinPath: updated: ", opponentSkinPath);
     }
   }, [playerPos]);
-
 
   /* reduce user Spam keyboard */
   const debouncedMovePlayer = useRef(
@@ -300,27 +298,52 @@ export default function LiveMode({
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
       drawNet(ctx, canvas.height, canvas.width);
-      if (isUserSkinImgLoaded && userSkinImgRef.current) {
-        ctx.drawImage(
-          userSkinImgRef.current,
-          player1!.x,
-          player1!.y,
-          player1!.width,
-          player1!.height
-        );
+      if (playerPos === 1) {
+        if (isUserSkinImgLoaded && userSkinImgRef.current) {
+          ctx.drawImage(
+            userSkinImgRef.current,
+            player1!.x,
+            player1!.y,
+            player1!.width,
+            player1!.height
+          );
+        } else {
+          player1.drawPlayer(ctx);
+        }
+        if (isOpponentSkinImgLoaded && OpponentSkinImgRef.current) {
+          ctx.drawImage(
+            OpponentSkinImgRef.current,
+            player2!.x,
+            player2!.y,
+            player2!.width,
+            player2!.height
+          );
+        } else {
+          player2.drawPlayer(ctx);
+        }
       } else {
-        player1.drawPlayer(ctx);
-      }
-      if (isOpponentSkinImgLoaded && OpponentSkinImgRef.current) {
-        ctx.drawImage(
-          OpponentSkinImgRef.current,
-          player2!.x,
-          player2!.y,
-          player2!.width,
-          player2!.height
-        );
-      } else {
-        player2.drawPlayer(ctx);
+        if (isOpponentSkinImgLoaded && OpponentSkinImgRef.current) {
+          ctx.drawImage(
+            OpponentSkinImgRef.current,
+            player1!.x,
+            player1!.y,
+            player1!.width,
+            player1!.height
+          );
+        } else {
+          player1.drawPlayer(ctx);
+        }
+        if (isUserSkinImgLoaded && userSkinImgRef.current) {
+          ctx.drawImage(
+            userSkinImgRef.current,
+            player2!.x,
+            player2!.y,
+            player2!.width,
+            player2!.height
+          );
+        } else {
+          player2.drawPlayer(ctx);
+        }
       }
       ball.drawBall(ctx);
     }
