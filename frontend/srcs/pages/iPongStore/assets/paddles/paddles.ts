@@ -7,7 +7,7 @@ import { default as Ninja } from            './Ninja.png';
 import { default as SaudiMan } from         './Saudi man.png';
 import { default as Spiderman } from        './Spiderman.png';
 import { default as Zombie } from           './Zombie.png';
-import { default as Ice } from              './Ice.png';
+import { default as Ice } from              '../mirror-paddles/Ice-mirror.png';
 import { default as Hacker } from           './Hacker.png';
 import { default as AlbertEinstein } from   './Albert Einstein.png';
 import { default as LaCasaDePapel } from    './La Casa De Papel.png';
