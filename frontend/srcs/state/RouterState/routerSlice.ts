@@ -1,39 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { set } from "lodash";
 
-export enum RouterState {
-    HOME = '/',
-    LOGIN = '/login',
-    REGISTER = '/register',
-    PROFILE = '/profile',
-    NOT_FOUND = '/not-found',
-    SERVER_ERROR = '/server-error',
-    UNAUTHORIZED = '/unauthorized',
-    FORBIDDEN = '/forbidden',
-    BAD_REQUEST = '/bad-request',
-    INTERNAL_SERVER_ERROR = '/internal-server-error',
-    SERVICE_UNAVAILABLE = '/service-unavailable', 
-
+enum RouterState {
+    HOME = 'Main Page',
+    CHAT= '/Chat',
+    PROFILE = '/Profile',
+    STORE = '/Store',
 }
 
+enum RouterStateType {
+    PADDLES = 'Paddles',
+    BOARDS = 'Boards',   
+}
+
+
+
 interface UserState {
-    routerState: RouterState;
+    routerState?: string;
+    routerStateType?: string | null;
 }
 
 const initialState : UserState = {
     routerState: RouterState.HOME,
+    routerStateType: null,
 };
 
-const userState = createSlice({
+const RouterSlice = createSlice({
     name: "router",
     initialState,
     reducers: { 
         setRouterState: (state, action) => {
             state.routerState = action.payload;
         },
+        setRouterStateType: (state, action) => {
+            state.routerStateType = action.payload;
+        }
     },
   });
 
-export const { setRouterState } = userState.actions;
-export default userState.reducer;
+export const { setRouterState, setRouterStateType } = RouterSlice.actions;
+export default RouterSlice.reducer;
 
 
