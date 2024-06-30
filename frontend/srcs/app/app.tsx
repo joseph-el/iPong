@@ -43,7 +43,7 @@ const RequireAuth = ({ children }) => {
     localStorage.getItem("userSkin") === null ||
     localStorage.getItem("userSkin") === undefined
   ) {
-    localStorage.setItem("userSkin", "Joker Paddle");
+    localStorage.setItem("userSkin", "Ice");
   }
   if (
     localStorage.getItem("userBoard") === null ||
