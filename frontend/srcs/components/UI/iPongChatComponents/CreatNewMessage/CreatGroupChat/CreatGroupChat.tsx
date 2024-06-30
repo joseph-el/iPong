@@ -54,7 +54,6 @@ export default function CreatGroupChat(props) {
   const [ReadyToSubmit, setReadyToSubmit] = useState(false);
   const displayGroupType = Array.from(GroupType).join(" ");
 
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -82,14 +81,13 @@ export default function CreatGroupChat(props) {
     const fetchReadyToSubmit = async () => {
       try {
         let NewRoom;
- 
+
         const response = await api.post("chatroom/create", {
           type: displayGroupType,
           password: GroupPassword,
           roomName: GroupName,
         });
         NewRoom = response.data.id;
-
 
         if (AvatarFile) {
           const formDataAvatar = new FormData();
@@ -105,16 +103,14 @@ export default function CreatGroupChat(props) {
                 },
               }
             );
-          } catch (error) {
-          }
+          } catch (error) {}
         }
         GroupMembers.forEach(async (member) => {
           try {
             const response2 = await api.post(
               `chatroom/invite/${users[member].userId}/${NewRoom}`
             );
-          } catch (error) {
-          }
+          } catch (error) {}
         });
 
         // setReadyToSubmit(false);
@@ -125,7 +121,7 @@ export default function CreatGroupChat(props) {
     };
     ReadyToSubmit && fetchReadyToSubmit();
   }, [ReadyToSubmit]);
- 
+
   const handelPassingData = () => {
     if (GroupName === "" || GroupName.length < 3 || GroupName.length > 20) {
       setGroupNameIsValid(true);
@@ -133,7 +129,6 @@ export default function CreatGroupChat(props) {
     } else {
       setGroupNameIsValid(false);
     }
-
 
     if (displayGroupType === "") {
       setGroupTypeIsValid(true);
@@ -185,169 +180,168 @@ export default function CreatGroupChat(props) {
   return (
     <CreatGroupChatWrapper>
       {/* <ScrollShadow className="h-[550px]" size={5} hideScrollBar> */}
-        <div className="CreatGroupChat-frame">
-          <Close
-            ClassName="closeiconsss"
-            func={props.onCloseComponent}
-            id="close"
+      <div className="CreatGroupChat-frame">
+        <Close
+          ClassName="closeiconsss"
+          func={props.onCloseComponent}
+          id="close"
+        />
+
+        <div className="Groups-Info">
+          <label htmlFor="avatarInput">
+            <div className="Edit-avatar">
+              <Avatar
+                isBordered
+                className="User-avatar w-24 h-24"
+                src={selectedAvatar ? selectedAvatar : null}
+              />
+              <CameraIcon
+                className="animate-pulse w-6 h-6 text-default-500 Edit-group-iconsss"
+                fill="currentColor"
+              />
+            </div>
+          </label>
+          <input
+            type="file"
+            id="avatarInput"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={(event) => handleImageChange(event)}
           />
 
-          <div className="Groups-Info">
-            <label htmlFor="avatarInput">
-              <div className="Edit-avatar">
-                <Avatar
-                  isBordered
-                  className="User-avatar w-24 h-24"
-                  src={selectedAvatar ? selectedAvatar : DefaultGroupImage}
-                />
-                <CameraIcon
-                  
-                  className="animate-pulse w-6 h-6 text-default-500 Edit-group-icon"
-                  fill="currentColor"
-                />
-              </div>
-            </label>
-            <input
-              type="file"
-              id="avatarInput"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={(event) => handleImageChange(event)}
-            />
+          {error != "" && (
+            <p className="text-default-500 text-small">{error}</p>
+          )}
 
-            {error != "" && (
-              <p className="text-default-500 text-small">{error}</p>
-            )}
-
-            <div className="edit-Group-Name">
-              <Input
-     
-
-                isInvalid={GroupNameIsValid}
-                errorMessage={"Group Name must be between 3 and 20 characters"}
-                // label="Group Name"
-                onClick={() => setGroupNameIsValid(false)}
-                placeholder="Enter Group Name"
-                value={GroupName}
-                onChange={(e) => setGroupName(e.target.value)}
-                className="max-w-xs h-16"
-              />
-            </div>
-          </div>
-
-          <div className="Add-people">
-            <div className="Add-people-title">Invite people</div>
-
-            <Select
-              errorMessage={"Please select at least one user"}
-              items={users}
-              label=""
-              onClick={() => setGroupMembersIsValid(false)}
-              isInvalid={GroupMembersIsValid}
-              isMultiline={true}
-              selectionMode="multiple"
-              placeholder="Select a user"
-              labelPlacement="outside"
-              onSelectionChange={setGroupMembers}
-              classNames={{
-                base: "max-w-xs",
-                trigger: "min-h-12 py-2",
+          <div className="edit-Group-Name">
+            <Input
+              isInvalid={GroupNameIsValid}
+              errorMessage={"Group Name must be between 3 and 20 characters"}
+              // label="Group Name"
+              onClick={() => setGroupNameIsValid(false)}
+              placeholder="Enter Group Name"
+              value={GroupName}
+              onChange={(e) => {
+                if (e.target.value.length < 20) setGroupName(e.target.value);
               }}
-              renderValue={(items: SelectedItems<User>) => {
-                return (
-                  <div className="flex flex-wrap gap-2">
-                    {items.map((item) => (
-                      <Chip key={item.key}>{item.data.name}</Chip>
-                    ))}
-                  </div>
-                );
-              }}
-            >
-              {(user) => (
-                <SelectItem key={user.id} textValue={user.name}>
-                  <div className="flex gap-2 items-center">
-                    <Avatar
-                      alt={user.name}
-                      className="flex-shrink-0 small-text text-500"
-                      size="sm"
-                      src={user.avatar}
-                    />
-                    <div className="flex flex-col">
-                      <span className="text-small1">{user.name}</span>
-                      <span className="text-tiny text-default-400">
-                        {user.email}
-                      </span>
-                    </div>
-                  </div>
-                </SelectItem>
-              )}
-            </Select>
-          </div>
-
-          <div className="group-privaty">
-            <div className="group-privaty-title">Group Privacy</div>
-            <div className="group-privaty-select">
-              <Select
-                errorMessage={"Please select a group type"}
-                onClick={() => setGroupTypeIsValid(false)}
-                isInvalid={GroupTypeIsValid}
-                placeholder="Select Group Type"
-                className="max-w-xs"
-                selectedKeys={GroupType}
-                onSelectionChange={setGroupType}
-              >
-                <SelectItem className="text-small-ovrride" key={"public"}>
-                  public
-                </SelectItem>
-                <SelectItem className="text-small-ovrride" key={"private"}>
-                  private
-                </SelectItem>
-                <SelectItem className="text-small-ovrride" key={"protected"}>
-                  protected
-                </SelectItem>
-              </Select>
-
-              <Input
-                onClick={() => setGroupPasswordIsValid(false)}
-                errorMessage={
-                  "Group password must be between 5 and 20 characters"
-                }
-                placeholder="Enter Group Password"
-                isInvalid={GroupPasswordIsValid}
-                isDisabled={displayGroupType == "protected" ? false : true}
-                value={displayGroupType == "protected" ? GroupPassword : ""}
-                onChange={(e) => setGroupPassword(e.target.value)}
-                endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={toggleVisibility}
-                  >
-                    {isVisible ? (
-                      <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    ) : (
-                      <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    )}
-                  </button>
-                }
-                type={isVisible ? "text" : "password"}
-                className="max-w-xs Group-Password"
-              />
-            </div>
-          </div>
-
-          <div
-            className="buttons-target"
-            onClick={() => {
-              handelPassingData();
-            }}
-          >
-            <CustomButton
-              classNames="sign-in-competent-sign-in hover:animate-pulse"
-              text="Creat Group"
+              className="max-w-xs h-16"
             />
           </div>
         </div>
+
+        <div className="Add-people">
+          <div className="Add-people-title">Invite people</div>
+
+          <Select
+            errorMessage={"Please select at least one user"}
+            items={users}
+            label=""
+            onClick={() => setGroupMembersIsValid(false)}
+            isInvalid={GroupMembersIsValid}
+            isMultiline={true}
+            selectionMode="multiple"
+            placeholder="Select a user"
+            labelPlacement="outside"
+            onSelectionChange={setGroupMembers}
+            classNames={{
+              base: "max-w-xs",
+              trigger: "min-h-12 py-2",
+            }}
+            renderValue={(items: SelectedItems<User>) => {
+              return (
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item) => (
+                    <Chip key={item.key}>{item.data.name}</Chip>
+                  ))}
+                </div>
+              );
+            }}
+          >
+            {(user) => (
+              <SelectItem key={user.id} textValue={user.name}>
+                <div className="flex gap-2 items-center">
+                  <Avatar
+                    alt={user.name}
+                    className="flex-shrink-0 small-text text-500"
+                    size="sm"
+                    src={user.avatar}
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-small1">{user.name}</span>
+                    <span className="text-tiny text-default-400">
+                      {user.email}
+                    </span>
+                  </div>
+                </div>
+              </SelectItem>
+            )}
+          </Select>
+        </div>
+
+        <div className="group-privaty">
+          <div className="group-privaty-title">Group Privacy</div>
+          <div className="group-privaty-select">
+            <Select
+              errorMessage={"Please select a group type"}
+              onClick={() => setGroupTypeIsValid(false)}
+              isInvalid={GroupTypeIsValid}
+              placeholder="Select Group Type"
+              className="max-w-xs"
+              selectedKeys={GroupType}
+              onSelectionChange={setGroupType}
+            >
+              <SelectItem className="text-small-ovrride" key={"public"}>
+                public
+              </SelectItem>
+              <SelectItem className="text-small-ovrride" key={"private"}>
+                private
+              </SelectItem>
+              <SelectItem className="text-small-ovrride" key={"protected"}>
+                protected
+              </SelectItem>
+            </Select>
+
+            <Input
+              onClick={() => setGroupPasswordIsValid(false)}
+              errorMessage={
+                "Group password must be between 5 and 20 characters"
+              }
+              placeholder="Enter Group Password"
+              isInvalid={GroupPasswordIsValid}
+              isDisabled={displayGroupType == "protected" ? false : true}
+              value={displayGroupType == "protected" ? GroupPassword : ""}
+              onChange={(e) => setGroupPassword(e.target.value)}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+              type={isVisible ? "text" : "password"}
+              className="max-w-xs Group-Password"
+            />
+          </div>
+        </div>
+
+        <div
+          className="buttons-target"
+          onClick={() => {
+            handelPassingData();
+          }}
+        >
+          <CustomButton
+            classNames="sign-in-competent-sign-in hover:animate-pulse"
+            text="Creat Group"
+          />
+        </div>
+      </div>
 
       {/* </ScrollShadow> */}
     </CreatGroupChatWrapper>
