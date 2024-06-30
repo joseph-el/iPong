@@ -36,7 +36,7 @@ const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const dispatch = useDispatch<AppDispatch>();
-
+  
   if (
     localStorage.getItem("userSkin") === null ||
     localStorage.getItem("userSkin") === undefined
@@ -52,6 +52,9 @@ const RequireAuth = ({ children }) => {
 
   const UserSkin = localStorage.getItem("userSkin");
   const UserBoard = localStorage.getItem("userBoard");
+  console.log("UserSkin", UserSkin);
+  console.log("UserBoard", UserBoard);
+
 
   const UpdatedProfileInfo = useSelector(
     (state: RootState) => state.update.UpdateProfile
@@ -126,7 +129,7 @@ const RequireAuth = ({ children }) => {
     dispatch(setSelectedSkinPath(UserSkin));
     dispatch(setBoardPath(UserBoard));
   }, [UserSkin, UserBoard]);
-  
+
   if (isAuthenticated === null) {
     return null;
   }
