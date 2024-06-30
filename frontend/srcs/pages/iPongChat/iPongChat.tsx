@@ -16,6 +16,7 @@ import { io } from "socket.io-client";
 import { Socket } from "socket.io-client";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import {setRouterStateType, setRouterState} from "../../state/RouterState/routerSlice";
 
 const accessToken = document?.cookie
   ?.split("; ")
@@ -39,6 +40,14 @@ export default function IPongChat() {
       state.iPongChat.ListMessages.find((message) => message.isSelect) || null
   );
 
+
+
+  useEffect(() => {
+    if (selectedMessage) {
+      dispatch(setRouterState("Chat"))
+        dispatch(setRouterStateType(selectedMessage.fullname));
+    }
+  }, [selectedMessage]);
   const ListMessages = useSelector(
     (state: RootState) => state.iPongChat.ListMessages
   );
