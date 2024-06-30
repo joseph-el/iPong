@@ -7,13 +7,21 @@ import { GAME_SETTING } from "../../constants/settings";
 import { GameState } from "../../types/GameState";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import _debounce from "lodash/debounce";
-import "./LiveMode.css";
+// import "./LiveMode.css";
+// import "../BotMode/BotMode.css";
 import IPongGameNav from "../IPongGameNav/IPongGameNav";
 import Scores from "../Score/Score";
 import { BallState } from "../../types/BallState";
 import CancelledMatch from "../CancelledMatch/CancelledMatch";
 import GameOver from "../GameOver/GameOver";
 import { Grid, GridItem } from "@chakra-ui/react";
+import { BOARDS_DB } from "../../../pages/iPongStore/db/board.db";
+import { MIRROR_SKIN_DB } from "../../../pages/iPongStore/db/mirror.db";
+import { RootState } from "../../../state/store";
+import { useSelector } from "react-redux";
+import { Tooltip, Button, user } from "@nextui-org/react";
+import { get } from "lodash";
+import { SKIN_DB } from "../../../pages/iPongStore/db/skins.db";
 
 interface LiveGameModeProps {
   socketRef: React.MutableRefObject<Socket | null>;
@@ -65,6 +73,35 @@ export default function LiveMode({
 
   const scoringSoundRef = useRef<HTMLAudioElement | null>(null);
   const [isScoringSoundLoaded, setIsScoringSoundLoaded] = useState(false);
+
+  const UserInfo = useSelector((state: RootState) => state.userState);
+  const userSelectedBoardPath = BOARDS_DB.find(
+    (board) => board.name === UserInfo.userSelectedBoardPath
+  )?.imgPath;
+
+  function getMirrorPaddle(paddlePath: string): string {
+    const paddlesName = SKIN_DB.find(
+      (skin) => skin.imgPath === paddlePath
+    )?.name;
+    const mirrorPaddlePath = MIRROR_SKIN_DB.find(
+      (skin) => skin.name === paddlesName
+    )?.imgPath;
+    return mirrorPaddlePath || "";
+  }
+
+  useEffect(() => {
+
+    console.log("username:", UserInfo.username);
+    console.log("playerPos of ", playerPos);
+    if (playerPos === 2) {
+      userSkinPath = getMirrorPaddle(userSkinPath);
+      console.log("userSkinPath: updated: ", userSkinPath);
+    } else {
+      opponentSkinPath = getMirrorPaddle(opponentSkinPath);
+      console.log("opponentSkinPath: updated: ", opponentSkinPath);
+    }
+  }, [playerPos]);
+
 
   /* reduce user Spam keyboard */
   const debouncedMovePlayer = useRef(
@@ -464,123 +501,125 @@ export default function LiveMode({
   };
 
   return (
-    <div className="live-mode-container">
-      {!cancelledGame && !endedGame && (
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Grid
-templateAreas={`"nav nav"
+    // <div className="live-mode-container container-bootmode">
+    <Grid
+      templateAreas={`"nav nav"
             "main main"
             "footer footer"`}
-gridTemplateRows={"115px 1fr 50px"}
-gridTemplateColumns={"150px 1fr"}
-h="100%"
-className="container-bootmode"
-style={{
-  position: "relative",
-}}
->
-<div
-  className="background-blur"
-  style={{
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundImage: `url(${userSelectedBoardPath})`,
-    opacity: 0.5,
-    backgroundSize: "cover",
-    filter: "blur(4px)",
-  }}
-></div>
+      gridTemplateRows={"115px 1fr 50px"}
+      gridTemplateColumns={"150px 1fr"}
+      h="100%"
+      className="container-bootmode"
+      style={{
+        position: "relative",
+      }}
+    >
+      <div
+        className="background-blur"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `url(${userSelectedBoardPath})`,
+          opacity: 0.5,
+          backgroundSize: "cover",
+          filter: "blur(4px)",
+        }}
+      ></div>
 
-<GridItem pl="2" area={"nav"} className="nav-area">
-  <IPongGameNav
-    SelectedBackground={userSelectedBoardPath}
-    player1Score={playerScore}
-    player2Score={botScore}
-    opponentName="Ai Bot"
-    opponentAvatarPath={GAME_SETTING.BOT_ICON}
-    playerPos={1}
-  />
-</GridItem>
+      <GridItem pl="2" area={"nav"} className="nav-area">
+        {!cancelledGame && !endedGame && (
+          <IPongGameNav
+            SelectedBackground={userSelectedBoardPath}
+            player1Score={player1Score}
+            player2Score={player2Score}
+            opponentName={opponent}
+            playerPos={playerPos}
+            opponentAvatarPath=""
+          />
+        )}
+      </GridItem>
 
-<GridItem pl="2" area={"main"}>
-  <div className="progress-container">
-    {!gameStarted && <ProgressBar progress={progress} />}
-  </div>
-  {gameStarted && (
-    <div className="Game-container-frame">
-      <div className="canvas-container">
-        {gameStarted && !winner && (
+      <GridItem pl="2" area={"main"}>
+        {!cancelledGame && !endedGame && (
           <>
-            {/* <Scores
-          player1Score={playerScore}
-          player2Score={botScore}
-        ></Scores> */}
-            <canvas
-              ref={canvasRef}
-              className="game"
-              width="800px"
-              height="500px"
-            ></canvas>
+            {!gameStarted && (
+              <div className="progress-container">
+                <ProgressBar progress={progress} />
+              </div>
+            )}
+            {gameStarted && (
+              <div className="Game-container-frame">
+                <div className="canvas-container">
+                  {gameStarted && !winner && (
+                    <>
+                      <canvas
+                        ref={canvasRef}
+                        className="game"
+                        width="800px"
+                        height="500px"
+                      ></canvas>
+                    </>
+                  )}
+                  {winner && <GameOver winner={winner} />}
+                </div>
+              </div>
+            )}
           </>
         )}
-        {winner && <GameOver winner={winner} />}
-      </div>
-    </div>
-  )}
-</GridItem>
 
-{/* <GridItem pl="2" className="button-leave" area={"footer"}>
-  <Button className="bg-black" onClick={leaveBotMode}>
-    Leave Training
-  </Button>
-</GridItem> */}
-</Grid>
+        {cancelledGame && (
+          <CancelledMatch WhyReason="Opponent Disconnected! The match has been cancelled." />
+        )}
+        {endedGame && (
+          <GameOver
+            winner={winner}
+            winnerId={winnerId}
+            winnerXp={winnerXp}
+            loserXp={loserXp}
+          />
+        )}
+      </GridItem>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      )}
-      {cancelledGame && (
-        <CancelledMatch WhyReason="Opponent Disconnected! The match has been cancelled." />
-      )}
-      {endedGame && (
-        <GameOver
-          winner={winner}
-          winnerId={winnerId}
-          winnerXp={winnerXp}
-          loserXp={loserXp}
-        />
-      )}
-    </div>
+      {/* <GridItem pl="2" className="button-leave" area={"footer"}>
+          <Button className="bg-black">TEST</Button>
+        </GridItem> */}
+    </Grid>
+    // </div>
   );
+}
+
+{
+  /*
+
+        <div className="iPongGame-frame">
+          <IPongGameNav
+          opponentName={opponent}
+          playerPos={playerPos}
+            opponentAvatarPath=""
+          ></IPongGameNav>
+          <div className="progress-container">
+            {!gameStarted && <ProgressBar progress={progress} />}
+          </div>
+          <div className="canvas-container">
+            {gameStarted && (
+              <>
+                <Scores
+                  player1Score={player1Score}
+                  player2Score={player2Score}
+                ></Scores>
+                <canvas
+                  ref={canvasRef}
+                  className="game"
+                  width="800px"
+                  height="500px"
+                ></canvas>
+              </>
+            )}
+          </div>
+        </div>
+
+  */
 }
