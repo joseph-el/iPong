@@ -24,6 +24,11 @@ export const GAME_SETTING = {
   HIT_COLOR: "RED",
   PLAYER_DEF_COLOR: "WHITE",
 
+  /* Net Settings */
+  NET_IMG_PATH: "/assets/game/backgrounds/split-canvas.svg",
+  NET_HEIGHT: 470, //update it to 500 if you change IMG
+  NET_WIDTH: 8,
+
   /* Sounds */
   // HIT_BALL_SOUND: "/sounds/hitBall.mp3",
   // SCORE_SOUND: "/sounds/scoreSound.mp3",
