@@ -44,7 +44,7 @@ export default function IPongChat() {
 
   useEffect(() => {
     if (selectedMessage) {
-      dispatch(setRouterState("Chat"))
+      dispatch(setRouterState("iPongChat"))
         dispatch(setRouterStateType(selectedMessage.fullname));
     }
   }, [selectedMessage]);
