@@ -40,7 +40,7 @@ export default function SideBar() {
       case "/ipong/home":
         return "Main Page";
       case "/ipong/chat":
-        return "Chat";
+        return "iPongChat";
       case "/ipong/store":
         return "Store";
       case "/ipong/profile":
