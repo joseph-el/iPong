@@ -2,11 +2,8 @@ FROM node:latest
 
 WORKDIR /app
 
-COPY packages/package*.json ./
+COPY . .
 
 RUN npm install
 
-COPY . ./
-
-
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run",  "dev"]

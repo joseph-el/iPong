@@ -31,7 +31,7 @@ interface SocketProviderProps {
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const socketRef = useRef<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-
+  const url = import.meta.env.VITE_URL;
   const connect = () => {
     if (!isConnected) {
       const accessToken = document?.cookie
@@ -39,7 +39,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         ?.find((row) => row.startsWith("access_token="))
         ?.split("=")[1];
 
-      const socket = io("http://localhost:3000/notifications", {
+      const socket = io(`http://${url}:3000/notifications`, {
         transports: ["websocket"],
         auth: {
           token: accessToken,

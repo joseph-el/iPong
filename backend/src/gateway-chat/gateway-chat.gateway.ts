@@ -12,16 +12,15 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { NotificationsService } from 'src/notifications/notifications.service';
-import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
 import { OnEvent, EventEmitter2 } from '@nestjs/event-emitter';
 import { JoinRoomDto } from 'src/chatroom/dto/JoinRoom.dto';
 import { CreateChatroomDto } from 'src/chatroom/dto/create-chatroom.dto';
 import { MessageFormatDto } from 'src/messages/dto/msgFormat.dto';
+import { env } from 'process';
 
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin:env.FRONTEND_URL,
   },
   namespace: 'chat',
   transports: ['websocket'],

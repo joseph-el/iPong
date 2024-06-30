@@ -21,7 +21,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
     super({
       clientID: env.FT_CLIENT_ID,
       clientSecret: env.FT_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/auth/42/callback',
+      callbackURL: env.BACKEND_URL + '/auth/42/callback',
       passReqToCallback: true,
     });
   }
@@ -50,7 +50,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
           httpOnly: false,
           maxAge: 15 * 60 * 1000, // 15 minutes
         });
-        res.redirect('http://localhost:5173/auth/2fa-login');
+        res.redirect(env.FRONTEND_URL + '/auth/2fa-login');
         return cb(null, profile);
       }
       const tokens = await this.AuthService.getTokens(
@@ -65,7 +65,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
         httpOnly: false,
         path: '/auth',
       });
-      res.redirect('http://localhost:5173/ipong/home');
+      res.redirect(env.FRONTEND_URL + '/ipong/home');
       return cb(null, profile);
     }
     const newUser = await this.User.createUser({
@@ -88,7 +88,7 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
       httpOnly: false,
       path: '/auth',
     });
-    res.redirect('http://localhost:5173/ipong/home');
+    res.redirect( env.FRONTEND_URL + '/ipong/home');
 
     return cb(null, profile);
   }
