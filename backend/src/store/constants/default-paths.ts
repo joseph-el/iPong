@@ -7,7 +7,7 @@ export const STORE_DEFAULT = {
 
   /*Default Skin */
   SKIN_DEFAULT_ID: 'default-skin-id',
-  SKIN_DEFAULT_NAME: 'Joker Paddle',
+  SKIN_DEFAULT_NAME: 'Ice',
   SKIN_DEFAULT_PRICE: 0,
   SKIN_DEFAULT_PATH: '/assets/game/default/default-board.jpg',
 };

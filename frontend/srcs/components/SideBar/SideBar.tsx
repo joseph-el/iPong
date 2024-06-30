@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./SideBar.css";
 import { useState } from "react";
 
@@ -11,9 +11,16 @@ import LogoStoreNoSelected from "./assets/LogoStoreNoSelected.svg";
 import LogoStoreSelected from "./assets/LogoStoreSelected.svg";
 import LogoUserProfileNoSelected from "./assets/LogoUserProfileNoSelected.svg";
 import LogoUserProfileSelected from "./assets/LogoUserProfileSelected.svg";
-import { redirect } from "react-router-dom";
 
+import { useLocation , useParams} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  setRouterState,
+  setRouterStateType,
+} from "../../state/RouterState/routerSlice";
+import { get } from "lodash";
+
 enum SideBarIcons {
   UNK = 0,
   HOME = 1,
@@ -24,11 +31,53 @@ enum SideBarIcons {
 
 export default function SideBar() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { chatId } = useParams();
+  const dispatch = useDispatch();
   const [selectedIcon, setActive] = useState(SideBarIcons.UNK);
+  const getRouterState = (path) => {
+    switch (path) {
+      case "/ipong/home":
+        return "Main Page";
+      case "/ipong/chat":
+        return "iPongChat";
+      case "/ipong/store":
+        return "Store";
+      case "/ipong/profile":
+        return "Profile";
+      case "/ipong/users":
+        return "Profile";
+      default:
+        return "Main Page";
+    }
+  }
+  useEffect(() => {
+    setActive(() => {
+
+      if (chatId)
+        return SideBarIcons.CHAT;
+      switch (location.pathname) {
+        case "/ipong/home":
+          return SideBarIcons.HOME;
+        case "/ipong/chat":
+          return SideBarIcons.CHAT;
+        case "/ipong/store":
+          return SideBarIcons.STORE;
+        case "/ipong/profile":
+          return SideBarIcons.USER_PROFILE;
+        case "/ipong/users":
+          return SideBarIcons.USER_PROFILE;
+        default:
+          return SideBarIcons.UNK;
+      }
+    });
+    
+    dispatch(setRouterStateType(null));
+    dispatch(setRouterState(getRouterState(location.pathname)));
+  }, [location.pathname, chatId]);
 
   const handleIconClick = (param, route) => {
     setActive(param);
-    // console.log("route", route);
     navigate(route);
   };
 
@@ -65,6 +114,7 @@ export default function SideBar() {
             src={iPongLogo}
             onClick={() => {
               setActive(SideBarIcons.HOME);
+
               navigate("/ipong/home");
             }}
           />

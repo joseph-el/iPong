@@ -21,6 +21,7 @@ import IPongAlert from "../../components/UI/iPongAlert/iPongAlert";
 import { useDisclosure } from "@nextui-org/react";
 import CongratulationsNewSkin from "../../components/UI/CongratulationsNewItem/CongratulationsNewSkin";
 import { setUpdateProfile } from "../../state/update/UpdateSlice";
+import { setRouterStateType } from "../../state/RouterState/routerSlice";
 let closed = false;
 const setClosed = (value) => {
   closed = value;
@@ -207,6 +208,11 @@ export default function IPongStore() {
     dispatch(setSelectedSkinPath(item.name));
   };
 
+  const RouterType = useSelector((state: RootState) => state.routerSlice.routerStateType);
+  useEffect(() => {
+    if (RouterType === null) 
+      dispatch(setRouterStateType("Boards"));
+  });
   return (
     <div className="store-frame">
       <div className="Store-List">
@@ -214,14 +220,16 @@ export default function IPongStore() {
           <div
             className="Store-List-nav-item"
             onClick={() => {
+              dispatch(setRouterStateType("Boards"));
               setShowPaddlesTabel(false);
             }}
           >
-            <h2>TABLES</h2>
+            <h2>BOARDS</h2>
           </div>
           <div
             className="Store-List-nav-item"
             onClick={() => {
+              dispatch(setRouterStateType("Paddles"));
               setShowPaddlesTabel(true);
             }}
           >
@@ -287,7 +295,7 @@ export default function IPongStore() {
                       isBlurred
                       alt={item.name}
                       className={
-                        "w-full object-coverd h-[120px] " +
+                        "w-[40%] object-coverd h-[140px]  paddles-img " +
                         (!item.isUnlocked ? "blur-img" : "")
                       }
                       src={item.imgPath}

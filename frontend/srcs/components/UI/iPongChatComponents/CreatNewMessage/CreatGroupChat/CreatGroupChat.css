@@ -25,12 +25,12 @@
 .Edit-avatar {
   display: flex;
 }
-.CreatGroupChat-frame .Edit-group-icon {
-  margin-top: -40px ;
+.CreatGroupChat-frame .Edit-group-iconsss {
+  margin-top: -10px ;
   margin-right: -10px !important;
 }
 
-.CreatGroupChat-frame .Edit-group-icon:hover {
+.CreatGroupChat-frame .Edit-group-iconsss:hover {
   cursor: pointer;
 }
 

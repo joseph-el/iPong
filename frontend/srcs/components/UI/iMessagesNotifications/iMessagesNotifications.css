@@ -27,6 +27,8 @@
   letter-spacing: -0.6px;
   line-height: 26.6px;
   opacity: 0.5;
+  margin-top: -15px;
+  margin-right: 5px;
 }
 .notification-content .imessage-icon {
   position: absolute;

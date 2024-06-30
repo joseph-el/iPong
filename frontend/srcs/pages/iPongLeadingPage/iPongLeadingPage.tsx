@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./LoadingOverlay.module.scss";
 import { useState } from "react";
 import React, { useEffect } from "react";
-
+import EEE from "../../../public/__pic.jpg"
 import styles1 from "./SideLine.module.scss";
 
 interface LineProps {
@@ -109,7 +109,8 @@ export default function iPongLeadingPage() {
 
   return (
     <>
-      <div>
+      <div className="dddddd">
+
         <div className={clsx(styles.overlay, hidden && styles.hidden)}>
           <div
             className={clsx(styles.overlay__center, loaded && styles.active)}

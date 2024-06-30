@@ -132,7 +132,7 @@ export default function iPongGame() {
             <CardHeader
               onClick={() => {
                 // console.log("clicked on card 1");
-                // vsRandomHandler();
+                vsRandomHandler();
               }}
               className="absolute z-10 top-16 flex-col items-start "
             >

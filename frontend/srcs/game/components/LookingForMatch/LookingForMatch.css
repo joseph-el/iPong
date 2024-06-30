@@ -1,6 +1,6 @@
 .LookingForMatchWrapper-box {
   background-color: #000;
-  background: url("../../assets/LoadingForMatch.svg");
+  background: url("../../../../public/assets/game/backgrounds/Loading-for-Match.svg");
   background-size: 100%;
   border-radius: 15px;
   left: 1px;
@@ -13,6 +13,27 @@
   margin: 5px;
 }
 
+.X-versus {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  font-family: "fortnite-1", Helvetica;
+  font-size: 55px;
+  font-style: normal; 
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 3px;
+  color: #c1c9cd;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.25), 1px -1px 0 rgba(0, 0, 0, 0.25), -1px 1px 0 rgba(0, 0, 0, 0.25), 1px 1px 0 rgba(0, 0, 0, 0.25);
+
+
+
+
+text-align: center;
+
+}
 .LookingForMatch-frame {
   /* position: relative; */
 }
@@ -35,7 +56,7 @@
   gap: 5px;
   position: absolute;
   top: 73.1%;
-  left: 23%;
+  left: 5%;
 }
 .LookingForMatch-frame .avatar {
   width: 52px;

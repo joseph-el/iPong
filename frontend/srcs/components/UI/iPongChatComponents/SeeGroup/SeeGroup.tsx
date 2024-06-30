@@ -362,6 +362,7 @@ const EditGroup = (props) => {
                             setGroupTypeIsInvalid(false);
                             setGroupPasswordIsInvalid(false);
                           }
+                          if (GroupName.length > 20) return;
                           setGroupName(e.target.value);
                         }}
                         defaultValue={props.selectedMessage.fullname}
@@ -561,9 +562,7 @@ export default function SeeGroup(props) {
   useEffect(() => {
     const MuteChat = async () => {
       try {
-        await api.post(
-          `chatroom/muteChat/${selectedMessage?.id}`
-        );
+        await api.post(`chatroom/muteChat/${selectedMessage?.id}`);
       } catch (error) {}
       setMuteChat(false);
     };

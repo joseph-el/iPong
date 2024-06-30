@@ -9,8 +9,7 @@ import Level5Svg from "../AchievementComponents/assets/level5.svg";
 import Level6Svg from "../AchievementComponents/assets/level6.svg";
 
 const getLevelSvg = (level) => {
-  if (!level || level === undefined)
-    return Level1Svg;
+  if (!level || level === undefined) return Level1Svg;
   switch (level) {
     case 1:
       return Level1Svg;
@@ -27,14 +26,14 @@ const getLevelSvg = (level) => {
     default:
       throw new Error(`Invalid level: ${level}`);
   }
-}
+};
 
-
-import {getXpToNextLevel, getXpRangeForCurrentLevel} from "../../../utils/getCurrentLevel";
-
+import {
+  getXpToNextLevel,
+  getXpRangeForCurrentLevel,
+} from "../../../utils/getCurrentLevel";
 
 const MyComponent = (props) => {
-
   const [minXp, maxXp] = getXpRangeForCurrentLevel(props.level);
 
   const progressPercentage = ((props.xp - minXp) / (maxXp - minXp)) * 100;
@@ -42,12 +41,18 @@ const MyComponent = (props) => {
 
   return (
     <div className="container-progress">
-      <div className="box1"></div>
+      {
+        props.level === 6 ? (
+          <div className="box1" style={{background: "goldenrod"}}   ></div>
+        ) : (
+          <div className="box1"></div>
+        )
+      }
+    
       <div className="box2" style={{ width: `${progressPercentage}%` }}></div>
     </div>
   );
 };
-
 
 export function LevelBar(props) {
   return (
@@ -58,13 +63,22 @@ export function LevelBar(props) {
         <p className="LEVEL">
           <span className="text-wrapper">LEVEL</span>
           <span className="span"> </span>
-          <span className="text-wrapper-2">{props.level}</span>
+          <span className="text-wrapper-2">
+            {props.level}
+          </span>
         </p>
 
         <div className="group">
           <div className="overlap-group">
             <MyComponent xp={props.xp} level={props.level} />
-            <p className="div">{   getXpToNextLevel(props.xp)  }XP to LVL {props.level + 1}</p>
+
+            {props.level === 6 ? (
+              <p className="div"  style={{color: "#caf2fe"}}>MAX LEVEL</p>
+            ) : (
+              <p className="div">
+                {getXpToNextLevel(props.xp)}XP to LVL {props.level + 1}
+              </p>
+            )}
           </div>
         </div>
       </div>

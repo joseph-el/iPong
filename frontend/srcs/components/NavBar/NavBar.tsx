@@ -38,7 +38,6 @@ import { useSocket } from "../../context/SocketContext";
 import { set } from "lodash";
 import { selectUser } from "../../state/iPongChatState/iPongChatState";
 
-
 export default function NavBar() {
   const UserInfo = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
@@ -65,7 +64,7 @@ export default function NavBar() {
       }
     };
     isReadAll && fetchData();
-  }, [isReadAll, ]);
+  }, [isReadAll]);
 
   // TODO: fetch all users from the server
 
@@ -118,7 +117,6 @@ export default function NavBar() {
   }, []);
 
   const isWideScreen = windowWidth < 600;
-
 
   const [inputValue, setInputValue] = useState("");
 
@@ -173,7 +171,6 @@ export default function NavBar() {
       socket.on("sendNotification", (data) => {
         // TODO: check if the notification is already exist in the store
 
-
         const existingNotificationIndex = NotificationObject.findIndex(
           (notification) =>
             notification.entityType === data.entityType &&
@@ -211,28 +208,56 @@ export default function NavBar() {
     };
   }, [socket]);
 
+  const RouterSlice = useSelector((state: RootState) => state.routerSlice);
   return (
     <div className="nav-bar">
       {/* LEFT ITEMS  state: ✅*/}
-      <div className="page-name-breadcrumb">
-        {/* TODO: set the current page using store redux! */}
+      {/* <div className="page-name-breadcrumb">
+
         <div className="text-wrapper">
-          {"iPong" + "\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"}
+          {"iPong"}
         </div>
         <div className="breadcumb">
-          <div className="div">Main Page</div>
-          <div className="text-wrapper-2">&gt;</div>
-          <div className="text-wrapper-3">profile</div>
+          <div className="div-routerState">{RouterSlice.routerState}</div>
+          {RouterSlice.routerStateType != null && (
+            <>
+              <div className="text-wrapper-2">&gt;</div>
+              <div className="text-wrapper-3">{RouterSlice.routerStateType}</div>
+            </>
+          )}
         </div>
+      </div> */}
+
+      <div className="page-name-breadcrumb-new">
+        <div className="App-Name">
+          {"iPong"}
+        </div>
+        <div className="RouterState">
+          <div className="Current-page">
+            {RouterSlice.routerState}
+          </div>
+          {RouterSlice.routerStateType !== null && (
+            <>
+              <div className="shift-style">&gt;</div>
+              <div className="RouterStateType">
+                {RouterSlice.routerStateType}
+              </div>
+            </>
+          )}
+
+        </div>
+
+
       </div>
+
+
+
 
       {isWideScreen && searchTerm ? (
         <SearchIcon onClick={handleIconClick} />
       ) : (
         <div className="search-bar">
-          <SearchInput 
-          inputValue={inputValue}
-          onChange={handleOnChange} />
+          <SearchInput inputValue={inputValue} onChange={handleOnChange} />
           {activeSearch.length != 0 || activeGroups.length != 0 ? (
             <div className="SearchList">
               <SearchList
@@ -245,7 +270,6 @@ export default function NavBar() {
           ) : null}
         </div>
       )}
-
 
       {searchTerm ? (
         <div className="right-side-menu">

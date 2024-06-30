@@ -55,10 +55,13 @@ import { useNavigate } from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
 import { setUpdateProfile } from "../../../state/update/UpdateSlice";
-
+import {setRouterStateType, setRouterState} from "../../../state/RouterState/routerSlice";
 const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
+
+
+
 
   useEffect(() => {
     const fetchCountry = async (latitude, longitude) => {
@@ -330,6 +333,14 @@ export default function UserProfileViewAs() {
     startChat && fetchCreatChatRoom();
   }, [startChat]);
 
+
+
+
+  useEffect(() => {
+      console.log("UserprofileInfo?.username", UserprofileInfo);
+        dispatch(setRouterState("Profile"));
+        dispatch(setRouterStateType(UserprofileInfo?.username));
+  }, [UserprofileInfo]);
 
   return (
     <NextUIProvider>

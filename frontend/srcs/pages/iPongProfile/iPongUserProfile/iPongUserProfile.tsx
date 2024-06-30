@@ -39,8 +39,8 @@ import axios from "axios";
 import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 import { formatJoinDate } from "../../../utils/formatJoinDate";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
-
-
+import { useDispatch } from "react-redux";
+import {setRouterStateType} from "../../../state/RouterState/routerSlice";
 const UserDescriptions = React.memo(({ UserInfo }) => {
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
@@ -119,6 +119,11 @@ export default function UserProfile() {
   };
 
   const UserInfo = useSelector((state: RootState) => state.userState);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setRouterStateType(UserInfo.username));
+  }, []);
 
   return (
     <NextUIProvider className="scrool">

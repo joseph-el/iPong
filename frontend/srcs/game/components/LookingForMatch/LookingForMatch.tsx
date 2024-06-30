@@ -30,6 +30,14 @@ export function LookingForMatch({ leaveMatchMaking, OpponentId}) {
   }, []);
 
 
+
+
+  const handelUsernameLength = (username) => {
+    if (username.length > 10) {
+      return username.slice(0, 10) + "..";
+    }
+    return username;
+  }
   return (
     <LookingForMatchWrapper>
       <div className="LookingForMatch-frame">
@@ -37,14 +45,15 @@ export function LookingForMatch({ leaveMatchMaking, OpponentId}) {
 
         <div className="User-Avatar">
           <Avatar   isFocusable src={UserInfo.picture} alt="Avatar" className="avatar" />
-          <div className="User-Name">{UserInfo.username}</div>
+          <div className="User-Name">{handelUsernameLength(UserInfo.username)}</div>
         </div>
+        <div className="X-versus">VS</div>
 
         {OpponentId != null ? (
           <div className="LookingForMatch-content">
             <div className="Opponent-Avatar">
               <img src={opponentInfo.picture} alt="Avatar" className="avatar" />
-              <div className="Opponent-Name">{opponentInfo.username}</div>
+              <div className="Opponent-Name">{handelUsernameLength(opponentInfo.username)}</div>
             </div>
           </div>
         ) : (

@@ -32,18 +32,16 @@ import { SocketProvider } from "../context/SocketContext";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-
-
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-  
-  const dispatch = useDispatch<AppDispatch>();
 
+  const dispatch = useDispatch<AppDispatch>();
+  
   if (
     localStorage.getItem("userSkin") === null ||
     localStorage.getItem("userSkin") === undefined
   ) {
-    localStorage.setItem("userSkin", "Joker Paddle");
+    localStorage.setItem("userSkin", "Ice");
   }
   if (
     localStorage.getItem("userBoard") === null ||
@@ -54,8 +52,13 @@ const RequireAuth = ({ children }) => {
 
   const UserSkin = localStorage.getItem("userSkin");
   const UserBoard = localStorage.getItem("userBoard");
+  console.log("UserSkin", UserSkin);
+  console.log("UserBoard", UserBoard);
 
-  const UpdatedProfileInfo = useSelector((state: RootState) => state.update.UpdateProfile);
+
+  const UpdatedProfileInfo = useSelector(
+    (state: RootState) => state.update.UpdateProfile
+  );
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -86,14 +89,12 @@ const RequireAuth = ({ children }) => {
     checkAuth();
   }, [UpdatedProfileInfo]);
 
- 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get("/notifications/getAllNotifications");
         const notifications = response.data;
 
-   
         const NotificationObj = notifications.map((notification) => {
           console.error("notification !!!!!>", notification);
           return {
@@ -106,7 +107,6 @@ const RequireAuth = ({ children }) => {
           };
         });
 
-
         dispatch(setNotification(NotificationObj));
       } catch (error) {
         console.error("error: notitifications", error);
@@ -116,9 +116,8 @@ const RequireAuth = ({ children }) => {
     const fetchUnreadNotificationsData = async () => {
       try {
         const response = await api.get("/notifications/unreadNotifications");
-    
-        dispatch(setNotificationCount(response.data.length));
 
+        dispatch(setNotificationCount(response.data.length));
       } catch (error) {
         console.error("error: notitifications", error);
       }
@@ -128,8 +127,11 @@ const RequireAuth = ({ children }) => {
     fetchUnreadNotificationsData();
   }, []);
 
-  dispatch(setSelectedSkinPath(UserSkin));
-  dispatch(setBoardPath(UserBoard));
+  useEffect(() => {
+    dispatch(setSelectedSkinPath(UserSkin));
+    dispatch(setBoardPath(UserBoard));
+  }, [UserSkin, UserBoard]);
+
   if (isAuthenticated === null) {
     return null;
   }

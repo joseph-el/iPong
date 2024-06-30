@@ -16,6 +16,8 @@
   filter: blur(2px);
 
 } */
+
+
 .container-bootmode > * {
   position: relative;
 }
@@ -44,11 +46,12 @@
 }
 
 .game {
+  margin-top: 20px;
   margin-right: 10px;
   width: 100%;
   max-width: 900px;
-  height: auto;
   max-height: 600px;
+  height: auto;
 
   border-radius: 25px;
   border: 0.2px dashed #ffffff5d !important;
@@ -73,6 +76,7 @@
 }
 
 .button-leave {
+  margin-top: -10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,6 +92,10 @@
     font-size: 1.5vw !important;
   }
 
+}
+
+.css-uiwrfz {
+  padding: 0px !important;
 }
 /* .container-bootmode {
   width: 100%;

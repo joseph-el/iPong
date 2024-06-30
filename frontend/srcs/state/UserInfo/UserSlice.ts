@@ -61,6 +61,7 @@ const userState = createSlice({
       state.userSelectedBoardPath = action.payload;
     },
     setSelectedSkinPath: (state, action) => {
+      console.log('action.payload i try to selectd: > ', action.payload);
       state.userSelectedSkinPath = action.payload;
     },
     setId: (state, action) => {

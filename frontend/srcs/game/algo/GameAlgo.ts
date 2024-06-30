@@ -51,11 +51,13 @@ export class GameAlgo {
 
   /* Images */
   private bgImage: HTMLImageElement | null;
+  private netImage: HTMLImageElement | null;
   private skinImage: HTMLImageElement | null;
   private botSkinImage: HTMLImageElement | null;
 
   /* Images Helpers */
   private isBgImageLoaded: boolean = false;
+  private isNetImageLoaded: boolean = false;
   private isSkinImageLoaded: boolean = false;
   private isBotSkinImageLoaded: boolean = false;
 
@@ -122,6 +124,7 @@ export class GameAlgo {
 
     /* Skins And Backgrounds */
     this.bgImage = null;
+    this.netImage = null;
     this.skinImage = null;
 
     /* Effects Settings */
@@ -275,11 +278,16 @@ export class GameAlgo {
   /* Loading Images/Sounds For The Game */
   private preLoadImages() {
     this.bgImage = new Image();
+    this.netImage = new Image();
     this.skinImage = new Image();
     this.botSkinImage = new Image();
 
     this.bgImage.onload = () => {
       this.isBgImageLoaded = true;
+    };
+
+    this.netImage.onload = () => {
+      this.isNetImageLoaded = true;
     };
 
     this.skinImage.onload = () => {
@@ -293,6 +301,9 @@ export class GameAlgo {
     this.bgImage.onerror = () => {
       this.isBgImageLoaded = false;
     };
+    this.netImage.onerror = () => {
+      this.isNetImageLoaded = false;
+    };
 
     this.skinImage.onerror = () => {
       this.isSkinImageLoaded = false;
@@ -303,6 +314,7 @@ export class GameAlgo {
     };
 
     this.bgImage.src = this.mapPath;
+    this.netImage.src = GAME_SETTING.NET_IMG_PATH;
     this.botSkinImage.src = this.botSkinPath;
     this.skinImage.src = this.skinPath;
   }
@@ -358,6 +370,10 @@ export class GameAlgo {
       this.bgImage.src = "";
       this.bgImage = null;
     }
+    if (this.netImage) {
+      this.netImage.src = "";
+      this.netImage = null;
+    }
     if (this.skinImage) {
       this.skinImage.src = "";
       this.skinImage = null;
@@ -388,7 +404,19 @@ export class GameAlgo {
       ctx.fillRect(0, 0, this.width, this.height);
     }
     // this.drawScores(ctx);
-    this.drawNet(ctx);
+    if (this.isNetImageLoaded && this.netImage) {
+      const netX = (this.width - GAME_SETTING.NET_WIDTH) / 2;
+      const netY = (this.height - GAME_SETTING.NET_HEIGHT) / 2;
+      ctx.drawImage(
+        this.netImage,
+        netX,
+        netY,
+        GAME_SETTING.NET_WIDTH,
+        GAME_SETTING.NET_HEIGHT
+      );
+    } else {
+      this.drawNet(ctx);
+    }
     this.drawPlayerShadow(ctx);
     if (this.isSkinImageLoaded && this.skinImage) {
       ctx.drawImage(
