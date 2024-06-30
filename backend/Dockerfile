@@ -4,6 +4,9 @@ WORKDIR /app
 
 COPY . .
 
+COPY setup.sh .
+RUN chmod +x setup.sh
 RUN npm install
 
-CMD npm run start:dev
+
+CMD ["./setup.sh"]
