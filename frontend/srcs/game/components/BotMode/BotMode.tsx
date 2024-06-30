@@ -14,6 +14,7 @@ import { BOARDS_DB } from "../../../pages/iPongStore/db/board.db";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/store";
+
 interface BotModeProps {
   userSelectedSkin: string;
   userSelectedBoard: string;
