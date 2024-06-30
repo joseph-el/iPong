@@ -34,7 +34,7 @@ export const SignInPlatforme = () => {
   ResetUserData();
 
   const handleOnsubmit = async () => {
-    window.location.replace(env.BACKEND_URL + "/auth/42/");
+    window.location.replace("http://localhost:3000/auth/42/");
   };
 
   return (

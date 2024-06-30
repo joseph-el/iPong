@@ -40,12 +40,14 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         ?.find((row) => row.startsWith("access_token="))
         ?.split("=")[1];
 
-      const socket = io(env.BACKEND_URL + "/notifications", {
-        transports: ["websocket"],
-        auth: {
-          token: accessToken,
-        },
-      });
+      const socket = io("http://localhost:30000/notifications",
+        {
+          transports: ["websocket"],
+          auth: {
+            token: accessToken,
+          },
+        }
+      );
 
       socket.on("connect", () => {
         console.log("Connected to WebSocket server");

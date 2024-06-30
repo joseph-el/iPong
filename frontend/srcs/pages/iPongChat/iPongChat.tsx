@@ -65,7 +65,7 @@ export default function IPongChat() {
     if (!accessToken) {
       return;
     }
-    const socket = io(env.BACKEND_URL + "/chat", {
+    const socket = io("http://localhost:3000/chat", {
       transports: ["websocket"],
 
       auth: { token: accessToken },
