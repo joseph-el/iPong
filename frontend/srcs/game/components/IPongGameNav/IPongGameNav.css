@@ -7,10 +7,10 @@
   position: relative;
 } */
 .nav-area {
-  position: absolute;
-  top: 10%;
+  /* position: absolute;
+  top: 10%; */
   display: flex;
-  justify-content: center;
+  justify-content: center !important;
   align-items: center;
 }
 .iPongGame-frame-nav {
