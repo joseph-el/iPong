@@ -1,11 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
+import { env } from "process";
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: env.BACKEND_URL,
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache',
+    "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
   },
 });
 

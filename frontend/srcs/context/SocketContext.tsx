@@ -1,3 +1,4 @@
+import { env } from "process";
 import React, {
   createContext,
   useContext,
@@ -39,7 +40,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         ?.find((row) => row.startsWith("access_token="))
         ?.split("=")[1];
 
-      const socket = io("http://localhost:3000/notifications", {
+      const socket = io(env.BACKEND_URL + "/notifications", {
         transports: ["websocket"],
         auth: {
           token: accessToken,
@@ -66,6 +67,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       setIsConnected(false);
     }
   };
+  
 
   return (
     <SocketContext.Provider

@@ -20,7 +20,7 @@ import { env } from 'process';
 
 @WebSocketGateway({
   cors: {
-    origin:'http://localhost:5173',
+    origin:env.FRONTEND_URL,
   },
   namespace: 'chat',
   transports: ['websocket'],

@@ -16,6 +16,7 @@ import { io } from "socket.io-client";
 import { Socket } from "socket.io-client";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { env } from "process";
 
 const accessToken = document?.cookie
   ?.split("; ")
@@ -64,7 +65,7 @@ export default function IPongChat() {
     if (!accessToken) {
       return;
     }
-    const socket = io("http://localhost:3000/chat", {
+    const socket = io(env.BACKEND_URL + "/chat", {
       transports: ["websocket"],
 
       auth: { token: accessToken },
