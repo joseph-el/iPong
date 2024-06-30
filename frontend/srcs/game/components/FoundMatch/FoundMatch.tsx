@@ -32,6 +32,13 @@ export default function FoundMatch({ opponent, opponentId }) {
     fetchMatch();
   }, []);
 
+  const handelUsernameLength = (username) => {
+    if (!username) return;
+    if (username.length > 10) {
+      return username.slice(0, 10) + "..";
+    }
+    return username;
+  }
   return (
     <LookingForMatchWrapper>
       <div className="LookingForMatch-frame">
@@ -45,8 +52,10 @@ export default function FoundMatch({ opponent, opponentId }) {
             alt="Avatar"
             className="avatar"
           />
-          <div className="User-Name">{UserInfo.username}</div>
+          <div className="User-Name">{handelUsernameLength(UserInfo.username)}</div>
         </div>
+
+        <div className="X-versus">VS</div>
 
         <div className="FoundMatch-content">
           <Avatar
@@ -56,7 +65,7 @@ export default function FoundMatch({ opponent, opponentId }) {
             alt="Avatar"
             className="avatar"
           />
-          <div className="Opponent-Name">{opponentInfo?.username}</div>
+          <div className="Opponent-Name">{handelUsernameLength(opponentInfo?.username)}</div>
         </div>
       </div>
     </LookingForMatchWrapper>
