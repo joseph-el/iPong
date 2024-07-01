@@ -2,18 +2,34 @@ import React from "react";
 import "./FriendNotifications.css";
 import { FriendNotificationsWrapper } from "./FriendNotificationsWrapper";
 import { User } from "@nextui-org/react";
-
+import { UseDispatch } from "react-redux";
+import {setUpdateProfile} from "../../../state/update/UpdateSlice";
 export const Actions = (props) => {
+  const dispatch = UseDispatch();
+
   return (
     <div className="actions">
       <div className="alert-item">
-        <div className="action" onClick={props.deleteButton}>
+        <div className="action" onClick={
+          
+          () => {
+            props.deleteButton()
+            dispatch(setUpdateProfile());
+          }
+          
+          }>
           Delete
         </div>
       </div>
 
       <div className="action-wrapper">
-        <div className="text-wrapper" onClick={props.confirmButton}>
+        <div className="text-wrapper" onClick={
+          () => {
+
+            props.confirmButton()
+            dispatch(setUpdateProfile());
+          }
+          }>
           Confirm
         </div>
       </div>
