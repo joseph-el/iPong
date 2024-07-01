@@ -4,15 +4,17 @@ import VersusBadge from "../VersusBadge/VersusBadge";
 import Versus3d from "/assets/game/gameLayout/Versus-3d.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/store";
+import api from "../../../api/posts";
 import "./IPongGameNav.css";
 
 interface IPongGameNavProps {
   opponentName: string;
-  opponentAvatarPath: string;
+  opponentAvatarPath: string | null;
   playerPos: number;
   player1Score: number;
   player2Score: number;
   SelectedBackground?: string;
+  opponentId: string | null;
 }
 
 import { User } from "@nextui-org/react";
@@ -24,6 +26,7 @@ export default function IPongGameNav(props: IPongGameNavProps) {
     playerPos,
     player1Score,
     player2Score,
+    opponentId,
     SelectedBackground,
   } = props;
 
@@ -33,6 +36,19 @@ export default function IPongGameNav(props: IPongGameNavProps) {
   });
 
   const UserInfo = useSelector((state: RootState) => state.userState);
+
+
+  const [opponentAvatar, setOpponentAvatar] = React.useState<string>("");
+
+  useEffect(() => {
+    const fetchOpponentAvatar = async () => {
+      const response = await api.get(`/user-profile/getinfoById${opponentId}`);
+      setOpponentAvatar(response.data.picture);
+    }
+    fetchOpponentAvatar();
+  }, []);
+
+
 
   return (
     <div className="iPongGame-frame-nav">
@@ -64,7 +80,7 @@ export default function IPongGameNav(props: IPongGameNavProps) {
                 className: "VersusBadge-img",
                 isBordered: true,
                 size: "lg",
-                src: opponentAvatarPath,
+                src: opponentAvatarPath === null ? opponentAvatar : opponentAvatarPath,
               }}
             />
             <p className="iPongGame-UserBadge-score">{player2Score}</p>
@@ -80,7 +96,7 @@ export default function IPongGameNav(props: IPongGameNavProps) {
                 className: "VersusBadge-img",
                 isBordered: true,
                 size: "lg",
-                src: opponentAvatarPath,
+                src: opponentAvatarPath === null ? opponentAvatar : opponentAvatarPath,
               }}
             />
             <p className="iPongGame-UserBadge-score">{player2Score}</p>
