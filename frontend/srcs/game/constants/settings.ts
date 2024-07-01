@@ -30,8 +30,8 @@ export const GAME_SETTING = {
   NET_WIDTH: 8,
 
   /* Sounds */
-  // HIT_BALL_SOUND: "/sounds/hitBall.mp3",
-  // SCORE_SOUND: "/sounds/scoreSound.mp3",
+  HIT_BALL_SOUND: "/sounds/hitBall.mp3",
+  SCORE_SOUND: "/sounds/scoreSound.mp3",
 
   /*Live Game Emit Freq */
   EMIT_MOVE_LIMIT: 40, //milliseconds
