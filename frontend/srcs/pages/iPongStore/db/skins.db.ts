@@ -34,7 +34,7 @@ export const SKIN_DB: Skin[] = [
     price: 157,
   },
   {
-    name: 'Saudi Man',
+    name: 'Saudi man',
     description: 'Ride in style with this luxurious skin, fit for royalty on the board.',
     imgPath: PaddlesPNGs.SaudiMan,
     price: 80,
