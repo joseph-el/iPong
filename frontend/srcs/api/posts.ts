@@ -7,10 +7,10 @@ import axios from 'axios';
 // dotenv.config();
 
 // console.log(dotenv);
-const url = import.meta.env.VITE_URL;
+// const url = import.meta.env.VITE_URL;
 
 const api = axios.create({
-  baseURL: `http://${url}:3000`,
+  baseURL: `http://${"10.32.80.93"}:3000`,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
