@@ -39,32 +39,30 @@ export default function ChatPanelFooter({ socket }) {
   const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = (event) => {
-    if (inputValue.length > 500) {
-      return;
-    }
     const newValue = event.target.value;
+  
+    if (newValue.length > 500) {
+      setInputValue(newValue.substring(0, 500));
+    } else {
 
-    if (!newValue) {
-      // setStyle("20px");
-      setSuggestions([]);
+      if (!newValue) {
+        setSuggestions([]);
+      } else {
+        const lastWord = newValue.split(" ").pop();
+        const filteredSuggestions = Suggestions.filter((suggestion) =>
+          suggestion.toLowerCase().includes(lastWord.toLowerCase())
+        );
+  
+        if (filteredSuggestions.length === 0) {
+          setSuggestions([]);
+        } else {
+          setSuggestions(filteredSuggestions);
+        }
+      }
       setInputValue(newValue);
-      return;
     }
-    const lastWord = newValue.split(" ").pop();
-    const filteredSuggestions = Suggestions.filter((suggestion) =>
-      suggestion.toLowerCase().includes(lastWord.toLowerCase())
-    );
-
-    if (filteredSuggestions.length === 0) {
-      // setStyle("20px");
-      setSuggestions([]);
-      setInputValue(newValue);
-      return;
-    }
-    // setStyle("0px");
-    setSuggestions(filteredSuggestions);
-    setInputValue(newValue);
   };
+  
 
   const handleSuggestionClick = (suggestion) => {
     const words = inputValue.split(" ");
