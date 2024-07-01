@@ -33,13 +33,13 @@ export class NotificationsController {
 
   @UseGuards(AtGuard)
   @Get('getAllNotifications')
-  async findAll(userId: string) {
+  async findAll(@GetCurrentUser('userId') userId: string) {
     return await this.notificationsService.findAll(userId);
   }
 
   @UseGuards(AtGuard)
   @Get('getNotificationsnumber')
-  async getNotificationsNumber(userId: string) {
+  async getNotificationsNumber(@GetCurrentUser('userId') userId: string) {
     return await this.notificationsService.getNotificationsNumber(userId);
   }
 
