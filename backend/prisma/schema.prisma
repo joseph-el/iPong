@@ -33,7 +33,7 @@ model User {
   password         String?
   refreshToken     String?
   avatar           String?
-  cover            String?          @default("https://res.cloudinary.com/dnc5talpg/image/upload/v1717761298/iPong/pejq82xvp3p3sxdmb6gg.jpg")
+  cover            String?          @default("https://res.cloudinary.com/dnc5talpg/image/upload/v1719850136/iPong/45cbe737-addf-473c-ad53-c2806d009d19_cover.jpg")
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
   recipient        Notification[]  @relation("recipient")
@@ -53,8 +53,8 @@ model User {
 
 
   // l3alamia
-  xp               Int              @default(0)
-  wallet           Int              @default(10)
+  xp               Int              @default(10)
+  wallet           Int              @default(99999)
 
   // loby
   skins            Skin[]
