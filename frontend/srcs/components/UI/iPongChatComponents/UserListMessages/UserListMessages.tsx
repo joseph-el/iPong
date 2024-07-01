@@ -21,22 +21,32 @@ export default function UserListMessages(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const UserSelect = useSelector((state: RootState) => state.iPongChat.selectedMessage);
-  const UpdatedList = useSelector((state: RootState) => state.update.UpdateChatList);
+  const UserSelect = useSelector(
+    (state: RootState) => state.iPongChat.selectedMessage
+  );
+  const UpdatedList = useSelector(
+    (state: RootState) => state.update.UpdateChatList
+  );
+
+  console.log("UserSelect", UserSelect);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-
         const response = await api.get(`/chatroom/myrooms`);
+        console.log("response------)))", response);
+
         const MessageList = response.data
-          .sort(
-            (a, b) =>
-              new Date(b.lastMessage.createdAt) -
-              new Date(a.lastMessage.createdAt)
-          )
+          .sort((a, b) => {
+            const dateA = a.lastMessage
+              ? new Date(a.lastMessage.createdAt)
+              : new Date(0);
+            const dateB = b.lastMessage
+              ? new Date(b.lastMessage.createdAt)
+              : new Date(0);
+            return dateB - dateA;
+          })
           .map((message) => {
-            //  console.log("message", message);
             let memberInfo;
             if (message.type === "Dm") {
               message.members.find((member) => {
@@ -54,12 +64,17 @@ export default function UserListMessages(props) {
                 message.type === "Dm"
                   ? memberInfo.firstName + " " + memberInfo.lastName
                   : message.name,
-              time: formatTimeDifference(message.lastMessage.createdAt),
+              time: formatTimeDifference(
+                message.lastMessage ? message.lastMessage.createdAt : ""
+              ),
               avatar: message.type === "Dm" ? memberInfo.avatar : message.icon,
               isSelect: false,
-              lastMessage: message.lastMessage.content,
+              lastMessage: message.lastMessage
+                ? message.lastMessage.content
+                : "",
             };
           });
+
         dispatch(setListMessages(MessageList));
       } catch (error) {
         console.error(error);
@@ -68,6 +83,7 @@ export default function UserListMessages(props) {
     fetchUsers();
   }, [UserSelect, UpdatedList]);
 
+  console.log("ListMessages", UserChat.ListMessages);
   const handelListChatItem = (id) => {
     props.socket.current?.emit("joinRoom", {
       userId: UserId,
@@ -131,7 +147,6 @@ export default function UserListMessages(props) {
                   lastMessage={message.lastMessage}
                   avatar={message.avatar}
                 />
-    
               </React.Fragment>
             ))
           )}
