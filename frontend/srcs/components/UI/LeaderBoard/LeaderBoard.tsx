@@ -23,7 +23,7 @@ import {
 import { SearchIcon } from "../MatchHistoryTable/SearchIcon";
 
 import { ScrollShadow } from "@nextui-org/react";
-// import "./MatchHistory.css";
+import "./LeaderBoard.css";
 import { useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
 import api from "../../../api/posts";
@@ -188,20 +188,11 @@ export function LeaderBoard() {
   };
 
   const navigate = useNavigate();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+
   
 
-  const renderCell = React.useCallback((user: Match, columnKey: React.Key, windowWidth: number) => {
+  const renderCell = React.useCallback((user: Match, columnKey: React.Key) => {
 
     const cellValue = user[columnKey as keyof Match];
 
@@ -217,8 +208,8 @@ export function LeaderBoard() {
             classNames={{
               description: "ver",
             }}
-            description={windowWidth < 800 ? "" : "@" + user.PlayerA_Username}
-            name={windowWidth < 1070 ? "" : user.PlayerA_Name}
+            description={"@" + user.PlayerA_Username}
+            name={ user.PlayerA_Name}
           />
         );
 
@@ -233,8 +224,8 @@ export function LeaderBoard() {
               description: "ver",
             }}
             className="hover:cursor-pointer"
-            description={windowWidth < 800 ? "" : "@" + user.PlayerB_Username}
-            name={windowWidth < 1070 ? "" : user.PlayerB_Name}
+            description={"@" + user.PlayerB_Username}
+            name={ user.PlayerB_Name}
           />
         );
 
@@ -282,7 +273,7 @@ export function LeaderBoard() {
   );
 
   return (
-    <div className="match-history-frame">
+    <div className="match-history-frame ">
       <TopContent
         onSearchChanges={onSearchChanges}
         onSearchChangesClear={onSearchChangesClear}
@@ -324,7 +315,7 @@ export function LeaderBoard() {
               <TableRow key={item.id}>
                 {(columnKey) => (
                   <TableCell className="border-button-row">
-                    {renderCell(item, columnKey, windowWidth)}
+                    {renderCell(item, columnKey)}
                   </TableCell>
                 )}
               </TableRow>
