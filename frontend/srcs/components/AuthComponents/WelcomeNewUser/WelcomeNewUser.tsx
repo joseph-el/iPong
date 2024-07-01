@@ -31,11 +31,10 @@ export default function WelcomeNewUser(props) {
   );
 
   const extractUserData = async () => {
-    const __username =  (_UserGender == "MALE" ? "M-;" : "F-;")  + _username ;
 
     
     await api.post("/auth/signup", {
-      username: __username,
+      username: _username,
       email: _email,
       password: _password,
       firstName: _fullname.split(" ")[0],
