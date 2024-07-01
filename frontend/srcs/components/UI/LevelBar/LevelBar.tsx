@@ -36,8 +36,7 @@ import {
 const MyComponent = (props) => {
   const [minXp, maxXp] = getXpRangeForCurrentLevel(props.level);
 
-  const progressPercentage = ((props.xp - minXp) / (maxXp - minXp)) * 100;
-  // console.log("progressPercentage: ", progressPercentage);
+  const progressPercentage = ((props.xp - minXp) / (maxXp - minXp)) * 380;
 
   return (
     <div className="container-progress">
