@@ -105,6 +105,7 @@ export default function TwoFactorAuthenticationProfile(props) {
         if (response.data.status !== 201) throw new Error("Invalid Code");
         setIsTurnedOn(true);
         dispatch(setUpdateProfile());
+   
       } catch (error) {
         setIsInvalid(true);
         setErrorMessage("Invalid Code");
@@ -139,6 +140,7 @@ export default function TwoFactorAuthenticationProfile(props) {
           tfaEnabled: false,
         });
         setIsTurnedOn(false);
+        dispatch(setUpdateProfile());
         console.log("EnableDisable:> ", response.data);
       } catch (error) {
         console.log("error tfa enable:> ", error);
