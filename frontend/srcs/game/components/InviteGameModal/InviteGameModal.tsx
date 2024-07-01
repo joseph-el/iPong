@@ -3,10 +3,12 @@ import { Avatar } from "@nextui-org/avatar";
 import { useSocket } from "../../../context/SocketContext";
 import api from "../../../api/posts";
 import "./InviteGameModal.css";
+import { InviteGameModalWrapper } from "./InviteGameModalWrapper";
+import { Button } from "@nextui-org/react";
+import Close from "../../../components/UI/Button/CloseButton/CloseButton";
+const TIMER_VALUE = 122000;
 
-const TIMER_VALUE = 5000;
-
-const InviteGameModal = ({ onClose, OpponentId, inviteId }) => {
+export default function InviteGameModal({ onClose, OpponentId, inviteId }) {
   const [opponentInfo, setOpponentInfo] = useState(null);
   const [visible, setVisible] = useState(true);
   const [countdown, setCountdown] = useState(5);
@@ -69,48 +71,43 @@ const InviteGameModal = ({ onClose, OpponentId, inviteId }) => {
   }
 
   return visible ? (
-    <div className="invite-game-modal">
-      <button className="close-button" onClick={closeInviteWindow}>
-        X
-      </button>
-
-      {/* header */}
-      <div className="invite-header">
-        <div className="opponent-avatar">
+    <InviteGameModalWrapper>
+      <div className="InviteGameModal-frame">
+        <Close
+          func={closeInviteWindow}
+          id="close"
+          ClassName={"close-invite-button"}
+        />
+        <div className="User-info">
           <Avatar
-            isFocusable
+            isBordered
+            className="User-avatar w-24 h-24"
             src={opponentInfo?.picture}
-            alt="Avatar"
-            className="avatar"
           />
-        </div>
-        <div className="opponent-avatar-userName">
-          <h2>{opponentInfo?.username}</h2>
-        </div>
-      </div>
 
-      {/* body */}
-      <div className="opponent-challenge-msg">
-        <h3 className="opponent-challenge-msg-header">
-          {opponentInfo?.name} challenging you to a game Now!
-        </h3>
-        <p>Invite will expire in ({countdown}) seconds</p>
-      </div>
+          <div className="info">
+            <div className="User-name">{opponentInfo?.username}</div>
+            <div className="ipongchar">iPong</div>
+          </div>
+        </div>
 
-      {/* footer */}
-      <div className="invite-buttons">
-        <button
-          className="accept-invite-button"
-          onClick={handleAcceptInviteBtn}
-        >
-          Accept
-        </button>
-        <button className="deny-invite-button" onClick={handleDenyInviteBtn}>
-          Deny
-        </button>
+        <div className="invite-decriptions">
+          <h3 className="opponent-challenge-msg-header">
+            Get ready,<span className="invite-opponentInfo">{opponentInfo?.username }</span>  is challenging you to a game right
+            now!
+          </h3>
+          <p className="invitaion-expires">Invitation expires in {countdown} seconds</p>
+        </div>
+
+        <div className="invite-buttons">
+          <Button color="success"
+            onClick={handleAcceptInviteBtn}
+          >Accept</Button>
+          <Button color="danger"
+            onClick={handleDenyInviteBtn}
+          >Deny</Button>
+        </div>
       </div>
-    </div>
+    </InviteGameModalWrapper>
   ) : null;
-};
-
-export default InviteGameModal;
+}
