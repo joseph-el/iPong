@@ -581,12 +581,13 @@ export default function LiveMode({
       <GridItem pl="2" area={"nav"} className="nav-area">
         {!cancelledGame && !endedGame && (
           <IPongGameNav
+            opponentId={opponentId}
             SelectedBackground={userSelectedBoardPath}
             player1Score={player1Score}
             player2Score={player2Score}
             opponentName={opponent}
             playerPos={playerPos}
-            opponentAvatarPath=""
+            opponentAvatarPath={null}
           />
         )}
       </GridItem>
