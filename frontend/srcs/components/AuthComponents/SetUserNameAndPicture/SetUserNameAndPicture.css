@@ -9,6 +9,10 @@
 
   height: auto !important;
   max-height: none !important; 
+
+  background-color: #0e0e0ec4;
+  border: 0.1px solid #28292b;
+  box-shadow: 10px 16.46px 27.44px #8277c51c;
 }
 
 .picture-target {
