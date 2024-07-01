@@ -40,7 +40,7 @@ export default function WelcomeNewUser(props) {
       firstName: _fullname.split(" ")[0],
       lastName: _fullname.split(" ").slice(1).join(" "),
       bio: "Hey there! I'm using iPong",
-      intraId: "UNKNOWN",
+      intraId: "",
       avatar: _avatar,
     });
     navigate("/auth");
