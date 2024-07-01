@@ -287,7 +287,7 @@ export default function IPongStore() {
                   isPressable
                   onPress={() => handelPressPaddles(item)}
                 >
-                  <CardBody className="overflow-visible p-0">
+                  <CardBody className="overflow-visible paddles-card p-0">
                     <Image
                       shadow="none"
                       radius="none"
