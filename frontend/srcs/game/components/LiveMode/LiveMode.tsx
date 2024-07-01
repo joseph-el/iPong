@@ -7,7 +7,6 @@ import { GAME_SETTING } from "../../constants/settings";
 import { GameState } from "../../types/GameState";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import _debounce from "lodash/debounce";
-// import "./LiveMode.css";
 // import "../BotMode/BotMode.css";
 import IPongGameNav from "../IPongGameNav/IPongGameNav";
 import Scores from "../Score/Score";
