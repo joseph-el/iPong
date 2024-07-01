@@ -5,16 +5,31 @@ import { User } from "@nextui-org/react";
 
 import { useEffect, useState } from "react";
 import api from "../../../api/posts";
+import { useDispatch } from "react-redux";
+import { setUpdateChatList } from "../../../state/update/UpdateSlice";
 export const Actions = (props) => {
+  const dispatch = useDispatch();
   return (
     <div className="actions">
       <div className="alert-item">
-        <div className="action" onClick={props.deleteButton}>
+        <div
+          className="action"
+          onClick={() => {
+            props.deleteButton();
+            dispatch(setUpdateChatList());
+          }}
+        >
           Delete
         </div>
       </div>
       <div className="action-wrapper">
-        <div className="text-wrapper" onClick={props.confirmButton}>
+        <div
+          className="text-wrapper"
+          onClick={() => {
+            props.confirmButton();
+            dispatch(setUpdateChatList());
+          }}
+        >
           Join
         </div>
       </div>
@@ -28,15 +43,11 @@ export default function JoinRoomNotification(props) {
   useEffect(() => {
     const GetRoomInfo = async () => {
       try {
- 
-
         const response = await api.get(`/chatroom/roomDetails/${props.RoomId}`);
 
-
         setRoomInfo(response.data);
-      } catch (error) {
-      }
-    }
+      } catch (error) {}
+    };
     GetRoomInfo();
   }, []);
   return (
@@ -46,7 +57,9 @@ export default function JoinRoomNotification(props) {
           <div className="FriendNotifications-content">
             <User
               name={props.title}
-              description={props.name + " " + props.description + " " + roomInfo.roomName}
+              description={
+                props.name + " " + props.description + " " + roomInfo.roomName
+              }
               avatarProps={{
                 src: roomInfo.icon,
               }}
