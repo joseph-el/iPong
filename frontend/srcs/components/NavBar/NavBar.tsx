@@ -66,8 +66,6 @@ export default function NavBar() {
     isReadAll && fetchData();
   }, [isReadAll]);
 
-  // TODO: fetch all users from the server
-
   const [Groups, setGroups] = useState([]);
 
   useEffect(() => {
@@ -208,50 +206,32 @@ export default function NavBar() {
     };
   }, [socket]);
 
+  const handelRouterStateTypeLenght = (routerStateType) => {
+    if (routerStateType === null || routerStateType === "" || routerStateType === undefined) {
+      return "";
+    }
+    if ( routerStateType.length > 15) {
+      return routerStateType.slice(0, 15) + "...";
+    }
+    return routerStateType;
+  }
   const RouterSlice = useSelector((state: RootState) => state.routerSlice);
   return (
     <div className="nav-bar">
-      {/* LEFT ITEMS  state: ✅*/}
-      {/* <div className="page-name-breadcrumb">
-
-        <div className="text-wrapper">
-          {"iPong"}
-        </div>
-        <div className="breadcumb">
-          <div className="div-routerState">{RouterSlice.routerState}</div>
-          {RouterSlice.routerStateType != null && (
-            <>
-              <div className="text-wrapper-2">&gt;</div>
-              <div className="text-wrapper-3">{RouterSlice.routerStateType}</div>
-            </>
-          )}
-        </div>
-      </div> */}
-
       <div className="page-name-breadcrumb-new">
-        <div className="App-Name">
-          {"iPong"}
-        </div>
+        <div className="App-Name">{"iPong"}</div>
         <div className="RouterState">
-          <div className="Current-page">
-            {RouterSlice.routerState}
-          </div>
+          <div className="Current-page">{RouterSlice.routerState}</div>
           {RouterSlice.routerStateType !== null && (
             <>
               <div className="shift-style">&gt;</div>
               <div className="RouterStateType">
-                {RouterSlice.routerStateType}
+                {handelRouterStateTypeLenght(RouterSlice.routerStateType)}
               </div>
             </>
           )}
-
         </div>
-
-
       </div>
-
-
-
 
       {isWideScreen && searchTerm ? (
         <SearchIcon onClick={handleIconClick} />
