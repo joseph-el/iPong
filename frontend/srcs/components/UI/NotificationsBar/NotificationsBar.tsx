@@ -41,6 +41,7 @@ const NotificationsNavbar = (props) => {
 };
 
 export const formatTimeDifference = (time: string): string => {
+  if (!time) return "";
   const now = new Date();
   const past = new Date(time);
   const diffInMs = now.getTime() - past.getTime();
