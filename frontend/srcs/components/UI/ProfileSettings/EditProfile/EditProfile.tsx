@@ -24,6 +24,15 @@ import validateUsername from "../../../../utils/usernameValidation";
 import api from "../../../../api/posts";
 import { setUpdateProfile } from "../../../../state/update/UpdateSlice";
 
+
+ function isString(value: any): value is string {
+  return typeof value === 'string' || value instanceof String;
+}
+
+export function isWhitespaceString(value: any): boolean {
+  return isString(value) && value.trim().length === 0;
+}
+
 export default function EditProfile(props) {
   
   const [Loading, setLoading] = useState(false);
@@ -182,6 +191,8 @@ export default function EditProfile(props) {
     reader.readAsDataURL(file);
   };
 
+
+
   const handleDone = async () => {
     // console.log("formData: ", formData);
 
@@ -190,6 +201,8 @@ export default function EditProfile(props) {
       setErrorInput({ type: 0, error: "Name cannot be empty" });
       return;
     }
+
+
 
     if (formData.username.length === 0) {
       setErrorInput({ type: 1, error: "Username cannot be empty" });
@@ -203,7 +216,8 @@ export default function EditProfile(props) {
 
     // Check for valid inputs
 
-    if (!isFullNameValid(formData.name)) {
+
+    if (!isFullNameValid(formData.name) || isWhitespaceString(formData.name)) {
       setErrorInput({ type: 0, error: "Invalid name" });
       return;
     }
