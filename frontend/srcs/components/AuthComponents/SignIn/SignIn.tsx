@@ -123,9 +123,9 @@ export default function SignIn() {
           />
         </div>
 
-        <div onClick={handleForgotPasswordClick}>
-          <LoginHelp title={"Forgot password?"} ClassName={"reset-pass"} />
-        </div>
+        {/* <div onClick={handleForgotPasswordClick}> */}
+          {/* <LoginHelp title={"Forgot password?"} ClassName={"reset-pass"} />
+        </div> */}
 
         <div onClick={handleCreateAccountClick}>
           <LoginHelp title={"Create Account?"} ClassName={"create-acc"} />
