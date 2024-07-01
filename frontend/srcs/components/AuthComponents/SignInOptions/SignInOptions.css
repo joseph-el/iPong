@@ -42,14 +42,15 @@
 
 .SignInOptions {
   padding: 40px 40px 30px 55px !important;
-  background-color: #0e0e0ed7;
-  
-  border: 0.1px solid #72767a;
+  background-color: #0e0e0ec4;
+  border: 0.1px solid #28292b;
+  box-shadow: 10px 16.46px 27.44px #8277c51c;
 
   width: 460px;
   height: 530px;
   max-width: 460px;
   max-height: 530px;
+
   overflow: hidden;
 }
 
@@ -128,6 +129,11 @@
   }
 
   .sign-in-platforme .apple,
+  .sign-in-platforme .google {
+    background-color: #cccccc !important;
+  
+  }
+  .sign-in-platforme .apple,
   .sign-in-platforme .google,
   .sign-in-platforme .element-intra {
     background-color: var(--neutral-colorswhite);
@@ -143,8 +149,7 @@
     justify-content: center;
   }
 
-  .sign-in-platforme .apple:hover,
-  .sign-in-platforme .google:hover,
+
   .sign-in-platforme .element-intra:hover {
     cursor: pointer;
     background-color: #cccccc;
