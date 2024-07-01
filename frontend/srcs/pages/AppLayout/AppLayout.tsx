@@ -96,11 +96,15 @@ export default function AppLayout({ children }) {
   return (
     <>
       {isInvited && (
-        <InviteGameModal
-          onClose={closeInvitation}
-          OpponentId={fromInvite}
-          inviteId={inviteId}
-        />
+        <div className="blur-background">
+          <div className="AchievementList-place fade-in">
+            <InviteGameModal
+              onClose={closeInvitation}
+              OpponentId={fromInvite}
+              inviteId={inviteId}
+            />
+          </div>
+        </div>
       )}
       <Grid
         templateAreas={
@@ -131,7 +135,13 @@ export default function AppLayout({ children }) {
           <SideBar />
         </GridItem>
 
-        <GridItem pl="2" area={"main"} w="full" h="full" style={{ overflow: "hidden" }} >
+        <GridItem
+          pl="2"
+          area={"main"}
+          w="full"
+          h="full"
+          style={{ overflow: "hidden" }}
+        >
           {isInviteAccepted ? (
             <InitInvitedPlayers inviteId={inviteId} />
           ) : (
