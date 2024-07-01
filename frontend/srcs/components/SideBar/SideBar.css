@@ -20,6 +20,10 @@
   top: 19px;
 }
 
+.side-bar .the-logo:hover {
+  opacity: 0.8;
+cursor: pointer;
+}
 .side-bar .the-logo {
   height: 70px;
   left: 11px;
