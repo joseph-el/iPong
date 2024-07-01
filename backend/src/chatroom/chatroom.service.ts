@@ -247,7 +247,7 @@ export class ChatroomService {
       receiverId: joinedUserId,
       entityType: NotificationType.JoinRoom,
       roomId: roomId,
-      id: randomUUID(),
+      id: [adminId, joinedUserId, roomId].sort().join('+') + "invite-to-room",
     };
     this.evventEmitter.emit('sendNotification', notification);
     return { message: `${joinedUserId} User has been added to the chatroom` };
