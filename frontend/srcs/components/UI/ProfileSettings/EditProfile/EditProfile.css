@@ -201,3 +201,24 @@
   top: 20px;
   left: 140px;
 }
+
+.edit-profile-form 
+.name{
+ gap: 34px;
+}
+.edit-profile-form 
+.email {
+  gap: 33px;
+}
+.edit-profile-form 
+.bio {
+  gap: 55px;
+}
+.edit-profile-form 
+.linkedInLink {
+  gap: 12px;
+}
+.edit-profile-form 
+.githubLink {
+  gap: 27px;
+}
