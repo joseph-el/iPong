@@ -2,10 +2,10 @@ import React from "react";
 import "./FriendNotifications.css";
 import { FriendNotificationsWrapper } from "./FriendNotificationsWrapper";
 import { User } from "@nextui-org/react";
-import { UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {setUpdateProfile} from "../../../state/update/UpdateSlice";
 export const Actions = (props) => {
-  const dispatch = UseDispatch();
+  const dispatch = useDispatch();
 
   return (
     <div className="actions">
