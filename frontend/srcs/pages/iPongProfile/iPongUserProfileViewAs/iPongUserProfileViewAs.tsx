@@ -56,12 +56,10 @@ import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
 import { setUpdateProfile } from "../../../state/update/UpdateSlice";
 import {setRouterStateType, setRouterState} from "../../../state/RouterState/routerSlice";
+
 const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
-
-
-
 
   useEffect(() => {
     const fetchCountry = async (latitude, longitude) => {
@@ -135,6 +133,11 @@ export default function UserProfileViewAs() {
 
   const { userId: paramUserId } = useParams();
   const [userId, setUserId] = useState(paramUserId);
+
+  useEffect(() => {
+    setUserId(paramUserId);
+  }, [paramUserId]);
+  
   const dispatch = useDispatch<AppDispatch>();
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [ShowZindex, setShowZindex] = React.useState(false);
