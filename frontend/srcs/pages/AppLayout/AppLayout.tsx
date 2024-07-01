@@ -96,15 +96,15 @@ export default function AppLayout({ children }) {
   return (
     <>
       {isInvited && (
-        <div className="blur-background">
-          <div className="AchievementList-place fade-in">
+        // <div className="blur-background">
+          <div className="invite-component-place fade-in">
             <InviteGameModal
               onClose={closeInvitation}
               OpponentId={fromInvite}
               inviteId={inviteId}
             />
           </div>
-        </div>
+        // </div>
       )}
       <Grid
         templateAreas={
