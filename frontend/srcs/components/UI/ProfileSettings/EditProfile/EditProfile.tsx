@@ -53,7 +53,7 @@ export default function EditProfile(props) {
     {
       type: "text",
       placeholder: "set your name here",
-      label: "Name:\f\f\f\f\f\f",
+      label: "Name:",
       name: "name",
     },
     {
@@ -65,25 +65,25 @@ export default function EditProfile(props) {
     {
       type: "email",
       placeholder: "set your email here",
-      label: "Email:\f\f\f\f\f\f",
+      label: "Email:",
       name: "email",
     },
     {
       type: "Textarea",
       placeholder: "set your bio here",
-      label: "Bio:\f\f\f\f\f\f\f\f\f\f\f",
+      label: "Bio:",
       name: "bio",
     },
     {
       type: "text",
       placeholder: "https://www.linkedin.com/in/",
-      label: "Linkedin:\f\f",
+      label: "Linkedin:",
       name: "linkedInLink",
     },
     {
       type: "text",
       placeholder: "https://www.github.com/",
-      label: "Github:\f\f\f\f\f",
+      label: "Github:",
       name: "githubLink",
     },
   ];
@@ -345,7 +345,7 @@ export default function EditProfile(props) {
                 label={input.label}
                 defaultValue={formData[input.name]}
                 value={formData[input.name]}
-                className="input-edit-profile"
+                className={"input-edit-profile " + input.name}
                 classNames={{
                   label: "text-black50",
                   input: [
@@ -369,7 +369,7 @@ export default function EditProfile(props) {
                 value={formData[input.name]}
                 type={input.type}
                 label={input.label}
-                className="input-edit-profile"
+                className={"input-edit-profile " + input.name}
                 classNames={{
                   label: "text-black50",
                   input: [
@@ -377,6 +377,7 @@ export default function EditProfile(props) {
                     "text-black/90 dark:text-white/90",
                     "placeholder:text-default-700/50 dark:placeholder:text-white/60",
                   ],
+                
                 }}
                 placeholder={input.placeholder}
                 onChange={handleChange}
