@@ -91,7 +91,11 @@
   filter: blur(2px);
 }
 
+.paddles-card {
+  width: 200px !important;
+}
 
 .paddles-img {
+
   margin-left: 50px !important;
 }
