@@ -334,6 +334,7 @@ export default function IPongStore() {
         <div className="blur-background">
           <div className="AchievementList-place fade-in">
             <CongratulationsNewSkin
+              BuyType={BuyItem.type === BUY_TYPES.BUY_BOARD ? "board" : "skin"}
               close={() => setItemBuySuccess(null)}
               imgPath={ItemBuySuccess.imgPath}
               description={ItemBuySuccess.description}
