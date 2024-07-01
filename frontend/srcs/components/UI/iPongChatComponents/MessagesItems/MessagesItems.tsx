@@ -4,18 +4,21 @@ import { Avatar, Divider } from "@nextui-org/react";
 
 import SelectConversationIcon from "./select-converstation-icon.svg";
 
-const handleLastMessageSize = (message) => {
-  const comparisonLength = 71;
-
-  if (message.length > comparisonLength) {
-    return `${message.slice(0, comparisonLength)}...`;
-  } else return message;
-};
 
 export default function MessagesItems(props) {
   if (props.isBanned) {
     return null;
   }
+
+
+  function truncateString(str: string): string {
+    if (str.length > 33) {
+        return str.substring(0, 33) + "...";
+    } else {
+        return str;
+    }
+}
+
   return (
     <div>
       <div
@@ -41,7 +44,7 @@ export default function MessagesItems(props) {
           </div>
 
           <div className="last-Message">
-            {handleLastMessageSize(props.lastMessage)}
+            {truncateString(props.lastMessage)}
           </div>
         </div>
 
