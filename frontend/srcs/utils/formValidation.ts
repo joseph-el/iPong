@@ -5,9 +5,10 @@ const dateOfBirthRegex = /^\d{4}-\d{2}-\d{2}$/;
 import api from '../api/posts'
 
 
-const isFullNameValid = (fullName) => {
+ const isFullNameValid = (fullName) => {
     return nameRegex.test(fullName);
 };
+
 
 
 
