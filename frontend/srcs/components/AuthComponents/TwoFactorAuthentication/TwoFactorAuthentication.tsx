@@ -45,7 +45,13 @@ const navigate = useNavigate();
 
   return (
     <div className="TwoFactorAuthenticationLogin-frame max-w-md mx-auto rounded-xl shadow-md overflow-hidden h-[32rem] w-[25rem] sm:w-auto sm:h-auto 2xl:w-auto 2xl:h-auto">
-      <Close ClassName={"close-WeSentCodeAndPassword"} id="close" />
+      <Close ClassName={"close-TwoFactorAuthenticationLogin"} id="close"
+      func={
+        () => {
+          navigate("/Auth");
+        }
+      }
+      />
 
       <div className="WeSentCodeAndPassword">
         <div className="text-wrapper-3">{"Enter 2FA Password"}</div>
@@ -86,7 +92,7 @@ const navigate = useNavigate();
 
         {/* <LoginHelp title={"Didn’t receive email?"} ClassName={"create-acc"} /> */}
 
-        <Spacer y={48} />
+        <Spacer y={72} />
         <div
           className="buttons-target"
           onClick={() => {
