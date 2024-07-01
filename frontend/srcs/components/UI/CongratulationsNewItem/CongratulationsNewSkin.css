@@ -1,5 +1,5 @@
 
-
+.CongratulationsNewSkin-frame 
 .set-padding {
     /* margin-top: 20px;
     margin-bottom: 20px; */
@@ -22,20 +22,22 @@
 
 }
 
-
+.CongratulationsNewSkin-frame 
 .CongratulationsNewSkin-card {
     border: 1px solid #2D2D2D;
 }
+.CongratulationsNewSkin-frame 
 .CongratulationsNewSkin-card  
 .p-3 {
     padding: 0 !important;
 
 }
+
 .CongratulationsNewSkin-frame {
 
     position:  relative !important;
 }
-
+.CongratulationsNewSkin-frame 
 .push-button{
     position: absolute;
     top: 3%;
@@ -43,28 +45,26 @@
     z-index: 10;
 
 }
-
+.CongratulationsNewSkin-frame 
 .text-description {
     font-size: 14px !important;
     font-weight: 400 !important;
     color: #ecedf0cf !important;
 }
 
-.CongratulationsNewSkinNavbar  
-.object-cover {
-    margin-top: -21px;
-}
-
+.CongratulationsNewSkin-frame 
 .footer-padding {
     margin-left: 50px;
 }
+.CongratulationsNewSkin-frame 
 .footer-padding {
     padding: 15px;
 }
+.CongratulationsNewSkin-frame 
 .footer-button {
     margin-right: 10px;
 }
-
+.CongratulationsNewSkin-frame 
 .adding-padding {
     padding: 30px 0px 30px 95px !important;
 }
