@@ -1,18 +1,96 @@
+.InviteGameModal-box {
+  background-color: #0e0e0e;
+  border-radius: 15px;
+  left: 1px;
+  position: relative;
+  border: 0.5px solid #3c424d;
+  width: 350px;
+  height: 400px;
+  max-width: 400px;
+  max-height: 1000px;
+  margin: 5px;
+}
+.InviteGameModal-frame 
+.close-invite-button {
+  margin-top: 10px;
+  margin-left: 310px;
+}
 
-/*
-.invite-game-modal {
+.InviteGameModal-frame {
+}
+
+.InviteGameModal-frame 
+.User-name {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  font-family: "sfprodisplay-regular", sans-serif;
+  font-size: 19.375px;
+  font-style: normal;
+  font-weight: 450;
+  line-height: normal;
+  letter-spacing: -0.152px;
+}
+.InviteGameModal-frame 
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+.InviteGameModal-frame 
+.invite-opponentInfo {
+  color: #00d1ff;
+}
+.InviteGameModal-frame 
+.invite-decriptions {
+  /* max-width: 200px; */
+  font-family: "Josefin Sans", sans-serif;
+  padding: 0px 40px 0px 40px;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  align-items: center;
+  margin-top: 15px;
+  justify-content: center;
+}
+.InviteGameModal-frame 
+.invitaion-expires {
+  font-family: "sfprodisplay-regular", sans-serif;
+  font-size: 16.375px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.152px;
+
+  margin-top: 15px;
+}
+.InviteGameModal-frame 
+.User-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.InviteGameModal-frame 
+.invite-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 55px;
+}
+
+/* .invite-game-modal {
   margin-top: 30px;
   position: fixed;
   top: 15%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(255, 255, 255);
+  background-color: #0e0e0e;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   padding: 15px;
-}
-
+} */
+/* 
 .close-button {
   color: black;
   position: absolute;
@@ -112,5 +190,4 @@
   background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
   transform: scale(1.05);
 }
-
-*/
+ */
