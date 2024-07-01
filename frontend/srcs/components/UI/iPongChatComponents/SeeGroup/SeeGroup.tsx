@@ -52,6 +52,8 @@ import { useNavigate } from "react-router-dom";
 import { set } from "lodash";
 import { setUpdateChatList } from "../../../../state/update/UpdateSlice";
 import { setUpdateChatPanel } from "../../../../state/update/UpdateSlice";
+import { isWhitespaceString } from "../../ProfileSettings/EditProfile/EditProfile";
+
 const PeopleListItem = ({ Members, MyId, RoomId, IsAdmin }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -212,7 +214,11 @@ const EditGroup = (props) => {
       setGroupNameIsInvalid(true);
       return;
     }
-    if (nameRegex.test(GroupName) === false || GroupName.length < 3) {
+    if (
+      nameRegex.test(GroupName) === false ||
+      GroupName.length < 3 ||
+      isWhitespaceString(GroupName)
+    ) {
       setError(
         GroupName.length < 3 ? "Group Name is too short" : "Invalid Group Name"
       );
@@ -446,7 +452,14 @@ const EditGroup = (props) => {
               </ModalBody>
 
               <ModalFooter className="EditGroup-blurbackground Group-setting-footer">
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button
+                  color="danger"
+                  variant="flat"
+                  onPress={() => {
+                    setLoading(false);
+                    onClose();
+                  }}
+                >
                   Close
                 </Button>
                 <Button
