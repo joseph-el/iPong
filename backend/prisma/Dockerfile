@@ -6,4 +6,7 @@ RUN npm install -g prisma --unsafe-perm
 
 ADD ./ ./prisma/
 
-CMD ["prisma", "migrate", "deploy", "--preview-feature"]
+COPY wait-for-it.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
+ENTRYPOINT ["wait-for-it.sh", "database:5432", "--", "prisma", "migrate", "deploy"]
