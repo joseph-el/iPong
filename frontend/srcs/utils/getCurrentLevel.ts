@@ -1,10 +1,11 @@
 const XP_RANGES: [number, number, number][] = [
-    [0, 99, 1],
-    [100, 249, 2],
-    [250, 499, 3],
-    [500, 999, 4],
-    [1000, 1999, 5],
-    [2000, Infinity, 6]
+    [0, 99, 0],
+    [100, 199, 1],
+    [200, 399, 2],
+    [400, 799, 3],
+    [800, 1599, 4],
+    [1600, 3199, 5],
+    [3200, Infinity, 6],
 ];
 
 
@@ -22,10 +23,12 @@ export function getUserLevel(xp: number): number {
 
 export function getXpToNextLevel(xp: number): number {
     const currentLevel = getUserLevel(xp);
+    console.log("currentLevel", currentLevel);
     if (currentLevel >= XP_RANGES.length) {
         return 0;
     }
-    const nextLevelMinXp = XP_RANGES[currentLevel][0];
+    const nextLevelMinXp = XP_RANGES[currentLevel][1];
+
     return nextLevelMinXp - xp;
 }
 
