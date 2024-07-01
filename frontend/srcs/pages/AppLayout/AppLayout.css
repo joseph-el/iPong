@@ -13,3 +13,13 @@
 .css-ozxp7e {
   padding: 0px !important;
 }
+
+
+.invite-component-place {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* z-index: 1001; */
+  animation: fadeIn 0.5s forwards;
+}
