@@ -207,7 +207,14 @@ export class ChatroomService {
         },
       });
     }
-
+    // const pushfirstMessage = await this.messages.create(room.id, userOwner, {
+    //   content: 'Welcome to the chatroom',
+    // });
+    // if (!pushfirstMessage) {
+    //   console.log('first message pushed');
+    // }
+    // // Return details of created Chatroomcon
+    // console.log('room created');
     return room;
   }
 
