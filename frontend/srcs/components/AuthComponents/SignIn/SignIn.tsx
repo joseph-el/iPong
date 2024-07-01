@@ -74,7 +74,7 @@ export default function SignIn() {
         );
         break;
       case LoginState.LOGIN_SUCCESS:
-        navigate("/ipong");
+        navigate("/ipong/home");
         break;
       default:
         break;
