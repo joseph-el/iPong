@@ -8,7 +8,6 @@ html {
 }
 
 .fade-enter.fade-enter-active {
-
   opacity: 1;
   transition: opacity 800ms ease-in;
 }
@@ -51,7 +50,6 @@ html {
   width: 100%;
 }
 
-/* AnimatedSwitch.css */
 
 .slide-left-enter {
   transform: translateX(-100%);
