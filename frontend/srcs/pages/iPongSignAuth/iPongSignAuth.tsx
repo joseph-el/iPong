@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Outlet,
-  Route,
-  Link,
-  BrowserRouter,
-  Routes,
-} from "react-router-dom";
 import "./iPongSignAuth.css";
-
 import SignIn from "../../components/AuthComponents/SignIn/SignIn";
 import CreateAccount from "../../components/AuthComponents/CreateAccount/CreateAccount";
 import SignInOptions from "../../components/AuthComponents/SignInOptions/SignInOptions";
@@ -17,7 +8,7 @@ import WeSentCodeAndPassword from "../../components/AuthComponents/WeSentCodeAnd
 import SetUserNameAndPicture from "../../components/AuthComponents/SetUserNameAndPicture/SetUserNameAndPicture";
 import { TwoFactorAuthenticationLogin } from "../../components/AuthComponents/TwoFactorAuthentication/TwoFactorAuthentication";
 import Spline from "@splinetool/react-spline";
-import {SideLine} from "../iPongLeadingPage/iPongLeadingPage";
+import { SideLine } from "../iPongLeadingPage/iPongLeadingPage";
 export default function SignAuth(props) {
   const path = props.path;
   let componentToRender;

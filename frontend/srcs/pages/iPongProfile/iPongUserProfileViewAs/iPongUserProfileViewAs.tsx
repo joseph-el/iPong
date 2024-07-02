@@ -10,14 +10,8 @@ import {
   Image,
   DropdownItem,
   Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
   Tooltip,
-  User,
 } from "@nextui-org/react";
 
 import { useParams } from "react-router-dom";
@@ -34,9 +28,6 @@ import VerifiedBadge from "../assets/Verified-badge.svg";
 import ArchivementIcon from "../assets/archivementicon.svg";
 import AddFriendIcon from "../assets/add-friend-icon.svg";
 import MenuIcon from "../assets/profile-menu-icon.svg";
-import PenddingIcon from "../assets/penddingicon.svg";
-import AlreadyFriendIcon from "../assets/alreadyFriendIcon.svg";
-
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { LevelBar } from "../../../components/UI/LevelBar/LevelBar";
@@ -55,7 +46,10 @@ import { useNavigate } from "react-router-dom";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import axios from "axios";
 import { setUpdateProfile } from "../../../state/update/UpdateSlice";
-import {setRouterStateType, setRouterState} from "../../../state/RouterState/routerSlice";
+import {
+  setRouterStateType,
+  setRouterState,
+} from "../../../state/RouterState/routerSlice";
 
 const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
   const [country, setCountry] = useState("");
@@ -130,14 +124,13 @@ const UserDescriptions = React.memo(({ UserprofileInfo, UserIsBlocked }) => {
 });
 
 export default function UserProfileViewAs() {
-
   const { userId: paramUserId } = useParams();
   const [userId, setUserId] = useState(paramUserId);
 
   useEffect(() => {
     setUserId(paramUserId);
   }, [paramUserId]);
-  
+
   const dispatch = useDispatch<AppDispatch>();
   const [showAchievementList, setShowAchievementList] = React.useState(false);
   const [ShowZindex, setShowZindex] = React.useState(false);
@@ -297,13 +290,11 @@ export default function UserProfileViewAs() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         if (typeof isUnfriend === "string") {
           await api.post(`/friendship/unblock`, {
             friendId: userId,
           });
-        }
-        else if (isUnfriend ) {
+        } else if (isUnfriend) {
           await api.post(`/friendship/unfriend`, {
             friendId: userId,
           });
@@ -314,7 +305,6 @@ export default function UserProfileViewAs() {
         }
       } catch (error) {}
       dispatch(setUpdateProfile());
-
     };
     isUnfriend != null && fetchData();
   }, [isUnfriend]);
@@ -336,13 +326,10 @@ export default function UserProfileViewAs() {
     startChat && fetchCreatChatRoom();
   }, [startChat]);
 
-
-
-
   useEffect(() => {
-      console.log("UserprofileInfo?.username", UserprofileInfo);
-        dispatch(setRouterState("Profile"));
-        dispatch(setRouterStateType(UserprofileInfo?.username));
+    console.log("UserprofileInfo?.username", UserprofileInfo);
+    dispatch(setRouterState("Profile"));
+    dispatch(setRouterStateType(UserprofileInfo?.username));
   }, [UserprofileInfo]);
 
   return (
@@ -497,7 +484,6 @@ export default function UserProfileViewAs() {
                       {ButtonFriendStatus}
                     </Button>
                   </DropdownTrigger>
-
 
                   {ButtonFriendStatus !== "ADD FRIEND" ? (
                     <DropdownMenu aria-label="Static Actions">

@@ -1,22 +1,18 @@
 @keyframes backgroundAnimation {
   0% {
-
     filter: brightness(0.8);
     opacity: 0.8;
   }
   30% {
-
     filter: brightness(0.8);
     opacity: 1;
   }
 
   50% {
-
     filter: brightness(0.9);
     opacity: 1;
   }
   100% {
-
     filter: brightness(1);
     opacity: 0.8;
   }
@@ -42,11 +38,10 @@
   display: flex;
   margin-bottom: 20px;
   justify-content: end;
-
 }
 
 .Store-List-nav-item {
-    border-radius: 3px;
+  border-radius: 3px;
   padding-top: 2px;
   margin-right: 20px;
   margin-top: 10px;
@@ -65,20 +60,19 @@
 }
 
 .Store-List {
-    position: absolute;  
-    bottom: 0;           
-    left: 0;            
-    margin: 20px;        
-    padding: 10px;       
-    max-width: 600px;   
-    border-radius: 10px;
-    background-color: #101c2e;
-  }
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 20px;
+  padding: 10px;
+  max-width: 600px;
+  border-radius: 10px;
+  background-color: #101c2e;
+}
 
-
-  .text-default-500-over {
-    font-size: 12px !important;
-  }
+.text-default-500-over {
+  font-size: 12px !important;
+}
 
 .store-frame .object-coverd {
   /* margin-left: 40px;
@@ -96,6 +90,5 @@
 }
 
 .paddles-img {
-
   margin-left: 50px !important;
 }

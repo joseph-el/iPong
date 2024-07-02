@@ -208,10 +208,11 @@ export default function IPongStore() {
     dispatch(setSelectedSkinPath(item.name));
   };
 
-  const RouterType = useSelector((state: RootState) => state.routerSlice.routerStateType);
+  const RouterType = useSelector(
+    (state: RootState) => state.routerSlice.routerStateType
+  );
   useEffect(() => {
-    if (RouterType === null) 
-      dispatch(setRouterStateType("Boards"));
+    if (RouterType === null) dispatch(setRouterStateType("Boards"));
   });
   return (
     <div className="store-frame">

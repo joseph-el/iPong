@@ -1,4 +1,4 @@
-import React, {useMemo, useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 import "./iPongUserProfile.css";
 import {
   Tabs,
@@ -13,7 +13,6 @@ import {
 
 import EditIcon from "../assets/editicon.svg";
 
-import CoverImage from "../assets/cover-image.jpeg";
 import LocationIcon from "../assets/LocationIcon.svg";
 import CalendarIcon from "../assets/CalendarIcon.svg";
 import SecutityIcon from "../assets/securityicon.svg";
@@ -40,7 +39,7 @@ import { getAvatarSrc } from "../../../utils/getAvatarSrc";
 import { formatJoinDate } from "../../../utils/formatJoinDate";
 import { getUserLevel } from "../../../utils/getCurrentLevel";
 import { useDispatch } from "react-redux";
-import {setRouterStateType} from "../../../state/RouterState/routerSlice";
+import { setRouterStateType } from "../../../state/RouterState/routerSlice";
 const UserDescriptions = React.memo(({ UserInfo }) => {
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
@@ -76,7 +75,10 @@ const UserDescriptions = React.memo(({ UserInfo }) => {
     getPosition();
   }, [getPosition]);
 
-  const joinDate = useMemo(() => formatJoinDate(UserInfo.createdAt), [UserInfo.createdAt]);
+  const joinDate = useMemo(
+    () => formatJoinDate(UserInfo.createdAt),
+    [UserInfo.createdAt]
+  );
 
   return (
     <div className="info">
@@ -88,9 +90,7 @@ const UserDescriptions = React.memo(({ UserInfo }) => {
         </div>
         <div className="div-2">
           <img className="img" alt="Calendar icon" src={CalendarIcon} />
-          <div className="text-wrapper-2">
-            {joinDate}
-          </div>
+          <div className="text-wrapper-2">{joinDate}</div>
         </div>
       </div>
       <div className="follower-counts">
@@ -102,7 +102,6 @@ const UserDescriptions = React.memo(({ UserInfo }) => {
     </div>
   );
 });
-
 
 export default function UserProfile() {
   const [showAchievementList, setShowAchievementList] = React.useState(false);
@@ -133,7 +132,7 @@ export default function UserProfile() {
             <img
               className="user-cover-image"
               alt="cover-image"
-              src={   UserInfo.cover  } // TODO: Tell mouad to set the default cover image
+              src={UserInfo.cover} 
             />
             <Avatar
               src={getAvatarSrc(UserInfo.picture, UserInfo.gender)}

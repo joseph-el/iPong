@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./LoadingOverlay.module.scss";
 import { useState } from "react";
 import React, { useEffect } from "react";
-import EEE from "../../../public/__pic.jpg"
+import EEE from "../../../public/__pic.jpg";
 import styles1 from "./SideLine.module.scss";
 
 interface LineProps {
@@ -98,8 +98,6 @@ export default function iPongLeadingPage() {
 
   const onClickEnter = () => {
     navigate("/Auth");
-
-
   };
 
   const onClickNoSound = (event: MouseEvent) => {
@@ -110,7 +108,6 @@ export default function iPongLeadingPage() {
   return (
     <>
       <div className="dddddd">
-
         <div className={clsx(styles.overlay, hidden && styles.hidden)}>
           <div
             className={clsx(styles.overlay__center, loaded && styles.active)}
@@ -156,35 +153,10 @@ export default function iPongLeadingPage() {
           <div
             className={clsx(styles.overlay__footer, !loaded && styles.hidden)}
           >
-            {/* <svg
-          width="34"
-          height="34"
-          viewBox="0 0 34 34"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g opacity="0.3">
-            <path
-              d="M33 27V17C33 8.16344 25.8366 1 17 1V1C8.16344 1 1 8.16344 1 17V27"
-              stroke="white"
-              strokeLinecap="round"
-            />
-            <path
-              d="M1 24C1 20.6863 3.68629 18 7 18V18C8.10457 18 9 18.8954 9 20V31C9 32.1046 8.10457 33 7 33V33C3.68629 33 1 30.3137 1 27V24Z"
-              stroke="white"
-            />
-            <path
-              d="M25 20C25 18.8954 25.8954 18 27 18V18C30.3137 18 33 20.6863 33 24V27C33 30.3137 30.3137 33 27 33V33C25.8954 33 25 32.1046 25 31V20Z"
-              stroke="white"
-            />
-          </g>
-        </svg> */}
             <p>
               Ready to play iPong? Let's begin!
               <br />
-              <a href="#" >
-                Click here to start.
-              </a>
+              <a href="#">Click to start.</a>
             </p>
           </div>
         </div>

@@ -12,17 +12,6 @@ import {
   Outlet,
 } from "react-router-dom";
 
-import IPongGame from "../iPongGame/iPongGame";
-import LiveChat from "../../components/LiveChat/LiveChat";
-import UserProfile from "../iPongProfile/iPongUserProfile/iPongUserProfile";
-import UserProfileViewAs from "../iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
-import IPongChat from "../iPongChat/iPongChat";
-import IPongStore from "../iPongStore/iPongStore";
-import SeeUsers from "../../components/UI/iPongChatComponents/SeeUsers/SeeUsers";
-import SeeGroup from "../../components/UI/iPongChatComponents/SeeGroup/SeeGroup";
-import CreatNewMessage from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatNewMessage";
-import CreatGroupChat from "../../components/UI/iPongChatComponents/CreatNewMessage/CreatGroupChat/CreatGroupChat";
-import StartFriendChat from "../../components/UI/iPongChatComponents/CreatNewMessage/StartFriendChat/StartFriendChat";
 import { useSocket } from "../../context/SocketContext";
 import InviteGameModal from "../../game/components/InviteGameModal/InviteGameModal";
 import InitInvitedPlayers from "../../game/components/InitInvitedPlayers/InitInvitedPlayers";
@@ -37,7 +26,6 @@ export default function AppLayout({ children }) {
   const [inviteId, setInviteId] = useState(null);
   const { socket, connect, disconnect } = useSocket();
 
-  /* Socket Connection Init here  */
   useEffect(() => {
     connect();
 
@@ -46,7 +34,6 @@ export default function AppLayout({ children }) {
     };
   }, [connect, disconnect]);
 
-  /* user received an invite */
   useEffect(() => {
     if (socket) {
       socket.on("inviteFromFriend", (data) => {
@@ -77,7 +64,6 @@ export default function AppLayout({ children }) {
     }
   }, [socket]);
 
-  /* User Invitation Actions */
   const closeInvitation = () => {
     setIsInvited(false);
   };
@@ -97,15 +83,13 @@ export default function AppLayout({ children }) {
   return (
     <>
       {isInvited && (
-        // <div className="blur-background">
-          <div className="invite-component-place fade-in">
-            <InviteGameModal
-              onClose={closeInvitation}
-              OpponentId={fromInvite}
-              inviteId={inviteId}
-            />
-          </div>
-        // </div>
+        <div className="invite-component-place fade-in">
+          <InviteGameModal
+            onClose={closeInvitation}
+            OpponentId={fromInvite}
+            inviteId={inviteId}
+          />
+        </div>
       )}
       <Grid
         templateAreas={
@@ -133,7 +117,7 @@ export default function AppLayout({ children }) {
         </GridItem>
 
         <GridItem pl="2" area={"sidebar"}>
-          <SideBar func={setIsInviteAccepted}/>
+          <SideBar func={setIsInviteAccepted} />
         </GridItem>
 
         <GridItem
@@ -144,7 +128,10 @@ export default function AppLayout({ children }) {
           style={{ overflow: "hidden" }}
         >
           {isInviteAccepted ? (
-            <InitInvitedPlayers func={setIsInviteAccepted} inviteId={inviteId} />
+            <InitInvitedPlayers
+              func={setIsInviteAccepted}
+              inviteId={inviteId}
+            />
           ) : (
             <>
               {children}

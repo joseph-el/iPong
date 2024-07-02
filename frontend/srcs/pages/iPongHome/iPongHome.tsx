@@ -16,23 +16,16 @@ import { getUserLevel } from "../../utils/getCurrentLevel";
 import { SKIN_DB } from "../../pages/iPongStore/db/skins.db";
 import { BOARDS_DB } from "../../pages/iPongStore/db/board.db";
 import * as MirrorPaddlesPNGs from "../iPongStore/assets/mirror-paddles/mirror-paddles";
-import Spline from "@splinetool/react-spline";
 import { LeaderBoard } from "../../components/UI/LeaderBoard/LeaderBoard";
 import { Grid, GridItem } from "@chakra-ui/react";
-
-import KKKK from "../../pages/iPongStore/assets/maps/map.JPG";
 import ddd from "../../../public/ai.jpg";
 import ddd2 from "../../../public/dddd.jpeg";
-
-import img_split from "../../../public/splite.png";
 
 import {
   Card,
   CardHeader,
-  CardBody,
   CardFooter,
   Image,
-  Button,
 } from "@nextui-org/react";
 
 export default function iPongGame() {
@@ -49,9 +42,9 @@ export default function iPongGame() {
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     return randomKey;
   }
-  
-  const botSelectedSkinPath = MirrorPaddlesPNGs[getRandomKey(MirrorPaddlesPNGs)];
 
+  const botSelectedSkinPath =
+    MirrorPaddlesPNGs[getRandomKey(MirrorPaddlesPNGs)];
 
   type ModeType = "practice" | "onlineBattle" | null;
   const [mode, setMode] = useState<ModeType>(null);
@@ -131,7 +124,6 @@ export default function iPongGame() {
           >
             <CardHeader
               onClick={() => {
-                // console.log("clicked on card 1");
                 vsRandomHandler();
               }}
               className="absolute z-10 top-16 flex-col items-start "
@@ -220,46 +212,3 @@ export default function iPongGame() {
     </Grid>
   );
 }
-
-/*
-    <div className="container--home">
-  
-
-
-
-
-      <div className="container-nav">
-        <button className="button1" onClick={vsBotHandler}>
-          Play vs Bot
-        </button>
-        <button className="button2" onClick={vsRandomHandler}>
-          Play vs Random
-        </button>
-      </div>
-
-
-
-
-        {<div className="container-nav">
-          <button className="button1" onClick={vsBotHandler}>
-            Play vs Bot
-          </button>
-          <button className="button2" onClick={vsRandomHandler}>
-            Play vs Random
-          </button>
-        </div> }
-
-
-
-    </div>
-*/
-
-/* <Spline scene="https://prod.spline.design/C5iwd6F3Xijf2m-z/scene.splinecode" /> */
-/* <div className="container-nav">
-        <button className="button1" onClick={vsBotHandler}>
-          Play vs Bot
-        </button>
-        <button className="button2" onClick={vsRandomHandler}>
-          Play vs Random
-        </button>
-      </div> */
