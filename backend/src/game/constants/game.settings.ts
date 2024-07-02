@@ -8,7 +8,7 @@ export const GAME_SETTINGS = {
   /* Players Settings */
   PLAYERS_WIDTH_PERCENTAGE: 6,
   PLAYERS_HEIGHT_PERCENTAGE: 23,
-  FRACTION_FOR_SPEED: 0.05,
+  FRACTION_FOR_SPEED: 0.09,
 
   /* Ball Settings */
   BALL_SIZE_PERCENTAGE: 2.5,

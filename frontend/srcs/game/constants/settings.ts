@@ -34,7 +34,7 @@ export const GAME_SETTING = {
   SCORE_SOUND: "/sounds/scoreSound.mp3",
 
   /*Live Game Emit Freq */
-  EMIT_MOVE_LIMIT: 40, //milliseconds
+  EMIT_MOVE_LIMIT: 20, //milliseconds
 
   /* BOT ASSETS */
   BOT_ICON: "/ai.jpeg",
