@@ -70,12 +70,12 @@ export default function IPongChat() {
     }
   }, [ListMessages]);
 
-  // const url = import.meta.env.VITE_URL;
+  const url = import.meta.env.VITE_URL;
   useEffect(() => {
     if (!accessToken) {
       return;
     }
-    const socket = io(`http://${"10.32.80.93"}:3000/chat`, {
+    const socket = io(`http://${url}:3000/chat`, {
       transports: ["websocket"],
 
       auth: { token: accessToken },
