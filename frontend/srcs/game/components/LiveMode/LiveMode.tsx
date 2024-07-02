@@ -32,6 +32,7 @@ interface LiveGameModeProps {
   roomId: string;
   playerPos: number;
   gameData: GameState;
+  func: (boolean) => void; 
 }
 
 export default function LiveMode({
@@ -44,6 +45,7 @@ export default function LiveMode({
   roomId,
   playerPos,
   gameData,
+  func
 }: LiveGameModeProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const socket = useRef<Socket | null>(socketRef.current);
@@ -398,6 +400,7 @@ export default function LiveMode({
           setLoserXp(data.loserUserXp);
         }
         setEndedGame(true);
+        // func(false);
       }
     );
 
@@ -621,10 +624,11 @@ export default function LiveMode({
         )}
 
         {cancelledGame && (
-          <CancelledMatch WhyReason="Opponent Disconnected! The match has been cancelled." />
+          <CancelledMatch func={func} WhyReason="Opponent Disconnected! The match has been cancelled." />
         )}
         {endedGame && (
           <GameOver
+            func={func}
             winner={winner}
             winnerId={winnerId}
             winnerXp={winnerXp}

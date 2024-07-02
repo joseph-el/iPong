@@ -21,9 +21,10 @@ const userSelectedSkin = "";
 
 interface InvitedPlayersProps {
   inviteId: string | null;
+  func: (boolean) => void;
 }
 
-export default function InitInvitedPlayers({ inviteId }: InvitedPlayersProps) {
+export default function InitInvitedPlayers({ inviteId, func }: InvitedPlayersProps) {
   const socketRef = useRef<Socket | null>(null);
   const [matchStatus, setMatchStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -46,9 +47,10 @@ export default function InitInvitedPlayers({ inviteId }: InvitedPlayersProps) {
   useEffect(() => {
     console.log("mounted (InitInvitedPlayers)");
     return () => {
+      // func(false);
       console.log("unmounted (InitInvitedPlayers)");
     };
-  });
+  }, []);
 
   useEffect(() => {
     if (!accessToken) {
@@ -210,6 +212,7 @@ export default function InitInvitedPlayers({ inviteId }: InvitedPlayersProps) {
           roomId={roomId}
           playerPos={playerPos}
           gameData={gameState}
+          func={func}
         />
       );
     }

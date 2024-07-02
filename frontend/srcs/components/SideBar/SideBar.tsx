@@ -29,7 +29,7 @@ enum SideBarIcons {
   USER_PROFILE = 4,
 }
 
-export default function SideBar() {
+export default function SideBar({func}) {
   const navigate = useNavigate();
   const location = useLocation();
   const { chatId } = useParams();
@@ -79,6 +79,7 @@ export default function SideBar() {
   const handleIconClick = (param, route) => {
     setActive(param);
     navigate(route);
+    func(false);
   };
 
   const getIconSrc = (iconIndex) => {

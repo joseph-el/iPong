@@ -5,6 +5,9 @@ console.warn = (...args) => {
 };
 
 console.error = (...args) => {
-  // originalError.apply(console, args);
+
 };
 
+console.log = (...args) => {
+
+}

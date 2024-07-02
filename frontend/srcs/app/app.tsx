@@ -211,6 +211,7 @@ const router = createBrowserRouter([
         path: "profile",
         element: <IPongProfile />,
       },
+
       {
         path: "chat",
         element: <IPongChat />, // Component to render when no chatId is provided

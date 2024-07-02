@@ -59,7 +59,7 @@ Thumbs.db
 
 # yarn.lock file
 yarn.lock
-
+.env
 # .env.local file (local environment variables)
 .env.local
 

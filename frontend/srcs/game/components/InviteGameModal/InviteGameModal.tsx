@@ -6,7 +6,7 @@ import "./InviteGameModal.css";
 import { InviteGameModalWrapper } from "./InviteGameModalWrapper";
 import { Button } from "@nextui-org/react";
 import Close from "../../../components/UI/Button/CloseButton/CloseButton";
-const TIMER_VALUE = 122000;
+const TIMER_VALUE = 5000;
 
 export default function InviteGameModal({ onClose, OpponentId, inviteId }) {
   const [opponentInfo, setOpponentInfo] = useState(null);

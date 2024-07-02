@@ -72,6 +72,7 @@ export default function AppLayout({ children }) {
       socket.on("launchingInvitationGame", (data) => {
         setInviteId(data.inviteId);
         setIsInviteAccepted(true);
+        setIsInvited(false);
       });
     }
   }, [socket]);
@@ -132,7 +133,7 @@ export default function AppLayout({ children }) {
         </GridItem>
 
         <GridItem pl="2" area={"sidebar"}>
-          <SideBar />
+          <SideBar func={setIsInviteAccepted}/>
         </GridItem>
 
         <GridItem
@@ -143,7 +144,7 @@ export default function AppLayout({ children }) {
           style={{ overflow: "hidden" }}
         >
           {isInviteAccepted ? (
-            <InitInvitedPlayers inviteId={inviteId} />
+            <InitInvitedPlayers func={setIsInviteAccepted} inviteId={inviteId} />
           ) : (
             <>
               {children}

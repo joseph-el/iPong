@@ -21,6 +21,9 @@ interface GameOverProps {
   winnerId?: string | null;
   winnerXp?: number;
   loserXp?: number;
+  func: (boolean) => void;
+
+
 }
 
 export default function GameOver({
@@ -28,7 +31,14 @@ export default function GameOver({
   winnerId,
   winnerXp,
   loserXp,
+  func
 }: GameOverProps) {
+
+  if (func === undefined || func === null) {
+    func = (Nothing: boolean) => {
+
+    }
+  }
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
 
@@ -63,7 +73,7 @@ export default function GameOver({
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-
+      func(false)
       navigate(PATHS.DEFAULT_GAME_PAGE);
     }, 4000);
 
@@ -79,7 +89,7 @@ export default function GameOver({
     <IPongAlert
       handelRemoveUser={() => {
         onClose();
-
+        func(false);
         navigate(PATHS.DEFAULT_GAME_PAGE);
       }}
       hideCloseButton={false}

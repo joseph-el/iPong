@@ -1,20 +1,20 @@
 version: "3.9"
 services:
-  # front:
-  #   container_name: front_ipong
-  #   depends_on:
-  #     - backend
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   env_file:
-  #     - ./.env
-  #   volumes:
-  #     - front:/app/build
-  #   ports:
-  #     - 5173:5173
-  #   networks:
-  #     - ipongnetwork
+  front:
+    container_name: front_ipong
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    volumes:
+      - front:/app/build
+    ports:
+      - 5173:5173
+    networks:
+      - ipongnetwork
 
   backend:
     build:
@@ -60,7 +60,7 @@ services:
       - database
    
 volumes: 
-  # front:
+  front:
   database:
 
 networks:

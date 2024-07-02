@@ -7,17 +7,22 @@ import IPongAlert from "../../../components/UI/iPongAlert/iPongAlert";
 import { useDisclosure } from "@nextui-org/react";
 interface CancelledMatchProps {
   WhyReason: string;
+  func: (boolean) => void;
 }
 
-export default function CancelledMatch({ WhyReason }: CancelledMatchProps) {
+export default function CancelledMatch({ WhyReason , func}: CancelledMatchProps) {
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
+  if (func === undefined || func === null) {
+    func = (Nothing: boolean) => {
 
+    }
+  }
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-
-      // navigate(PATHS.DEFAULT_GAME_PAGE);
+      func(false);
+      navigate(PATHS.DEFAULT_GAME_PAGE);
     }, 4000);
 
     return () => clearTimeout(timer);
@@ -32,7 +37,7 @@ export default function CancelledMatch({ WhyReason }: CancelledMatchProps) {
       <IPongAlert
         handelRemoveUser={() => {
           onClose();
-
+          func(false)
           navigate(PATHS.DEFAULT_GAME_PAGE);
         }}
         hideCloseButton={false}
