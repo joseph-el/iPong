@@ -33,9 +33,9 @@ export const Title = () => {
 export const SignInPlatforme = () => {
 
   ResetUserData();
-  // const url = import.meta.env.VITE_URL;
+  const url = import.meta.env.VITE_URL;
   const handleOnsubmit = async () => {
-    window.location.replace(`http://${"10.32.80.93"}:3000/auth/42/`);
+    window.location.replace(`http://${url}:3000/auth/42/`);
   };
 
   return (
