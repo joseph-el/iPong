@@ -12,7 +12,6 @@ import IPongChat from "../pages/iPongChat/iPongChat";
 import Home from "../pages/iPongHome/iPongHome";
 import IPongProfile from "../pages/iPongProfile/iPongUserProfile/iPongUserProfile";
 import IPongProfileViewAs from "../pages/iPongProfile/iPongUserProfileViewAs/iPongUserProfileViewAs";
-
 import { Navigate } from "react-router-dom";
 import api from "../api/posts";
 import { useEffect, useState } from "react";
@@ -23,7 +22,6 @@ import {
   setBoardPath,
 } from "../state/UserInfo/UserSlice";
 import {
-  addNotification,
   setNotification,
   setNotificationCount,
 } from "../state/Notifications/NotificationsSlice";
@@ -36,7 +34,7 @@ const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const dispatch = useDispatch<AppDispatch>();
-  
+
   if (
     localStorage.getItem("userSkin") === null ||
     localStorage.getItem("userSkin") === undefined
@@ -54,7 +52,6 @@ const RequireAuth = ({ children }) => {
   const UserBoard = localStorage.getItem("userBoard");
   console.log("UserSkin", UserSkin);
   console.log("UserBoard", UserBoard);
-
 
   const UpdatedProfileInfo = useSelector(
     (state: RootState) => state.update.UpdateProfile
@@ -214,7 +211,7 @@ const router = createBrowserRouter([
 
       {
         path: "chat",
-        element: <IPongChat />, // Component to render when no chatId is provided
+        element: <IPongChat />,
       },
       {
         path: "chat/:chatId",
