@@ -1,4 +1,3 @@
 all:
-#     run docker
-#     remove all images
-# 	  re
+	docker-compose up --build
+
