@@ -25,3 +25,6 @@ iPong is a multiplayer online Pong game where players compete in various challen
 Thanks to all who supported us throughout this journey. Your encouragement and feedback were invaluable.
 
 
+For more details about our journey in developing iPong, visit our [LinkedIn post](https://www.linkedin.com/posts/y-elidrissi_announcing-the-successful-completion-of-our-activity-7214915644868210689-cxVg?utm_source=share&utm_medium=member_desktop).
+
+
